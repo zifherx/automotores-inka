@@ -1,27 +1,102 @@
-"use client"
+"use client";
 
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ListItem } from "../ListItem";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+
+import { cn } from "@/lib/utils";
+
+import { listMarcas } from "@/data";
+import { listServiciosPosventa } from "@/data";
 
 export function MenuDesktop() {
-  const linkBolsaTrabajo = ""
+  const linkBolsaTrabajo =
+    "https://pe.computrabajo.com/sociedad%20de%20automotores%20inka%20sac/empleos";
 
   return (
     <NavigationMenu className="z-50">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
-          <NavigationMenuLink
-            className={cn(navigationMenuTriggerStyle(), "bg-transparent font-headMedium text-black text-lg")}
-          >
-            Inicio
-          </NavigationMenuLink>
+            <NavigationMenuLink
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-transparent font-headMedium text-black text-lg"
+              )}
+            >
+              Inicio
+            </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem></NavigationMenuItem>
-        <NavigationMenuItem></NavigationMenuItem>
-        <NavigationMenuItem></NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="bg-transparent font-headMedium text-black text-lg">
+            Vehículos
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-5 md:w-[500px] lg:grid-cols-2">
+              {listMarcas.map(
+                ({ id, name, value, isActive }) =>
+                  isActive && (
+                    <ListItem
+                      key={id}
+                      href={`/ligeros/catalogo?marca=${value}`}
+                      title={name}
+                    />
+                  )
+              )}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="bg-transparent font-headMedium text-black text-lg">
+            Nosotros
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-6 md:w-[500px] lg:w-[800px] lg:grid-cols-[.75fr_1fr]">
+              <ListItem href="/nosotros/quienes-somos" title="Nuestra Empresa">
+                Trabajamos con marcas líderes en el rubro automotriz desde hace
+                más de 12 años.
+              </ListItem>
+              <ListItem href="/nosotros/ubicanos" title="Ubícanos">
+                Concesionario peruano autorizado con presencia en Chiclayo,
+                Trujillo, Chimbote y Lima.
+              </ListItem>
+              <ListItem href={linkBolsaTrabajo} title="Bolsa de Trabajo">
+                Crece con nosotros y haz línea de carrera y evolucionemos
+                juntos.
+              </ListItem>
+              <ListItem
+                href="/nosotros/libro-reclamaciones"
+                title="Libro de Reclamaciones"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Exercitationem, tempore.
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="bg-transparent font-headMedium text-black text-lg">
+            Posventa
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {listServiciosPosventa.map(({ id, title, description, href }) => (
+                <ListItem key={id} title={title} href={href}>
+                  {description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );

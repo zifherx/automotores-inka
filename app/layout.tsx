@@ -2,11 +2,9 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 
 import NextTopLoader from "nextjs-toploader";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/toaster";
-import { BtnWhatsapp } from "@/components/Shared/BtnWhatsapp";
-import { Navbar } from "@/components/Shared/Navbar";
-import { Footer } from "@/components/Shared/Footer";
 
 import { cn } from "@/lib/utils";
 
@@ -87,32 +85,31 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="es-PE">
-      <body
-        className={cn(
-          `${hyundaiTextRegular.className} antialiased`,
-          `${hyundaiTextRegular.variable} ${hyundaiTextMedium.variable} ${hyundaiTextBold.variable}`,
-          `${hyundaiTextItalicRegular.variable} ${hyundaiTextItalicMedium.variable} ${hyundaiTextItalicBold.variable}`,
-          `${hyundaiHeadLight.variable} ${hyundaiHeadRegular.variable} ${hyundaiHeadMedium.variable} ${hyundaiHeadbold.variable}`
-        )}
-      >
-        <NextTopLoader
-          color="#FAFAFA"
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          showSpinner={true}
-          easing="ease"
-          speed={200}
-          shadow="0 0 10px #FAFAFA,0 0 5px #FAFAFA"
-        />
-        <Navbar />
-        {children}
-        <BtnWhatsapp />
-        <Footer />
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="es-PE">
+        <body
+          className={cn(
+            `${hyundaiTextRegular.className} antialiased`,
+            `${hyundaiTextRegular.variable} ${hyundaiTextMedium.variable} ${hyundaiTextBold.variable}`,
+            `${hyundaiTextItalicRegular.variable} ${hyundaiTextItalicMedium.variable} ${hyundaiTextItalicBold.variable}`,
+            `${hyundaiHeadLight.variable} ${hyundaiHeadRegular.variable} ${hyundaiHeadMedium.variable} ${hyundaiHeadbold.variable}`
+          )}
+        >
+          <NextTopLoader
+            color="#1B5094"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={true}
+            easing="ease"
+            speed={200}
+            shadow="0 0 10px #1B5094,0 0 5px #1B5094"
+          />
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

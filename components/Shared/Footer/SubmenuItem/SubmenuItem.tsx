@@ -1,7 +1,8 @@
 import Link from "next/link";
+
 import { cn } from "@/lib/utils";
 
-import { iSubmenuItem } from "@/interfaces/iFooter";
+import { iSubmenuItem } from "@/types";
 
 export function SubmenuItem(props: iSubmenuItem) {
   const { items } = props;

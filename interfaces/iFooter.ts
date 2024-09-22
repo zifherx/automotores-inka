@@ -8,11 +8,6 @@ export interface iRedesSociales {
   href: string;
 }
 
-export type iSubmenuItem = {
-  id?: number;
-  items: iSubmenuFooter;
-};
-
 export interface iMenuFooter {
   id: number;
   title: string;

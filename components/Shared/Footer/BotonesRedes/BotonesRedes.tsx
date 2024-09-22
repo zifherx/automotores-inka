@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { listRedesSociales } from "@/data/footer.data";
+import { listRedesSociales } from "@/data";
 
 export function BotonesRedes() {
   return (

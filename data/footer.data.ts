@@ -15,7 +15,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { iMenuFooter, iRedesSociales } from "@/interfaces/iFooter";
+import { iMenuFooter, iRedesSociales } from "@/interfaces";
 
 export const listRedesSociales: iRedesSociales[] = [
   {

@@ -1,6 +1,8 @@
-import { MapPin } from "lucide-react";
-import { BotonesRedes } from "../BotonesRedes";
 import Link from "next/link";
+
+import { BotonesRedes } from "../BotonesRedes";
+
+import { MapPin } from "lucide-react";
 
 export function EnlacesContacto() {
   return (
