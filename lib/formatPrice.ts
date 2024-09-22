@@ -3,7 +3,7 @@ export const formatPENPrice = (price: number) => {
     style: "currency",
     currency: "PEN",
     maximumFractionDigits: 0,
-    roundingIncrement: 100,
+    roundingIncrement: 10,
   }).format(price);
 };
 
@@ -12,6 +12,6 @@ export const formatUSDPrice = (price: number) => {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
-    roundingIncrement: 100,
+    roundingIncrement: 10,
   }).format(price);
 };

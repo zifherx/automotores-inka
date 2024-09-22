@@ -1,5 +1,6 @@
-import { listSubmenuFooter } from "@/data/footer.data";
 import { SubmenuItem } from "../SubmenuItem";
+
+import { listSubmenuFooter } from "@/data";
 
 export function MenuFooter() {
   return (

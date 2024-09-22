@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useAnimation, useInView, motion } from "framer-motion";
 import { fadeIn } from "./RevealFade";
 
-import { RevealProps } from "@/interfaces/iTransition";
+import { RevealProps } from "@/interfaces";
 
 export function RevealElement(props: RevealProps) {
   const { children, className, position, delay } = props;
