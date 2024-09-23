@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Trash, Upload } from "lucide-react";
 import { onToast } from "@/lib/toastMessage";
 import { iCardSede } from "@/types";
+import { BtnEditSucursal } from "../BtnEditSucursal";
 
 export function CardSucursal(props: iCardSede) {
   const { sede } = props;
@@ -66,7 +67,14 @@ export function CardSucursal(props: iCardSede) {
           <p className="text-lg min-h-16 lg:min-h-fit font-bold">
             Alt: {sede.name}
           </p>
-          <p className="text-xs">Slug: {sede.slug}</p>
+          <div className="flex justify-between">
+            <p className="text-xs">Slug: {sede.slug}</p>
+            <p className="text-xs font-bold mb-3">
+              {" "}
+              {sede.codexHR ? sede.codexHR.toUpperCase() : ""}
+            </p>
+          </div>
+          <p className="text-xs">{sede.address}</p>
         </div>
 
         <div className="flex items-center justify-between gap-4">
@@ -78,7 +86,7 @@ export function CardSucursal(props: iCardSede) {
             Eliminar
             <Trash className="w-4 h-4 ml-2" />
           </Button>
-          <p>Boton Editar</p>
+          <BtnEditSucursal sede={sede} />
         </div>
 
         {sede.isActive ? (

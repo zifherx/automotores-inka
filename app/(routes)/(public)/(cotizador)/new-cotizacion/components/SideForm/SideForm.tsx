@@ -1,9 +1,9 @@
 import { Title } from "@/components/Shared/Title";
 import { FormCotizacion } from "../Form-Cotizacion";
-import { iListBrand } from "@/types";
+import { iCotizacionCero } from "@/types";
 
-export function SideForm(props: iListBrand) {
-  const { brands } = props;
+export function SideForm(props: iCotizacionCero) {
+  const { brands, listDepartamentos } = props;
 
   return (
     <div>
@@ -14,7 +14,7 @@ export function SideForm(props: iListBrand) {
       <p className="text-center mt-3 text-lg font-textRegular text-grisInka">
         Estás cotizando en Automotores Inka
       </p>
-      <FormCotizacion brands={brands} />
+      <FormCotizacion brands={brands} listDepartamentos={listDepartamentos} />
     </div>
   );
 }

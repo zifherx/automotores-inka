@@ -3,10 +3,12 @@ import {
   iBrand,
   iCardModel,
   iChasis,
+  iListBrand,
   iListModels,
   iModelo,
   iSede,
 } from "./admin.types";
+import { iOracion } from "@/interfaces";
 
 export type iVideosYoutube = {
   src: string;
@@ -99,6 +101,10 @@ export type iCotizacionMarca = iListModels & {
   listDepartamentos: iSedeDealer[];
 };
 
+export type iCotizacionCero = iListBrand & {
+  listDepartamentos: iSedeDealer[];
+};
+
 export type iSideFormMarca = iCardModel & {
   listDepartamentos: iSedeDealer[];
 };
@@ -131,13 +137,19 @@ export type iEmailTemplate = {
 };
 
 export type iCustomMessage = {
-  message: string
-}
+  message: string;
+};
 
 export type iCaratulaReclamo = {
-  slugType: string
-}
+  slugType: string;
+};
 
 export type iHojaReclamo = {
-  slugType: string
-}
+  slugType: string;
+};
+
+export type iParrafo = {
+  id?: number;
+  title: string;
+  parrafos: iOracion[];
+};

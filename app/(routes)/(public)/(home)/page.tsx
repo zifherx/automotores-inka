@@ -31,7 +31,7 @@ export default async function HomePage() {
     <>
       <BannerPortada covers={queryCovers} />
       <BrandSlider brands={queryBrands} />
-      <p>MasBuscados</p>
+      {/* <p>MasBuscados</p> */}
       <BannerHome imageAlt="Cover Geely 1" imageSource="geely-action1.jpeg" />
       <VideoBienvenida />
       <ServiciosSlider />

@@ -36,7 +36,7 @@ export interface iModel extends Document {
   isEntrega48H: boolean;
   isGLP: boolean;
   colores: iColor[];
-  features: iFeatures[];
+  features: iFeatures;
   galeria: iGallery[];
   isActive: boolean;
   createdBy: string;

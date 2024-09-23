@@ -89,6 +89,7 @@ export function FormularioLead(props: iSideFormMarca) {
     } catch (err) {
       // console.log(err);
       setIsLoading(false);
+      onToast("Algo salió mal ❌");
     }
   };
 

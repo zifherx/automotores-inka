@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import axios from "axios";
 
 import {
   Form,
@@ -28,21 +28,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import { Loader2, Send, Sparkles } from "lucide-react";
+
 import {
   CotizacionGeneralFormValues,
   formCotizacionGeneralSchema,
 } from "@/forms";
 import { iFormCotizacionGeneral, iModelo } from "@/types";
-import { Loader2, Send, Sparkles } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { formatPENPrice, formatUSDPrice } from "@/lib";
+import { formatPENPrice, formatUSDPrice, onToast } from "@/lib";
 
 export function FormCotizacion(props: iFormCotizacionGeneral) {
-  const { brands } = props;
+  const { brands, listDepartamentos } = props;
+
+  const listTesting = listDepartamentos[0];
 
   const [listModels, setListModels] = useState<iModelo[]>([]);
   const [vehicleSelected, setVehicleSelected] = useState<iModelo | null>(null);
-  const [departamento, setDepartamento] = useState<any>("");
+
+  const [sede, setSede] = useState<any>("");
   const [concesionario, setConcesionario] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
@@ -55,15 +59,15 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
     resolver: zodResolver(formCotizacionGeneralSchema),
     defaultValues: {
       nombres: "",
-      tipo_documento: "",
-      numero_documento: "",
+      tipoDocumento: "",
+      numeroDocumento: "",
       email: "",
       celular: "",
       marca: "",
       modelo: "",
       departamento: "",
       concesionario: "",
-      intencion_compra: "",
+      intencionCompra: "",
       checkDatosPersonales: false,
       checkPromociones: "",
     },
@@ -98,15 +102,25 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
   const onSubmit = async (values: CotizacionGeneralFormValues) => {
     setIsLoading(true);
     try {
-      console.log(values);
-      // const query = await axios.post("api/send", {
-      //   ...values,
-      // });
+      if (vehicleSelected !== null) {
+        const query = await axios.post("api/send", {
+          ...values,
+          departamento: sede,
+          concesionario: concesionario.toUpperCase().replace(/-/g, " "),
+          marca: vehicleSelected?.marca.name,
+          carroceria: vehicleSelected?.carroceria.name,
+          modelo: vehicleSelected?.name,
+          imageUrl: vehicleSelected?.imageUrl,
+          precioBase: vehicleSelected?.precioBase,
+        });
 
-      // if (query.status === 200) {
-      //   router.push(`/gracias/${query.data.id}`);
-      //   setIsLoading(false);
-      // }
+        setIsLoading(false);
+        if (query.status === 200) {
+          setIsLoading(false);
+          onToast(query.data.message);
+          router.push(`/gracias/${query.data.mail.id}`);
+        }
+      }
     } catch (err) {
       console.log(err);
     }
@@ -126,9 +140,9 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
   };
 
   return (
-    <div className="p-10 border-2 border-orange-700">
-      <div className="grid grid-cols-2 gap-10 border-2 border-purple-500">
-        <div className="p-4 my-10 md:my-0 md:p-10 border rounded-xl md:border-none md:rounded-none">
+    <div className="p-2 md:p-10">
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-10">
+        <div className="p-3 my-5 md:my-0 md:p-2 border rounded-xl md:border-none md:rounded-none">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {/* Nombre y Apellido */}
@@ -151,7 +165,7 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
               {/* Tipo de Documento */}
               <FormField
                 control={form.control}
-                name="tipo_documento"
+                name="tipoDocumento"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-headMedium">
@@ -183,7 +197,7 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
               {/* Número de Documento */}
               <FormField
                 control={form.control}
-                name="numero_documento"
+                name="numeroDocumento"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-headMedium">
@@ -307,7 +321,11 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
                   <FormItem>
                     <FormLabel className="font-headMedium">Sede</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        setSede(value);
+                        setConcesionario("");
+                        return value;
+                      }}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -316,10 +334,10 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="ancash">Ancash</SelectItem>
-                        <SelectItem value="lambayeque">Lambayeque</SelectItem>
-                        <SelectItem value="la_libertad">La Libertad</SelectItem>
-                        <SelectItem value="lima">Lima</SelectItem>
+                        <SelectItem value="Chiclayo">Chiclayo</SelectItem>
+                        <SelectItem value="Chimbote">Chimbote</SelectItem>
+                        <SelectItem value="Lima">Lima</SelectItem>
+                        <SelectItem value="Trujillo">Trujillo</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -328,53 +346,55 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
               />
 
               {/* Concesionario */}
-              <FormField
-                control={form.control}
-                name="concesionario"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Concesionario
-                    </FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        setConcesionario(value);
-                        return field.onChange;
-                      }}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccione donde quiere atenderse" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel className="capitalize">
-                            Sede {departamento}
-                          </SelectLabel>
-                          {/* {listDepartamentos[departamento].map(
-                          ({ id, name, value, direccion }) => (
-                            <SelectItem key={id} value={value}>
-                              <div className="flex flex-col items-start">
-                                <p className="font-semibold">{name}</p>
-                                <small>{direccion}</small>
-                              </div>
-                            </SelectItem>
-                          )
-                        )} */}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {sede && (
+                <FormField
+                  control={form.control}
+                  name="concesionario"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-headMedium">
+                        Concesionario
+                      </FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          setConcesionario(value);
+                          return value;
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccione donde quiere atenderse" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel className="capitalize">
+                              Sede {sede}
+                            </SelectLabel>
+                            {listTesting[sede].map(
+                              ({ address, name, slug }) => (
+                                <SelectItem key={slug} value={slug}>
+                                  <div className="flex flex-col items-start">
+                                    <p className="font-semibold">{name}</p>
+                                    <small>{address}</small>
+                                  </div>
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {/* Intención de compra */}
               <FormField
                 control={form.control}
-                name="intencion_compra"
+                name="intencionCompra"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-headMedium">

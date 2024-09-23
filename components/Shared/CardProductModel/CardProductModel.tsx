@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
 import { formatPENPrice, formatUSDPrice, getRouteForModel } from "@/lib";
 import { iCardProductModel } from "@/types";
 
@@ -65,7 +64,9 @@ export function CardProductModel(props: iCardProductModel) {
         </p>
 
         <Link
-          href={`/ligeros/${marca.name.toLowerCase()}/${getRouteForModel(name)}`}
+          href={`/ligeros/${marca.name.toLowerCase()}/${getRouteForModel(
+            name
+          )}`}
           className="flex items-center justify-center mt-8 w-full h-6 py-4 uppercase text-[12px] rounded-2xl bg-redInka text-white hover:bg-redDarkInka"
         >
           Ver más detalles del auto

@@ -28,8 +28,25 @@ export interface iListLinkUtiles {
   href: string;
 }
 
-export interface iReclamosRS{
-  id:number
-  name: string
-  ruta: string
+export interface iReclamosRS {
+  id: number;
+  name: string;
+  ruta: string;
+}
+
+export interface tDepartamento {
+  id: number;
+  name: string;
+  value: string;
+  provincias: tProvincia[];
+}
+
+export interface tProvincia {
+  id: number;
+  name: string;
+  value: string;
+}
+
+export interface iOracion {
+  oracion: string;
 }

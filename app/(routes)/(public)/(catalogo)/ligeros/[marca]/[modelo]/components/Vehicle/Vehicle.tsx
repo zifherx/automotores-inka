@@ -13,7 +13,10 @@ export function Vehicle(props: iCardModel) {
   return (
     <>
       <Banner model={model} />
-      <Feature features={model.features} />
+      <Feature
+        feature1={model.features.feature1}
+        feature2={model.features.feature2}
+      />
       <FichaTecnica link={`${model.fichaTecnica}`} />
       <Color colores={model.colores} />
       <Gallery galeria={model.galeria} />

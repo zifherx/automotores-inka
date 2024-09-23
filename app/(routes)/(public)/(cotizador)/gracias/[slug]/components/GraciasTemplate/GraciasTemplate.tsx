@@ -12,15 +12,15 @@ export function GraciasTemplate() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-        router.push("/")
-    }, 6000)
+      router.push("/");
+    }, 6000);
 
-    return () => clearTimeout(timer)
+    return () => clearTimeout(timer);
   }, [router]);
 
   return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 via-pink-500 to-red-500">
-        <CustomMessage message={`${slug}`}/>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 via-pink-500 to-red-500">
+      <CustomMessage message={`${slug}`} />
     </div>
   );
 }

@@ -4,8 +4,11 @@ import { CondicionesFormularios } from "@/components/Shared/CondicionesFormulari
 
 import { Cotizador } from "./components/Cotizador";
 import { dbConnect, serializeDocument } from "@/lib";
+
 import Marca from "@/models/Marca";
-import { iBrand } from "@/types";
+import Sucursal from "@/models/Sucursal";
+
+import { iBrand, iSedeDealer } from "@/types";
 
 export const metadata: Metadata = {
   title: {
@@ -20,12 +23,39 @@ export async function loadBrands() {
   return query.map(serializeDocument) as iBrand[];
 }
 
+async function loadSedes() {
+  await dbConnect();
+  const query = await Sucursal.aggregate([
+    {
+      $group: {
+        _id: "$ciudad",
+        sedes: { $push: { name: "$name", address: "$address", slug: "$slug" } },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        departamentos: { $push: { k: "$_id", v: "$sedes" } },
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: {
+          $arrayToObject: "$departamentos",
+        },
+      },
+    },
+  ]).exec();
+  return query as iSedeDealer[];
+}
+
 export default async function NewCotizacionPage() {
   const queryBrands = await loadBrands();
+  const querySedes = await loadSedes();
 
   return (
     <>
-      <Cotizador brands={queryBrands} />
+      <Cotizador brands={queryBrands} listDepartamentos={querySedes} />
       <CondicionesFormularios />
     </>
   );

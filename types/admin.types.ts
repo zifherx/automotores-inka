@@ -1,4 +1,12 @@
-import { iCarroceria, iCover, iMarca, iModel, iSucursal } from "@/models";
+import {
+  iCarroceria,
+  iCover,
+  iMarca,
+  iModel,
+  iSucursal,
+  iReclamo,
+} from "@/models";
+import { iSedeDealer } from "./public.types";
 
 // Cover
 export type iListCover = {
@@ -60,6 +68,8 @@ export type iCardSede = {
 
 export type iSede = iSucursal & { _id: string };
 
-export type iFormCotizacionGeneral = {
-  brands: iBrand[];
+export type iFormCotizacionGeneral = iListBrand & {
+  listDepartamentos: iSedeDealer[];
 };
+
+export type iReclamation = iReclamo & { _id: string };

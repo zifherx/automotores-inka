@@ -37,8 +37,6 @@ export async function POST(req: Request) {
       carroceria: chasisFound,
     }) as iModelo;
 
-    console.log("modelo:", newModelo);
-
     const query = await newModelo.save();
 
     return NextResponse.json(query);

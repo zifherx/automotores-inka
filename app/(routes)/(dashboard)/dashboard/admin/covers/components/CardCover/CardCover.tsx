@@ -15,7 +15,7 @@ export function CardCover(props: iCardCover) {
 
   const handlerActive = async (active: boolean) => {
     try {
-      const query = await axios.patch(`/api/portada/${cover.id}`, {
+      const query = await axios.patch(`/api/portada/${cover._id}`, {
         isActive: active,
       });
 

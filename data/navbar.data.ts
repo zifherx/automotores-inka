@@ -38,12 +38,12 @@ export const listItemMenuMobile: iMenuMobile[] = [
     href: "/ligeros/catalogo",
     icon: Car,
   },
-  {
-    id: 3,
-    title: "Catálogo de Camiones",
-    href: "/camiones/catalogo",
-    icon: Truck,
-  },
+  // {
+  //   id: 3,
+  //   title: "Catálogo de Camiones",
+  //   href: "/camiones/catalogo",
+  //   icon: Truck,
+  // },
   {
     id: 4,
     title: "Quiénes Somos",
@@ -56,12 +56,12 @@ export const listItemMenuMobile: iMenuMobile[] = [
     href: "/nosotros/ubicanos",
     icon: MapPin,
   },
-  {
-    id: 6,
-    title: "Separa tu cita",
-    href: "/posventa/mantenimiento",
-    icon: Wrench,
-  },
+  // {
+  //   id: 6,
+  //   title: "Separa tu cita",
+  //   href: "/posventa/mantenimiento",
+  //   icon: Wrench,
+  // },
 ];
 
 export const listItemMenuGeneral: iMenuDashboard[] = [

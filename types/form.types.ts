@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { iBrand, iChasis } from "./admin.types";
+import { iBrand, iChasis, iSede } from "./admin.types";
 
 export type iFormAddCover = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
@@ -21,4 +21,8 @@ export type iFormAddModel = {
 
 export type iFormAddSucursal = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
+};
+
+export type iFormEditSucursal = iFormAddSucursal & {
+  sede: iSede;
 };

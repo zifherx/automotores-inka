@@ -64,28 +64,55 @@ export const formAddModeloSchema = z.object({
 });
 
 export const formAddSucursalSchema = z.object({
-  name: z.string().min(1),
-  slug: z.string().min(1),
+  name: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  slug: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  codexHR: z.string().min(3, "Este campo debe contener al menos 3 caracteres"),
   imageUrl: z.string(),
-  ciudad: z.string().min(1),
-  address: z.string().min(1),
-  scheduleRegular: z.string().min(1),
-  scheduleExtended: z.string().min(1),
-  linkHowArrived: z.string().url(),
+  ciudad: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  address: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  scheduleRegular: z
+    .string()
+    .min(1, "Este campo debe contener al menos 1 caracter"),
+  scheduleExtended: z
+    .string()
+    .min(1, "Este campo debe contener al menos 1 caracter"),
+  linkHowArrived: z.string().url("Debe ingresar una url válida"),
+  isActive: z.boolean(),
+});
+
+export const formEditSucursalSchema = z.object({
+  name: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  slug: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  codexHR: z.string().min(3, "Este campo debe contener al menos 3 caracteres"),
+  ciudad: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  address: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  scheduleRegular: z
+    .string()
+    .min(1, "Este campo debe contener al menos 1 caracter"),
+  scheduleExtended: z
+    .string()
+    .min(1, "Este campo debe contener al menos 1 caracter"),
+  linkHowArrived: z.string().url("Debe ingresar una url válida"),
   isActive: z.boolean(),
 });
 
 export const formCotizacionGeneralSchema = z.object({
-  nombres: z.string().min(3).max(50),
-  tipo_documento: z.string(),
-  numero_documento: z.string().min(8).max(20),
+  nombres: z
+    .string()
+    .min(3, "Este campo no debe ser inferior a 3 caracteres")
+    .max(50, "Este campo no debe superar los 50 caracteres"),
+  tipoDocumento: z.string(),
+  numeroDocumento: z
+    .string()
+    .min(8, "Este campo no debe ser inferior a 8 caracteres")
+    .max(20, "Este campo no debe superar los 20 caracteres"),
   email: z.string().email(),
-  celular: z.string().length(9),
+  celular: z.string().length(9, "Este campo debe ser de 9 dígitos"),
   marca: z.string(),
   modelo: z.string(),
   departamento: z.string(),
   concesionario: z.string(),
-  intencion_compra: z.string(),
+  intencionCompra: z.string(),
   checkDatosPersonales: z.boolean(),
   checkPromociones: z.string(),
 });
@@ -109,12 +136,48 @@ export const formCotizacionModeloSchema = z.object({
   checkPromociones: z.string(),
 });
 
+export const formReclamoSchema = z.object({
+  // 1. Datos del Consumidor
+  tipoDocumento: z.string({ message: "Debe seleccionar una opción." }),
+  numeroDocumento: z
+    .string()
+    .min(8, { message: "El campo debe contener al menos 8 caracteres." })
+    .max(20, { message: "El campo no debe superar los 20 caracteres" }),
+  nombres: z.string().min(3, "El campo debe contener al menos 3 caracteres."),
+  apellidos: z.string().min(3, "El campo debe contener al menos 3 caracteres."),
+  email: z.string().email("Debe ingresar un email válido"),
+  celular: z.string().length(9, "El campo debe contener 9 dígitos."),
+  departamento: z.string(),
+  provincia: z.string(),
+  distrito: z.string(),
+  direccion: z.string().optional(),
+  // 2. Datos del bien adquirido
+  tipoBien: z.string(),
+  vin: z.string().optional(),
+  placa: z
+    .string()
+    // .length(6, "Este campo debe contener 6 caracteres")
+    .optional(),
+  sedeCompra: z.string(),
+  // moneda: z.enum(["pen", "usd"]),
+  moneda: z.string(),
+  importeBien: z.number(),
+  descripcionBien: z.string(),
+  // 3. Detalle del reclamo y solicitud del reclamante
+  tipoSolicitud: z.string(),
+  detalleSolicitud: z.string(),
+  pedidoSolicitud: z.string(),
+  isConforme: z.boolean(),
+});
+
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
 export type SucursalFormValues = z.infer<typeof formAddSucursalSchema>;
+export type SucursalFormEditValues = z.infer<typeof formEditSucursalSchema>;
 export type CotizacionGeneralFormValues = z.infer<
   typeof formCotizacionGeneralSchema
 >;
 export type CotizacionModeloFormValue = z.infer<
   typeof formCotizacionModeloSchema
 >;
+export type HReclamoFormValues = z.infer<typeof formReclamoSchema>;

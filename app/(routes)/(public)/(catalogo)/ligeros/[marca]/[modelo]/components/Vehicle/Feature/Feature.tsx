@@ -1,12 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib";
-import { iFeature } from "@/models";
+import { iFeature, iFeatures } from "@/models";
 
-import { iFeaturing } from "@/types";
-
-export function Feature(props: iFeaturing) {
-  const { features } = props;
-  const { feature1, feature2 } = features[0];
+export function Feature(props: iFeatures) {
+  const { feature1, feature2 } = props;
 
   return (
     <div className="max-w-5xl mx-auto">
