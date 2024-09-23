@@ -2,8 +2,10 @@ import {
   iListLinkUtiles,
   iListValores,
   iObjetivosEmpresa,
+  iReclamosRS,
   iServicioSVG,
 } from "@/interfaces/iPublic";
+
 import { Blocks, Handshake, Medal, Star, Users } from "lucide-react";
 
 export const listServiciosSVG: iServicioSVG[] = [
@@ -131,3 +133,16 @@ export const listLinkUtiles: iListLinkUtiles[] = [
     href: "/new-cotizacion",
   },
 ];
+
+export const listRSReclamos: iReclamosRS[] = [
+  {
+    id: 1,
+    name: "SOCIEDAD AUTOMOTORES INKA S.A.C.",
+    ruta: "hr-sai"
+  },
+  {
+    id: 2,
+    name: "GRUPO PERAMAS S.A.C.",
+    ruta: "hr-gp"
+  },
+]

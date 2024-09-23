@@ -153,7 +153,7 @@ export const EmailTemplate: FC<Readonly<iEmailTemplate>> = ({
                           Autorización de Newsletter
                         </td>
                         <td className="p-2 border border-slate-300 capitalize">
-                          {checkPromociones
+                          {checkPromociones === 'yes'
                             ? "Si autorizo 👍"
                             : "No autorizo 👎"}
                         </td>

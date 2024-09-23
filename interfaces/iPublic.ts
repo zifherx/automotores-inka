@@ -27,3 +27,9 @@ export interface iListLinkUtiles {
   label: string;
   href: string;
 }
+
+export interface iReclamosRS{
+  id:number
+  name: string
+  ruta: string
+}

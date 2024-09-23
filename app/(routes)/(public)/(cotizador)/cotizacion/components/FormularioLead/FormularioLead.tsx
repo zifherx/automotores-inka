@@ -32,6 +32,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
 import { iSideFormMarca } from "@/types";
+import { onToast } from "@/lib";
 
 export function FormularioLead(props: iSideFormMarca) {
   const { model, listDepartamentos } = props;
@@ -77,13 +78,16 @@ export function FormularioLead(props: iSideFormMarca) {
         precioBase: model.precioBase,
       });
 
+      // console.log(query);
+
       setIsLoading(false);
       if (query.status === 200) {
         setIsLoading(false);
-        //   router.push(`/gracias/${query.data.id}`);
+        onToast(query.data.message);
+        router.push(`/gracias/${query.data.mail.id}`);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -405,7 +409,7 @@ export function FormularioLead(props: iSideFormMarca) {
           <Button
             type="submit"
             className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            // disabled={!isValid}
+            disabled={isLoading}
           >
             {isLoading ? (
               <>

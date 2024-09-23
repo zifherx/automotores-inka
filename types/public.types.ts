@@ -129,3 +129,15 @@ export type iEmailTemplate = {
   imageUrl: string;
   precioBase: number;
 };
+
+export type iCustomMessage = {
+  message: string
+}
+
+export type iCaratulaReclamo = {
+  slugType: string
+}
+
+export type iHojaReclamo = {
+  slugType: string
+}
