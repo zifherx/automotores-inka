@@ -5,7 +5,7 @@ import Sucursal from "@/models/Sucursal";
 import { dbConnect, serializeDocument } from "@/lib";
 import { iSede } from "@/types";
 
-export async function loadSedes() {
+async function loadSedes() {
   await dbConnect();
   const query = await Sucursal.find({ isActive: true });
   return query.map(serializeDocument) as iSede[];

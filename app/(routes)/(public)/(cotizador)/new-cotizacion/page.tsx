@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export async function loadBrands() {
+async function loadBrands() {
   await dbConnect();
   const query = await Marca.find({ isActive: true }).sort({ name: 1 });
   return query.map(serializeDocument) as iBrand[];

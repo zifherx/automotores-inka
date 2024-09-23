@@ -23,7 +23,7 @@ export function ListVehicles(props: iListVehicle) {
   return (
     <section>
       <h2 className="text-xl font-bold uppercase mb-3 text-blueInka">
-        Ofertas en Autos, SUV's y Pickup's
+        Ofertas en Autos, SUVs y Pickups
       </h2>
 
       <p className="text-grisDarkInka text-justify mb-10 leading-snug">

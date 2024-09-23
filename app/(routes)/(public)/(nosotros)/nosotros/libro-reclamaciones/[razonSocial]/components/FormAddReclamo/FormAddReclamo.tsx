@@ -61,6 +61,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
     setCodigoLRD(
       `LRD-${setNomenclaturaLRD(slugType)}-000001-${today.getFullYear()}`
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slugType]);
 
   const getSedes = async () => {
@@ -74,6 +75,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
     setFechaToday(fechaHoy(today));
     setHoraToday(horaHoy(today));
     getSedes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formReclamo = useForm<HReclamoFormValues>({

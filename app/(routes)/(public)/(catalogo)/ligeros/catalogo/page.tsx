@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
-export async function loadModelos() {
+async function loadModelos() {
   await dbConnect();
   const query = await Modelo.find({ isActive: true })
     .populate({
@@ -28,13 +28,13 @@ export async function loadModelos() {
   return query.map(serializeDocument);
 }
 
-export async function loadBrands() {
+async function loadBrands() {
   await dbConnect();
   const query = await Marca.find({ isActive: true });
   return query.map(serializeDocument);
 }
 
-export async function loadChasis() {
+async function loadChasis() {
   await dbConnect();
   const query = await Carroceria.find({ isActive: true });
   return query.map(serializeDocument);

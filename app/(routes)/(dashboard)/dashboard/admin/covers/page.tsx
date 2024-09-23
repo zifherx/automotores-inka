@@ -8,7 +8,7 @@ import { ListCovers } from "./components/ListCovers";
 import { dbConnect, serializeDocument, isAdministrator } from "@/lib";
 import Cover from "@/models/Cover";
 
-export async function loadCovers() {
+async function loadCovers() {
   await dbConnect();
   const query = await Cover.find();
   return query.map(serializeDocument);

@@ -10,13 +10,13 @@ import { dbConnect, serializeDocument } from "@/lib/";
 import Cover from "@/models/Cover";
 import Marca from "@/models/Marca";
 
-export async function loadCovers() {
+async function loadCovers() {
   await dbConnect();
   const query = await Cover.find({ isActive: true });
   return query.map(serializeDocument);
 }
 
-export async function loadBrands() {
+async function loadBrands() {
   await dbConnect();
 
   const query = await Marca.find({ isActive: true });

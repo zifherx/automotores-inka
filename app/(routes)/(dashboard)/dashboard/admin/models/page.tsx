@@ -11,19 +11,19 @@ import Marca from "@/models/Marca";
 import Carroceria from "@/models/Carroceria";
 import { iModelo } from "@/types";
 
-export async function loadMarcas() {
+async function loadMarcas() {
   await dbConnect();
   const query = await Marca.find({ isActive: true });
   return query.map(serializeDocument);
 }
 
-export async function loadChasis() {
+async function loadChasis() {
   await dbConnect();
   const query = await Carroceria.find({ isActive: true });
   return query.map(serializeDocument);
 }
 
-export async function loadModelos() {
+async function loadModelos() {
   await dbConnect();
   const query = await Modelo.find()
     .select(

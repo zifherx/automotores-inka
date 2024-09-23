@@ -9,7 +9,7 @@ import { dbConnect, isAdministrator, serializeDocument } from "@/lib";
 import Sucursal from "@/models/Sucursal";
 import { iSede } from "@/types";
 
-export async function loadSedes() {
+async function loadSedes() {
   await dbConnect();
   const query = await Sucursal.find();
   return query.map(serializeDocument) as iSede[];
