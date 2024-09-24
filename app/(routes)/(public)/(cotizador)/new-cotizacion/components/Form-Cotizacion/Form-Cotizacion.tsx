@@ -124,6 +124,8 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
       }
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
+      onToast("Algo salió mal ❌", "", true);
     }
   };
 

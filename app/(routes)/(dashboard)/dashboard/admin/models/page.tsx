@@ -13,7 +13,7 @@ import { iModelo } from "@/types";
 
 async function loadMarcas() {
   await dbConnect();
-  const query = await Marca.find({ isActive: true });
+  const query = await Marca.find({ isActive: true }).sort({ name: 1 });
   return query.map(serializeDocument);
 }
 
@@ -68,6 +68,7 @@ export default async function ModelsPage() {
         </h2>
         <BtnAddModel brands={queryMarcas} chasises={queryChasis} />
       </div>
+      <p>Filtros</p>
       <ListModels models={queryModelos} />
     </>
   );

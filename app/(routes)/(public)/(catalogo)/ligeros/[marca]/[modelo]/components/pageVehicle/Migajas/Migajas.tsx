@@ -38,7 +38,8 @@ export function Migajas(props: iMigajas) {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage className="capitalize">
-            {modelo?.replace(/-/g, " ")}
+            {/* {modelo?.replace(/-/g, " ")} */}
+            {modelo}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>

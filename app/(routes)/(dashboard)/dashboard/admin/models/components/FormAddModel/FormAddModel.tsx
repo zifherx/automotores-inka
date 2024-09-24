@@ -106,16 +106,19 @@ export function FormAddModel(props: iFormAddModel) {
 
   const onSubmit = async (values: ModelFormValues) => {
     // console.log(values);
+    setBtnLoading(true);
     try {
       const query = await axios.post("/api/modelo/", values);
 
       if (query.status === 200) {
         onToast("Modelo creado ✅");
+        setBtnLoading(false);
         setOpenDialog(false);
         router.refresh();
       }
     } catch (err) {
       console.log(err);
+      setBtnLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }
   };
@@ -552,7 +555,7 @@ export function FormAddModel(props: iFormAddModel) {
                                   `galeria.${index}.imageUrl`,
                                   res?.[0].url
                                 );
-                                setImageColor([...imageGaleria, field.name]);
+                                setImageGaleria([...imageGaleria, field.name]);
                               }}
                               onUploadError={(err: Error) => {
                                 console.log(err);

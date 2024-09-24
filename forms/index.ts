@@ -21,7 +21,7 @@ export const formAddChasisSchema = z.object({
 });
 
 export const formColorSchema = z.object({
-  label: z.string().min(5, { message: "Label es requerido" }),
+  label: z.string().min(3, { message: "Label es requerido" }),
   hex: z
     .string()
     .regex(/^#[0-9A-F]{6}$/i, { message: "Código Hex es requerido" }),

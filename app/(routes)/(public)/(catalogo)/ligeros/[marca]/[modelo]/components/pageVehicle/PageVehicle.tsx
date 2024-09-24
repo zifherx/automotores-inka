@@ -21,7 +21,10 @@ export function PageVehicle(props: iListModels) {
 
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-10">
-      <Migajas marca={`${params.marca}`} modelo={`${params.modelo}`} />
+      <Migajas
+        marca={`${filterModel?.marca.name}`}
+        modelo={`${filterModel?.name}`}
+      />
       {filterModel ? <Vehicle model={filterModel} /> : <Error404 />}
     </div>
   );
