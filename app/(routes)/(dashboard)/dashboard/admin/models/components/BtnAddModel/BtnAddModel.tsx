@@ -28,15 +28,18 @@ export function BtnAddModel(props: iBtnAddModel) {
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <Button
-          className="font-semibold text-lg"
+          className="skticky z-50 top-0 font-semibold text-lg"
           variant="outline"
           onClick={() => setOpenDialog(true)}
         >
-          <span className="hidden sm:flex">Nueva Modelo</span>
+          <span className="hidden sm:flex">Nuevo Modelo</span>
           <PlusCircle className="w-5 h-5 ml-0 sm:ml-2" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="mb-5 flex flex-row uppercase gap-3 items-center justify-start">
             Nuevo Modelo

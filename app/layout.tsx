@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
+import { ReactNode, Suspense } from "react";
 import type { Metadata } from "next";
 
 import NextTopLoader from "nextjs-toploader";
@@ -22,6 +24,8 @@ import {
 } from "../fonts";
 
 import "./globals.css";
+import { FacebookPixelEvents } from "@/components/Shared/Pixel-Events";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -79,6 +83,8 @@ export const metadata: Metadata = {
   },
 };
 
+const Fb_Pixel_Id = process.env.FACEBOOK_PIXEL_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -107,7 +113,32 @@ export default function RootLayout({
             shadow="0 0 10px #1B5094,0 0 5px #1B5094"
           />
           {children}
+
           <Toaster />
+          <Script id="facebook-pixel">
+            {`
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', ${Fb_Pixel_Id});
+                fbq('track', 'PageView');`}
+          </Script>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              src="https://www.facebook.com/tr?id=882802410454407&ev=PageView&noscript=1"
+            />
+          </noscript>
+
+          {/* <Suspense fallback={null}>
+            <FacebookPixelEvents />
+          </Suspense> */}
         </body>
       </html>
     </ClerkProvider>

@@ -33,7 +33,7 @@ export function BtnEditSucursal(props: iCardSede) {
           <Pencil className="w-4 h-4 ml-2" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="uppercase font-bold text-xl">
             Editar Sede

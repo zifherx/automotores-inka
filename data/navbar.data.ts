@@ -110,8 +110,14 @@ export const listItemMenuADV: iMenuDashboard[] = [
   {
     id: 2,
     icon: CarFront,
-    label: "Gestión de Modelos",
+    label: "Gestión de Ligeros",
     href: "/dashboard/admin/models",
+  },
+  {
+    id: 3,
+    icon: Truck,
+    label: "Gestión de Camiones",
+    href: "/dashboard/admin/trucks",
   },
 ];
 

@@ -124,7 +124,7 @@ export function FormAddModel(props: iFormAddModel) {
   };
 
   return (
-    <ScrollArea className="h-96 w-full">
+    <ScrollArea className="h-96 w-full md:h-[700px]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid gap-3 md:gap-5">

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { dbConnect } from "@/lib/dbConnect";
 import Marca from "@/models/Marca";
@@ -15,6 +15,17 @@ export async function POST(req: Request) {
 
     const query = await newMarca.save();
 
+    return NextResponse.json(query);
+  } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  await dbConnect();
+
+  try {
+    const query = await Marca.find({});
     return NextResponse.json(query);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
