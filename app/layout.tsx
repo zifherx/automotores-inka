@@ -83,6 +83,7 @@ export const metadata: Metadata = {
 };
 
 const Fb_Pixel_Id = process.env.FACEBOOK_PIXEL_ID;
+const Google_Tag_Id = process.env.GOOGLE_TAG_ID;
 
 export default function RootLayout({
   children,
@@ -134,10 +135,14 @@ export default function RootLayout({
               src="https://www.facebook.com/tr?id=882802410454407&ev=PageView&noscript=1"
             />
           </noscript>
-
-          {/* <Suspense fallback={null}>
-            <FacebookPixelEvents />
-          </Suspense> */}
+          <Script id="google-tag-manager">
+            {`
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','${Google_Tag_Id}');`}
+          </Script>
         </body>
       </html>
     </ClerkProvider>
