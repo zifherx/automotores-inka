@@ -1,32 +1,70 @@
 import { useState } from "react";
 
-import { HeartHandshake } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { getEmailFromResend } from "@/app/api/actions";
 import { iCustomMessage } from "@/types";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export function CustomMessage(props: iCustomMessage) {
-  const {message} = props
+  const { message, volverInicio } = props;
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
 
-  async function getCustomerMail(){
-    const query = await getEmailFromResend(message)
+  async function getCustomerMail() {
+    const query = await getEmailFromResend(message);
 
-    if(query?.email !== undefined){
-      setEmail(query.email)
+    if (query?.email !== undefined) {
+      setEmail(query.email);
     }
   }
 
-  getCustomerMail()
+  getCustomerMail();
 
   return (
-    <div className="text-center p-20 bg-white rounded-lg shadow-xl transform transition-all hover:scale-105 duration-300">
-        <HeartHandshake className="w-24 h-24 mx-auto text-pink-500 mb-4" />
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">¡Gracias por visitarnos!</h1>
-        <p className="text-xl text-gray-600 mb-4">¡Su solicitud ha sido enviada con éxito! 🎉</p>
-        <p className="text-sm text-gray-500">En breve nos pondremos en contacto contigo al correo suministrado {email}.</p>
-        <p className="text-sm text-gray-500">Serás redirigido a la página principal en 5 segundos...</p>
+    <div className="max-w-2xl w-full mx-auto bg-white rounded-t-2xl shadow-lg transform transition-all hover:scale-105 duration-300 overflow-hidden">
+      <Image
+        src="/images/gracias-handshake.jpg"
+        alt="Gracias por cotizar"
+        width={900}
+        height={600}
+        className="object-cover w-full h-[300px] rounded-t-2xl"
+      />
+      <div className="py-8 px-14 text-center">
+        {/* <Car className="w-24 h-24 mx-auto text-black mb-4" /> */}
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          ¡Gracias por tu cotización!
+        </h1>
+        <p className="text-xl text-gray-600 mb-4">
+          Hemos recibido tu solicitud de cotización. Nuestro equipo la revisará
+          y te contactará pronto con los detalles.
+        </p>
+        <p className="text-sm text-gray-500">
+          En breve nos pondremos en contacto contigo al correo suministrado{" "}
+          {email}
+        </p>
+
+        <div className="flex justify-center mt-8">
+          <Button
+            className="bg-gray-800 hover:bg-gray-700 text-white"
+            onClick={volverInicio}
+          >
+            Volver al inicio
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </div>
       </div>
-  )
+      <div className="bg-gray-300 px-8 py-4">
+        <p className="text-sm text-gray-600 text-center">
+          ¿Tienes preguntas? Llámanos al 972-051-479
+        </p>
+      </div>
+      <div className="mt-8 flex space-x-4 p-3 justify-center">
+        <div className="w-16 h-1 bg-gray-300 rounded-full"></div>
+        <div className="w-16 h-1 bg-gray-500 rounded-full"></div>
+        <div className="w-16 h-1 bg-gray-700 rounded-full"></div>
+      </div>
+    </div>
+  );
 }

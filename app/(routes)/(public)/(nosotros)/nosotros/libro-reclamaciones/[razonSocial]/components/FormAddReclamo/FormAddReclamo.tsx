@@ -418,11 +418,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
                             return field.onChange;
                           }}
                           defaultValue={field.value}
-                          className={cn(
-                            tipoBienSelected === "producto"
-                              ? "flex flex-col"
-                              : "flex flex-row"
-                          )}
+                          className={cn("flex flex-col")}
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
@@ -445,38 +441,34 @@ export function FormAddReclamo(props: iHojaReclamo) {
               </div>
               <div className="flex flex-row gap-2">
                 {/* VIN */}
-                {tipoBienSelected === "producto" && (
-                  <FormField
-                    control={formReclamo.control}
-                    name="vin"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2 md:col-span-1">
-                        <FormLabel className="font-bold">Vin</FormLabel>
-                        <FormControl>
-                          <Input placeholder="N° Vin" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                <FormField
+                  control={formReclamo.control}
+                  name="vin"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2 md:col-span-1">
+                      <FormLabel className="font-bold">Vin</FormLabel>
+                      <FormControl>
+                        <Input placeholder="N° Vin" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 {/* PLACA */}
-                {tipoBienSelected === "producto" && (
-                  <FormField
-                    control={formReclamo.control}
-                    name="placa"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2 md:col-span-1">
-                        <FormLabel className="font-bold">Placa</FormLabel>
-                        <FormControl>
-                          <Input placeholder="N° Placa" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                <FormField
+                  control={formReclamo.control}
+                  name="placa"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2 md:col-span-1">
+                      <FormLabel className="font-bold">Placa</FormLabel>
+                      <FormControl>
+                        <Input placeholder="N° Placa" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 

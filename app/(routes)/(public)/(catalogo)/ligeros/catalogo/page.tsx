@@ -30,13 +30,13 @@ async function loadModelos() {
 
 async function loadBrands() {
   await dbConnect();
-  const query = await Marca.find({ isActive: true });
+  const query = await Marca.find({ isActive: true }).sort({ name: 1 });
   return query.map(serializeDocument);
 }
 
 async function loadChasis() {
   await dbConnect();
-  const query = await Carroceria.find({ isActive: true });
+  const query = await Carroceria.find({ isActive: true }).sort({ name: 1 });
   return query.map(serializeDocument);
 }
 

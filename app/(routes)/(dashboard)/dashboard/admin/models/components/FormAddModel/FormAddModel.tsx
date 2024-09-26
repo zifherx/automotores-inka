@@ -56,6 +56,8 @@ export function FormAddModel(props: iFormAddModel) {
       fichaTecnica: "",
       isEntrega48H: false,
       isGLP: false,
+      isLiquidacion: false,
+      isNuevo: false,
       isActive: false,
       marca: "",
       carroceria: "",
@@ -109,9 +111,9 @@ export function FormAddModel(props: iFormAddModel) {
     setBtnLoading(true);
     try {
       const query = await axios.post("/api/modelo/", values);
-
+      // console.log(query);
       if (query.status === 200) {
-        onToast("Modelo creado ✅");
+        onToast(`${query.data.message} ✅`);
         setBtnLoading(false);
         setOpenDialog(false);
         router.refresh();
@@ -362,6 +364,46 @@ export function FormAddModel(props: iFormAddModel) {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>GLP</FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-5">
+              {/* isLiquidacion */}
+              <FormField
+                control={form.control}
+                name="isLiquidacion"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Liquidación</FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              {/* isNuevo */}
+              <FormField
+                control={form.control}
+                name="isNuevo"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Nuevo</FormLabel>
                     </div>
                   </FormItem>
                 )}

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import {
   Select,
   SelectContent,
@@ -34,13 +35,20 @@ export function Filtros(props: iFiltros) {
               <SelectValue placeholder="Seleccione una marca" />
             </SelectTrigger>
             <SelectContent>
-              {brands.map(({ _id, slug, name }) => (
+              {brands.map(({ _id, slug, name, imageUrl }) => (
                 <SelectItem
                   key={_id}
                   value={slug}
-                  className="capitalize font-textMedium"
+                  className="capitalize font-textMedium font-bold"
                 >
-                  {name}
+                  <div className="flex flex-row items-center justify-start gap-3">
+                    <img
+                      src={imageUrl}
+                      alt={name}
+                      className="h-14 w-14 object-contain"
+                    />
+                    {name}
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>

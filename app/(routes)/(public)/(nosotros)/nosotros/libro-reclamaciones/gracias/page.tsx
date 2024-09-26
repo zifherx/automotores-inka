@@ -16,13 +16,13 @@ export default function ReclamoRegistrado() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push("/");
-    }, 8000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     router.push("/");
+  //   }, 8000);
 
-    return () => clearTimeout(timer);
-  }, [router]);
+  //   return () => clearTimeout(timer);
+  // }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -53,6 +53,10 @@ export default function ReclamoRegistrado() {
             </div>
           </div>
           <ul className="space-y-2 text-sm text-gray-600">
+            <li className="flex items-center">
+              <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
+              Revisaremos detalladamente tu reclamo.
+            </li>
             <li className="flex items-center">
               <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
               Revisaremos detalladamente tu reclamo.

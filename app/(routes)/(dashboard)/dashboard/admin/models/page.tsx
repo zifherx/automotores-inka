@@ -6,14 +6,31 @@ import { BtnAddModel } from "./components/BtnAddModel";
 import { ListModels } from "./components/ListModels";
 
 import { dbConnect, serializeDocument, isAdministrator } from "@/lib";
-import Modelo from "@/models/Modelo";
 import Marca from "@/models/Marca";
 import Carroceria from "@/models/Carroceria";
-import { iModelo } from "@/types";
+import Modelo from "@/models/Modelo";
+
+async function loadModels() {
+  await dbConnect();
+  const query = await Modelo.find()
+    .select("_id name slug imageUrl marca carroceria isActive precioBase")
+    .populate({
+      path: "marca",
+      select: "_id name slug imageUrl",
+    })
+    .populate({
+      path: "carroceria",
+      select: "_id name slug",
+    })
+    .sort({ createdAt: 1 });
+  return query.map(serializeDocument);
+}
 
 async function loadMarcas() {
   await dbConnect();
-  const query = await Marca.find({ isActive: true }).sort({ name: 1 });
+  const query = await Marca.find({ isActive: true }).sort({
+    name: 1,
+  });
   return query.map(serializeDocument);
 }
 
@@ -23,27 +40,6 @@ async function loadChasis() {
   return query.map(serializeDocument);
 }
 
-async function loadModelos() {
-  await dbConnect();
-  const query = await Modelo.find()
-    .select(
-      "_id name slug precioBase marca carroceria isActive imageUrl createdAt"
-    )
-    // .populate("marca carroceria")
-    .populate([
-      {
-        path: "marca",
-        select: "name slug imageUrl",
-      },
-      {
-        path: "carroceria",
-        select: "name slug",
-      },
-    ]);
-
-  return query.map(serializeDocument) as iModelo[];
-}
-
 export default async function ModelsPage() {
   const { userId } = auth();
 
@@ -51,7 +47,7 @@ export default async function ModelsPage() {
     return redirect("/");
   }
 
-  const queryModelos = await loadModelos();
+  const queryModelos = await loadModels();
   const queryMarcas = await loadMarcas();
   const queryChasis = await loadChasis();
 
@@ -59,12 +55,7 @@ export default async function ModelsPage() {
     <>
       <div className="flex justify-between mb-5">
         <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
-          Gestión de Modelos -{" "}
-          {queryModelos.length === 0 ? (
-            <p> nulo 😭</p>
-          ) : (
-            <p>{queryModelos.length} 😍</p>
-          )}
+          Gestión de Modelos
         </h2>
         <BtnAddModel brands={queryMarcas} chasises={queryChasis} />
       </div>

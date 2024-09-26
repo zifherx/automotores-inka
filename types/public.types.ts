@@ -138,6 +138,7 @@ export type iEmailTemplate = {
 
 export type iCustomMessage = {
   message: string;
+  volverInicio: () => void;
 };
 
 export type iCaratulaReclamo = {

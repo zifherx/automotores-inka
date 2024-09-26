@@ -6,6 +6,7 @@ import { Gallery } from "./Gallery/Gallery";
 import { CotizaAhora } from "./CotizaAhora";
 
 import { iCardModel } from "@/types";
+import RandomGallery from "./RandomGallery/RandomGallery";
 
 export function Vehicle(props: iCardModel) {
   const { model } = props;
@@ -19,6 +20,7 @@ export function Vehicle(props: iCardModel) {
       />
       <FichaTecnica link={`${model.fichaTecnica}`} />
       <Color colores={model.colores} />
+      {/* <RandomGallery images={model.galeria} /> */}
       <Gallery galeria={model.galeria} />
       <CotizaAhora model={model} />
     </>

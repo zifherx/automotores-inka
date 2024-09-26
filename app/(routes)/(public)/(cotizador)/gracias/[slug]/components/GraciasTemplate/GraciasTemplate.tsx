@@ -1,9 +1,8 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-
-import { CustomMessage } from "../CustomMessage";
 import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { CustomMessage } from "../CustomMessage";
 
 export function GraciasTemplate() {
   const router = useRouter();
@@ -19,8 +18,11 @@ export function GraciasTemplate() {
   }, [router]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 via-pink-500 to-red-500">
-      <CustomMessage message={`${slug}`} />
+    <div className="flex items-center justify-center min-h-screen bg-grisInka/35">
+      <CustomMessage
+        message={`${slug}`}
+        volverInicio={() => router.push("/")}
+      />
     </div>
   );
 }

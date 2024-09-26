@@ -62,3 +62,34 @@ export async function DELETE(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function GET(
+  req: Request,
+  { params }: { params: { modeloId: string } }
+) {
+  await dbConnect();
+
+  try {
+    const { modeloId } = params;
+
+    const query = await Modelo.findOne({ slug: modeloId })
+      .populate({ path: "marca", select: "_id name slug imageUrl" })
+      .populate({
+        path: "carroceria",
+        select: "_id name slug",
+      });
+
+    if (!query)
+      return NextResponse.json(
+        {
+          message: `Modelo ${modeloId} no existe`,
+        },
+        { status: 404 }
+      );
+
+    return NextResponse.json(query);
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

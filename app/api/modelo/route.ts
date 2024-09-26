@@ -6,6 +6,32 @@ import Carroceria from "@/models/Carroceria";
 import Modelo from "@/models/Modelo";
 import { iModelo } from "@/types";
 
+export async function GET(req: Request) {
+  await dbConnect();
+
+  try {
+    const query = await Modelo.find()
+      .select(
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria"
+      )
+      .populate([
+        {
+          path: "marca",
+          select: "_id name slug imageUrl",
+        },
+        {
+          path: "carroceria",
+          select: "_id name slug",
+        },
+      ]);
+
+    return NextResponse.json(query);
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   await dbConnect();
   try {
@@ -39,7 +65,10 @@ export async function POST(req: Request) {
 
     const query = await newModelo.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      message: `Modelo ${data.name} creado con éxito`,
+      obj: query,
+    });
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

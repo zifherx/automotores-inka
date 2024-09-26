@@ -50,6 +50,8 @@ export const formAddModeloSchema = z.object({
   carroceria: z.string(),
   isEntrega48H: z.boolean(),
   isGLP: z.boolean(),
+  isLiquidacion: z.boolean(),
+  isNuevo: z.boolean(),
   isActive: z.boolean(),
   // Color
   colores: z.array(formColorSchema),

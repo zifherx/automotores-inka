@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 import type { Metadata } from "next";
 
 import NextTopLoader from "nextjs-toploader";
@@ -24,7 +24,6 @@ import {
 } from "../fonts";
 
 import "./globals.css";
-import { FacebookPixelEvents } from "@/components/Shared/Pixel-Events";
 import Script from "next/script";
 
 export const metadata: Metadata = {
