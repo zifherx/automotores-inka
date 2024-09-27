@@ -43,7 +43,7 @@ export const listServiciosSVG: iServicioSVG[] = [
   },
   {
     id: 7,
-    imageUrl: "Seguros_gps.png",
+    imageUrl: "seguros_gps.png",
     title: "Seguros y GPS",
   },
   {

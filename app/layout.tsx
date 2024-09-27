@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/toaster";
+import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
 
 import { cn } from "@/lib/utils";
 
@@ -114,6 +115,7 @@ export default function RootLayout({
           />
           {children}
 
+          <ScrollToTop />
           <Toaster />
           <Script id="facebook-pixel">
             {`

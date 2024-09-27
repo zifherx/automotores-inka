@@ -5,7 +5,6 @@ import { formatPENPrice, formatUSDPrice, getRouteForModel } from "@/lib";
 import { iCardProductModel } from "@/types";
 
 import { Car } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function CardProductModel(props: iCardProductModel) {
@@ -68,7 +67,9 @@ export function CardProductModel(props: iCardProductModel) {
           className="flex items-center justify-center mt-8 w-full h-6 py-4 uppercase text-[12px] rounded-2xl bg-redInka text-white hover:bg-redDarkInka"
           onClick={() =>
             router.push(
-              `/ligeros/${marca.name.toLowerCase()}/${getRouteForModel(name)}`
+              `/ligeros/${getRouteForModel(marca.slug)}/${getRouteForModel(
+                name
+              )}`
             )
           }
         >

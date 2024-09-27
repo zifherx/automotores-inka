@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Marca.find({});
+    const query = await Marca.find({}).sort({ name: 1 });
     return NextResponse.json(query);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });

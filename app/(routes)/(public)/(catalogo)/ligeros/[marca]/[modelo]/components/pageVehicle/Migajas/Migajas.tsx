@@ -6,6 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { cn } from "@/lib";
 
 import { iMigajas } from "@/types";
 
@@ -30,7 +31,9 @@ export function Migajas(props: iMigajas) {
         <BreadcrumbItem>
           <BreadcrumbLink
             href={`/ligeros/catalogo?marca=${marca}`}
-            className="capitalize"
+            className={cn(
+              marca === "dfsk" || marca === "jmc" ? "uppercase" : "capitalize"
+            )}
           >
             {marca}
           </BreadcrumbLink>

@@ -54,7 +54,7 @@ export function CardModel(props: iCardModel) {
         width={600}
         height={300}
         priority
-        className="object-cover mx-auto mt-14"
+        className="object-contain h-[200px] mt-10"
       />
       {/* <img
         src={model.imageUrl}

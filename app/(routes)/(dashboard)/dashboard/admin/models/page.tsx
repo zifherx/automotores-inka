@@ -53,13 +53,20 @@ export default async function ModelsPage() {
 
   return (
     <>
-      <div className="flex justify-between mb-5">
-        <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
-          Gestión de Modelos
-        </h2>
-        <BtnAddModel brands={queryMarcas} chasises={queryChasis} />
+      <div className="border border-slate-200 rounded-2xl p-4 sticky z-50 top-5 bg-white">
+        <div className="flex justify-between mb-5">
+          <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
+            Gestión de Modelos -{" "}
+            {queryModelos.length === 0 ? (
+              <p> nulo 😭</p>
+            ) : (
+              <p>{queryModelos.length} 😍</p>
+            )}
+          </h2>
+          <BtnAddModel brands={queryMarcas} chasises={queryChasis} />
+        </div>
+        <p>Filtros</p>
       </div>
-      <p>Filtros</p>
       <ListModels models={queryModelos} />
     </>
   );
