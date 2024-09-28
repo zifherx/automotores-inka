@@ -9,8 +9,16 @@ import { Button } from "@/components/ui/button";
 
 export function CardProductModel(props: iCardProductModel) {
   const { model } = props;
-  const { name, imageUrl, isEntrega48H, isGLP, carroceria, marca, precioBase } =
-    model;
+  const {
+    name,
+    slug,
+    imageUrl,
+    isEntrega48H,
+    isGLP,
+    carroceria,
+    marca,
+    precioBase,
+  } = model;
 
   const tc = 3.8;
   const router = useRouter();
@@ -66,11 +74,7 @@ export function CardProductModel(props: iCardProductModel) {
         <Button
           className="flex items-center justify-center mt-8 w-full h-6 py-4 uppercase text-[12px] rounded-2xl bg-redInka text-white hover:bg-redDarkInka"
           onClick={() =>
-            router.push(
-              `/ligeros/${getRouteForModel(marca.slug)}/${getRouteForModel(
-                name
-              )}`
-            )
+            router.push(`/ligeros/${getRouteForModel(marca.slug)}/${slug}`)
           }
         >
           Ver más detalles del auto

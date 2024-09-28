@@ -19,7 +19,7 @@ async function loadCovers() {
 async function loadBrands() {
   await dbConnect();
 
-  const query = await Marca.find({ isActive: true });
+  const query = await Marca.find({ isActive: true }).sort({ name: 1 });
   return query.map(serializeDocument);
 }
 

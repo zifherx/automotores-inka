@@ -72,10 +72,10 @@ export function SidebarRoutes() {
       <div>
         <Separator />
         <footer className="flex flex-col p-3 mt-3 text-center gap-y-1">
-          <span>Ziphonex 2024</span>
-          <span className="text-muted bg-blue-900 rounded-lg">
+          <p>Ziphonex 2024</p>
+          <p className="text-muted bg-blue-900 rounded-lg">
             Todos los derechos reservados.
-          </span>
+          </p>
         </footer>
       </div>
     </div>
