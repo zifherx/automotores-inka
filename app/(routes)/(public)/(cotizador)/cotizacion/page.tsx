@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 async function loadModels() {
   await dbConnect();
   const query = await Modelo.find({ isActive: true })
-    .select("name imageUrl precioBase marca carroceria")
+    .select("name slug imageUrl precioBase marca carroceria")
     .populate({
       path: "marca",
       select: "name slug imageUrl",

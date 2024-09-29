@@ -11,7 +11,7 @@ export function GraciasTemplate() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/");
+      // router.push("/");
     }, 6000);
 
     return () => clearTimeout(timer);

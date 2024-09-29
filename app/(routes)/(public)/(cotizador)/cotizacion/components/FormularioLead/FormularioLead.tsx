@@ -38,6 +38,8 @@ export function FormularioLead(props: iSideFormMarca) {
   const { model, listDepartamentos } = props;
   const router = useRouter();
 
+  console.log(model);
+
   const listTesting = listDepartamentos[0];
 
   const [sede, setSede] = useState<any>("");
@@ -53,7 +55,7 @@ export function FormularioLead(props: iSideFormMarca) {
       nombres: "",
       tipoDocumento: "",
       numeroDocumento: "",
-      email: "",
+      email: "", 
       celular: "",
       departamento: "",
       concesionario: "",
@@ -67,24 +69,39 @@ export function FormularioLead(props: iSideFormMarca) {
     setIsLoading(true);
     try {
       //   console.log(values);
-      const query = await axios.post("api/send", {
+      const query = await axios.post("api/cotizacion", {
         ...values,
         departamento: sede,
         concesionario: concesionario.toUpperCase().replace(/-/g, " "),
+        slugConcesionario: concesionario,
         marca: model.marca.name,
         carroceria: model.carroceria.name,
         modelo: model.name,
+        slugModelo: model.slug,
         imageUrl: model.imageUrl,
         precioBase: model.precioBase,
       });
 
-      // console.log(query);
-
-      setIsLoading(false);
       if (query.status === 200) {
         setIsLoading(false);
-        onToast(query.data.message);
-        router.push(`/gracias/${query.data.mail.id}`);
+        const envioCorreo = await axios.post('/api/send',{
+          ...values,
+          departamento: sede,
+          concesionario: concesionario.toUpperCase().replace(/-/g, " "),
+          slugConcesionario: concesionario,
+          marca: model.marca.name,
+          carroceria: model.carroceria.name,
+          modelo: model.name,
+          slugModelo: model.slug,
+          imageUrl: model.imageUrl,
+          precioBase: model.precioBase,
+        })
+        
+        if(envioCorreo.status === 200){
+          setIsLoading(false);
+          onToast(query.data.message);
+          router.push(`/gracias/${envioCorreo.data.mail.id}`);
+        }
       }
     } catch (err) {
       // console.log(err);

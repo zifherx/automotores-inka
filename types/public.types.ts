@@ -9,6 +9,7 @@ import {
   iSede,
 } from "./admin.types";
 import { iOracion } from "@/interfaces";
+import { LucideIcon } from "lucide-react";
 
 export type iVideosYoutube = {
   src: string;
@@ -154,3 +155,10 @@ export type iParrafo = {
   title: string;
   parrafos: iOracion[];
 };
+
+export type iCustomIconTitle = {
+  icon: LucideIcon
+  titleDark: string
+  titleLight: string
+  className: string
+}

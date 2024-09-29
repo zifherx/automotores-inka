@@ -7,6 +7,8 @@ import {
   iReclamo,
 } from "@/models";
 import { iSedeDealer } from "./public.types";
+import { iCotizacion } from "@/models/Cotizacion";
+import { iCliente } from "@/models/Cliente";
 
 // Cover
 export type iListCover = {
@@ -73,3 +75,7 @@ export type iFormCotizacionGeneral = iListBrand & {
 };
 
 export type iReclamation = iReclamo & { _id: string };
+
+export type iCustomer = iCliente & { _id: string} 
+
+export type iLead = iCotizacion & { _id: string}

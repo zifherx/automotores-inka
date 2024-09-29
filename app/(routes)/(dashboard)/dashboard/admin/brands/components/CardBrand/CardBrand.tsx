@@ -39,13 +39,10 @@ export function CardBrand(props: iCardBrand) {
       <Image
         src={imageUrl}
         alt={name}
-        width={350}
+        width={300}
         height={150}
         priority
-        className={cn(
-          "object-contain h-[220px] mx-auto",
-          slug === "changan" ? "bg-slate-200 drop-shadow-lg" : "bg-transparent"
-        )}
+        className={cn("object-cover h-[150px] mx-auto mt-10")}
       />
       {/* <img
         src={brand.imageUrl}

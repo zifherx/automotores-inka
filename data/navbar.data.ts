@@ -19,7 +19,7 @@ export const listServiciosPosventa: iServicioPosventa[] = [
   {
     id: 1,
     title: "Separa tu cita",
-    href: "/posventa/separa-tu-cita",
+    href: "/posventa/mantenimiento",
     description:
       "Ofrecemos mantenimientos preventivos y correctivos para tu vehículo.",
   },
