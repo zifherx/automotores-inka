@@ -1,11 +1,10 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { Car } from "lucide-react";
 
 import { formatPENPrice, formatUSDPrice, getRouteForModel } from "@/lib";
 import { iCardProductModel } from "@/types";
-
-import { Car } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function CardProductModel(props: iCardProductModel) {
   const { model } = props;
@@ -83,15 +82,13 @@ export function CardProductModel(props: iCardProductModel) {
           {formatPENPrice(precioBase * tc)}
         </p>
 
-        <Button
+        <Link
+          href={`/ligeros/${getRouteForModel(marca.slug)}/${slug}`}
           className="flex items-center justify-center mt-8 w-full h-6 py-4 uppercase text-[12px] rounded-2xl bg-redInka text-white hover:bg-redDarkInka"
-          onClick={() =>
-            router.push(`/ligeros/${getRouteForModel(marca.slug)}/${slug}`)
-          }
         >
           Ver más detalles del auto
           <Car className="w-4 h-4 ml-2" strokeWidth={2} />
-        </Button>
+        </Link>
       </div>
     </div>
   );
