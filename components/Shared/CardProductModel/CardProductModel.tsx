@@ -18,6 +18,8 @@ export function CardProductModel(props: iCardProductModel) {
     carroceria,
     marca,
     precioBase,
+    isLiquidacion,
+    isNuevo,
   } = model;
 
   const tc = 3.8;
@@ -30,9 +32,19 @@ export function CardProductModel(props: iCardProductModel) {
         alt={name}
         width={400}
         height={600}
-        className="object-contain h-[200px]"
+        className="object-contain h-[200px] mt-5"
         priority
       />
+      {isLiquidacion && (
+        <Image
+          src={`/images/offers/tag-liquidacion.png`}
+          alt="Unidad en liquidación"
+          width={150}
+          height={60}
+          priority
+          className="absolute -top-5 left-1 z-10"
+        />
+      )}
       <p className="text-xs text-grisDarkInka text-right mr-5">
         Imagen referencial
       </p>

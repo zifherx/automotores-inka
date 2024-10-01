@@ -3,12 +3,12 @@ import BannerHome from "@/components/Shared/BannerHome/BannerHome";
 import { BannerPortada } from "./components/BannerPortada";
 import { VideoBienvenida } from "./components/VideoBienvenida";
 import { ServiciosSlider } from "./components/ServiciosSlider";
-import { AsesoriaAction } from "./components/AsesoriaAction";
 import { BrandSlider } from "./components/BrandSlider";
 
 import { dbConnect, serializeDocument } from "@/lib/";
 import Cover from "@/models/Cover";
 import Marca from "@/models/Marca";
+import { ModelosEnLiquidacion } from "./components/ModelosEnLiquidacion";
 
 async function loadCovers() {
   await dbConnect();
@@ -31,7 +31,7 @@ export default async function HomePage() {
     <>
       <BannerPortada covers={queryCovers} />
       <BrandSlider brands={queryBrands} />
-      {/* <p>MasBuscados</p> */}
+      <ModelosEnLiquidacion />
       <BannerHome imageAlt="Cover Geely 1" imageSource="geely-action1.jpeg" />
       <VideoBienvenida />
       <ServiciosSlider />

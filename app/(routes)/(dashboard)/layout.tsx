@@ -1,7 +1,15 @@
 import { ReactNode } from "react";
+import type { Metadata } from "next";
 
 import { SidebarDashboard } from "./dashboard/components/SidebarDashboard";
 import { NavbarDashboard } from "./dashboard/components/NavbarDashboard";
+
+export const metadata: Metadata = {
+  title: {
+    default: "CMS Dashboard",
+    template: "",
+  },
+};
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (

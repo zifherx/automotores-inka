@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
+import { Analytics } from "@vercel/analytics/react";
 
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   title: {
     template:
       "%s | Automotores Inka | Concesionario 🇵🇪 | Venta de vehículos nuevos",
-    default: "Automotores Inka",
+    default: "Portal Automotores Inka",
   },
   description:
     "¡Cotiza AQUÍ! Concesionario peruano autorizado con presencia en Chiclayo, Trujillo, Chimbote y Lima. Venta de vehículos nuevos de las marcas Hyundai, Mazda, Subaru, Renault, Suzuki, Changan, JAC, HAVAL, DFSK, Great Wall, Chery, Geely, Mahindra, JMC y BAIC. Venta de vehículos pesados de las marcas JAC Camiones, Hyundai Camiones & Buses y JMC. Trabajamos con marcas líderes en el rubro automotriz desde hace más de 12 años.",
@@ -117,6 +118,7 @@ export default function RootLayout({
 
           <ScrollToTop />
           <Toaster />
+          <Analytics />
           <Script id="facebook-pixel">
             {`
                 !function(f,b,e,v,n,t,s)

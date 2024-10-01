@@ -10,9 +10,9 @@ export async function GET(req: Request) {
   await dbConnect();
 
   try {
-    const query = await Modelo.find()
+    const query = (await Modelo.find({})
       .select(
-        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria"
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo"
       )
       .populate([
         {
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
           path: "carroceria",
           select: "_id name slug",
         },
-      ]);
+      ])) as iModelo[];
 
     return NextResponse.json(query);
   } catch (err) {

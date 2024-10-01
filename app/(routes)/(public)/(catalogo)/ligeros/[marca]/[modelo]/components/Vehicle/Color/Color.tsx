@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { Title } from "@/components/Shared/Title";
 
 import { iColores } from "@/types";
@@ -25,7 +26,7 @@ export function Color(props: iColores) {
         />
         <div className="mt-10">
           <div className="flex flex-col items-center">
-            <div className="flex space-x-4 mb-8">
+            <div className="grid grid-cols-7 gap-3 md:flex md:gap-2 mb-8">
               {colores.map((color, index) => (
                 <TooltipProvider key={index}>
                   <Tooltip>
