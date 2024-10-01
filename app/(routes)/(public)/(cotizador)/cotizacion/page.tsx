@@ -31,41 +31,12 @@ async function loadModels() {
   return query.map(serializeDocument) as iModelo[];
 }
 
-async function loadSedes() {
-  await dbConnect();
-  const query = await Sucursal.aggregate([
-    {
-      $group: {
-        _id: "$ciudad",
-        sedes: { $push: { name: "$name", address: "$address", slug: "$slug" } },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        departamentos: { $push: { k: "$_id", v: "$sedes" } },
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: {
-          $arrayToObject: "$departamentos",
-        },
-      },
-    },
-  ]).exec();
-  // console.log(query);
-  // return query.map(serializeDocument) as iSedeDealer[];
-  return query as iSedeDealer[];
-}
-
 export default async function CotizacionPage() {
   const queryModels = await loadModels();
-  const querySedes = await loadSedes();
 
   return (
     <>
-      <Cotizacion models={queryModels} listDepartamentos={querySedes} />
+      <Cotizacion models={queryModels} />
       <CondicionesFormularios />
     </>
   );

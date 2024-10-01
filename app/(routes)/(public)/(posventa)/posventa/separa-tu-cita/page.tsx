@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { CitaSection } from "../mantenimiento/components/CitaSection";
+import { SideForm } from "./components/SideForm";
 
 export const metadata: Metadata = {
   title: {
     default: "Separa tu cita",
-    template: ""
-  }
-}
+    template: "",
+  },
+};
 
 export default function SeparaTuCitaPage() {
   return (
     <>
-      <h1>Separa tu cita</h1>
+      <SideForm />
     </>
-  )
+  );
 }

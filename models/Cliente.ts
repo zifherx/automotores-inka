@@ -1,7 +1,7 @@
 import { Document, model } from "mongoose";
 import { models, Schema } from "mongoose";
 
-export interface iCliente extends Document{
+export interface iCliente extends Document {
   name: string;
   tipoDocumento: string;
   numeroDocumento: string;
@@ -18,8 +18,8 @@ const clienteSchema: Schema = new Schema<iCliente>(
     numeroDocumento: { type: String },
     celular: { type: String },
     email: { type: String },
-    usoDatosPersonales: { type: Boolean },
-    aceptaPromociones: { type: Boolean },
+    usoDatosPersonales: { type: Boolean, default: false },
+    aceptaPromociones: { type: Boolean, default: false },
   },
   {
     timestamps: true,

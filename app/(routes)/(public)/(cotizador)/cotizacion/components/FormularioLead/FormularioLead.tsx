@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import axios from "axios";
 
 import {
@@ -31,19 +30,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
-import { iSideFormMarca } from "@/types";
+import { iCardModel, iSede } from "@/types";
 import { onToast } from "@/lib";
 
-export function FormularioLead(props: iSideFormMarca) {
-  const { model, listDepartamentos } = props;
+export function FormularioLead(props: iCardModel) {
+  const { model } = props;
+
   const router = useRouter();
 
-  console.log(model);
-
-  const listTesting = listDepartamentos[0];
-
-  const [sede, setSede] = useState<any>("");
-  const [concesionario, setConcesionario] = useState("");
+  const [sedeSinDuplicados, setSedeSinDuplicados] = useState<iSede[]>([]);
+  const [concesionarios, setConcesionarios] = useState<iSede[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -55,7 +51,7 @@ export function FormularioLead(props: iSideFormMarca) {
       nombres: "",
       tipoDocumento: "",
       numeroDocumento: "",
-      email: "", 
+      email: "",
       celular: "",
       departamento: "",
       concesionario: "",
@@ -65,15 +61,40 @@ export function FormularioLead(props: iSideFormMarca) {
     },
   });
 
+  const marcaSelected = model.marca.slug;
+  const watchSede = form.watch("departamento");
+  const watchConcesionario = form.watch("concesionario");
+
+  const getCiudadesByBrand = async (marca: string) => {
+    if (marca !== "" || marca !== undefined) {
+      const query = await axios.get(`/api/sucursal/by-marca/${marca}`);
+      if (query.status === 200) {
+        const ciudadesUnicas = query.data.filter(
+          (item: any, index: any, self: any) =>
+            index === self.findIndex((a: any) => a.ciudad === item.ciudad)
+        );
+
+        setSedeSinDuplicados(ciudadesUnicas);
+        setConcesionarios(query.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (marcaSelected) {
+      getCiudadesByBrand(marcaSelected);
+    }
+  }, [marcaSelected]);
+
   const onSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
     try {
       //   console.log(values);
       const query = await axios.post("api/cotizacion", {
         ...values,
-        departamento: sede,
-        concesionario: concesionario.toUpperCase().replace(/-/g, " "),
-        slugConcesionario: concesionario,
+        departamento: watchSede,
+        concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+        slugConcesionario: watchConcesionario,
         marca: model.marca.name,
         carroceria: model.carroceria.name,
         modelo: model.name,
@@ -83,21 +104,20 @@ export function FormularioLead(props: iSideFormMarca) {
       });
 
       if (query.status === 200) {
-        setIsLoading(false);
-        const envioCorreo = await axios.post('/api/send',{
+        const envioCorreo = await axios.post("/api/send", {
           ...values,
-          departamento: sede,
-          concesionario: concesionario.toUpperCase().replace(/-/g, " "),
-          slugConcesionario: concesionario,
+          departamento: watchSede,
+          concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+          slugConcesionario: watchConcesionario,
           marca: model.marca.name,
           carroceria: model.carroceria.name,
           modelo: model.name,
           slugModelo: model.slug,
           imageUrl: model.imageUrl,
           precioBase: model.precioBase,
-        })
-        
-        if(envioCorreo.status === 200){
+        });
+
+        if (envioCorreo.status === 200) {
           setIsLoading(false);
           onToast(query.data.message);
           router.push(`/gracias/${envioCorreo.data.mail.id}`);
@@ -106,7 +126,7 @@ export function FormularioLead(props: iSideFormMarca) {
     } catch (err) {
       // console.log(err);
       setIsLoading(false);
-      onToast("Algo salió mal ❌");
+      onToast("Algo salió mal ❌", "", true);
     }
   };
 
@@ -235,11 +255,7 @@ export function FormularioLead(props: iSideFormMarca) {
               <FormItem>
                 <FormLabel className="font-headMedium">Sede</FormLabel>
                 <Select
-                  onValueChange={(value) => {
-                    setSede(value);
-                    setConcesionario("");
-                    return value;
-                  }}
+                  onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -248,10 +264,11 @@ export function FormularioLead(props: iSideFormMarca) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Chiclayo">Chiclayo</SelectItem>
-                    <SelectItem value="Chimbote">Chimbote</SelectItem>
-                    <SelectItem value="Lima">Lima</SelectItem>
-                    <SelectItem value="Trujillo">Trujillo</SelectItem>
+                    {sedeSinDuplicados.map(({ _id, ciudad }) => (
+                      <SelectItem key={_id} value={ciudad}>
+                        {ciudad}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -260,7 +277,7 @@ export function FormularioLead(props: iSideFormMarca) {
           />
 
           {/* Concesionario */}
-          {sede && (
+          {watchSede && (
             <FormField
               control={form.control}
               name="concesionario"
@@ -270,10 +287,7 @@ export function FormularioLead(props: iSideFormMarca) {
                     Concesionario
                   </FormLabel>
                   <Select
-                    onValueChange={(value) => {
-                      setConcesionario(value);
-                      return value;
-                    }}
+                    onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -284,16 +298,18 @@ export function FormularioLead(props: iSideFormMarca) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="capitalize">
-                          Sede {sede}
+                          Sede {watchSede}
                         </SelectLabel>
-                        {listTesting[sede].map(({ address, name, slug }) => (
-                          <SelectItem key={slug} value={slug}>
-                            <div className="flex flex-col items-start">
-                              <p className="font-semibold">{name}</p>
-                              <small>{address}</small>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {concesionarios
+                          .filter((value) => value.ciudad === watchSede)
+                          .map(({ _id, name, address, slug }) => (
+                            <SelectItem key={_id} value={slug}>
+                              <div className="flex flex-col items-start">
+                                <p className="font-semibold">{name}</p>
+                                <p className="text-xs">{address}</p>
+                              </div>
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

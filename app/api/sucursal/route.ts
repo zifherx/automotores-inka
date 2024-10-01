@@ -8,8 +8,10 @@ export async function GET(req: Request) {
   await dbConnect();
 
   try {
-    const query = await Sucursal.find({});
-
+    const query = await Sucursal.find({}).sort({ name: 1 }).populate({
+      path: "marcasDisponibles",
+      select: "_id name slug imageUrl",
+    });
     return NextResponse.json(query);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });

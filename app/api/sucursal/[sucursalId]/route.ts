@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+
 import { dbConnect } from "@/lib";
 import Sucursal from "@/models/Sucursal";
 

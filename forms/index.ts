@@ -172,6 +172,42 @@ export const formReclamoSchema = z.object({
   isConforme: z.boolean(),
 });
 
+export const formServicioMantenimientoSchema = z.object({
+  nombres: z
+    .string()
+    .min(2, { message: "El nombre debe tener al menos 2 caracteres" }),
+  tipoDocumento: z
+    .enum(["RUC", "DNI", "Pasaporte"], {
+      required_error: "Debe seleccionar un Tipo de Documento",
+    })
+    .refine((value) => value.length > 0),
+  numeroDocumento: z.string().refine((val) => {
+    if (val.length === 0) return false;
+    const numericValue = val.replace(/\D/g, "");
+    return numericValue === val;
+  }, "Campo inválido"),
+  placa: z.string().length(6, { message: "La placa debe tener 6 caracteres" }),
+  kilometraje: z.string().min(2, "Campo requerido"),
+  celular: z.string().length(9, {
+    message: "El número de celular debe tener 9 dígitos.",
+  }),
+  correo: z.string().email({
+    message: "Ingrese un correo electrónico válido.",
+  }),
+  marca: z.string(),
+  modelo: z.string(),
+  tipoServicio: z.string({
+    message: "Debe seleccionar un Tipo de Servicio",
+  }),
+  comentario: z.string().optional(),
+  sede: z.string().min(1, {
+    message: "Debe seleccionar una sede.",
+  }),
+  concesionario: z.string(),
+  checkDatosPersonales: z.boolean({ required_error: "Check requerido" }),
+  checkPromociones: z.string(),
+});
+
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
 export type SucursalFormValues = z.infer<typeof formAddSucursalSchema>;
@@ -183,3 +219,6 @@ export type CotizacionModeloFormValue = z.infer<
   typeof formCotizacionModeloSchema
 >;
 export type HReclamoFormValues = z.infer<typeof formReclamoSchema>;
+export type SolicitudServicioFormValues = z.infer<
+  typeof formServicioMantenimientoSchema
+>;

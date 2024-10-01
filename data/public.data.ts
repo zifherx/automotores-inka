@@ -6,7 +6,7 @@ import {
   iServicioSVG,
   tDepartamento,
 } from "@/interfaces/iPublic";
-import { iParrafo } from "@/types";
+import { iParrafo, iTipoServicio } from "@/types";
 
 import { Blocks, Handshake, Medal, Star, Users } from "lucide-react";
 
@@ -1392,5 +1392,28 @@ export const listTerminosCondiciones: iParrafo[] = [
           "Recomendamos a cada visitante y usuario leer detenidamente cada nota, información legal y advertencia antes de acceder, adquirir y utilizar los productos y servicios prestados por DERCO.",
       },
     ],
+  },
+];
+
+export const listTipoServicio: iTipoServicio[] = [
+  {
+    id: 1,
+    label: "Mantenimiento Preventivo",
+    value: "mantenimiento-preventivo",
+  },
+  {
+    id: 2,
+    label: "Mantenimiento Correctivo",
+    value: "mantenimiento-correctivo",
+  },
+  {
+    id: 3,
+    label: "Diagnostico Gratuito",
+    value: "diagnostico-gratuito",
+  },
+  {
+    id: 4,
+    label: "Otros",
+    value: "otros",
   },
 ];

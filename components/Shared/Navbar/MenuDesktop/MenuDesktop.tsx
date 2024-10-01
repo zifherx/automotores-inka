@@ -19,7 +19,6 @@ import { cn } from "@/lib/utils";
 
 import { listServiciosPosventa } from "@/data";
 import { iBrand } from "@/types";
-import Image from "next/image";
 
 export function MenuDesktop() {
   const [listBrands, setListBrands] = useState<iBrand[]>([]);
@@ -60,10 +59,10 @@ export function MenuDesktop() {
           <NavigationMenuContent>
             <ul className="grid gap-3 p-5 md:w-[500px] lg:grid-cols-2">
               {listBrands.map(
-                ({ id, name, isActive, slug }) =>
+                ({ _id, name, isActive, slug }) =>
                   isActive && (
                     <ListItem
-                      key={id}
+                      key={_id}
                       href={`/ligeros/catalogo?marca=${slug}`}
                       title={name}
                     />

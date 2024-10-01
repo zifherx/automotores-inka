@@ -1,4 +1,5 @@
 import { Document, Schema, model, models } from "mongoose";
+import { iBrand } from "@/types";
 
 export interface iSucursal extends Document {
   name: string;
@@ -10,12 +11,10 @@ export interface iSucursal extends Document {
   scheduleRegular: string;
   scheduleExtended: string;
   linkHowArrived: string;
+  marcasDisponibles: iBrand[];
   isActive: boolean;
   createdBy: string;
 }
-
-// interface MarcaDocument extends iMarca, Document {}
-// interface MarcaModel extends Model<MarcaDocument> {}
 
 const sucursalSchema: Schema = new Schema<iSucursal>(
   {
@@ -28,6 +27,7 @@ const sucursalSchema: Schema = new Schema<iSucursal>(
     scheduleRegular: { type: String },
     scheduleExtended: { type: String },
     linkHowArrived: { type: String },
+    marcasDisponibles: [{ type: Schema.Types.ObjectId, ref: "Marca" }],
     isActive: { type: Boolean },
     createdBy: { type: String },
   },

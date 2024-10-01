@@ -5,11 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { SideForm } from "../SideForm";
 import { SelectedModel } from "../SelectedModel";
 
-import { iCotizacionMarca } from "@/types";
+import { iListModels } from "@/types";
 import { getRouteForModel } from "@/lib";
 
-export function Cotizacion(props: iCotizacionMarca) {
-  const { models, listDepartamentos } = props;
+export function Cotizacion(props: iListModels) {
+  const { models } = props;
 
   const searchParams = useSearchParams();
   const modelParam = searchParams.get("modelo");
@@ -21,10 +21,7 @@ export function Cotizacion(props: iCotizacionMarca) {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="p-5 md:p-10 flex flex-col-reverse gap-10 md:grid md:grid-cols-2">
-        <SideForm
-          model={filteredModel!}
-          listDepartamentos={listDepartamentos}
-        />
+        <SideForm model={filteredModel!} />
         <SelectedModel model={filteredModel!} />
       </div>
     </div>

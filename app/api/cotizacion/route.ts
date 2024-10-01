@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server";
 
-import axios from "axios";
-
-import { dbConnect } from "@/lib";
-
 import Cliente from "@/models/Cliente";
 import Modelo from "@/models/Modelo";
 import Sucursal from "@/models/Sucursal";
 import Cotizacion from "@/models/Cotizacion";
 
+import { dbConnect } from "@/lib";
 import { iCustomer, iLead } from "@/types";
 
 export async function POST(req: Request) {
   await dbConnect();
   const dataForm = await req.json();
-  let envioCorreo = null;
   let newCustomer = null;
-
 
   try {
     const customerFound = await Cliente.findOne({
@@ -41,10 +36,6 @@ export async function POST(req: Request) {
     const sedeFound = await Sucursal.findOne({
       slug: dataForm.slugConcesionario,
     });
-
-    // console.log("Cliente:", customerFound ? customerFound : newCustomer);
-    // console.log("Modelo:", vehicleFound);
-    // console.log("Sede:", sedeFound);
 
     const qCotizacion = new Cotizacion({
       cliente: customerFound ? customerFound._id : newCustomer?._id,

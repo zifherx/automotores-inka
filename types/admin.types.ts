@@ -9,6 +9,7 @@ import {
 import { iSedeDealer } from "./public.types";
 import { iCotizacion } from "@/models/Cotizacion";
 import { iCliente } from "@/models/Cliente";
+import { iCita } from "@/models/Citas";
 
 // Cover
 export type iListCover = {
@@ -74,8 +75,14 @@ export type iFormCotizacionGeneral = iListBrand & {
   listDepartamentos: iSedeDealer[];
 };
 
+//Citas
+export type iAppointment = iCita & { _id: string };
+
+//Reclamos
 export type iReclamation = iReclamo & { _id: string };
 
-export type iCustomer = iCliente & { _id: string} 
+//Cliente
+export type iCustomer = iCliente & { _id: string };
 
-export type iLead = iCotizacion & { _id: string}
+//Cotizacion
+export type iLead = iCotizacion & { _id: string };

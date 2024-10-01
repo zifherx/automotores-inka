@@ -157,8 +157,18 @@ export type iParrafo = {
 };
 
 export type iCustomIconTitle = {
-  icon: LucideIcon
-  titleDark: string
-  titleLight: string
-  className: string
-}
+  icon: LucideIcon;
+  titleDark: string;
+  titleLight: string;
+  className: string;
+};
+
+export type iTipoServicio = {
+  id: number;
+  label: string;
+  value: string;
+};
+
+export type iShowingCar = {
+  vehicle: iModelo;
+};

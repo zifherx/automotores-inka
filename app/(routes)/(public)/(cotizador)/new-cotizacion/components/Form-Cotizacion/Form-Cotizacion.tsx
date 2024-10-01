@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -29,6 +30,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ShowingCar } from "../ShowingCar";
+import { LoadingCar } from "../LoadingCar";
 
 import { Loader2, Send, Sparkles } from "lucide-react";
 
@@ -36,19 +39,16 @@ import {
   CotizacionGeneralFormValues,
   formCotizacionGeneralSchema,
 } from "@/forms";
-import { iFormCotizacionGeneral, iModelo } from "@/types";
-import { formatPENPrice, formatUSDPrice, onToast } from "@/lib";
+import { iBrand, iModelo, iSede } from "@/types";
+import { onToast } from "@/lib";
 
-export function FormCotizacion(props: iFormCotizacionGeneral) {
-  const { brands, listDepartamentos } = props;
-
-  const listTesting = listDepartamentos[0];
-
+export function FormCotizacion() {
+  const [listBrands, setListBrands] = useState<iBrand[]>([]);
   const [listModels, setListModels] = useState<iModelo[]>([]);
   const [vehicleSelected, setVehicleSelected] = useState<iModelo | null>(null);
 
-  const [sede, setSede] = useState<any>("");
-  const [concesionario, setConcesionario] = useState("");
+  const [ciudades, setCiudades] = useState<iSede[]>([]);
+  const [concesionarios, setConcesionarios] = useState<iSede[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -74,6 +74,13 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
     },
   });
 
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if (query.status === 200) {
+      setListBrands(query.data);
+    }
+  };
+
   const getModelByBrand = async (brand: string) => {
     if (brand !== "" || brand !== undefined) {
       const query = await axios.get(`/api/modelo/find/${brand}`);
@@ -84,12 +91,33 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
     }
   };
 
+  const getCiudadesByBrand = async (ciudad: string) => {
+    if (ciudad !== "" || ciudad !== undefined) {
+      const query = await axios.get(`/api/sucursal/by-marca/${ciudad}`);
+      if (query.status === 200) {
+        const sedesSinDuplicados = query.data.filter(
+          (item: any, index: any, self: any) =>
+            index === self.findIndex((a: any) => a.ciudad === item.ciudad)
+        );
+        setCiudades(sedesSinDuplicados);
+        setConcesionarios(query.data);
+      }
+    }
+  };
+
   const watchMarca = form.watch("marca");
   const watchModelo = form.watch("modelo");
+  const watchCiudad = form.watch("departamento");
+  const watchConcesionario = form.watch("concesionario");
+
+  useEffect(() => {
+    getBrands();
+  }, []);
 
   useEffect(() => {
     if (watchMarca) {
       getModelByBrand(watchMarca);
+      getCiudadesByBrand(watchMarca);
     }
   }, [watchMarca]);
 
@@ -104,22 +132,38 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
     setIsLoading(true);
     try {
       if (vehicleSelected !== null) {
-        const query = await axios.post("api/send", {
+        const query = await axios.post("api/cotizacion", {
           ...values,
-          departamento: sede,
-          concesionario: concesionario.toUpperCase().replace(/-/g, " "),
+          departamento: watchCiudad,
+          concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+          slugConcesionario: watchConcesionario,
           marca: vehicleSelected?.marca.name,
           carroceria: vehicleSelected?.carroceria.name,
           modelo: vehicleSelected?.name,
+          slugModelo: vehicleSelected?.slug,
           imageUrl: vehicleSelected?.imageUrl,
           precioBase: vehicleSelected?.precioBase,
         });
 
-        setIsLoading(false);
         if (query.status === 200) {
-          setIsLoading(false);
-          onToast(query.data.message);
-          router.push(`/gracias/${query.data.mail.id}`);
+          const envioCorreo = await axios.post("/api/send", {
+            ...values,
+            departamento: watchCiudad,
+            concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+            slugConcesionario: watchConcesionario,
+            marca: vehicleSelected.marca.name,
+            carroceria: vehicleSelected.carroceria.name,
+            modelo: vehicleSelected.name,
+            slugModelo: vehicleSelected.slug,
+            imageUrl: vehicleSelected.imageUrl,
+            precioBase: vehicleSelected.precioBase,
+          });
+
+          if (envioCorreo.status === 200) {
+            setIsLoading(false);
+            onToast(query.data.message);
+            router.push(`/gracias/${envioCorreo.data.mail.id}`);
+          }
         }
       }
     } catch (err) {
@@ -248,73 +292,75 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
                 )}
               />
 
-              {/* Marca */}
-              <FormField
-                control={form.control}
-                name="marca"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">Marca</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccione un marca" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {brands.map(({ _id, name, slug, imageUrl }) => (
-                          <SelectItem key={_id} value={slug}>
-                            <div className="flex items-center justify-between gap-4 h-14 w-auto">
-                              <img
-                                src={imageUrl}
-                                alt={name}
-                                className="object-contain h-14"
-                              />
-                              <span className="text-lg font-semibold">
-                                {name}
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Modelo */}
-              <FormField
-                control={form.control}
-                name="modelo"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">Modelo</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccione un modelo" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listModels.length > 0 &&
-                          listModels.map(({ _id, name, slug }) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Marca */}
+                <FormField
+                  control={form.control}
+                  name="marca"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-headMedium">Marca</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccione un marca" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listBrands.map(({ _id, name, slug, imageUrl }) => (
                             <SelectItem key={_id} value={slug}>
-                              {name}
+                              <div className="flex items-center justify-between gap-4 h-14 w-auto">
+                                <img
+                                  src={imageUrl}
+                                  alt={name}
+                                  className="object-contain h-14"
+                                />
+                                <span className="text-lg font-semibold">
+                                  {name}
+                                </span>
+                              </div>
                             </SelectItem>
                           ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Modelo */}
+                <FormField
+                  control={form.control}
+                  name="modelo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-headMedium">Modelo</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccione un modelo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listModels.length > 0 &&
+                            listModels.map(({ _id, name, slug }) => (
+                              <SelectItem key={_id} value={slug}>
+                                {name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               {/* Sede */}
               <FormField
@@ -324,11 +370,7 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
                   <FormItem>
                     <FormLabel className="font-headMedium">Sede</FormLabel>
                     <Select
-                      onValueChange={(value) => {
-                        setSede(value);
-                        setConcesionario("");
-                        return value;
-                      }}
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -337,10 +379,11 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Chiclayo">Chiclayo</SelectItem>
-                        <SelectItem value="Chimbote">Chimbote</SelectItem>
-                        <SelectItem value="Lima">Lima</SelectItem>
-                        <SelectItem value="Trujillo">Trujillo</SelectItem>
+                        {ciudades.map(({ _id, ciudad }) => (
+                          <SelectItem key={_id} value={ciudad}>
+                            {ciudad}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -349,50 +392,47 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
               />
 
               {/* Concesionario */}
-              {sede && (
-                <FormField
-                  control={form.control}
-                  name="concesionario"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-headMedium">
-                        Concesionario
-                      </FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          setConcesionario(value);
-                          return value;
-                        }}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccione donde quiere atenderse" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel className="capitalize">
-                              Sede {sede}
-                            </SelectLabel>
-                            {listTesting[sede].map(
-                              ({ address, name, slug }) => (
-                                <SelectItem key={slug} value={slug}>
+
+              <FormField
+                control={form.control}
+                name="concesionario"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-headMedium">
+                      Concesionario
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccione donde quiere atenderse" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel className="uppercase font-bold">
+                            Sede {watchCiudad}
+                          </SelectLabel>
+                          {watchCiudad &&
+                            concesionarios
+                              .filter((value) => value.ciudad === watchCiudad)
+                              .map(({ _id, name, address, slug }) => (
+                                <SelectItem key={_id} value={slug}>
                                   <div className="flex flex-col items-start">
                                     <p className="font-semibold">{name}</p>
-                                    <small>{address}</small>
+                                    <p className="text-xs">{address}</p>
                                   </div>
                                 </SelectItem>
-                              )
-                            )}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+                              ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* Intención de compra */}
               <FormField
@@ -539,37 +579,10 @@ export function FormCotizacion(props: iFormCotizacionGeneral) {
           </Form>
         </div>
         <div>
-          {vehicleSelected && (
-            <div className="flex flex-col md: py-24">
-              <code>{vehicleSelected.marca.name}</code>
-              <div className="sticky top-0 z-20 text-center">
-                <img
-                  src={vehicleSelected.imageUrl}
-                  alt={vehicleSelected.name}
-                  className="w-full object-cover hover:drop-shadow-lg"
-                />
-                <div className="flex flex-col gap-3 mb-5">
-                  <p className="text-xl uppercase font-semibold">
-                    {vehicleSelected.marca.name}
-                  </p>
-                  <p className="text-lg uppercase font-medium">
-                    {vehicleSelected.carroceria.name}
-                  </p>
-                  <h2 className="text-5xl font-bold text-grisDarkInka">
-                    {vehicleSelected.name}
-                  </h2>
-                </div>
-                <div className="flex items-center justify-center ">
-                  <p className="text-2xl font-headBold">
-                    {formatUSDPrice(vehicleSelected.precioBase)}
-                  </p>
-                  <p className="mx-2 text-3xl font-headLight">|</p>
-                  <p className="text-2xl font-headBold">
-                    {formatPENPrice(vehicleSelected.precioBase * 3.8)}
-                  </p>
-                </div>
-              </div>
-            </div>
+          {vehicleSelected ? (
+            <ShowingCar vehicle={vehicleSelected} />
+          ) : (
+            <LoadingCar />
           )}
         </div>
       </div>
