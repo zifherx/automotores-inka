@@ -17,7 +17,7 @@ export function SelectedModel(props: iCardModel) {
           alt={name}
           width={800}
           height={500}
-          className="object-cover h-[220px] md:h-[300px]"
+          className="object-cover w-full"
         />
         <p className="uppercase font-headLight text-2xl">{marca.name}</p>
         <p className="flex items-center justify-center gap-3 text-xl uppercase">

@@ -1,12 +1,11 @@
 import { Title } from "@/components/Shared/Title";
 import { FormCotizacion } from "../Form-Cotizacion";
-import { iCotizacionCero } from "@/types";
 
 export function SideForm() {
   return (
     <div>
       <Title
-        title="Cotiza tu auto"
+        title="Cotiza tu nuevo auto"
         className="font-headMedium text-4xl text-center uppercase"
       />
       <p className="text-center mt-3 text-lg font-textRegular text-grisInka">

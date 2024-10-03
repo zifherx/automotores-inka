@@ -5,6 +5,7 @@ import { CardProductModel } from "@/components/Shared/CardProductModel";
 
 import { Frown } from "lucide-react";
 import { iListVehicle, iModelo } from "@/types";
+import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
 export function ListVehicles(props: iListVehicle) {
   const { models } = props;
@@ -16,9 +17,9 @@ export function ListVehicles(props: iListVehicle) {
     setCounterVehicles(counterVehicles + 3);
   };
 
-  if (!dataFilteredVehicles || !models) {
-    return;
-  }
+  // if (!dataFilteredVehicles || !models) {
+  //   return;
+  // }
 
   return (
     <section>
@@ -32,7 +33,7 @@ export function ListVehicles(props: iListVehicle) {
         Comienza el sueño de tu nuevo auto con nosotros.
       </p>
 
-      {models?.length === 0 && (
+      {models.length === 0 && (
         <p className="text-3xl text-center">
           No se han encontrado vehículos con estos filtros
           <Frown className="w-20 h-20 mx-auto" />

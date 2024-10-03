@@ -208,6 +208,11 @@ export const formServicioMantenimientoSchema = z.object({
   checkPromociones: z.string(),
 });
 
+export const formEmailModule = z.object({
+  email: z.string().email({ message: "Debe ingresar un email válido." }),
+  isActive: z.boolean(),
+});
+
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
 export type SucursalFormValues = z.infer<typeof formAddSucursalSchema>;
@@ -222,3 +227,4 @@ export type HReclamoFormValues = z.infer<typeof formReclamoSchema>;
 export type SolicitudServicioFormValues = z.infer<
   typeof formServicioMantenimientoSchema
 >;
+export type EmailModuleFormValues = z.infer<typeof formEmailModule>;

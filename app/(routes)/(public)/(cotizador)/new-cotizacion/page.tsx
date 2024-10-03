@@ -1,7 +1,5 @@
 import { Metadata } from "next";
-
 import { CondicionesFormularios } from "@/components/Shared/CondicionesFormularios";
-
 import { Cotizador } from "./components/Cotizador";
 
 export const metadata: Metadata = {

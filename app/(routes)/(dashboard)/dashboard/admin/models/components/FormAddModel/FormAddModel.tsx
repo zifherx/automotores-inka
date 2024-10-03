@@ -119,7 +119,7 @@ export function FormAddModel(props: iFormAddModel) {
         router.refresh();
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setBtnLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }

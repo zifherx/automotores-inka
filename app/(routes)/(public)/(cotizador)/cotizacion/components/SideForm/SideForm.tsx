@@ -9,7 +9,7 @@ export function SideForm(props: iCardModel) {
   return (
     <div className="p-2">
       <Title
-        title="Cotizando mi auto"
+        title="Cotizando mi nuevo auto"
         className="font-textItalicMedium text-3xl text-center uppercase"
       />
       <p className="text-center mt-1 text-lg font-textRegular text-grisInka mb-5">

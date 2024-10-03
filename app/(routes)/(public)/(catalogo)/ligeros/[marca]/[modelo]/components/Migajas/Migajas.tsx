@@ -14,7 +14,7 @@ export function Migajas(props: iMigajas) {
   const { marca, modelo } = props;
 
   return (
-    <Breadcrumb className=" mb-8 md:mb-0">
+    <Breadcrumb className="mb-8 md:mb-5">
       <BreadcrumbList className="headRegular text-lg">
         <BreadcrumbItem>
           <BreadcrumbLink href="/" className="text-grisInka hover:text-black">

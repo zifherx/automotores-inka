@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Car } from "lucide-react";
@@ -22,7 +21,6 @@ export function CardProductModel(props: iCardProductModel) {
   } = model;
 
   const tc = 3.8;
-  const router = useRouter();
 
   return (
     <div className="relative p-1 rounded-xl shadow-md bg-white border border-grisInka/55 hover:border-black">
@@ -78,7 +76,7 @@ export function CardProductModel(props: iCardProductModel) {
 
         <p className="mt-5 font-medium">Desde</p>
         <p className="text-center text-black text-2xl font-bold mt-3">
-          {formatUSDPrice(precioBase)} &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+          {formatUSDPrice(precioBase)} &nbsp;&nbsp; | &nbsp;&nbsp;
           {formatPENPrice(precioBase * tc)}
         </p>
 

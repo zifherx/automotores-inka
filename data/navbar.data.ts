@@ -3,6 +3,7 @@ import {
   Cable,
   Car,
   CarFront,
+  Cog,
   House,
   Images,
   MapPin,
@@ -38,30 +39,18 @@ export const listItemMenuMobile: iMenuMobile[] = [
     href: "/ligeros/catalogo",
     icon: Car,
   },
-  // {
-  //   id: 3,
-  //   title: "Catálogo de Camiones",
-  //   href: "/camiones/catalogo",
-  //   icon: Truck,
-  // },
   {
-    id: 4,
+    id: 3,
     title: "Quiénes Somos",
     href: "/nosotros/quienes-somos",
     icon: Users,
   },
   {
-    id: 5,
+    id: 4,
     title: "Ubícanos",
     href: "/nosotros/ubicanos",
     icon: MapPin,
   },
-  // {
-  //   id: 6,
-  //   title: "Separa tu cita",
-  //   href: "/posventa/mantenimiento",
-  //   icon: Wrench,
-  // },
 ];
 
 export const listItemMenuGeneral: iMenuDashboard[] = [
@@ -136,5 +125,20 @@ export const listItemMenuPosventa: iMenuDashboard[] = [
     icon: Wrench,
     label: "Gestión de Citas",
     href: "/dashboard/admin/appointments",
+  },
+];
+
+export const listItemMenuSistema: iMenuDashboard[] = [
+  {
+    id: 1,
+    icon: Cog,
+    label: "Variables del Sistema",
+    href: "/dashboard/admin/parameters",
+  },
+  {
+    id: 2,
+    icon: Users,
+    label: "Gestión de Usuarios",
+    href: "/dashboard/admin/users",
   },
 ];

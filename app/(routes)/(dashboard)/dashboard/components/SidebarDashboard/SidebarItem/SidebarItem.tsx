@@ -15,7 +15,7 @@ export function SidebarItem(props: iSidebarItem) {
     <Link
       href={href}
       className={cn(
-        `flex gap-x-2 mt-2 text-slate-700 text-sm items-center hover:bg-sky-800 hover:text-slate-100 p-2 rounded-lg cursor-pointer`,
+        `flex gap-x-2 mt-2 text-slate-700 text-sm items-center hover:bg-sky-800 hover:text-slate-100 p-1 rounded-lg cursor-pointer`,
         activePath && "bg-sky-800 text-slate-100"
       )}
     >

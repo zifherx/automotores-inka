@@ -1,8 +1,5 @@
 import { Metadata } from "next";
 import { PageVehicle } from "./components/pageVehicle";
-import { iModelo } from "@/types";
-import { dbConnect, serializeDocument } from "@/lib";
-import Modelo from "@/models/Modelo";
 
 export const metadata: Metadata = {
   title: {
@@ -11,28 +8,10 @@ export const metadata: Metadata = {
   },
 };
 
-async function loadModelos() {
-  dbConnect();
-  const query = await Modelo.find({})
-    .select(
-      "name imageUrl slug marca carroceria features colores galeria fichaTecnica"
-    )
-    .populate({
-      path: "marca",
-      select: "name slug imageUrl",
-    })
-    .populate({
-      path: "carroceria",
-      select: "name slug",
-    });
-  return query.map(serializeDocument) as iModelo[];
-}
-
 export default async function InternalPageModelo() {
-  const queryModelos = await loadModelos();
   return (
     <>
-      <PageVehicle models={queryModelos} />
+      <PageVehicle />
     </>
   );
 }

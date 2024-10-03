@@ -5,6 +5,7 @@ import {
   iModel,
   iSucursal,
   iReclamo,
+  iSystemEmail,
 } from "@/models";
 import { iSedeDealer } from "./public.types";
 import { iCotizacion } from "@/models/Cotizacion";
@@ -86,3 +87,6 @@ export type iCustomer = iCliente & { _id: string };
 
 //Cotizacion
 export type iLead = iCotizacion & { _id: string };
+
+// EMAIL SYSTEM
+export type iMailSystem = iSystemEmail & { _id: string };

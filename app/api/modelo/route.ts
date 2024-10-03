@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   await dbConnect();
 
   try {
-    const query = (await Modelo.find({})
+    const query: iModelo[] = await Modelo.find({})
       .select(
         "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo"
       )
@@ -23,11 +23,11 @@ export async function GET(req: Request) {
           path: "carroceria",
           select: "_id name slug",
         },
-      ])) as iModelo[];
+      ]);
 
     return NextResponse.json(query);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -37,8 +37,6 @@ export async function POST(req: Request) {
   try {
     const { userId } = auth();
     const data = await req.json();
-
-    // console.log("server:", data);
 
     const brandFound = await Marca.findOne({ slug: data.marca });
     if (!brandFound)
@@ -70,7 +68,7 @@ export async function POST(req: Request) {
       obj: query,
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

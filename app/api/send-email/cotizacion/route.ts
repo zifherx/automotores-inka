@@ -1,20 +1,25 @@
-import { NextResponse } from "next/server";
-
-import { EmailTemplate } from "@/components/Shared/Email-Template";
-
 import { Resend } from "resend";
+import { NextRequest, NextResponse } from "next/server";
+import { TEmailCotizacion } from "@/components/Shared/T-Email-Cotizacion";
+import { iMailSystem, iTEmailCotizacion } from "@/types";
+import { SystemEmail } from "@/models";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
-  const dataForm = await req.json();
+export async function POST(req: NextRequest) {
+  const dataForm: iTEmailCotizacion = await req.json();
+
+  const getSystemMail: iMailSystem[] = await SystemEmail.find({
+    isActive: true,
+  });
 
   try {
     const { data, error } = await resend.emails.send({
       from: `Automotores Inka 🤖 <bot@ziphonex.com>`,
-      to: ["automotores.inka@ziphonex.com", `${dataForm.email}`],
+      to: [`${dataForm.email}`],
+      bcc: [`automotores.inka@ziphonex.com`, `${getSystemMail[0].email}`],
       subject: `Nueva Cotización ✅ - ${dataForm.numeroDocumento}`,
-      react: EmailTemplate({
+      react: TEmailCotizacion({
         nombres: dataForm.nombres,
         tipoDocumento: dataForm.tipoDocumento,
         numeroDocumento: dataForm.numeroDocumento,
@@ -29,6 +34,7 @@ export async function POST(req: Request) {
         modelo: dataForm.modelo,
         imageUrl: dataForm.imageUrl,
         precioBase: dataForm.precioBase,
+        tcambio: 3.8,
       }),
       text: `Envío de cotización a ${dataForm.nombres}`,
     });
@@ -37,7 +43,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "Mensaje enviado", mail: data });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }

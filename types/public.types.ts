@@ -62,7 +62,7 @@ export type iFiltros = {
 };
 
 export type iListVehicle = {
-  models: iModelo[] | undefined;
+  models: iModelo[];
 };
 
 export type iCardProductModel = {
@@ -120,7 +120,7 @@ export interface iConcesionario {
   address: string;
 }
 
-export type iEmailTemplate = {
+export type iTEmailCotizacion = {
   nombres: string;
   tipoDocumento: string;
   numeroDocumento: string;
@@ -135,6 +135,7 @@ export type iEmailTemplate = {
   modelo: string;
   imageUrl: string;
   precioBase: number;
+  tcambio: number;
 };
 
 export type iCustomMessage = {

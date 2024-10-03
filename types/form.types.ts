@@ -26,3 +26,7 @@ export type iFormAddSucursal = {
 export type iFormEditSucursal = iFormAddSucursal & {
   sede: iSede;
 };
+
+export type iFormAddGeneral = {
+  setOpenDialog: Dispatch<SetStateAction<boolean>>;
+};

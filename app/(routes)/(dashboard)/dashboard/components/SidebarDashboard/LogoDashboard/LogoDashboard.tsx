@@ -14,7 +14,7 @@ export function LogoDashboard() {
         height={40}
         priority
       />
-      <h1>By Ziphonex</h1>
+      <h1 className="font-headMedium uppercase">By Ziphonex</h1>
     </Link>
   );
 }

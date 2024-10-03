@@ -11,12 +11,12 @@ export function Error404() {
           Aparentemente no podemos encontrar la página que estás buscando
         </p>
         <p>Quizás los siguientes enlaces te resulten útiles:</p>
-        <div className="p-2 md:p-4 w-full md:max-w-md mx-auto flex flex-row justify-between gap-1 md:gap-3 ">
+        <div className="p-2 md:p-4 w-full md:max-w-lg mx-auto flex flex-row justify-between gap-1 md:gap-3 ">
           {listLinkUtiles.map(({ href, id, label }) => (
             <Link
               key={id}
               href={href}
-              className="uppercase text-sm md:text-base font-textRegular text-grisInka"
+              className="uppercase text-sm md:text-base font-textRegular text-grisInka hover:text-black"
             >
               {label}
               <div className="mt-1 h-px bg-grisDarkInka"></div>

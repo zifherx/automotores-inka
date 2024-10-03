@@ -32,7 +32,7 @@ export async function PATCH(
 
     return NextResponse.json(query);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -89,7 +89,7 @@ export async function GET(
 
     return NextResponse.json(query);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

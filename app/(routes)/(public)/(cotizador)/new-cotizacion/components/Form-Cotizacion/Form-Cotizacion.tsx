@@ -146,7 +146,7 @@ export function FormCotizacion() {
         });
 
         if (query.status === 200) {
-          const envioCorreo = await axios.post("/api/send", {
+          const envioCorreo = await axios.post("/api/send-email/cotizacion", {
             ...values,
             departamento: watchCiudad,
             concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
@@ -310,20 +310,22 @@ export function FormCotizacion() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {listBrands.map(({ _id, name, slug, imageUrl }) => (
-                            <SelectItem key={_id} value={slug}>
-                              <div className="flex items-center justify-between gap-4 h-14 w-auto">
-                                <img
-                                  src={imageUrl}
-                                  alt={name}
-                                  className="object-contain h-14"
-                                />
-                                <span className="text-lg font-semibold">
-                                  {name}
-                                </span>
-                              </div>
-                            </SelectItem>
-                          ))}
+                          {listBrands
+                            .filter((value) => value.isActive)
+                            .map(({ _id, name, slug, imageUrl }) => (
+                              <SelectItem key={_id} value={slug}>
+                                <div className="flex items-center justify-between gap-4 h-14 w-auto">
+                                  <img
+                                    src={imageUrl}
+                                    alt={name}
+                                    className="object-contain h-14"
+                                  />
+                                  <span className="text-lg font-semibold">
+                                    {name}
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -561,7 +563,7 @@ export function FormCotizacion() {
               <Button
                 type="submit"
                 className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-                // disabled={!isValid}
+                disabled={isLoading}
               >
                 {isLoading ? (
                   <>

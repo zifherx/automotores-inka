@@ -47,7 +47,27 @@ export function Banner(props: iCardModel) {
             </Link>
           </div>
         </div>
-        <RevealElement position="bottom" className="lg:-mr-28">
+        <RevealElement position="bottom" className="relative lg:-mr-28">
+          {model.isLiquidacion && (
+            <Image
+              src={`/images/offers/tag-liquidacion.png`}
+              alt="Unidad en liquidación"
+              width={150}
+              height={60}
+              priority
+              className="absolute top-0 -ml-10 z-10"
+            />
+          )}
+          {model.isNuevo && (
+            <Image
+              src={`/images/offers/tag-nuevo.png`}
+              alt="Unidad nueva"
+              width={150}
+              height={60}
+              priority
+              className="absolute top-0 -ml-10 z-10"
+            />
+          )}
           <Image
             className="object-cover drop-shadow-xl"
             src={imageUrl}
@@ -56,11 +76,6 @@ export function Banner(props: iCardModel) {
             height={400}
             priority
           />
-          {/* <img
-            className="w-[600px] h-auto object-cover drop-shadow-xl"
-            src={imageUrl}
-            alt={name}
-          /> */}
         </RevealElement>
       </div>
     </div>
