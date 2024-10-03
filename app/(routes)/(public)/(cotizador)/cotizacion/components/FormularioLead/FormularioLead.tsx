@@ -104,7 +104,7 @@ export function FormularioLead(props: iCardModel) {
       });
 
       if (query.status === 200) {
-        const envioCorreo = await axios.post("/api/send/cotizacion", {
+        const envioCorreo = await axios.post("/api/send-email/cotizacion", {
           ...values,
           departamento: watchSede,
           concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
