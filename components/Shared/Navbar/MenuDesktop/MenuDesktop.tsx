@@ -27,9 +27,13 @@ export function MenuDesktop() {
     "https://pe.computrabajo.com/sociedad%20de%20automotores%20inka%20sac/empleos";
 
   const getBrands = async () => {
-    const query = await axios.get("/api/marca");
-    if (query.status === 200) {
-      setListBrands(query.data);
+    try {
+      const query = await axios.get("/api/marca");
+      if (query.status === 200) {
+        setListBrands(query.data.obj);
+      }
+    } catch (err) {
+      setListBrands([]);
     }
   };
 

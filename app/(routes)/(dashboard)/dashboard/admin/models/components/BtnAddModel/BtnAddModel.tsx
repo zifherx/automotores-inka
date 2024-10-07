@@ -4,6 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -27,14 +33,18 @@ export function BtnAddModel(props: iBtnAddModel) {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button
-          className="skticky z-50 top-0 font-semibold text-lg"
-          variant="outline"
-          onClick={() => setOpenDialog(true)}
-        >
-          <span className="hidden sm:flex">Nuevo Modelo</span>
-          <PlusCircle className="w-5 h-5 ml-0 sm:ml-2" />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" onClick={() => setOpenDialog(true)}>
+                <PlusCircle className="w-5 h-5" strokeWidth={2} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p className="text-base">Nuevo Modelo</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}

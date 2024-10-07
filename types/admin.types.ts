@@ -11,6 +11,7 @@ import { iSedeDealer } from "./public.types";
 import { iCotizacion } from "@/models/Cotizacion";
 import { iCliente } from "@/models/Cliente";
 import { iCita } from "@/models/Citas";
+import { LucideIcon } from "lucide-react";
 
 // Cover
 export type iListCover = {
@@ -90,3 +91,12 @@ export type iLead = iCotizacion & { _id: string };
 
 // EMAIL SYSTEM
 export type iMailSystem = iSystemEmail & { _id: string };
+
+//Dashboard Cards
+export type tDashbordCard = {
+  title: string;
+  icon: LucideIcon;
+  mainValue: string;
+  subtitle: string;
+  isLoadingValue?: boolean;
+};

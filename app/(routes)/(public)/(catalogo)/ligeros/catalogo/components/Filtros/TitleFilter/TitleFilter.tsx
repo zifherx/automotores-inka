@@ -7,7 +7,6 @@ export function TitleFilter() {
         <Filter className="mr-2 w-5 h-5" />
         Filtros
       </h3>
-      <div className="h-px bg-blueInka my-1">&nbsp;</div>
     </>
   );
 }

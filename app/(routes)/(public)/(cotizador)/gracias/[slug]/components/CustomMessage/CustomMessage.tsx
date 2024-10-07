@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 
 import { ArrowRight } from "lucide-react";
 
@@ -12,15 +13,26 @@ export function CustomMessage(props: iCustomMessage) {
 
   const [email, setEmail] = useState("");
 
-  async function getCustomerMail() {
+  const getEmailCliente = async () => {
     const query = await getEmailFromResend(message);
-
     if (query?.email !== undefined) {
       setEmail(query.email);
     }
-  }
+  };
 
-  getCustomerMail();
+  useEffect(() => {
+    getEmailCliente();
+  }, [message]);
+
+  // async function getCustomerMail() {
+  //   const query = await getEmailFromResend(message);
+
+  //   if (query?.email !== undefined) {
+  //     setEmail(query.email);
+  //   }
+  // }
+
+  // getCustomerMail();
 
   return (
     <div className="max-w-2xl w-full mx-auto bg-white rounded-t-2xl shadow-lg transform transition-all hover:scale-105 duration-300 overflow-hidden">

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { iBrand, iChasis, iSede } from "./admin.types";
+import { iBrand, iChasis, iMailSystem, iSede } from "./admin.types";
 
 export type iFormAddCover = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
@@ -29,4 +29,8 @@ export type iFormEditSucursal = iFormAddSucursal & {
 
 export type iFormAddGeneral = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
+};
+
+export type iFormEditMail = iFormAddGeneral & {
+  mail: iMailSystem;
 };

@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { dbConnect } from "@/lib";
+
 import Marca from "@/models/Marca";
 import Carroceria from "@/models/Carroceria";
 import Modelo from "@/models/Modelo";
+
+import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";
 
 export async function GET(req: Request) {
@@ -12,7 +14,7 @@ export async function GET(req: Request) {
   try {
     const query: iModelo[] = await Modelo.find({})
       .select(
-        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo"
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isLiquidacion isNuevo"
       )
       .populate([
         {
@@ -25,7 +27,7 @@ export async function GET(req: Request) {
         },
       ]);
 
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

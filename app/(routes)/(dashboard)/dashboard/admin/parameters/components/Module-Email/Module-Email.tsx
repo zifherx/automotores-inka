@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,7 +13,8 @@ import {
 import { BtnAddEmail } from "./components/BtnAddEmail";
 import { useEffect, useState } from "react";
 import { iMailSystem } from "@/types";
-import { Pencil, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
+import BtnEditEmail from "./components/BtnEditEmail/BtnEditEmail";
 
 export function ModuleEmail() {
   const [listEmails, setListEmails] = useState<iMailSystem[]>([]);
@@ -34,7 +34,7 @@ export function ModuleEmail() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between uppercase text-2xl">
-          Lista de Correos
+          Lista de Correos ({listEmails.length})
           <BtnAddEmail />
         </CardTitle>
         <CardDescription className="text-lg leading-5 text-grisInka">
@@ -51,13 +51,7 @@ export function ModuleEmail() {
               >
                 {email}
                 <div className="flex justify-between gap-2">
-                  <Button
-                    variant="link"
-                    size="icon"
-                    className="text-orange-500 hover:shadow-xl hover:rounded-full"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </Button>
+                  <BtnEditEmail />
                   <Button
                     variant="link"
                     size="icon"

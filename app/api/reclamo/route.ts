@@ -1,12 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { dbConnect } from "@/lib";
 
-import Reclamo, { iReclamo } from "@/models/Reclamo";
+import Reclamo from "@/models/Reclamo";
 import Sucursal from "@/models/Sucursal";
 import { iReclamation } from "@/types";
 
-export async function POST(req: Request) {
+export async function GET(req: NextRequest) {
+  await dbConnect();
+
+  try {
+    const query = await Reclamo.find({}).sort({ createdAt: 1 });
+
+    return NextResponse.json({ total: query.length, obj: query });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
   await dbConnect();
   try {
     const data = await req.json();
@@ -31,6 +44,7 @@ export async function POST(req: Request) {
       query: query,
     });
   } catch (err) {
+    console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

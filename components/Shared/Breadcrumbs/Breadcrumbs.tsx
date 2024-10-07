@@ -13,7 +13,7 @@ export function Breadcrumbs(props: iMigajas) {
   const { marca } = props;
 
   return (
-    <Breadcrumb className="p-4">
+    <Breadcrumb className="pb-2 px-2">
       <BreadcrumbList className="font-headRegular text-lg">
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Inicio</BreadcrumbLink>

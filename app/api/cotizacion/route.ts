@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import Cliente from "@/models/Cliente";
 import Modelo from "@/models/Modelo";
@@ -8,7 +8,36 @@ import Cotizacion from "@/models/Cotizacion";
 import { dbConnect } from "@/lib";
 import { iCustomer, iLead } from "@/types";
 
-export async function POST(req: Request) {
+export async function GET(req: NextRequest) {
+  await dbConnect();
+
+  try {
+    const query = await Cotizacion.find({})
+      .sort({ createdAt: 1 })
+      .populate([
+        {
+          path: "cliente",
+          select:
+            "_id name tipoDocumento numeroDocumento celular email createdAt",
+        },
+        {
+          path: "vehiculo",
+          select: "_id name slug imageUrl precioBase isActive createdAt",
+        },
+        {
+          path: "sede",
+          select: "_id name slug ciudad isActive createdAt codexHR",
+        },
+      ]);
+
+    return NextResponse.json({ total: query.length, obj: query });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
   await dbConnect();
   const dataForm = await req.json();
   let newCustomer = null;
@@ -49,7 +78,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       message: `Cotización ${new Date().getTime()} registrada con éxito.`,
-      obj: dataForm,
+      obj: query,
     });
   } catch (err) {
     console.log(err);

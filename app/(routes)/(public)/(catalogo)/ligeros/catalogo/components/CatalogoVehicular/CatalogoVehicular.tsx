@@ -27,21 +27,21 @@ export function CatalogoVehicular() {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setMarcas(query.data);
+      setMarcas(query.data.obj);
     }
   };
 
   const getChasises = async () => {
     const query = await axios.get("/api/chasis");
     if (query.status === 200) {
-      setChasises(query.data);
+      setChasises(query.data.obj);
     }
   };
 
   const getModels = async () => {
     const query = await axios.get("/api/modelo");
     if (query.status === 200) {
-      setModels(query.data);
+      setModels(query.data.obj);
     }
   };
 
@@ -91,7 +91,7 @@ export function CatalogoVehicular() {
 
   return (
     <div className="bg-plomoInka">
-      <div className="md:max-w-screen-2xl md:mx-auto p-8 md:p-4">
+      <div className="md:max-w-screen-2xl md:mx-auto p-6 md:p-4">
         <Breadcrumbs marca={filtros.marca} />
         <div className="flex flex-col lg:flex-row gap-8">
           <Filtros

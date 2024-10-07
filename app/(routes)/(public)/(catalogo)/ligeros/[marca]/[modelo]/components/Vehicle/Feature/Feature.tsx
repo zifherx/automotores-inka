@@ -27,13 +27,13 @@ export function Feature(props: iFeatures) {
                       index === 4 ? "border-none" : "border-r border-r-black"
                     )}
                   >
-                    <p className="text-xs md:text-sm md:font-textRegular">
+                    <p className="text-[10px] md:text-sm md:font-textRegular">
                       {item.superTitle}
                     </p>
-                    <p className="text-2xl md:text-5xl font-textRegular text-grisDarkInka">
+                    <p className="text-xl font-textMedium md:text-5xl md:font-textRegular text-grisDarkInka">
                       {item.mainTitle}
                     </p>
-                    <p className="text-xs md:text-sm md:font-textMedium">
+                    <p className="text-[10px] md:text-sm md:font-textMedium">
                       {item.subTitle}
                     </p>
                   </div>

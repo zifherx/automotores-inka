@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
   try {
     const query = await Carroceria.find({}).sort({ name: 1 });
 
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

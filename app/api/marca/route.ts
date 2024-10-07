@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const query = await Marca.find({}).sort({ name: 1 });
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }
