@@ -77,7 +77,7 @@ export function FormCotizacion() {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setListBrands(query.data);
+      setListBrands(query.data.obj);
     }
   };
 
