@@ -30,7 +30,14 @@ import {
 import { iLead } from "@/types";
 import { Button } from "@/components/ui/button";
 import { columnsQuotes } from "@/table-columns";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Building,
+  Car,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ShoppingBasket,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export function TableQuotes() {
@@ -116,6 +123,7 @@ export function TableQuotes() {
             className="ml-4"
             onClick={() => toggleGrouping("ciudad")}
           >
+            <Building className="w-5 h-5 mr-2" />
             {grouping.includes("ciudad") ? "Desagrupar" : "Agrupar"} por Ciudad
           </Button>
 
@@ -125,6 +133,7 @@ export function TableQuotes() {
             className="ml-4"
             onClick={() => toggleGrouping("vehiculoModelo")}
           >
+            <Car className="w-5 h-5 mr-2" />
             {grouping.includes("vehiculoModelo") ? "Desagrupar" : "Agrupar"} por
             Modelo
           </Button>
@@ -135,7 +144,10 @@ export function TableQuotes() {
             className="ml-4"
             onClick={() => toggleGrouping("intencionCompra")}
           >
-            {grouping.includes("intencionCompra") ? "Desagrupar" : "Agrupar"}{" "}
+            <ShoppingBasket className="w-5 h-5 mr-2" />
+            {grouping.includes("intencionCompra")
+              ? "Desagrupar"
+              : "Agrupar"}{" "}
             por Intención de compra
           </Button>
         </div>

@@ -23,11 +23,8 @@ import {
 import { Car, PlusCircle } from "lucide-react";
 
 import { FormAddModel } from "../FormAddModel";
-import { iBtnAddModel } from "@/types";
 
-export function BtnAddModel(props: iBtnAddModel) {
-  const { brands, chasises } = props;
-
+export function BtnAddModel() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -56,11 +53,7 @@ export function BtnAddModel(props: iBtnAddModel) {
             <Car className="w-5 h-5" />
           </DialogTitle>
           <DialogDescription>
-            <FormAddModel
-              brands={brands}
-              chasises={chasises}
-              setOpenDialog={setOpenDialog}
-            />
+            <FormAddModel setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

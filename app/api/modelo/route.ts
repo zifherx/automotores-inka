@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   try {
     const query: iModelo[] = await Modelo.find({})
       .select(
-        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isLiquidacion isNuevo"
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP"
       )
       .populate([
         {

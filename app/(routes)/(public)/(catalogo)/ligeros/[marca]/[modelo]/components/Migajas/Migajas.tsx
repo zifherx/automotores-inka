@@ -16,12 +16,12 @@ export function Migajas(props: iMigajas) {
   return (
     <Breadcrumb className="mb-8 md:mb-5">
       <BreadcrumbList className="headRegular text-lg">
-        <BreadcrumbItem>
+        {/* <BreadcrumbItem>
           <BreadcrumbLink href="/" className="text-grisInka hover:text-black">
             Inicio
           </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        </BreadcrumbItem> */}
+        {/* <BreadcrumbSeparator /> */}
         <BreadcrumbItem>
           <BreadcrumbLink href="/ligeros/catalogo">
             Catalogo Ligeros

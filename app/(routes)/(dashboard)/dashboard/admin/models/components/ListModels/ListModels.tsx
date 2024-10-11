@@ -1,33 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 import { CardModel } from "../CardModel";
 
-import { iModelo } from "@/types";
+import { iListModels } from "@/types";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
-export function ListModels() {
-  const [models, setModels] = useState<iModelo[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const getModels = async () => {
-    try {
-      const query = await axios.get("/api/modelo");
-
-      if (query.status === 200) {
-        setModels(query.data.obj);
-        setIsLoading(false);
-      }
-    } catch (err) {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getModels();
-  }, []);
+export function ListModels({ models }: iListModels) {
+  const [isLoading, setIsLoading] = useState(false);
 
   if (isLoading) {
     return (
@@ -40,7 +21,7 @@ export function ListModels() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-2 md:p-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-1 md:p-2">
       {models.length === 0 ? (
         <p className="text-center text-2xl font-textRegular col-span-4">
           No existen modelos registrados

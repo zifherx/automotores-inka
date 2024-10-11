@@ -2,6 +2,8 @@ import { iLead } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import moment from "moment";
+import { Pencil, Trash, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const columnsQuotes: ColumnDef<iLead>[] = [
   {
@@ -82,5 +84,29 @@ export const columnsQuotes: ColumnDef<iLead>[] = [
       </p>
     ),
     enableGrouping: true,
+  },
+  {
+    accessorKey: "action",
+    header: () => (
+      <div className="text-center uppercase font-headBold">Acción</div>
+    ),
+    cell: ({ row }) => (
+      <div className="flex justify-between">
+        <Button
+          variant="link"
+          size="sm"
+          onClick={() => console.log("Update:", row.original._id)}
+        >
+          <Pencil className="w-5 h-5 text-orange-500" />
+        </Button>
+        <Button
+          variant="link"
+          size="sm"
+          onClick={() => console.log("Delete:", row.original._id)}
+        >
+          <Trash2 className="w-5 h-5 text-purple-500" />
+        </Button>
+      </div>
+    ),
   },
 ];

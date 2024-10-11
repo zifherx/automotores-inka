@@ -14,8 +14,6 @@ export type iFormAddChasis = {
 };
 
 export type iFormAddModel = {
-  brands: iBrand[];
-  chasises: iChasis[];
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
 };
 

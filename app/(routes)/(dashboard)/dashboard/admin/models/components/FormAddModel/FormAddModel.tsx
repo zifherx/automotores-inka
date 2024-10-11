@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Minus, Plus, Send } from "lucide-react";
+import axios from "axios";
 
 import {
   Form,
@@ -34,11 +34,13 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { onToast } from "@/lib";
 import { UploadButton } from "@/utils/uploadthing";
 import { formAddModeloSchema, ModelFormValues } from "@/forms";
-import { iFormAddModel } from "@/types";
+import { iBrand, iChasis, iFormAddModel } from "@/types";
 
 export function FormAddModel(props: iFormAddModel) {
-  const { brands, chasises, setOpenDialog } = props;
+  const { setOpenDialog } = props;
 
+  const [marcas, setMarcas] = useState<iBrand[]>([]);
+  const [carrocerias, setCarrocerias] = useState<iChasis[]>([]);
   const [imageBaseUploaded, setImageBaseUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [imageColor, setImageColor] = useState<string[]>([]);
@@ -69,6 +71,25 @@ export function FormAddModel(props: iFormAddModel) {
       galeria: [],
     },
   });
+
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if (query.status === 200) {
+      setMarcas(query.data.obj);
+    }
+  };
+
+  const getChasis = async () => {
+    const query = await axios.get("/api/chasis");
+    if (query.status === 200) {
+      setCarrocerias(query.data.obj);
+    }
+  };
+
+  useEffect(() => {
+    getBrands();
+    getChasis();
+  }, []);
 
   const {
     fields: colorFields,
@@ -238,7 +259,7 @@ export function FormAddModel(props: iFormAddModel) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {brands.map(({ _id, name, imageUrl, slug }) => (
+                      {marcas.map(({ _id, name, imageUrl, slug }) => (
                         <SelectItem key={_id} value={slug}>
                           <div className="flex justify-start">
                             <Image
@@ -277,7 +298,7 @@ export function FormAddModel(props: iFormAddModel) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {chasises.map(({ _id, name, slug }) => (
+                      {carrocerias.map(({ _id, name, slug }) => (
                         <SelectItem key={_id} value={slug}>
                           {name}
                         </SelectItem>

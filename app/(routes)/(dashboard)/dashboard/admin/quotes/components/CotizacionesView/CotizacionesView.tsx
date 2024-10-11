@@ -11,8 +11,8 @@ import {
 
 export function CotizacionesView() {
   return (
-    <div className="border-2 border-black border-dotted p-4">
-      <div className="flex justify-between mb-5">
+    <div className="p-2">
+      <div className="flex justify-between mb-3">
         <h2 className="text-xl md:text-3xl font-headMedium">
           Gestión de Cotizaciones
         </h2>

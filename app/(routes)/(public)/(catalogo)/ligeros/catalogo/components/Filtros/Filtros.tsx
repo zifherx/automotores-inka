@@ -80,7 +80,7 @@ export function Filtros(props: iFiltros) {
             </Select>
           </div>
 
-          <div>
+          <div className="hidden">
             <h4 className="text-lg font-headMedium mb-0 text-blueInka">
               Carrocería
             </h4>
