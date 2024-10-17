@@ -32,10 +32,18 @@ export default async function HomePage() {
       <BannerPortada covers={queryCovers} />
       <BrandSlider brands={queryBrands} />
       <ModelosEnLiquidacion />
-      <BannerHome imageAlt="Cover Geely 1" imageSource="geely-action1.jpeg" />
+      <BannerHome
+        imageAlt="Cover Geely 1"
+        imageSource="geely-action1.jpeg"
+        href="/posventa/separa-tu-cita"
+      />
       <VideoBienvenida />
       <ServiciosSlider />
-      <BannerHome imageAlt="Cover Geely 2" imageSource="geely-action2.jpeg" />
+      <BannerHome
+        imageAlt="Cover Geely 2"
+        imageSource="geely-action2.jpeg"
+        href="/posventa/separa-tu-cita"
+      />
       {/* <AsesoriaAction /> */}
     </>
   );

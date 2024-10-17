@@ -80,6 +80,7 @@ export type iCardObjetivo = {
 export type iBannerHome = {
   imageSource: string;
   imageAlt: string;
+  href?: string;
 };
 
 export type iCardUbicanos = {

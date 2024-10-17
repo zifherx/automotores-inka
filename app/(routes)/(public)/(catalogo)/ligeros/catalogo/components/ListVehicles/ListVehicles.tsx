@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardProductModel } from "@/components/Shared/CardProductModel";
 
-import { Frown } from "lucide-react";
 import { iListVehicle, iModelo } from "@/types";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
@@ -18,7 +17,7 @@ export function ListVehicles(props: iListVehicle) {
   };
 
   // if (!dataFilteredVehicles || !models) {
-  //   return;
+  //   return <AutoLoadingSpinner />;
   // }
 
   return (
@@ -34,10 +33,11 @@ export function ListVehicles(props: iListVehicle) {
       </p>
 
       {models.length === 0 && (
-        <p className="text-3xl text-center">
-          No se han encontrado vehículos con estos filtros
-          <Frown className="w-20 h-20 mx-auto" />
-        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5">
+          {[...Array(3)].map((_, index) => (
+            <CardSkeletonModel key={index} />
+          ))}
+        </div>
       )}
 
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

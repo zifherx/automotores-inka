@@ -5,7 +5,7 @@ export function MasonryBrands(props: iListBrand) {
   const { brands } = props;
 
   return (
-    <div className="grid grid-cols-3 gap-4 md:gap-5">
+    <div className="grid grid-cols-4 md:grid-cols-3 gap-4 md:gap-5">
       {brands.map(({ _id, imageUrl, name }) => (
         <Image
           key={_id}

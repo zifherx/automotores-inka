@@ -27,7 +27,10 @@ export function CatalogoVehicular() {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setMarcas(query.data.obj);
+      const brandsActive: iBrand[] = query.data.obj.filter(
+        (a: iBrand) => a.isActive
+      );
+      setMarcas(brandsActive);
     }
   };
 

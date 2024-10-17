@@ -21,25 +21,26 @@ export function Banner(props: iCardModel) {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="flex justify-between items-center">
-        <div className="w-[160px] lg:w-[280px] p-0 lg:p-6">
-          <div className="uppercase text-left">
-            <p className="text-2xl lg:text-4xl font-headRegular">
-              {marca.name}
-            </p>
+      <div className="flex flex-col md:flex-row md:justify-between py-5 px-1 items-center gap-5">
+        <div className="flex flex-row md:flex-col gap-5 justify-between w-full md:w-[400px]">
+          <div className="w-[150px] md:w-fit">
+            <p className="text-xl lg:text-4xl font-headRegular">{marca.name}</p>
             <p className="text-3xl lg:text-5xl font-headMedium">{name}</p>
           </div>
-          <div className="mt-5 flex flex-col gap-y-3">
-            <Button
-              className="bg-redInka text-white text-sm w-fit md:w-full md:text-base rounded-full hover:bg-redDarkInka font-textMedium"
-              onClick={() => router.push(`/cotizacion?modelo=${params.modelo}`)}
+          <div className="flex flex-col gap-2">
+            <Link
+              href={`/cotizacion?modelo=${params.modelo}`}
+              className={cn(
+                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium ",
+                "hover:bg-white hover:text-redInka hover:border hover:border-redInka hover:underline"
+              )}
             >
               Cotízalo ahora
-            </Button>
+            </Link>
             <Link
               className={cn(
-                "px-4 py-2 text-center border border-redInka rounded-full text-sm w-fit md:w-full md:text-base text-redInka font-textMedium ",
-                "hover:bg-redInka hover:text-white"
+                "px-4 py-2 text-center border border-redInka rounded-full text-sm full md:text-base text-redInka font-textMedium ",
+                "hover:bg-redInka hover:text-white hover:underline"
               )}
               href={rutaTestDrive}
             >
@@ -47,33 +48,13 @@ export function Banner(props: iCardModel) {
             </Link>
           </div>
         </div>
-        <RevealElement position="bottom" className="relative lg:-mr-28">
-          {model.isLiquidacion && (
-            <Image
-              src={`/images/offers/tag-liquidacion.png`}
-              alt="Unidad en liquidación"
-              width={150}
-              height={60}
-              priority
-              className="absolute top-0 -ml-10 z-10"
-            />
-          )}
-          {model.isNuevo && (
-            <Image
-              src={`/images/offers/tag-nuevo.png`}
-              alt="Unidad nueva"
-              width={150}
-              height={60}
-              priority
-              className="absolute top-0 -ml-10 z-10"
-            />
-          )}
+        <RevealElement position="bottom" className="relative w-full">
           <Image
-            className="object-cover drop-shadow-xl"
+            className="object-cover"
             src={imageUrl}
             alt={name}
             width={600}
-            height={400}
+            height={500}
             priority
           />
         </RevealElement>

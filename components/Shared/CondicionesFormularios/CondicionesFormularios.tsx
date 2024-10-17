@@ -2,7 +2,7 @@ export function CondicionesFormularios() {
   return (
     <div className="w-full bg-black text-white">
       <div className="max-w-screen-2xl mx-auto">
-        <div className="px-8 py-3">
+        <div className="p-3 md:px-8">
           <p className="leading-tight text-xs text-justify md:text-left">
             (*) Los precios son expresados en dólares americanos y aplican a la
             versión básica e incluyen impuestos vigentes a ala fecha de

@@ -41,14 +41,10 @@ export function Cotizacion() {
     return <AutoLoadingSpinner />;
   }
 
-  // const filteredModel = models.find(
-  //   (modelo) => getRouteForModel(modelo.name.toLowerCase()) === modelParam
-  // );
-
   return (
     <div className="max-w-7xl mx-auto">
       {model ? (
-        <div className="p-5 md:p-10 flex flex-col-reverse md:grid md:grid-cols-2 lg:grid-cols-[40%,1fr] gap-10 md:gap-0">
+        <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-2 lg:grid-cols-[40%,1fr] gap-10 md:gap-0">
           <SideForm model={model!} />
           <SelectedModel model={model!} />
         </div>

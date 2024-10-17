@@ -37,7 +37,8 @@ export function CotizaAhora(props: iCardModel) {
                 ¿Aún no estás seguro de cotizar?
               </p>
               <h3 className="text-2xl">
-                ¡Entérate de información exclusiva sobre este {name}!
+                ¡Entérate de información exclusiva sobre este{" "}
+                <strong>{name}!</strong>
               </h3>
             </div>
 
