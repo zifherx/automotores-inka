@@ -187,53 +187,144 @@ export function FormCotizacion() {
   };
 
   return (
-    <div className="p-2 md:p-10">
-      <div className="flex flex-col md:grid md:grid-cols-2 gap-10">
-        <div className="p-3 my-5 md:my-0 md:p-2 border rounded-xl md:border-none md:rounded-none">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Nombre y Apellido */}
-              <FormField
-                control={form.control}
-                name="nombres"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Nombre y Apellido
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nombre completo" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <div className="flex flex-col md:grid md:grid-cols-2 gap-10">
+      <div className="p-3 my-5 md:my-0 md:p-2 border rounded-xl md:border-none md:rounded-none">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            {/* Nombre y Apellido */}
+            <FormField
+              control={form.control}
+              name="nombres"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Nombre y Apellido
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nombre completo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Tipo de Documento */}
+            {/* Tipo de Documento */}
+            <FormField
+              control={form.control}
+              name="tipoDocumento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Tipo de Documento
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione un tipo de documento" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="dni">DNI</SelectItem>
+                      <SelectItem value="ruc">RUC</SelectItem>
+                      <SelectItem value="carnet de extranjeria">
+                        Carnet de Extranjería
+                      </SelectItem>
+                      <SelectItem value="pasaporte">Pasaporte</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Número de Documento */}
+            <FormField
+              control={form.control}
+              name="numeroDocumento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Número de Documento
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Número de Documento"
+                      {...field}
+                      type="number"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Celular */}
+            <FormField
+              control={form.control}
+              name="celular"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">Celular</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Celular" {...field} type="number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Marca */}
               <FormField
                 control={form.control}
-                name="tipoDocumento"
+                name="marca"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Tipo de Documento
-                    </FormLabel>
+                    <FormLabel className="font-headMedium">Marca</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Seleccione un tipo de documento" />
+                          <SelectValue placeholder="Seleccione un marca" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="dni">DNI</SelectItem>
-                        <SelectItem value="ruc">RUC</SelectItem>
-                        <SelectItem value="carnet de extranjeria">
-                          Carnet de Extranjería
-                        </SelectItem>
-                        <SelectItem value="pasaporte">Pasaporte</SelectItem>
+                        {listBrands
+                          .filter((value) => value.isActive)
+                          .map(({ _id, name, slug, imageUrl }) => (
+                            <SelectItem key={_id} value={slug}>
+                              <div className="flex items-center justify-between gap-4 h-14 w-auto">
+                                <img
+                                  src={imageUrl}
+                                  alt={name}
+                                  className="object-contain h-14"
+                                />
+                                <span className="text-lg font-semibold">
+                                  {name}
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -241,352 +332,257 @@ export function FormCotizacion() {
                 )}
               />
 
-              {/* Número de Documento */}
+              {/* Modelo */}
               <FormField
                 control={form.control}
-                name="numeroDocumento"
+                name="modelo"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Número de Documento
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Número de Documento"
-                        {...field}
-                        type="number"
-                      />
-                    </FormControl>
+                    <FormLabel className="font-headMedium">Modelo</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccione un modelo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {listModels.length > 0 &&
+                          listModels.map(({ _id, name, slug }) => (
+                            <SelectItem key={_id} value={slug}>
+                              {name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
 
-              {/* Celular */}
-              <FormField
-                control={form.control}
-                name="celular"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">Celular</FormLabel>
+            {/* Sede */}
+            <FormField
+              control={form.control}
+              name="departamento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">Sede</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Input placeholder="Celular" {...field} type="number" />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione una sede" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      {ciudades.map(({ _id, ciudad }) => (
+                        <SelectItem key={_id} value={ciudad}>
+                          {ciudad}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Email */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">Email</FormLabel>
+            {/* Concesionario */}
+
+            <FormField
+              control={form.control}
+              name="concesionario"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Concesionario
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione donde quiere atenderse" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Marca */}
-                <FormField
-                  control={form.control}
-                  name="marca"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-headMedium">Marca</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccione un marca" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listBrands
-                            .filter((value) => value.isActive)
-                            .map(({ _id, name, slug, imageUrl }) => (
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel className="uppercase font-bold">
+                          Sede {watchCiudad}
+                        </SelectLabel>
+                        {watchCiudad &&
+                          concesionarios
+                            .filter((value) => value.ciudad === watchCiudad)
+                            .map(({ _id, name, address, slug }) => (
                               <SelectItem key={_id} value={slug}>
-                                <div className="flex items-center justify-between gap-4 h-14 w-auto">
-                                  <img
-                                    src={imageUrl}
-                                    alt={name}
-                                    className="object-contain h-14"
-                                  />
-                                  <span className="text-lg font-semibold">
-                                    {name}
-                                  </span>
+                                <div className="flex flex-col items-start">
+                                  <p className="font-semibold">{name}</p>
+                                  <p className="text-xs">{address}</p>
                                 </div>
                               </SelectItem>
                             ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                {/* Modelo */}
-                <FormField
-                  control={form.control}
-                  name="modelo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-headMedium">Modelo</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccione un modelo" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listModels.length > 0 &&
-                            listModels.map(({ _id, name, slug }) => (
-                              <SelectItem key={_id} value={slug}>
-                                {name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Sede */}
-              <FormField
-                control={form.control}
-                name="departamento"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">Sede</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccione una sede" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {ciudades.map(({ _id, ciudad }) => (
-                          <SelectItem key={_id} value={ciudad}>
-                            {ciudad}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Concesionario */}
-
-              <FormField
-                control={form.control}
-                name="concesionario"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Concesionario
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccione donde quiere atenderse" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel className="uppercase font-bold">
-                            Sede {watchCiudad}
-                          </SelectLabel>
-                          {watchCiudad &&
-                            concesionarios
-                              .filter((value) => value.ciudad === watchCiudad)
-                              .map(({ _id, name, address, slug }) => (
-                                <SelectItem key={_id} value={slug}>
-                                  <div className="flex flex-col items-start">
-                                    <p className="font-semibold">{name}</p>
-                                    <p className="text-xs">{address}</p>
-                                  </div>
-                                </SelectItem>
-                              ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Intención de compra */}
-              <FormField
-                control={form.control}
-                name="intencionCompra"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-headMedium">
-                      Intención de Compra
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="¿Cuándo deseas comprar?" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="esta-semana">Esta semana</SelectItem>
-                        <SelectItem value="este-mes">Este mes</SelectItem>
-                        <SelectItem value="proximo-mes">Próximo mes</SelectItem>
-                        <SelectItem value="mas-adelante">
-                          Más adelante
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Check Datos Personales */}
-              <FormField
-                control={form.control}
-                name="checkDatosPersonales"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-4">
+            {/* Intención de compra */}
+            <FormField
+              control={form.control}
+              name="intencionCompra"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Intención de Compra
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        color="#1B5094"
-                      />
+                      <SelectTrigger>
+                        <SelectValue placeholder="¿Cuándo deseas comprar?" />
+                      </SelectTrigger>
                     </FormControl>
-                    <div className="space-y-1 text-xs leading-tight">
-                      <FormLabel>
-                        Mediante el envío del formulario declaro que he leído la
-                        autorización y acepto la{" "}
-                        <a
-                          href="/legal/terminos-condiciones"
-                          target="_blank"
-                          className="text-redInka hover:font-semibold"
-                        >
-                          Política de Protección de Datos Personales
-                        </a>{" "}
-                        y el tratamiento de mis datos personales a Automotores
-                        Inka
-                      </FormLabel>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      <SelectItem value="esta-semana">Esta semana</SelectItem>
+                      <SelectItem value="este-mes">Este mes</SelectItem>
+                      <SelectItem value="proximo-mes">Próximo mes</SelectItem>
+                      <SelectItem value="mas-adelante">Más adelante</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Autorización a promociones */}
-              <FormField
-                control={form.control}
-                name="checkPromociones"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-justify font-textMedium leading-tight">
-                      Automotores Inka podrá enviarme información sobre sus
-                      promociones y ofertas comerciales de sus productos y
-                      servicios, conforme a la{" "}
+            {/* Check Datos Personales */}
+            <FormField
+              control={form.control}
+              name="checkDatosPersonales"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      color="#1B5094"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 text-xs leading-tight">
+                    <FormLabel>
+                      Mediante el envío del formulario declaro que he leído la
+                      autorización y acepto la{" "}
                       <a
-                        href="#"
+                        href="/legal/terminos-condiciones"
                         target="_blank"
                         className="text-redInka hover:font-semibold"
                       >
-                        Cláusula de Datos Personales:
-                      </a>
+                        Política de Protección de Datos Personales
+                      </a>{" "}
+                      y el tratamiento de mis datos personales a Automotores
+                      Inka
                     </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={""}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="yes" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Si autorizo a Automotores Inka.
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="no" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            No autorizo, prefiero perder la oportunidad de
-                            recibir promociones y ofertas.
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <p className="leading-tight font-textMedium">
-                La presente cotización se realiza en función a los{" "}
-                <a
-                  href="#"
-                  target="_blank"
-                  className="text-redInka hover:font-semibold"
-                >
-                  términos y condiciones.
-                </a>
-              </p>
+            {/* Autorización a promociones */}
+            <FormField
+              control={form.control}
+              name="checkPromociones"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-justify font-textMedium block">
+                    Automotores Inka podrá enviarme información sobre sus
+                    promociones y ofertas comerciales de sus productos y
+                    servicios, conforme a la{" "}
+                    <a
+                      href="#"
+                      target="_blank"
+                      className="text-redInka hover:font-semibold"
+                    >
+                      Cláusula de Datos Personales:
+                    </a>
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={""}
+                      className="flex flex-col"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="yes" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Si autorizo a Automotores Inka.
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="no" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          No autorizo, prefiero perder la oportunidad de recibir
+                          promociones y ofertas.
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <Button
-                type="submit"
-                className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-                disabled={isLoading}
+            <p className="leading-4 font-textMedium py-5">
+              La presente cotización se realiza en función a los{" "}
+              <a
+                href="#"
+                target="_blank"
+                className="text-redInka hover:font-semibold"
               >
-                {isLoading ? (
-                  <>
-                    <LoadingIcon />
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    Enviar
-                    <Send className="w-5 h-5 ml-2" />
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
-        </div>
-        <div>
-          {vehicleSelected ? (
-            <ShowingCar vehicle={vehicleSelected} />
-          ) : (
-            <LoadingCar />
-          )}
-        </div>
+                términos y condiciones.
+              </a>
+            </p>
+
+            <Button
+              type="submit"
+              className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <LoadingIcon />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  Enviar
+                  <Send className="w-5 h-5 ml-2" />
+                </>
+              )}
+            </Button>
+          </form>
+        </Form>
+      </div>
+      <div>
+        {vehicleSelected ? (
+          <ShowingCar vehicle={vehicleSelected} />
+        ) : (
+          <LoadingCar />
+        )}
       </div>
     </div>
   );

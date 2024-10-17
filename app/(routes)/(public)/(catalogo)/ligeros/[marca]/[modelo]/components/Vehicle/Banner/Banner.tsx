@@ -23,11 +23,11 @@ export function Banner(props: iCardModel) {
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row md:justify-between py-5 px-1 items-center gap-5">
         <div className="flex flex-row md:flex-col gap-5 justify-between w-full md:w-[400px]">
-          <div className="w-[150px] md:w-fit">
+          <div className="w-[220px] md:w-[350px]">
             <p className="text-xl lg:text-4xl font-headRegular">{marca.name}</p>
             <p className="text-3xl lg:text-5xl font-headMedium">{name}</p>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full md:w-[250px] my-auto">
             <Link
               href={`/cotizacion?modelo=${params.modelo}`}
               className={cn(
@@ -39,7 +39,7 @@ export function Banner(props: iCardModel) {
             </Link>
             <Link
               className={cn(
-                "px-4 py-2 text-center border border-redInka rounded-full text-sm full md:text-base text-redInka font-textMedium ",
+                "px-4 py-2 text-center border border-redInka rounded-full text-sm w-full md:text-base text-redInka font-textMedium ",
                 "hover:bg-redInka hover:text-white hover:underline"
               )}
               href={rutaTestDrive}
