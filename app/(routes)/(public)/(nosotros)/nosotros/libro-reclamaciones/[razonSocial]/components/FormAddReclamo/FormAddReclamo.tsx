@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 
@@ -36,7 +37,16 @@ import { listDepartamentos } from "@/data/public.data";
 import { formReclamoSchema, HReclamoFormValues } from "@/forms";
 import { tDepartamento } from "@/interfaces";
 import { iHojaReclamo, iSede } from "@/types";
-import { cn, fechaHoy, horaHoy, onToast, setNomenclaturaLRD } from "@/lib";
+import {
+  cn,
+  fechaHoy,
+  formatNumberToSixDigits,
+  horaHoy,
+  onToast,
+  setNomenclaturaLRD,
+  switchRS,
+  switchRuc,
+} from "@/lib";
 
 export function FormAddReclamo(props: iHojaReclamo) {
   const { slugType } = props;
@@ -54,15 +64,31 @@ export function FormAddReclamo(props: iHojaReclamo) {
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
   >("default");
+  const [numeroReclamo, setNumeroReclamo] = useState(0);
+  const [sedeSelected, setSedeSelected] = useState<iSede>();
+  const [charCounts, setCharCounts] = useState({
+    descripcionBien: 100,
+    detalleSolicitud: 500,
+    pedidoSolicitud: 500,
+  });
 
   let today = new Date();
 
+  const getNumeroReclamo = async () => {
+    const query = await axios.get("/api/reclamo");
+    if (query.status === 200) {
+      setNumeroReclamo(Number(query.data.total));
+    }
+  };
+
   useEffect(() => {
+    getNumeroReclamo();
     setCodigoLRD(
-      `LRD-${setNomenclaturaLRD(slugType)}-000001-${today.getFullYear()}`
+      `LRD-${setNomenclaturaLRD(slugType)}-${formatNumberToSixDigits(
+        numeroReclamo + 1
+      )}-${today.getFullYear()}`
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slugType]);
+  }, [slugType, getNumeroReclamo]);
 
   const getSedes = async () => {
     const query = await axios.get(`/api/sucursal`);
@@ -113,22 +139,70 @@ export function FormAddReclamo(props: iHojaReclamo) {
     try {
       const query = await axios.post("/api/reclamo", {
         ...values,
+        sedeCompra: sedeSelected!.codexHR,
         tipoBien: tipoBienSelected,
         fecha: fechaToday,
         hora: horaToday,
         numeroReclamo: codigoLRD,
+        razonSocial: switchRS(slugType),
+        rucEmpresa: switchRuc(slugType),
+        direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
+        direccionSede: sedeSelected!.address,
       });
 
       if (query.status === 200) {
-        setIsLoading(false);
-        onToast(query.data.message);
-        router.push("/nosotros/libro-reclamaciones/gracias");
+        const envioCorreo = await axios.post("/api/send-email/reclamo", {
+          ...values,
+          sedeCompra: sedeSelected!.codexHR,
+          tipoBien: tipoBienSelected,
+          fecha: fechaToday,
+          hora: horaToday,
+          numeroReclamo: codigoLRD,
+          razonSocial: switchRS(slugType),
+          rucEmpresa: switchRuc(slugType),
+          direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
+          direccionSede: sedeSelected!.address,
+        });
+
+        if (envioCorreo.status === 200) {
+          setIsLoading(false);
+          onToast(query.data.message);
+          router.push("/nosotros/libro-reclamaciones/gracias");
+        }
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }
+  };
+
+  // const imprimirPDF = (values: HReclamoFormValues) => {
+  //   makePDFReclamo({
+  //     ...values,
+  //     direccion: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
+  //     sedeCompra: sedeSelected!.codexHR,
+  //     tipoBien: tipoBienSelected,
+  //     fecha: fechaToday,
+  //     hora: horaToday,
+  //     numeroReclamo: codigoLRD,
+  //     razonSocial: switchRS(slugType),
+  //     rucEmpresa: switchRuc(slugType),
+  //     direccionSede: sedeSelected!.address,
+  //   });
+  // };
+
+  const handleTextareaChange = (
+    e: ChangeEvent<HTMLTextAreaElement>,
+    fieldName: string,
+    limitCharacters: number
+  ) => {
+    const value = e.target.value;
+    formReclamo.setValue(fieldName as any, value);
+    setCharCounts((prev) => ({
+      ...prev,
+      [fieldName]: limitCharacters - value.length,
+    }));
   };
 
   const LoadingIcon = () => {
@@ -480,7 +554,11 @@ export function FormAddReclamo(props: iHojaReclamo) {
                 <FormItem className="col-span-2 md:col-span-1">
                   <FormLabel className="font-bold">Sede</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      setSedeSelected(
+                        sedes.find((sede) => sede.codexHR === value)
+                      );
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -499,7 +577,6 @@ export function FormAddReclamo(props: iHojaReclamo) {
                               <span className="text-xs">{address}</span>
                             </div>
                           </SelectItem>
-                          // </SelectGroup>
                         ))}
                     </SelectContent>
                   </Select>
@@ -568,10 +645,17 @@ export function FormAddReclamo(props: iHojaReclamo) {
                   <FormControl>
                     <Textarea
                       placeholder="Ingresa el detalle del producto o servicio"
-                      className="resize-none"
+                      className="resize-y"
                       {...field}
+                      onChange={(e) =>
+                        handleTextareaChange(e, "descripcionBien", 220)
+                      }
+                      maxLength={220}
                     />
                   </FormControl>
+                  <FormDescription>
+                    Caracteres restantes: {charCounts.descripcionBien}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -637,10 +721,18 @@ export function FormAddReclamo(props: iHojaReclamo) {
                   <FormControl>
                     <Textarea
                       placeholder="Ingresa el detalle del reclamo o queja"
-                      className="resize-none"
+                      className="resize-y"
                       {...field}
+                      rows={4}
+                      onChange={(e) =>
+                        handleTextareaChange(e, "detalleSolicitud", 500)
+                      }
+                      maxLength={500}
                     />
                   </FormControl>
+                  <FormDescription>
+                    Caracteres restantes: {charCounts.detalleSolicitud}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -656,10 +748,18 @@ export function FormAddReclamo(props: iHojaReclamo) {
                   <FormControl>
                     <Textarea
                       placeholder="Ingresa el pedido del reclamo o queja"
-                      className="resize-none"
+                      className="resize-y"
                       {...field}
+                      rows={4}
+                      onChange={(e) =>
+                        handleTextareaChange(e, "pedidoSolicitud", 500)
+                      }
+                      maxLength={500}
                     />
                   </FormControl>
+                  <FormDescription>
+                    Caracteres restantes: {charCounts.pedidoSolicitud}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -725,7 +825,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
             {isLoading ? (
               <>
                 <LoadingIcon />
-                Enviando...
+                Generando...
               </>
             ) : (
               <>
@@ -734,6 +834,14 @@ export function FormAddReclamo(props: iHojaReclamo) {
               </>
             )}
           </Button>
+
+          {/* <Button
+            type="button"
+            variant="destructive"
+            onClick={() => imprimirPDF(formReclamo.getValues())}
+          >
+            Test PDF
+          </Button> */}
         </form>
       </Form>
     </>

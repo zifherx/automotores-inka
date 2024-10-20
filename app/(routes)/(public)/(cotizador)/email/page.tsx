@@ -1,44 +1,29 @@
-import { TEmailCotizacion } from "@/components/Shared/T-Email-Cotizacion";
-import { iTEmailCotizacion } from "@/types";
+import { TEmailReclamo } from "@/components/Shared/T-Email-Reclamo";
+import { iTEmailReclamo } from "@/types";
 
-const objeto: iTEmailCotizacion = {
-  nombres: "Fernando Rojas",
-  tipoDocumento: "dni",
-  numeroDocumento: "70365832",
-  email: "frojasq@outlook.com",
-  celular: "924063422",
-  departamento: "Trujillo",
-  concesionario: "SAI CLUSTER",
-  intencionCompra: "esta-semana",
-  checkDatosPersonales: true,
-  checkPromociones: "yes",
-  marca: "Mazda",
-  modelo: "CX-5",
-  imageUrl:
-    "https://utfs.io/f/DvD6I6Zej8uOcM2FwlCaBbdXPm5RwxHKEGF0oe2jYNMhDVsL",
-  precioBase: 19990,
-  tcambio: 3.8,
+const objeto: iTEmailReclamo = {
+  nombres: "Fernando Hendrix",
+  apellidos: "Rojas Quezada",
+  fecha: "19/10/24",
+  hora: "11:30 a. m.",
+  numeroReclamo: "LRD-INKA-00000008-2024",
+  razonSocial: "AUTOMOTORES INKA S.A.C.",
+  direccionSede: "AV. ANGAMOS ESTE N°1669, SURQUILLO, LIMA",
+  sedeCompra: "LIMSURQUI",
 };
 
 export default function EmailPage() {
   return (
     <div className="max-w-3xl mx-auto p-4">
-      <TEmailCotizacion
+      <TEmailReclamo
         nombres={objeto.nombres}
-        tipoDocumento={objeto.tipoDocumento}
-        numeroDocumento={objeto.numeroDocumento}
-        email={objeto.email}
-        celular={objeto.celular}
-        departamento={objeto.departamento}
-        concesionario={objeto.concesionario}
-        intencionCompra={objeto.intencionCompra}
-        checkDatosPersonales={objeto.checkDatosPersonales}
-        checkPromociones={objeto.checkPromociones}
-        marca={objeto.marca}
-        modelo={objeto.modelo}
-        imageUrl={objeto.imageUrl}
-        precioBase={objeto.precioBase}
-        tcambio={objeto.tcambio}
+        apellidos={objeto.apellidos}
+        fecha={objeto.fecha}
+        hora={objeto.hora}
+        numeroReclamo={objeto.numeroReclamo}
+        razonSocial={objeto.razonSocial}
+        direccionSede={objeto.direccionSede}
+        sedeCompra={objeto.sedeCompra}
       />
     </div>
   );

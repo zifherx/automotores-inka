@@ -9,15 +9,21 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: NextRequest) {
   const dataForm: iTEmailCotizacion = await req.json();
 
-  const getSystemMail: iMailSystem[] = await SystemEmail.find({
+  let systemMail: iMailSystem | null;
+
+  systemMail = await SystemEmail.findOne({
+    area: "Comercial",
     isActive: true,
   });
+
+  if (!systemMail)
+    return NextResponse.json({ message: `Mail Comercial no encontrado` });
 
   try {
     const { data, error } = await resend.emails.send({
       from: `Automotores Inka 🤖 <bot@ziphonex.com>`,
       to: [`${dataForm.email}`],
-      bcc: [`automotores.inka@ziphonex.com`, `${getSystemMail[0].email}`],
+      bcc: [`automotores.inka@ziphonex.com`, `${systemMail.email}`],
       subject: `Nueva Cotización ✅ - ${dataForm.numeroDocumento}`,
       react: TEmailCotizacion({
         nombres: dataForm.nombres,

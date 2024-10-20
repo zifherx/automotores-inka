@@ -1,5 +1,5 @@
 import { iSede } from "@/types";
-import { Document, Model, Schema, model, models } from "mongoose";
+import { Document, Schema, model, models } from "mongoose";
 
 export interface iReclamo extends Document {
   //   Generales

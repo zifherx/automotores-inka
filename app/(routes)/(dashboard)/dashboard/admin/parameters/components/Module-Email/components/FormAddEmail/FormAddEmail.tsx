@@ -33,6 +33,7 @@ export function FormAddEmail(props: iFormAddGeneral) {
   const form = useForm<EmailModuleFormValues>({
     resolver: zodResolver(formEmailModule),
     defaultValues: {
+      area: "",
       email: "",
       isActive: true,
     },
@@ -57,14 +58,32 @@ export function FormAddEmail(props: iFormAddGeneral) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <div className="grid grid-cols-1 md:grid-cols-[70%,1fr] gap-5">
+          {/* Area */}
+          <FormField
+            control={form.control}
+            name="area"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2 text-left">
+                <FormLabel className="font-headMedium">Area</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-black"
+                    placeholder="Comercial..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {/* Email */}
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="text-left">
                 <FormLabel className="font-headMedium">Email</FormLabel>
                 <FormControl>
                   <Input
@@ -83,7 +102,7 @@ export function FormAddEmail(props: iFormAddGeneral) {
             control={form.control}
             name="isActive"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="text-left">
                 <FormLabel className="font-headMedium">Estado</FormLabel>
                 <FormControl>
                   <div className="flex gap-1 pt-1 items-center">
@@ -108,11 +127,11 @@ export function FormAddEmail(props: iFormAddGeneral) {
           {btnLoading ? (
             <>
               <LoadingIcon effect="default" />
-              Enviando...
+              Guardando...
             </>
           ) : (
             <>
-              Enviar
+              Guardar
               <Send className="w-5 h-5 ml-2" />
             </>
           )}

@@ -92,6 +92,10 @@ export type iLead = iCotizacion & { _id: string };
 // EMAIL SYSTEM
 export type iMailSystem = iSystemEmail & { _id: string };
 
+export type iListMailSystem = {
+  mails: iMailSystem[];
+};
+
 //Dashboard Cards
 export type tDashbordCard = {
   title: string;

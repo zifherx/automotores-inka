@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const query: iMailSystem[] = await SystemEmail.find({});
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }

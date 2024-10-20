@@ -12,44 +12,45 @@ import {
 
 import { BtnAddEmail } from "./components/BtnAddEmail";
 import { useEffect, useState } from "react";
-import { iMailSystem } from "@/types";
+import { iListMailSystem, iMailSystem } from "@/types";
 import { Trash } from "lucide-react";
 import BtnEditEmail from "./components/BtnEditEmail/BtnEditEmail";
 
-export function ModuleEmail() {
-  const [listEmails, setListEmails] = useState<iMailSystem[]>([]);
+export function ModuleEmail(props: iListMailSystem) {
+  const { mails } = props;
+  // const [listEmails, setListEmails] = useState<iMailSystem[]>([]);
 
-  const getListEmail = async () => {
-    const query = await axios.get("/api/system/email");
-    if (query.status === 200) {
-      setListEmails(query.data as iMailSystem[]);
-    }
-  };
+  // const getListEmail = async () => {
+  //   const query = await axios.get("/api/system/email");
+  //   if (query.status === 200) {
+  //     setListEmails(query.data.obj);
+  //   }
+  // };
 
-  useEffect(() => {
-    getListEmail();
-  }, []);
+  // useEffect(() => {
+  //   getListEmail();
+  // }, []);
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between uppercase text-2xl">
-          Lista de Correos ({listEmails.length})
+          Lista de Correos ({mails.length})
           <BtnAddEmail />
         </CardTitle>
-        <CardDescription className="text-lg leading-5 text-grisInka">
+        <CardDescription className="text-sm leading-4 text-grisInka">
           Gestión de correos para el envío de templates en los formularios.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ul>
-          {listEmails.length > 0 &&
-            listEmails.map(({ _id, email }) => (
-              <li
-                key={_id}
-                className="text-sm font-semibold items-center flex justify-between"
-              >
-                {email}
+          {mails.length > 0 &&
+            mails.map(({ _id, email, area }) => (
+              <li key={_id} className="flex justify-between items-center mb-2">
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm font-semibold">{email}</p>
+                  <p className="text-xs text-slate-400">{area}</p>
+                </div>
                 <div className="flex justify-between gap-2">
                   <BtnEditEmail />
                   <Button

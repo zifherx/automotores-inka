@@ -6,10 +6,12 @@ import {
   iListBrand,
   iListModels,
   iModelo,
+  iReclamation,
   iSede,
 } from "./admin.types";
-import { iOracion } from "@/interfaces";
+import { iOracion, iReclamosRS } from "@/interfaces";
 import { LucideIcon } from "lucide-react";
+import { HReclamoFormValues } from "@/forms";
 
 export type iVideosYoutube = {
   src: string;
@@ -121,7 +123,7 @@ export interface iConcesionario {
   address: string;
 }
 
-export type iTEmailCotizacion = {
+export interface iTEmailCotizacion {
   nombres: string;
   tipoDocumento: string;
   numeroDocumento: string;
@@ -137,7 +139,18 @@ export type iTEmailCotizacion = {
   imageUrl: string;
   precioBase: number;
   tcambio: number;
-};
+}
+
+export interface iTEmailReclamo {
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  nombres: string;
+  apellidos: string;
+  sedeCompra: string;
+  razonSocial: string;
+  direccionSede: string;
+}
 
 export type iCustomMessage = {
   message: string;
@@ -173,4 +186,16 @@ export type iTipoServicio = {
 
 export type iShowingCar = {
   vehicle: iModelo;
+};
+
+export type tClaimAll = HReclamoFormValues & {
+  sedeCompra: string;
+  tipoBien: string;
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  razonSocial: string;
+  rucEmpresa: string;
+  direccionCliente: string;
+  direccionSede: string;
 };

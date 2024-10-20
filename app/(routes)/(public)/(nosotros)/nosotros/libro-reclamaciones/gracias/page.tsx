@@ -3,8 +3,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function ReclamoRegistrado() {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -15,14 +22,6 @@ export default function ReclamoRegistrado() {
     const timer = setTimeout(() => setShowConfetti(false), 5000);
     return () => clearTimeout(timer);
   }, []);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     router.push("/");
-  //   }, 8000);
-
-  //   return () => clearTimeout(timer);
-  // }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -59,11 +58,11 @@ export default function ReclamoRegistrado() {
             </li>
             <li className="flex items-center">
               <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
-              Revisaremos detalladamente tu reclamo.
+              Te contactaremos por correo electrónico.
             </li>
             <li className="flex items-center">
               <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
-              Te contactaremos por correo electrónico.
+              La copia de tu reclamo llegará a tu correo electrónico.
             </li>
             <li className="flex items-center">
               <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
@@ -71,6 +70,9 @@ export default function ReclamoRegistrado() {
             </li>
           </ul>
         </CardContent>
+        <CardFooter className="items-center justify-center">
+          <Button onClick={() => router.push("/")}>Ir al Home</Button>
+        </CardFooter>
       </Card>
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none">

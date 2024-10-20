@@ -164,11 +164,15 @@ export const formReclamoSchema = z.object({
   // moneda: z.enum(["pen", "usd"]),
   moneda: z.string(),
   importeBien: z.number(),
-  descripcionBien: z.string(),
+  descripcionBien: z.string().max(220),
   // 3. Detalle del reclamo y solicitud del reclamante
   tipoSolicitud: z.string(),
-  detalleSolicitud: z.string(),
-  pedidoSolicitud: z.string(),
+  detalleSolicitud: z
+    .string()
+    .max(500, "No puede ingresar más de 500 caracteres"),
+  pedidoSolicitud: z
+    .string()
+    .max(500, "No puede ingresar más de 500 caracteres"),
   isConforme: z.boolean(),
 });
 
@@ -209,6 +213,7 @@ export const formServicioMantenimientoSchema = z.object({
 });
 
 export const formEmailModule = z.object({
+  area: z.string(),
   email: z.string().email({ message: "Debe ingresar un email válido." }),
   isActive: z.boolean(),
 });
