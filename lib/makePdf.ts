@@ -90,7 +90,7 @@ export const makePDFReclamo = (params?: tClaimAll) => {
   doc
     .setFont("times", "normal")
     .setFontSize(8)
-    .text(params!.sedeCompra.toUpperCase(), 85, 36); //dinámico
+    .text(params!.sedeCompra.toUpperCase(), 93, 36, { align: "center" }); //dinámico
 
   doc
     .setFont("times", "normal")
@@ -183,7 +183,7 @@ export const makePDFReclamo = (params?: tClaimAll) => {
   doc
     .setFont("times", "normal")
     .setFontSize(8)
-    .text(params!.vin!.toUpperCase(), 90, 124, { align: "left" }); //dinámico
+    .text(params!.vin!.toUpperCase(), 102, 124, { align: "left" }); //dinámico
   doc
     .setFont("times", "normal")
     .setFontSize(8)
@@ -245,17 +245,17 @@ export const makePDFReclamo = (params?: tClaimAll) => {
 
   doc
     .setFont("times", "normal")
-    .setFontSize(8)
-    .text(params!.detalleSolicitud.toUpperCase(), 38, 154, {
-      align: "left",
-      maxWidth: 145,
+    .setFontSize(7)
+    .text(params!.detalleSolicitud.toUpperCase(), 36, 154, {
+      align: "justify",
+      maxWidth: 150,
     }); //dinámico
   doc
     .setFont("times", "normal")
-    .setFontSize(8)
-    .text(params!.pedidoSolicitud.toUpperCase(), 35, 174, {
+    .setFontSize(7)
+    .text(params!.pedidoSolicitud.toUpperCase(), 34, 174, {
       align: "justify",
-      maxWidth: 108,
+      maxWidth: 112,
     }); //dinámico
 
   doc
@@ -313,7 +313,7 @@ export const makePDFReclamo = (params?: tClaimAll) => {
     .text(legal2, 22, 266, { align: "justify", maxWidth: 160 });
 
   //   doc.autoPrint();
-  // doc.save("Cliente 123456.pdf");
+  // doc.save(`${params?.numeroReclamo}-${params?.numeroDocumento}`); //Para pruebas de descarga
 
-  return doc.output("arraybuffer");
+  return doc.output("arraybuffer"); //Para envío por correo.
 };

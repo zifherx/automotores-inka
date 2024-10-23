@@ -21,6 +21,7 @@ export interface iReclamo extends Document {
   tipoBien: string;
   vin: string;
   placa: string;
+  sedeCodexHR: string;
   sedeCompra: string;
   sedeDealer: iSede;
   moneda: string;
@@ -56,6 +57,7 @@ const reclamoSchema: Schema = new Schema<iReclamo>(
     tipoBien: { type: String },
     vin: { type: String },
     placa: { type: String },
+    sedeCodexHR: { type: String },
     sedeCompra: { type: String },
     sedeDealer: { type: Schema.Types.ObjectId, ref: "Sucursal" },
     moneda: { type: String },

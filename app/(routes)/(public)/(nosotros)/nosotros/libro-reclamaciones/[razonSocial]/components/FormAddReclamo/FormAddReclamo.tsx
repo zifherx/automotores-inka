@@ -47,6 +47,7 @@ import {
   switchRS,
   switchRuc,
 } from "@/lib";
+import { makePDFReclamo } from "@/lib/makePdf";
 
 export function FormAddReclamo(props: iHojaReclamo) {
   const { slugType } = props;
@@ -69,7 +70,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
   const [charCounts, setCharCounts] = useState({
     descripcionBien: 100,
     detalleSolicitud: 500,
-    pedidoSolicitud: 500,
+    pedidoSolicitud: 430,
   });
 
   let today = new Date();
@@ -86,7 +87,9 @@ export function FormAddReclamo(props: iHojaReclamo) {
     setCodigoLRD(
       `LRD-${setNomenclaturaLRD(slugType)}-${formatNumberToSixDigits(
         numeroReclamo + 1
-      )}-${today.getFullYear()}`
+      )}-${today.getFullYear()}-${
+        sedeSelected?.codexHR ? sedeSelected!.codexHR.toUpperCase() : ""
+      }`
     );
   }, [slugType, getNumeroReclamo]);
 
@@ -139,7 +142,8 @@ export function FormAddReclamo(props: iHojaReclamo) {
     try {
       const query = await axios.post("/api/reclamo", {
         ...values,
-        sedeCompra: sedeSelected!.codexHR,
+        sedeCompra: sedeSelected!.ciudad,
+        sedeCodexHR: sedeSelected!.codexHR,
         tipoBien: tipoBienSelected,
         fecha: fechaToday,
         hora: horaToday,
@@ -153,7 +157,8 @@ export function FormAddReclamo(props: iHojaReclamo) {
       if (query.status === 200) {
         const envioCorreo = await axios.post("/api/send-email/reclamo", {
           ...values,
-          sedeCompra: sedeSelected!.codexHR,
+          sedeCompra: sedeSelected!.ciudad,
+          sedeCodexHR: sedeSelected!.codexHR,
           tipoBien: tipoBienSelected,
           fecha: fechaToday,
           hora: horaToday,
@@ -180,14 +185,15 @@ export function FormAddReclamo(props: iHojaReclamo) {
   // const imprimirPDF = (values: HReclamoFormValues) => {
   //   makePDFReclamo({
   //     ...values,
-  //     direccion: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
-  //     sedeCompra: sedeSelected!.codexHR,
+  //     sedeCompra: sedeSelected!.ciudad,
+  //     sedeCodexHR: sedeSelected!.codexHR,
   //     tipoBien: tipoBienSelected,
   //     fecha: fechaToday,
   //     hora: horaToday,
   //     numeroReclamo: codigoLRD,
   //     razonSocial: switchRS(slugType),
   //     rucEmpresa: switchRuc(slugType),
+  //     direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
   //     direccionSede: sedeSelected!.address,
   //   });
   // };
@@ -752,9 +758,9 @@ export function FormAddReclamo(props: iHojaReclamo) {
                       {...field}
                       rows={4}
                       onChange={(e) =>
-                        handleTextareaChange(e, "pedidoSolicitud", 500)
+                        handleTextareaChange(e, "pedidoSolicitud", 430)
                       }
-                      maxLength={500}
+                      maxLength={430}
                     />
                   </FormControl>
                   <FormDescription>

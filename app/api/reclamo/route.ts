@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

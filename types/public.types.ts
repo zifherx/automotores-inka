@@ -198,4 +198,5 @@ export type tClaimAll = HReclamoFormValues & {
   rucEmpresa: string;
   direccionCliente: string;
   direccionSede: string;
+  sedeCodexHR: string;
 };
