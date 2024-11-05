@@ -54,7 +54,7 @@ export function CardContest(props: iCardContest) {
         priority
         className="object-contain h-[200px] mt-10"
       />
-      {contest.isActive ? (
+      {/* {contest.isActive ? (
         <p className="absolute top-0 rigt-0 w-full p-1 text-center text-white bg-green-700 rounded-t-lg">
           Activo
         </p>
@@ -62,7 +62,7 @@ export function CardContest(props: iCardContest) {
         <p className="absolute top-0 left-0 w-full p-1 text-center text-white bg-red-300 rounded-t-lg">
           Inactivo
         </p>
-      )}
+      )} */}
 
       <div className="relative p-3 mt-2">
         <div className="flex flex-col mb-8 gap-0">
@@ -83,7 +83,7 @@ export function CardContest(props: iCardContest) {
           {/* <p>Boton Editar</p> */}
         </div>
 
-        {contest.isActive ? (
+        {/* {contest.isActive ? (
           <Button
             className="w-full mt-3"
             variant="outline"
@@ -97,7 +97,7 @@ export function CardContest(props: iCardContest) {
             Activar
             <Upload className="w-4 h-4 ml-2" />
           </Button>
-        )}
+        )} */}
       </div>
     </div>
   )
