@@ -218,6 +218,25 @@ export const formEmailModule = z.object({
   isActive: z.boolean(),
 });
 
+export const formPremiosSchema = z.object({
+  name: z.string()
+})
+
+export const formContestSchema = z.object({
+  codex: z.string(),
+  title: z.string(),
+  bases: z.string(),
+  premios: z.array(formPremiosSchema),
+  fechaConcurso: z.date()
+})
+
+export const formCybermotorSchema = z.object({
+  name: z.string().min(2).max(50),
+  documento: z.string().length(8),
+  email: z.string().email(),
+  celular: z.string().length(9),
+})
+
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
 export type SucursalFormValues = z.infer<typeof formAddSucursalSchema>;
@@ -233,3 +252,5 @@ export type SolicitudServicioFormValues = z.infer<
   typeof formServicioMantenimientoSchema
 >;
 export type EmailModuleFormValues = z.infer<typeof formEmailModule>;
+export type ContestFormValues = z.infer<typeof formContestSchema>
+export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>

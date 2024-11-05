@@ -551,7 +551,7 @@ export function FormAddModel(props: iFormAddModel) {
 
                   <Button type="button" onClick={() => removeColor(index)}>
                     Quitar Color
-                    <Minus className="w-5 h-5-ml-2" />
+                    <Minus className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               ))}

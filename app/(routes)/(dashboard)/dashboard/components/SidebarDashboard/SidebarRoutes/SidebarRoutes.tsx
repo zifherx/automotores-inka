@@ -9,11 +9,11 @@ import { SidebarItem } from "../SidebarItem";
 
 import {
   listItemMenuADV,
+  listItemMenuComercial,
   listItemMenuGeneral,
   listItemMenuLegal,
   listItemMenuPosventa,
   listItemMenuSistema,
-  listItemMenuVentas,
 } from "@/data";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -23,7 +23,7 @@ export function SidebarRoutes() {
   return (
     <>
       <div className="flex flex-col justify-between h-full">
-        <ScrollArea className="h-[650px] w-full border md:border-none">
+        <ScrollArea className="h-[500px] w-full border md:border-none">
           <div className="p-2 md:p-4">
             <p className="mb-2 text-slate-500">General</p>
             {listItemMenuGeneral.map((items) => (
@@ -45,7 +45,7 @@ export function SidebarRoutes() {
 
               <div className="p-2 md:p-4">
                 <p className="mb-2 text-slate-500">Comercial</p>
-                {listItemMenuVentas.map((items) => (
+                {listItemMenuComercial.map((items) => (
                   <SidebarItem key={items.id} items={items} />
                 ))}
               </div>

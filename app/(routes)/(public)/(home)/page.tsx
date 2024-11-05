@@ -33,9 +33,9 @@ export default async function HomePage() {
       <BrandSlider brands={queryBrands} />
       <ModelosEnLiquidacion />
       <BannerHome
-        imageAlt="Cover Geely 1"
-        imageSource="geely-action1.jpeg"
-        href="/posventa/separa-tu-cita"
+        imageAlt="Cybermotor"
+        imageSource="cybermotor-cta.png"
+        href="#"
       />
       <VideoBienvenida />
       <ServiciosSlider />

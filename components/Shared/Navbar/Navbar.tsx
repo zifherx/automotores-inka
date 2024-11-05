@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,9 +8,11 @@ import { Send } from "lucide-react";
 
 import { MenuDesktop } from "./MenuDesktop";
 import { MenuMobile } from "./MenuMobile";
+import { cn } from "@/lib";
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname()
 
   return (
     <nav className="bg-[#F8F8F8] w-full">
@@ -36,7 +38,8 @@ export function Navbar() {
         <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-5">
           <Link
             href="/new-cotizacion"
-            className="flex items-center gap-3 rounded-md text-lg font-textMedium px-4 py-2 bg-blueInka text-white hover:bg-white hover:text-blueInka hover:border-2 hover:border-blueInka transition-all"
+            // href="/steps-cotizacion"
+            className={cn(pathname === '/new-cotizacion' ? 'hidden' : 'flex items-center gap-3 rounded-md text-lg font-textMedium px-4 py-2 bg-blueInka text-white hover:bg-white hover:text-blueInka hover:border-2 hover:border-blueInka transition-all')}
           >
             Financia aquí
             <Send className="w-5 h-5" strokeWidth={2} />

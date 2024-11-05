@@ -8,6 +8,7 @@ import {
   Images,
   MapPin,
   Scale,
+  ShoppingBag,
   SquareGanttChart,
   Truck,
   Users,
@@ -110,12 +111,18 @@ export const listItemMenuADV: iMenuDashboard[] = [
   // },
 ];
 
-export const listItemMenuVentas: iMenuDashboard[] = [
+export const listItemMenuComercial: iMenuDashboard[] = [
   {
     id: 1,
     icon: BadgeDollarSign,
     label: "Gestión de Cotizaciones",
     href: "/dashboard/admin/quotes",
+  },
+  {
+    id: 2,
+    icon: ShoppingBag,
+    label: "Gestión de Concursos",
+    href: "/dashboard/admin/contest",
   },
 ];
 

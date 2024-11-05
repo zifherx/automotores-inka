@@ -12,6 +12,8 @@ import { iCotizacion } from "@/models/Cotizacion";
 import { iCliente } from "@/models/Cliente";
 import { iCita } from "@/models/Citas";
 import { LucideIcon } from "lucide-react";
+import { iConcurso } from "@/models/Concurso";
+import { iCybermotor } from "@/models/Cybermotor";
 
 // Cover
 export type iListCover = {
@@ -104,3 +106,16 @@ export type tDashbordCard = {
   subtitle: string;
   isLoadingValue?: boolean;
 };
+
+// Concurso Types
+export type iListContest = {
+  contests: iContest[];
+};
+
+export type iCardContest = {
+  contest: iContest;
+};
+
+export type iContest = iConcurso & { _id: string };
+
+export type tCybermotor = iCybermotor & {_id: string}

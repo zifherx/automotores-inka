@@ -12,6 +12,7 @@ import {
 import { iOracion, iReclamosRS } from "@/interfaces";
 import { LucideIcon } from "lucide-react";
 import { HReclamoFormValues } from "@/forms";
+import { Dispatch, SetStateAction } from "react";
 
 export type iVideosYoutube = {
   src: string;
@@ -200,3 +201,18 @@ export type tClaimAll = HReclamoFormValues & {
   direccionSede: string;
   sedeCodexHR: string;
 };
+
+export type tTimelineStep = {
+  number: number
+  title: string
+  isActive: boolean
+}
+
+export type ConcursoDice = {
+  guardarRuedo: () => void
+  resultado: number
+  setResultado:Dispatch<SetStateAction<number>>
+  premio: string
+  setPremio: Dispatch<SetStateAction<string>>
+
+}
