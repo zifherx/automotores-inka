@@ -37,8 +37,8 @@ export function Navbar() {
 
         <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-5">
           <Link
-            href="/new-cotizacion"
-            // href="/steps-cotizacion"
+            // href="/new-cotizacion"
+            href="/steps-cotizacion"
             className={cn(pathname === '/new-cotizacion' ? 'hidden' : 'flex items-center gap-3 rounded-md text-lg font-textMedium px-4 py-2 bg-blueInka text-white hover:bg-white hover:text-blueInka hover:border-2 hover:border-blueInka transition-all')}
           >
             Financia aquí

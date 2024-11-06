@@ -85,6 +85,8 @@ export function CotizadorStep() {
     console.log(values);
   };
 
+  console.log('Marca 1',brands[0]?.slug);
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -94,7 +96,7 @@ export function CotizadorStep() {
               <p className="font-headBold">Elige la marca y modelo</p>
               <p className="font-headLight">del vehículo que quieres</p>
             </CardTitle>
-            <Tabs defaultValue={brands[0]!.slug} className="w-full space-y-5">
+            <Tabs defaultValue={brands[0] !== undefined ? brands[0].slug : ""} className="w-full space-y-5">
               <TabsList className="w-full flex flex-row gap-1">
                 {brands.filter(marca => marca.isActive).map(({ slug, name, _id }) => (
                   <TabsTrigger key={_id} value={slug}>
