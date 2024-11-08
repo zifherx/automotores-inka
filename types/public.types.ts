@@ -6,10 +6,9 @@ import {
   iListBrand,
   iListModels,
   iModelo,
-  iReclamation,
   iSede,
 } from "./admin.types";
-import { iOracion, iReclamosRS } from "@/interfaces";
+import { iOracion } from "@/interfaces";
 import { LucideIcon } from "lucide-react";
 import { HReclamoFormValues } from "@/forms";
 import { Dispatch, SetStateAction } from "react";
@@ -203,16 +202,21 @@ export type tClaimAll = HReclamoFormValues & {
 };
 
 export type tTimelineStep = {
-  number: number
-  title: string
-  isActive: boolean
-}
+  number: number;
+  title: string;
+  isActive: boolean;
+};
 
 export type ConcursoDice = {
-  guardarRuedo: () => void
-  resultado: number
-  setResultado:Dispatch<SetStateAction<number>>
-  premio: string
-  setPremio: Dispatch<SetStateAction<string>>
+  guardarRuedo: () => void;
+  resultado: number;
+  setResultado: Dispatch<SetStateAction<number>>;
+  premio: string;
+  setPremio: Dispatch<SetStateAction<string>>;
+};
 
-}
+export type tBrandGrid = {
+  brands: iBrand[];
+  selectedBrand: iBrand | null;
+  onSelect: (brand: iBrand) => void;
+};

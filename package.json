@@ -51,6 +51,7 @@
     "mongoose": "^8.6.3",
     "next": "14.2.5",
     "nextjs-toploader": "^3.6.15",
+    "qr-image": "^3.2.0",
     "react": "18",
     "react-countup": "^6.5.3",
     "react-day-picker": "^8.10.1",
@@ -65,12 +66,14 @@
     "tailwindcss-animate": "1.0.7",
     "uploadthing": "^7.0.2",
     "uuid": "^11.0.2",
+    "whatsapp-web.js": "^1.23.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.9",
     "@types/mongoose": "^5.11.97",
     "@types/node": "20",
+    "@types/qr-image": "^3.2.9",
     "@types/react": "18",
     "@types/react-dom": "18",
     "eslint": "8",
