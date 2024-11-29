@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { TEmailReclamo } from "@/components/Shared/T-Email-Reclamo";
 import { iMailSystem, tClaimAll } from "@/types";
 import { SystemEmail } from "@/models";
-import { makePDFReclamo } from "@/lib/makePdf";
+import { makePDFCorreoReclamo } from "@/lib/makePdf";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const dataForm: tClaimAll = await req.json();
 
-  const pdfOutput = makePDFReclamo(dataForm);
+  const pdfOutput = makePDFCorreoReclamo(dataForm);
 
   let systemMail: iMailSystem | null;
 

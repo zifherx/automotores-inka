@@ -47,7 +47,6 @@ import {
   switchRS,
   switchRuc,
 } from "@/lib";
-import { makePDFReclamo } from "@/lib/makePdf";
 
 export function FormAddReclamo(props: iHojaReclamo) {
   const { slugType } = props;

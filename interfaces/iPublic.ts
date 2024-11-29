@@ -50,3 +50,9 @@ export interface tProvincia {
 export interface iOracion {
   oracion: string;
 }
+
+export interface iCompany {
+  razonSocial: string;
+  ruc: string;
+  nomenclatura: string;
+}

@@ -1,3 +1,9 @@
+import { ClaimsView } from "./components/ClaimsView";
+
 export default function ClaimPage() {
-  return <div>ClaimPage</div>;
+  return (
+    <>
+      <ClaimsView />
+    </>
+  );
 }

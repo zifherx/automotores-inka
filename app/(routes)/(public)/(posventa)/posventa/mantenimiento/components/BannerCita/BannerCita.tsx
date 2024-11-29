@@ -10,7 +10,6 @@ export function BannerCita() {
             alt="Separa tu cita"
             width={800}
             height={600}
-            objectFit="cover"
           />
         </div>
         <div className="bg-blueInka flex items-center">

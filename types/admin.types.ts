@@ -118,4 +118,9 @@ export type iCardContest = {
 
 export type iContest = iConcurso & { _id: string };
 
-export type tCybermotor = iCybermotor & {_id: string}
+export type tCybermotor = iCybermotor & { _id: string };
+
+export enum enumAction {
+  correo = 1,
+  pdf = 2,
+}

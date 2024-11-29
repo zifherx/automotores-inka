@@ -2,13 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { Trash, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import { Trash, Upload } from "lucide-react";
-import { onToast } from "@/lib/toastMessage";
-import { iCardSede } from "@/types";
 import { BtnEditSucursal } from "../BtnEditSucursal";
+
+import { onToast } from "@/lib";
+import { iCardSede } from "@/types";
+import Image from "next/image";
 
 export function CardSucursal(props: iCardSede) {
   const { sede } = props;
@@ -47,9 +49,11 @@ export function CardSucursal(props: iCardSede) {
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
-      <img
+      <Image
         src={sede.imageUrl}
         alt={sede.name}
+        width={250}
+        height={250}
         className="object-cover mx-auto rounded-t-lg w-full h-[250px]"
       />
       {sede.isActive ? (

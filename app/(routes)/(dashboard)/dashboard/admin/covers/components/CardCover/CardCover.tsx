@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import axios from "axios";
 import { Trash2, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { onToast } from "@/lib/toastMessage";
+
+import { onToast } from "@/lib";
 import { iCardCover } from "@/types";
 
 export function CardCover(props: iCardCover) {
@@ -33,9 +35,11 @@ export function CardCover(props: iCardCover) {
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
-      <img
+      <Image
         src={cover.imageUrl}
         alt={cover.name}
+        width={300}
+        height={250}
         className="object-cover mx-auto mt-8"
       />
       {cover.isActive ? (

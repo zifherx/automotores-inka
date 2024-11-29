@@ -2,10 +2,8 @@
 
 import { useAuth } from "@clerk/nextjs";
 
-import { isAdministrator } from "@/lib/isAdministrator";
 import { Separator } from "@/components/ui/separator";
-
-import { SidebarItem } from "../SidebarItem";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 import {
   listItemMenuADV,
@@ -15,7 +13,9 @@ import {
   listItemMenuPosventa,
   listItemMenuSistema,
 } from "@/data";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { SidebarItem } from "../SidebarItem";
+
+import { isAdministrator } from "@/lib";
 
 export function SidebarRoutes() {
   const { userId } = useAuth();

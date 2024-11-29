@@ -1,3 +1,5 @@
+import { iCompany } from "@/interfaces";
+
 export const switchRS = (rs: string) => {
   switch (rs) {
     case "hr-sai":
@@ -49,4 +51,22 @@ export const horaHoy = (fecha: Date) => {
 export const formatNumberToSixDigits = (num: number): string => {
   const numStr = num.toString();
   return numStr.padStart(8, "0");
+};
+
+export const getCompanyByCode = (codigo: string): iCompany | null => {
+  if (codigo.includes("INKA")) {
+    return {
+      razonSocial: "Automotores Inka SAC",
+      ruc: "20480683839",
+      nomenclatura: "hr-sai",
+    };
+  } else if (codigo.includes("GP")) {
+    return {
+      razonSocial: "Grupo Peramas SAC",
+      ruc: "20612662071",
+      nomenclatura: "hr-gp",
+    };
+  } else {
+    return null;
+  }
 };

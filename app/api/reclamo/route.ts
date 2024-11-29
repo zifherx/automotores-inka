@@ -10,7 +10,14 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Reclamo.find({}).sort({ createdAt: 1 });
+    const query = await Reclamo.find({})
+      .sort({ createdAt: 1 })
+      .populate([
+        {
+          path: "sedeDealer",
+          select: "name ciudad codexHR address",
+        },
+      ]);
 
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
