@@ -82,12 +82,14 @@ export function SidebarRoutes() {
 
           <Separator />
 
-          <div className="p-2 md:p-4">
-            <p className="mb-2 text-slate-500">Sistema</p>
-            {listItemMenuSistema.map((items) => (
-              <SidebarItem key={items.id} items={items} />
-            ))}
-          </div>
+          {isAdministrator(userId) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">Sistema</p>
+              {listItemMenuSistema.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
+            </div>
+          )}
         </ScrollArea>
 
         <div>
