@@ -1,3 +1,4 @@
+import { LucideIcon } from "lucide-react";
 import {
   iCarroceria,
   iCover,
@@ -6,14 +7,15 @@ import {
   iSucursal,
   iReclamo,
   iSystemEmail,
+  iCotizacion,
+  iCliente,
+  iConcurso,
+  iCita,
+  iCybermotor,
 } from "@/models";
 import { iSedeDealer } from "./public.types";
-import { iCotizacion } from "@/models/Cotizacion";
-import { iCliente } from "@/models/Cliente";
-import { iCita } from "@/models/Citas";
-import { LucideIcon } from "lucide-react";
-import { iConcurso } from "@/models/Concurso";
-import { iCybermotor } from "@/models/Cybermotor";
+import { iUser } from "@/interfaces/iAdmin";
+import { User } from "@clerk/nextjs/server";
 
 // Cover
 export type iListCover = {
@@ -120,7 +122,8 @@ export type iContest = iConcurso & { _id: string };
 
 export type tCybermotor = iCybermotor & { _id: string };
 
-export enum enumAction {
-  correo = 1,
-  pdf = 2,
-}
+export type tUserPage = {
+  users: iUser[];
+};
+
+export type tUser = User & iUser;

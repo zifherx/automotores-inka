@@ -15,7 +15,13 @@ import {
 } from "@/data";
 import { SidebarItem } from "../SidebarItem";
 
-import { isAdministrator } from "@/lib";
+import {
+  isAdministrator,
+  isADV,
+  isComercial,
+  isLegal,
+  isPosventa,
+} from "@/lib";
 
 export function SidebarRoutes() {
   const { userId } = useAuth();
@@ -32,52 +38,56 @@ export function SidebarRoutes() {
           </div>
 
           <Separator />
-          {isAdministrator(userId) && (
-            <div>
-              <div className="p-2 md:p-4">
-                <p className="mb-2 text-slate-500">ADV</p>
-                {listItemMenuADV.map((items) => (
-                  <SidebarItem key={items.id} items={items} />
-                ))}
-              </div>
-
-              <Separator />
-
-              <div className="p-2 md:p-4">
-                <p className="mb-2 text-slate-500">Comercial</p>
-                {listItemMenuComercial.map((items) => (
-                  <SidebarItem key={items.id} items={items} />
-                ))}
-              </div>
-
-              <Separator />
-
-              <div className="p-2 md:p-4">
-                <p className="mb-2 text-slate-500">Posventa</p>
-                {listItemMenuPosventa.map((items) => (
-                  <SidebarItem key={items.id} items={items} />
-                ))}
-              </div>
-
-              <Separator />
-
-              <div className="p-2 md:p-4">
-                <p className="mb-2 text-slate-500">Legal</p>
-                {listItemMenuLegal.map((items) => (
-                  <SidebarItem key={items.id} items={items} />
-                ))}
-              </div>
-
-              <Separator />
-
-              <div className="p-2 md:p-4">
-                <p className="mb-2 text-slate-500">Sistema</p>
-                {listItemMenuSistema.map((items) => (
-                  <SidebarItem key={items.id} items={items} />
-                ))}
-              </div>
+          {(isAdministrator(userId) || isADV(userId)) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">ADV</p>
+              {listItemMenuADV.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
             </div>
           )}
+
+          <Separator />
+
+          {(isAdministrator(userId) || isComercial(userId)) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">Comercial</p>
+              {listItemMenuComercial.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
+            </div>
+          )}
+
+          <Separator />
+
+          {(isAdministrator(userId) || isPosventa(userId)) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">Posventa</p>
+              {listItemMenuPosventa.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
+            </div>
+          )}
+
+          <Separator />
+
+          {(isAdministrator(userId) || isLegal(userId)) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">Legal</p>
+              {listItemMenuLegal.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
+            </div>
+          )}
+
+          <Separator />
+
+          <div className="p-2 md:p-4">
+            <p className="mb-2 text-slate-500">Sistema</p>
+            {listItemMenuSistema.map((items) => (
+              <SidebarItem key={items.id} items={items} />
+            ))}
+          </div>
         </ScrollArea>
 
         <div>

@@ -13,3 +13,16 @@ export interface iFilterBar {
   selectedCarroceria: string[];
   setSelectedCarroceria: Dispatch<SetStateAction<string[]>>;
 }
+
+export interface iUser {
+  id: string;
+  banned: boolean;
+  hasImage: boolean;
+  imageUrl: string;
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  createdAt: number;
+  updatedAt: number;
+}

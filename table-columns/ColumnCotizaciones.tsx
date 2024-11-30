@@ -1,9 +1,11 @@
-import { iLead } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { ColumnDef } from "@tanstack/react-table";
+
 import moment from "moment";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+import { iLead } from "@/types";
 
 export const columnsQuotes: ColumnDef<iLead>[] = [
   {

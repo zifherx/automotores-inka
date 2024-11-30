@@ -68,6 +68,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@clerk/types": "^4.35.0",
     "@types/lodash": "^4.17.9",
     "@types/mongoose": "^5.11.97",
     "@types/node": "20",
