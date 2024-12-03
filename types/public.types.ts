@@ -220,3 +220,10 @@ export type tBrandGrid = {
   selectedBrand: iBrand | null;
   onSelect: (brand: iBrand) => void;
 };
+
+export type tCustomvideo = {
+  title: string;
+  parrafo: string | string[];
+  uriVideoYoutube: string;
+  bgSection: string;
+};
