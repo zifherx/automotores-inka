@@ -32,7 +32,7 @@ export default async function HomePage() {
   const dataNewVideoMazda5: tCustomvideo = {
     bgSection: "bg-[url('/images/fondo-tramado-gris.png')]",
     title: "Mazda MX-5: El Placer de la Libertad",
-    uriVideoYoutube: "c0v78UU9HNo?si=El_3lIwhXxeWoSUE",
+    uriVideoYoutube: "OixCoqezLbI?si=SOHLgbqantwV47LY",
     parrafo: [
       "Experimenta la verdadera esencia de conducción en el icónico Mazda MX-5. Cada curva, cada kilómetro, se transforma en una conexión pura entre el camino y tus emociones.",
       "Con su diseño descapotable y su ligereza inigualable, el MX-5 está diseñado para que sientas el viento y la potencia de cada viaje.",
@@ -50,18 +50,18 @@ export default async function HomePage() {
         title={dataNewVideoMazda5.title}
         uriVideoYoutube={dataNewVideoMazda5.uriVideoYoutube}
       />
-      <BannerHome
+      {/* <BannerHome
         imageAlt="Cybermotor"
         imageSource="cybermotor-cta.png"
         href="#"
-      />
-      <VideoBienvenida />
+      /> */}
       <ServiciosSlider />
-      <BannerHome
+      <VideoBienvenida />
+      {/* <BannerHome
         imageAlt="Cover Geely 2"
         imageSource="geely-action2.jpeg"
         href="/posventa/separa-tu-cita"
-      />
+      /> */}
       {/* <AsesoriaAction /> */}
     </>
   );
