@@ -44,7 +44,9 @@ export function CatalogoVehicular() {
   const getModels = async () => {
     const query = await axios.get("/api/modelo");
     if (query.status === 200) {
-      setModels(query.data.obj);
+      const soloActivos = query.data.obj.filter((a: iModelo) => a.isActive);
+      // console.log("Activados",soloActivos)
+      setModels(soloActivos);
     }
   };
 
