@@ -21,6 +21,7 @@ export async function GET(
 
     const query = await Sucursal.find({
       marcasDisponibles: { $in: [marcaFound._id] },
+      isActive: true
     })
       .select("_id name slug address ciudad isActive codexHR marcasDisponibles")
       .populate({
@@ -28,6 +29,7 @@ export async function GET(
         select: "_id name slug imageUrl isActive",
       });
 
+    // return NextResponse.json({total: query.length, all: query});
     return NextResponse.json(query);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
