@@ -83,7 +83,7 @@ export function FormMantenimiento() {
     let sedesSinDuplicados;
     const query = await axios.get("/api/sucursal");
     if (query.status === 200) {
-      sedesSinDuplicados = query.data.filter(
+      sedesSinDuplicados = query.data.obj.filter(
         (item: any, index: any, self: any) =>
           index === self.findIndex((a: any) => a.ciudad === item.ciudad)
       );
