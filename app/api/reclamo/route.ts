@@ -21,7 +21,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
-    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
 
-    const sedeFound = await Sucursal.findOne({ codexHR: data.sedeCompra });
+    const sedeFound = await Sucursal.findOne({ codexHR: data.sedeCodexHR });
 
     if (!sedeFound)
       return NextResponse.json(

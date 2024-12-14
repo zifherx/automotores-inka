@@ -12,7 +12,7 @@ export async function GET(req: Request) {
       path: "marcasDisponibles",
       select: "_id name slug imageUrl",
     });
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }

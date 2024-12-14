@@ -75,9 +75,11 @@ export function FormAddReclamo(props: iHojaReclamo) {
   let today = new Date();
 
   const getNumeroReclamo = async () => {
-    const query = await axios.get("/api/reclamo");
+    const query = await axios.get("/api/reclamo/last");
     if (query.status === 200) {
-      setNumeroReclamo(Number(query.data.total));
+      const lastClaim = query.data[0].numeroReclamo.split("-")[2];
+      const claimNumber = Number(lastClaim);
+      setNumeroReclamo(claimNumber);
     }
   };
 
@@ -95,7 +97,10 @@ export function FormAddReclamo(props: iHojaReclamo) {
   const getSedes = async () => {
     const query = await axios.get(`/api/sucursal`);
     if (query.status === 200) {
-      setSedes(query.data);
+      const sedesSoloActivas = query.data.obj.filter(
+        (sede: iSede) => sede.isActive
+      );
+      setSedes(sedesSoloActivas);
     }
   };
 

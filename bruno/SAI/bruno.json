@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "SAI",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
