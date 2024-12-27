@@ -106,15 +106,15 @@ export const listValores: iListValores[] = [
     id: 4,
     icon: Users,
     title: "Colaboración",
-    descriptionLight: "Trabajamos con ganas,",
-    descriptionDark: "disfrutamos lo que hacemos.",
+    descriptionLight: "Enfrentamos los desafios",
+    descriptionDark: "como un solo equipo.",
   },
   {
     id: 5,
     icon: Blocks,
     title: "Integridad",
-    descriptionLight: "Trabajamos con ganas,",
-    descriptionDark: "disfrutamos lo que hacemos.",
+    descriptionLight: "Generamos confianza",
+    descriptionDark: "haciendo lo correcto.",
   },
 ];
 

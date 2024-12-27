@@ -85,7 +85,7 @@ export function MenuDesktop() {
                 Trabajamos con marcas líderes en el rubro automotriz desde hace
                 más de 12 años.
               </ListItem>
-              <ListItem href="/nosotros/ubicanos" title="Ubícanos">
+              <ListItem href="/nosotros/ubicanos2" title="Ubícanos">
                 Concesionario peruano autorizado con presencia en Chiclayo,
                 Trujillo, Chimbote y Lima.
               </ListItem>
@@ -97,8 +97,9 @@ export function MenuDesktop() {
                 href="/nosotros/libro-reclamaciones"
                 title="Libro de Reclamaciones"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Exercitationem, tempore.
+                En Sociedad Automotores Inka SAC y Grupo Peramas SAC, valoramos
+                tu opinión. Aquí puedes registrar tus inquietudes y sugerencias
+                para mejorar nuestro servicio.
               </ListItem>
             </ul>
           </NavigationMenuContent>
