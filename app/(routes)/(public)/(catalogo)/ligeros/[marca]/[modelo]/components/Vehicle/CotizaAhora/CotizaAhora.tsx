@@ -14,7 +14,8 @@ export function CotizaAhora(props: iCardModel) {
 
   return (
     <div className="p-0 lg:p-6 max-w-7xl mx-auto my-14 lg:my-24">
-      <div className="bg-black rounded-xl p-6 relative lg:p-24">
+      <div className="bg-black bg-[url('/images/banner-interno-modelo.png')] bg-cover bg-center bg-no-repeat rounded-xl p-6 relative lg:p-24">
+        {/* <div className="bg-black rounded-xl p-6 relative lg:p-24"> */}
         <RevealElement
           position="bottom"
           className="flex lg:absolute lg:-right-28 top-0 lg:top-0 "
@@ -36,13 +37,14 @@ export function CotizaAhora(props: iCardModel) {
                 ¿Aún no estás seguro de cotizar?
               </p>
               <h3 className="text-2xl">
-                ¡Entérate de información exclusiva sobre este {name}!
+                ¡Entérate de información exclusiva sobre este{" "}
+                <strong>{name}!</strong>
               </h3>
             </div>
 
             <Link
               href={`/cotizacion?modelo=${params.modelo}`}
-              className="py-2 px-3 bg-transparent mx-auto lg:mx-0 flex items-center rounded-xl text-lg w-fit font-headMedium border-2 border-white hover:bg-white hover:text-black"
+              className="py-2 px-3 bg-white mx-auto lg:mx-0 flex items-center rounded-xl text-lg w-fit font-headMedium border-2 border-white text-black"
             >
               Cotizar ahora
               <PencilLine className="w-5 h-5 ml-2" />

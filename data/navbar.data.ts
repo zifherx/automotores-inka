@@ -3,10 +3,13 @@ import {
   Cable,
   Car,
   CarFront,
+  Cog,
   House,
   Images,
   MapPin,
+  NotebookText,
   Scale,
+  ShoppingBag,
   SquareGanttChart,
   Truck,
   Users,
@@ -19,7 +22,7 @@ export const listServiciosPosventa: iServicioPosventa[] = [
   {
     id: 1,
     title: "Separa tu cita",
-    href: "/posventa/separa-tu-cita",
+    href: "/posventa/mantenimiento",
     description:
       "Ofrecemos mantenimientos preventivos y correctivos para tu vehículo.",
   },
@@ -34,15 +37,15 @@ export const listItemMenuMobile: iMenuMobile[] = [
   },
   {
     id: 2,
-    title: "Catálogo de Ligeros",
+    title: "Catálogo de ligeros",
     href: "/ligeros/catalogo",
     icon: Car,
   },
   {
     id: 3,
-    title: "Catálogo de Camiones",
-    href: "/camiones/catalogo",
-    icon: Truck,
+    title: "Separa tu cita",
+    href: "/posventa/mantenimiento",
+    icon: NotebookText,
   },
   {
     id: 4,
@@ -55,12 +58,6 @@ export const listItemMenuMobile: iMenuMobile[] = [
     title: "Ubícanos",
     href: "/nosotros/ubicanos",
     icon: MapPin,
-  },
-  {
-    id: 6,
-    title: "Separa tu cita",
-    href: "/posventa/mantenimiento",
-    icon: Wrench,
   },
 ];
 
@@ -110,17 +107,29 @@ export const listItemMenuADV: iMenuDashboard[] = [
   {
     id: 2,
     icon: CarFront,
-    label: "Gestión de Modelos",
+    label: "Gestión de Vehículos",
     href: "/dashboard/admin/models",
   },
+  // {
+  //   id: 3,
+  //   icon: Truck,
+  //   label: "Gestión de Camiones",
+  //   href: "/dashboard/admin/trucks",
+  // },
 ];
 
-export const listItemMenuVentas: iMenuDashboard[] = [
+export const listItemMenuComercial: iMenuDashboard[] = [
   {
     id: 1,
     icon: BadgeDollarSign,
     label: "Gestión de Cotizaciones",
     href: "/dashboard/admin/quotes",
+  },
+  {
+    id: 2,
+    icon: ShoppingBag,
+    label: "Gestión de Concursos",
+    href: "/dashboard/admin/contest",
   },
 ];
 
@@ -130,5 +139,20 @@ export const listItemMenuPosventa: iMenuDashboard[] = [
     icon: Wrench,
     label: "Gestión de Citas",
     href: "/dashboard/admin/appointments",
+  },
+];
+
+export const listItemMenuSistema: iMenuDashboard[] = [
+  {
+    id: 1,
+    icon: Cog,
+    label: "Variables del Sistema",
+    href: "/dashboard/admin/parameters",
+  },
+  {
+    id: 2,
+    icon: Users,
+    label: "Gestión de Usuarios",
+    href: "/dashboard/admin/users",
   },
 ];

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 import {
   Tooltip,
@@ -7,14 +7,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { Title } from "@/components/Shared/Title";
 
 import { iColores } from "@/types";
+import { cn } from "@/lib";
 
 export function Color(props: iColores) {
   const { colores } = props;
-
-  const router = useSearchParams();
 
   const [selectedColor, setSelectedColor] = useState(colores[0]);
 
@@ -27,9 +27,16 @@ export function Color(props: iColores) {
         />
         <div className="mt-10">
           <div className="flex flex-col items-center">
-            <div className="flex space-x-4 mb-8">
-              {colores.map((color) => (
-                <TooltipProvider key={color.label}>
+            <div
+              className={cn(
+                colores.length > 6
+                  ? `grid grid-cols-6`
+                  : `grid grid-cols-${colores.length}`,
+                `gap-3 md:flex md:gap-2 mb-8`
+              )}
+            >
+              {colores.map((color, index) => (
+                <TooltipProvider key={index}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
@@ -50,11 +57,14 @@ export function Color(props: iColores) {
               ))}
             </div>
 
-            <div className="w-full max-w-5xl">
-              <img
+            <div className="w-full max-w-5xl mx-auto">
+              <Image
                 src={selectedColor.carColor}
-                className="mx-auto object-cover"
                 alt={selectedColor.label}
+                width={700}
+                height={300}
+                priority
+                className="mx-auto"
               />
             </div>
           </div>

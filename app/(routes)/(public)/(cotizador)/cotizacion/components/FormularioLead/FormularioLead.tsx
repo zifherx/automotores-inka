@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import axios from "axios";
 
 import {
@@ -31,16 +30,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
-import { iSideFormMarca } from "@/types";
+import { iCardModel, iSede } from "@/types";
+import { onToast } from "@/lib";
 
-export function FormularioLead(props: iSideFormMarca) {
-  const { model, listDepartamentos } = props;
+export function FormularioLead(props: iCardModel) {
+  const { model } = props;
+
   const router = useRouter();
 
-  const listTesting = listDepartamentos[0];
-
-  const [sede, setSede] = useState<any>("");
-  const [concesionario, setConcesionario] = useState("");
+  const [sedeSinDuplicados, setSedeSinDuplicados] = useState<iSede[]>([]);
+  const [concesionarios, setConcesionarios] = useState<iSede[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -62,29 +61,72 @@ export function FormularioLead(props: iSideFormMarca) {
     },
   });
 
+  const marcaSelected = model.marca.slug;
+  const watchSede = form.watch("departamento");
+  const watchConcesionario = form.watch("concesionario");
+
+  const getCiudadesByBrand = async (marca: string) => {
+    if (marca !== "" || marca !== undefined) {
+      const query = await axios.get(`/api/sucursal/by-marca/${marca}`);
+      if (query.status === 200) {
+        const ciudadesUnicas = query.data.filter(
+          (item: any, index: any, self: any) =>
+            index === self.findIndex((a: any) => a.ciudad === item.ciudad)
+        );
+
+        setSedeSinDuplicados(ciudadesUnicas);
+        setConcesionarios(query.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (marcaSelected) {
+      getCiudadesByBrand(marcaSelected);
+    }
+  }, [marcaSelected]);
+
   const onSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
     try {
       //   console.log(values);
-      const query = await axios.post("api/send", {
+      const query = await axios.post("api/cotizacion", {
         ...values,
-        departamento: sede,
-        concesionario: concesionario.toUpperCase().replace(/-/g, " "),
+        departamento: watchSede,
+        concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+        slugConcesionario: watchConcesionario,
         marca: model.marca.name,
         carroceria: model.carroceria.name,
         modelo: model.name,
+        slugModelo: model.slug,
         imageUrl: model.imageUrl,
         precioBase: model.precioBase,
       });
 
-      setIsLoading(false);
       if (query.status === 200) {
-        setIsLoading(false);
-        //   router.push(`/gracias/${query.data.id}`);
+        const envioCorreo = await axios.post("/api/send-email/cotizacion", {
+          ...values,
+          departamento: watchSede,
+          concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+          slugConcesionario: watchConcesionario,
+          marca: model.marca.name,
+          carroceria: model.carroceria.name,
+          modelo: model.name,
+          slugModelo: model.slug,
+          imageUrl: model.imageUrl,
+          precioBase: model.precioBase,
+        });
+
+        if (envioCorreo.status === 200) {
+          setIsLoading(false);
+          onToast(query.data.message);
+          router.push(`/gracias/${envioCorreo.data.mail.id}`);
+        }
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
+      onToast("Algo salió mal ❌", "", true);
     }
   };
 
@@ -102,9 +144,9 @@ export function FormularioLead(props: iSideFormMarca) {
   };
 
   return (
-    <div className="p-4 my-10 md:my-0 md:p-10 border rounded-xl md:border-none md:rounded-none">
+    <div className="my-5 md:my-0 p-4 border md:border-0 rounded-2xl md:rounded-none">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           {/* Nombre y Apellido */}
           <FormField
             control={form.control}
@@ -213,11 +255,7 @@ export function FormularioLead(props: iSideFormMarca) {
               <FormItem>
                 <FormLabel className="font-headMedium">Sede</FormLabel>
                 <Select
-                  onValueChange={(value) => {
-                    setSede(value);
-                    setConcesionario("");
-                    return value;
-                  }}
+                  onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -226,10 +264,11 @@ export function FormularioLead(props: iSideFormMarca) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Chiclayo">Chiclayo</SelectItem>
-                    <SelectItem value="Chimbote">Chimbote</SelectItem>
-                    <SelectItem value="Lima">Lima</SelectItem>
-                    <SelectItem value="Trujillo">Trujillo</SelectItem>
+                    {sedeSinDuplicados.map(({ _id, ciudad }) => (
+                      <SelectItem key={_id} value={ciudad}>
+                        {ciudad}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -238,7 +277,7 @@ export function FormularioLead(props: iSideFormMarca) {
           />
 
           {/* Concesionario */}
-          {sede && (
+          {watchSede && (
             <FormField
               control={form.control}
               name="concesionario"
@@ -248,10 +287,7 @@ export function FormularioLead(props: iSideFormMarca) {
                     Concesionario
                   </FormLabel>
                   <Select
-                    onValueChange={(value) => {
-                      setConcesionario(value);
-                      return value;
-                    }}
+                    onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -262,16 +298,18 @@ export function FormularioLead(props: iSideFormMarca) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel className="capitalize">
-                          Sede {sede}
+                          Sede {watchSede}
                         </SelectLabel>
-                        {listTesting[sede].map(({ address, name, slug }) => (
-                          <SelectItem key={slug} value={slug}>
-                            <div className="flex flex-col items-start">
-                              <p className="font-semibold">{name}</p>
-                              <small>{address}</small>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {concesionarios
+                          .filter((value) => value.ciudad === watchSede)
+                          .map(({ _id, name, address, slug }) => (
+                            <SelectItem key={_id} value={slug}>
+                              <div className="flex flex-col items-start">
+                                <p className="font-semibold">{name}</p>
+                                <p className="text-xs">{address}</p>
+                              </div>
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -316,7 +354,7 @@ export function FormularioLead(props: iSideFormMarca) {
             control={form.control}
             name="checkDatosPersonales"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-4">
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -324,7 +362,7 @@ export function FormularioLead(props: iSideFormMarca) {
                     color="#1B5094"
                   />
                 </FormControl>
-                <div className="space-y-1 text-xs leading-tight">
+                <div className="text-xs leading-3 text-left">
                   <FormLabel>
                     Mediante el envío del formulario declaro que he leído la
                     autorización y acepto la{" "}
@@ -349,7 +387,7 @@ export function FormularioLead(props: iSideFormMarca) {
             name="checkPromociones"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-justify font-textMedium leading-tight">
+                <FormLabel className="text-sm leading-4 block text-justify">
                   Automotores Inka podrá enviarme información sobre sus
                   promociones y ofertas comerciales de sus productos y
                   servicios, conforme a la{" "}
@@ -391,13 +429,9 @@ export function FormularioLead(props: iSideFormMarca) {
             )}
           />
 
-          <p className="leading-tight font-textMedium">
+          <p className="leading-tight font-textMedium pt-5">
             La presente cotización se realiza en función a los{" "}
-            <a
-              href="#"
-              target="_blank"
-              className="text-redInka hover:font-semibold"
-            >
+            <a href="#" target="_blank" className="text-redInka">
               términos y condiciones.
             </a>
           </p>
@@ -405,7 +439,7 @@ export function FormularioLead(props: iSideFormMarca) {
           <Button
             type="submit"
             className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            // disabled={!isValid}
+            disabled={isLoading}
           >
             {isLoading ? (
               <>

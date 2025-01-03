@@ -27,3 +27,37 @@ export interface iListLinkUtiles {
   label: string;
   href: string;
 }
+
+export interface iReclamosRS {
+  id: number;
+  name: string;
+  ruta: string;
+}
+
+export interface tDepartamento {
+  id: number;
+  name: string;
+  value: string;
+  provincias: tProvincia[];
+}
+
+export interface tProvincia {
+  id: number;
+  name: string;
+  value: string;
+}
+
+export interface iOracion {
+  oracion: string;
+}
+
+export interface iCompany {
+  razonSocial: string;
+  ruc: string;
+  nomenclatura: string;
+}
+
+export interface iPosition {
+  lat: number;
+  lng: number;
+}

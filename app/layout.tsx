@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 
 import NextTopLoader from "nextjs-toploader";
-import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/toaster";
+import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
+import { Analytics } from "@vercel/analytics/react";
 
 import { cn } from "@/lib/utils";
 
@@ -22,12 +25,14 @@ import {
 } from "../fonts";
 
 import "./globals.css";
+import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: {
     template:
       "%s | Automotores Inka | Concesionario 🇵🇪 | Venta de vehículos nuevos",
-    default: "Automotores Inka",
+    default: "Portal Automotores Inka",
   },
   description:
     "¡Cotiza AQUÍ! Concesionario peruano autorizado con presencia en Chiclayo, Trujillo, Chimbote y Lima. Venta de vehículos nuevos de las marcas Hyundai, Mazda, Subaru, Renault, Suzuki, Changan, JAC, HAVAL, DFSK, Great Wall, Chery, Geely, Mahindra, JMC y BAIC. Venta de vehículos pesados de las marcas JAC Camiones, Hyundai Camiones & Buses y JMC. Trabajamos con marcas líderes en el rubro automotriz desde hace más de 12 años.",
@@ -79,6 +84,9 @@ export const metadata: Metadata = {
   },
 };
 
+const Fb_Pixel_Id = process.env.FACEBOOK_PIXEL_ID;
+const Google_Tag_Id = process.env.GOOGLE_TAG_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -107,7 +115,38 @@ export default function RootLayout({
             shadow="0 0 10px #1B5094,0 0 5px #1B5094"
           />
           {children}
+
+          <ScrollToTop />
           <Toaster />
+          <Analytics />
+          <Script id="facebook-pixel">
+            {`
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', ${Fb_Pixel_Id});
+                fbq('track', 'PageView');`}
+          </Script>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              src="https://www.facebook.com/tr?id=882802410454407&ev=PageView&noscript=1"
+            />
+          </noscript>
+          <Script id="google-tag-manager">
+            {`
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','${Google_Tag_Id}');`}
+          </Script>
         </body>
       </html>
     </ClerkProvider>

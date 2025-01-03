@@ -4,6 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -17,37 +23,37 @@ import {
 import { Car, PlusCircle } from "lucide-react";
 
 import { FormAddModel } from "../FormAddModel";
-import { iBtnAddModel } from "@/types";
 
-export function BtnAddModel(props: iBtnAddModel) {
-  const { brands, chasises } = props;
-
+export function BtnAddModel() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button
-          className="font-semibold text-lg"
-          variant="outline"
-          onClick={() => setOpenDialog(true)}
-        >
-          <span className="hidden sm:flex">Nueva Modelo</span>
-          <PlusCircle className="w-5 h-5 ml-0 sm:ml-2" />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" onClick={() => setOpenDialog(true)}>
+                <PlusCircle className="w-5 h-5" strokeWidth={2} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p className="text-base">Nuevo Modelo</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="mb-5 flex flex-row uppercase gap-3 items-center justify-start">
             Nuevo Modelo
             <Car className="w-5 h-5" />
           </DialogTitle>
           <DialogDescription>
-            <FormAddModel
-              brands={brands}
-              chasises={chasises}
-              setOpenDialog={setOpenDialog}
-            />
+            <FormAddModel setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

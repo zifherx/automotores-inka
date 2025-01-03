@@ -1,41 +1,30 @@
-import { EmailTemplate } from "@/components/Shared/Email-Template";
+import { TEmailReclamo } from "@/components/Shared/T-Email-Reclamo";
+import { iTEmailReclamo } from "@/types";
+
+const objeto: iTEmailReclamo = {
+  nombres: "Fernando Hendrix",
+  apellidos: "Rojas Quezada",
+  fecha: "19/10/24",
+  hora: "11:30 a. m.",
+  numeroReclamo: "LRD-INKA-00000008-2024",
+  razonSocial: "AUTOMOTORES INKA S.A.C.",
+  direccionSede: "AV. ANGAMOS ESTE N°1669, SURQUILLO, LIMA",
+  sedeCompra: "LIMSURQUI",
+};
 
 export default function EmailPage() {
-  const objeto = {
-    nombres: "Fernando Rojas",
-    tipoDocumento: "dni",
-    numeroDocumento: "70365832",
-    email: "frojasq@outlook.com",
-    celular: "924063422",
-    departamento: "Trujillo",
-    concesionario: "SAI CLUSTER",
-    intencionCompra: "esta-semana",
-    checkDatosPersonales: true,
-    checkPromociones: "yes",
-    marca: "Mazda",
-    modelo: "Mazda 3 Sport",
-    imageUrl:
-      "https://utfs.io/f/DvD6I6Zej8uO9UjgTURPCxMOhGYo1cj4yVk6R0tpXuflZvrN",
-    precioBase: 19990,
-  };
   return (
-    <>
-      <EmailTemplate
+    <div className="max-w-3xl mx-auto p-4">
+      <TEmailReclamo
         nombres={objeto.nombres}
-        tipoDocumento={objeto.tipoDocumento}
-        numeroDocumento={objeto.numeroDocumento}
-        email={objeto.email}
-        celular={objeto.celular}
-        departamento={objeto.departamento}
-        concesionario={objeto.concesionario}
-        intencionCompra={objeto.intencionCompra}
-        checkDatosPersonales={objeto.checkDatosPersonales}
-        checkPromociones={objeto.checkPromociones}
-        marca={objeto.marca}
-        modelo={objeto.modelo}
-        imageUrl={objeto.imageUrl}
-        precioBase={objeto.precioBase}
+        apellidos={objeto.apellidos}
+        fecha={objeto.fecha}
+        hora={objeto.hora}
+        numeroReclamo={objeto.numeroReclamo}
+        razonSocial={objeto.razonSocial}
+        direccionSede={objeto.direccionSede}
+        sedeCompra={objeto.sedeCompra}
       />
-    </>
+    </div>
   );
 }

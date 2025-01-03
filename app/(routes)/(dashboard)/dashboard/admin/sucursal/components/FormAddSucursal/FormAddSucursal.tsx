@@ -39,6 +39,7 @@ export function FormAddSucursal(props: iFormAddSucursal) {
     defaultValues: {
       name: "",
       slug: "",
+      codexHR: "",
       imageUrl: "",
       ciudad: "",
       address: "",
@@ -58,7 +59,7 @@ export function FormAddSucursal(props: iFormAddSucursal) {
         setOpenDialog(false);
         router.refresh();
       }
-    } catch (er) {
+    } catch (err) {
       onToast("Algo salió mal ❌", "", true);
     }
   };
@@ -116,6 +117,21 @@ export function FormAddSucursal(props: iFormAddSucursal) {
                 <FormLabel className="font-headMedium">Slug de Sede</FormLabel>
                 <FormControl>
                   <Input placeholder="Slug..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* CodexHR */}
+          <FormField
+            control={form.control}
+            name="codexHR"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Codex HR</FormLabel>
+                <FormControl>
+                  <Input placeholder="Limsur..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

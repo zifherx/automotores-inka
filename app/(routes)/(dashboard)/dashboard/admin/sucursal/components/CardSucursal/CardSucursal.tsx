@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { Trash, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import { Trash, Upload } from "lucide-react";
-import { onToast } from "@/lib/toastMessage";
+import { BtnEditSucursal } from "../BtnEditSucursal";
+
+import { onToast } from "@/lib";
 import { iCardSede } from "@/types";
+import Image from "next/image";
 
 export function CardSucursal(props: iCardSede) {
   const { sede } = props;
@@ -46,9 +49,11 @@ export function CardSucursal(props: iCardSede) {
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
-      <img
+      <Image
         src={sede.imageUrl}
         alt={sede.name}
+        width={250}
+        height={250}
         className="object-cover mx-auto rounded-t-lg w-full h-[250px]"
       />
       {sede.isActive ? (
@@ -66,7 +71,19 @@ export function CardSucursal(props: iCardSede) {
           <p className="text-lg min-h-16 lg:min-h-fit font-bold">
             Alt: {sede.name}
           </p>
-          <p className="text-xs">Slug: {sede.slug}</p>
+          <div className="flex justify-between">
+            <p className="text-xs">Slug: {sede.slug}</p>
+            <p className="text-xs font-bold mb-3">
+              {" "}
+              {sede.codexHR ? sede.codexHR.toUpperCase() : ""}
+            </p>
+          </div>
+          <p className="text-xs">{sede.address}</p>
+          <p className="text-xs font-semibold">Coordenadas:</p>
+          <p className="text-xs ml-2">Latitud:{sede.coordenadasMapa.latitud}</p>
+          <p className="text-xs ml-2">
+            Longitud:{sede.coordenadasMapa.longitud}
+          </p>
         </div>
 
         <div className="flex items-center justify-between gap-4">
@@ -78,7 +95,7 @@ export function CardSucursal(props: iCardSede) {
             Eliminar
             <Trash className="w-4 h-4 ml-2" />
           </Button>
-          <p>Boton Editar</p>
+          <BtnEditSucursal sede={sede} />
         </div>
 
         {sede.isActive ? (

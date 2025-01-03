@@ -1,12 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
+import { LucideIcon } from "lucide-react";
+import { Map } from "leaflet";
+
 import { iColor, iGallery } from "@/models";
 import {
   iBrand,
   iCardModel,
+  iCardSede,
   iChasis,
+  iListBrand,
   iListModels,
+  iListSede,
   iModelo,
   iSede,
 } from "./admin.types";
+import { iOracion, iPosition } from "@/interfaces";
+import { HReclamoFormValues } from "@/forms";
 
 export type iVideosYoutube = {
   src: string;
@@ -58,8 +67,13 @@ export type iFiltros = {
   };
 };
 
+export type tFilterUbicanos = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
 export type iListVehicle = {
-  models: iModelo[] | undefined;
+  models: iModelo[];
 };
 
 export type iCardProductModel = {
@@ -77,6 +91,7 @@ export type iCardObjetivo = {
 export type iBannerHome = {
   imageSource: string;
   imageAlt: string;
+  href?: string;
 };
 
 export type iCardUbicanos = {
@@ -99,6 +114,10 @@ export type iCotizacionMarca = iListModels & {
   listDepartamentos: iSedeDealer[];
 };
 
+export type iCotizacionCero = iListBrand & {
+  listDepartamentos: iSedeDealer[];
+};
+
 export type iSideFormMarca = iCardModel & {
   listDepartamentos: iSedeDealer[];
 };
@@ -113,7 +132,7 @@ export interface iConcesionario {
   address: string;
 }
 
-export type iEmailTemplate = {
+export interface iTEmailCotizacion {
   nombres: string;
   tipoDocumento: string;
   numeroDocumento: string;
@@ -128,4 +147,106 @@ export type iEmailTemplate = {
   modelo: string;
   imageUrl: string;
   precioBase: number;
+  tcambio: number;
+}
+
+export interface iTEmailReclamo {
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  nombres: string;
+  apellidos: string;
+  sedeCompra: string;
+  razonSocial: string;
+  direccionSede: string;
+}
+
+export type iCustomMessage = {
+  message: string;
+  volverInicio: () => void;
+};
+
+export type iCaratulaReclamo = {
+  slugType: string;
+};
+
+export type iHojaReclamo = {
+  slugType: string;
+};
+
+export type iParrafo = {
+  id?: number;
+  title: string;
+  parrafos: iOracion[];
+};
+
+export type iCustomIconTitle = {
+  icon: LucideIcon;
+  titleDark: string;
+  titleLight: string;
+  className: string;
+};
+
+export type iTipoServicio = {
+  id: number;
+  label: string;
+  value: string;
+};
+
+export type iShowingCar = {
+  vehicle: iModelo;
+};
+
+export type tClaimAll = HReclamoFormValues & {
+  sedeCompra: string;
+  tipoBien: string;
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  razonSocial: string;
+  rucEmpresa: string;
+  direccionCliente: string;
+  direccionSede: string;
+  sedeCodexHR: string;
+};
+
+export type tTimelineStep = {
+  number: number;
+  title: string;
+  isActive: boolean;
+};
+
+export type ConcursoDice = {
+  guardarRuedo: () => void;
+  resultado: number;
+  setResultado: Dispatch<SetStateAction<number>>;
+  premio: string;
+  setPremio: Dispatch<SetStateAction<string>>;
+};
+
+export type tBrandGrid = {
+  brands: iBrand[];
+  selectedBrand: iBrand | null;
+  onSelect: (brand: iBrand) => void;
+};
+
+export type tCustomvideo = {
+  title: string;
+  parrafo: string | string[];
+  uriVideoYoutube: string;
+  bgSection: string;
+};
+
+export type tMarkerLocation = iCardSede & {
+  selectionMarker?: (position: iPosition, fn: fnType) => void;
+};
+
+type fnType = Map;
+
+export type tsidebarLocation = iListSede & {
+  onSelectDealer: (dealer: iSede) => void;
+};
+
+export type tLocationMap = iListSede & {
+  mapCenter: [number, number];
 };

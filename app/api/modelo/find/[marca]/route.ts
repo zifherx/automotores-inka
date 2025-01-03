@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { dbConnect } from "@/lib";
 import Modelo from "@/models/Modelo";
 import Marca from "@/models/Marca";
+
+import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";
 
 export async function GET(
@@ -14,8 +14,6 @@ export async function GET(
   await dbConnect();
 
   try {
-    // if (!userId) return new NextResponse("No Autorizado", { status: 401 });
-
     const marcaFound = await Marca.findOne({ slug: marca });
 
     if (!marcaFound)

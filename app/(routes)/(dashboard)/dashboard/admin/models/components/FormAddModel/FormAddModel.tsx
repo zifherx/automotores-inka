@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Minus, Plus, Send } from "lucide-react";
+import axios from "axios";
 
 import {
   Form,
@@ -34,11 +34,13 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { onToast } from "@/lib";
 import { UploadButton } from "@/utils/uploadthing";
 import { formAddModeloSchema, ModelFormValues } from "@/forms";
-import { iFormAddModel } from "@/types";
+import { iBrand, iChasis, iFormAddModel } from "@/types";
 
 export function FormAddModel(props: iFormAddModel) {
-  const { brands, chasises, setOpenDialog } = props;
+  const { setOpenDialog } = props;
 
+  const [marcas, setMarcas] = useState<iBrand[]>([]);
+  const [carrocerias, setCarrocerias] = useState<iChasis[]>([]);
   const [imageBaseUploaded, setImageBaseUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [imageColor, setImageColor] = useState<string[]>([]);
@@ -56,6 +58,8 @@ export function FormAddModel(props: iFormAddModel) {
       fichaTecnica: "",
       isEntrega48H: false,
       isGLP: false,
+      isLiquidacion: false,
+      isNuevo: false,
       isActive: false,
       marca: "",
       carroceria: "",
@@ -67,6 +71,25 @@ export function FormAddModel(props: iFormAddModel) {
       galeria: [],
     },
   });
+
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if (query.status === 200) {
+      setMarcas(query.data.obj);
+    }
+  };
+
+  const getChasis = async () => {
+    const query = await axios.get("/api/chasis");
+    if (query.status === 200) {
+      setCarrocerias(query.data.obj);
+    }
+  };
+
+  useEffect(() => {
+    getBrands();
+    getChasis();
+  }, []);
 
   const {
     fields: colorFields,
@@ -106,22 +129,25 @@ export function FormAddModel(props: iFormAddModel) {
 
   const onSubmit = async (values: ModelFormValues) => {
     // console.log(values);
+    setBtnLoading(true);
     try {
       const query = await axios.post("/api/modelo/", values);
-
+      // console.log(query);
       if (query.status === 200) {
-        onToast("Modelo creado ✅");
+        onToast(`${query.data.message} ✅`);
+        setBtnLoading(false);
         setOpenDialog(false);
         router.refresh();
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      setBtnLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }
   };
 
   return (
-    <ScrollArea className="h-96 w-full">
+    <ScrollArea className="h-96 w-full md:h-[700px]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid gap-3 md:gap-5">
@@ -233,7 +259,7 @@ export function FormAddModel(props: iFormAddModel) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {brands.map(({ _id, name, imageUrl, slug }) => (
+                      {marcas.map(({ _id, name, imageUrl, slug }) => (
                         <SelectItem key={_id} value={slug}>
                           <div className="flex justify-start">
                             <Image
@@ -272,7 +298,7 @@ export function FormAddModel(props: iFormAddModel) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {chasises.map(({ _id, name, slug }) => (
+                      {carrocerias.map(({ _id, name, slug }) => (
                         <SelectItem key={_id} value={slug}>
                           {name}
                         </SelectItem>
@@ -359,6 +385,46 @@ export function FormAddModel(props: iFormAddModel) {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>GLP</FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-5">
+              {/* isLiquidacion */}
+              <FormField
+                control={form.control}
+                name="isLiquidacion"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Liquidación</FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              {/* isNuevo */}
+              <FormField
+                control={form.control}
+                name="isNuevo"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Nuevo</FormLabel>
                     </div>
                   </FormItem>
                 )}
@@ -485,7 +551,7 @@ export function FormAddModel(props: iFormAddModel) {
 
                   <Button type="button" onClick={() => removeColor(index)}>
                     Quitar Color
-                    <Minus className="w-5 h-5-ml-2" />
+                    <Minus className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               ))}
@@ -552,7 +618,7 @@ export function FormAddModel(props: iFormAddModel) {
                                   `galeria.${index}.imageUrl`,
                                   res?.[0].url
                                 );
-                                setImageColor([...imageGaleria, field.name]);
+                                setImageGaleria([...imageGaleria, field.name]);
                               }}
                               onUploadError={(err: Error) => {
                                 console.log(err);

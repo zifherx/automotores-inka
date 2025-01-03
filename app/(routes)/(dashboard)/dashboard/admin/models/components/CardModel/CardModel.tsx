@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { onToast } from "@/lib/toastMessage";
 import { iCardModel } from "@/types";
 import { formatUSDPrice } from "@/lib";
+import Image from "next/image";
 
 export function CardModel(props: iCardModel) {
   const { model } = props;
@@ -46,11 +48,19 @@ export function CardModel(props: iCardModel) {
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
-      <img
+      <Image
         src={model.imageUrl}
         alt={model.name}
-        className="object-cover mx-auto"
+        width={600}
+        height={300}
+        priority
+        className="object-contain h-[200px] mt-10"
       />
+      {/* <img
+        src={model.imageUrl}
+        alt={model.name}
+        className="object-cover mx-auto mt-8"
+      /> */}
       {model.isActive ? (
         <p className="absolute top-0 rigt-0 w-full p-1 text-center text-white bg-green-700 rounded-t-lg">
           Activo

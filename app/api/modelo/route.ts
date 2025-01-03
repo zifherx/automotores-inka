@@ -1,18 +1,44 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { dbConnect } from "@/lib";
+
 import Marca from "@/models/Marca";
 import Carroceria from "@/models/Carroceria";
 import Modelo from "@/models/Modelo";
+
+import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";
+
+export async function GET(req: Request) {
+  await dbConnect();
+
+  try {
+    const query: iModelo[] = await Modelo.find({})
+      .select(
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP"
+      )
+      .populate([
+        {
+          path: "marca",
+          select: "_id name slug imageUrl",
+        },
+        {
+          path: "carroceria",
+          select: "_id name slug",
+        },
+      ]);
+
+    return NextResponse.json({ total: query.length, obj: query });
+  } catch (err) {
+    // console.log(err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
 
 export async function POST(req: Request) {
   await dbConnect();
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const data = await req.json();
-
-    // console.log("server:", data);
 
     const brandFound = await Marca.findOne({ slug: data.marca });
     if (!brandFound)
@@ -37,13 +63,14 @@ export async function POST(req: Request) {
       carroceria: chasisFound,
     }) as iModelo;
 
-    console.log("modelo:", newModelo);
-
     const query = await newModelo.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      message: `Modelo ${data.name} creado con éxito`,
+      obj: query,
+    });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

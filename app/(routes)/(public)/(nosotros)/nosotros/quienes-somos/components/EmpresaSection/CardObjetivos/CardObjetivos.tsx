@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+
 import { cn } from "@/lib";
 
 import { iCardObjetivo } from "@/types";
@@ -11,9 +15,11 @@ export function CardObjetivos(props: iCardObjetivo) {
         `relative bg-${bgDescription} p-0 rounded-lg shadow-lg hover:shadow-2xl mt-8 text-white`
       )}
     >
-      <img
+      <Image
         src={`/images/nosotros/${imageUrl}`}
         alt={title}
+        width={400}
+        height={350}
         className="rounded-t-lg w-full md:mx-auto"
       />
 

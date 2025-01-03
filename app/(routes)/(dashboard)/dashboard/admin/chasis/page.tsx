@@ -8,14 +8,14 @@ import { ListChasis } from "./components/ListChasis";
 import { dbConnect, isAdministrator, serializeDocument } from "@/lib";
 import Carroceria from "@/models/Carroceria";
 
-export async function loadChasis() {
+async function loadChasis() {
   await dbConnect();
   const query = await Carroceria.find();
   return query.map(serializeDocument);
 }
 
 export default async function ChasisPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

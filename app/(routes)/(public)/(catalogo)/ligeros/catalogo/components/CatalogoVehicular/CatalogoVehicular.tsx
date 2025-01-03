@@ -2,25 +2,59 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import axios from "axios";
 
 import { Breadcrumbs } from "@/components/Shared/Breadcrumbs";
 
-import { iCatalogoLigeros, iModelo } from "@/types";
+import { iBrand, iChasis, iModelo } from "@/types";
 import { Filtros } from "../Filtros";
 import { ListVehicles } from "../ListVehicles";
 
-export function CatalogoVehicular(props: iCatalogoLigeros) {
-  const { brands, chasises, models } = props;
-
+export function CatalogoVehicular() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const marcaFound = searchParams.get("marca");
 
-  const [vehiculosFiltrados, setVehiculosFiltrados] = useState<iModelo[]>();
+  const [marcas, setMarcas] = useState<iBrand[]>([]);
+  const [chasises, setChasises] = useState<iChasis[]>([]);
+  const [models, setModels] = useState<iModelo[]>([]);
+  const [vehiculosFiltrados, setVehiculosFiltrados] = useState<iModelo[]>([]);
   const [filtros, setFiltros] = useState({
     marca: marcaFound ? marcaFound : "",
     carroceria: "",
   });
+
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if (query.status === 200) {
+      const brandsActive: iBrand[] = query.data.obj.filter(
+        (a: iBrand) => a.isActive
+      );
+      setMarcas(brandsActive);
+    }
+  };
+
+  const getChasises = async () => {
+    const query = await axios.get("/api/chasis");
+    if (query.status === 200) {
+      setChasises(query.data.obj);
+    }
+  };
+
+  const getModels = async () => {
+    const query = await axios.get("/api/modelo");
+    if (query.status === 200) {
+      const soloActivos = query.data.obj.filter((a: iModelo) => a.isActive);
+      // console.log("Activados",soloActivos)
+      setModels(soloActivos);
+    }
+  };
+
+  useEffect(() => {
+    getBrands();
+    getChasises();
+    getModels();
+  }, []);
 
   useEffect(() => {
     let filtered = models;
@@ -62,11 +96,11 @@ export function CatalogoVehicular(props: iCatalogoLigeros) {
 
   return (
     <div className="bg-plomoInka">
-      <div className="md:max-w-screen-2xl md:mx-auto p-8 md:p-4">
+      <div className="md:max-w-screen-2xl md:mx-auto p-6 md:p-4">
         <Breadcrumbs marca={filtros.marca} />
-        <div className="flex flex-col lg:flex-row gap-5">
+        <div className="flex flex-col lg:flex-row gap-8">
           <Filtros
-            brands={brands}
+            brands={marcas}
             chasises={chasises}
             clearFilter={clearFilters}
             filters={filtros}

@@ -1,9 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import { useParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { RevealElement } from "@/components/Shared/RevealElement";
 
 import { iCardModel } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
+import { cn } from "@/lib";
 
 export function Banner(props: iCardModel) {
   const { model } = props;
@@ -12,36 +16,46 @@ export function Banner(props: iCardModel) {
   const router = useRouter();
   const params = useParams();
 
+  const rutaTestDrive =
+    "https://api.whatsapp.com/send/?phone=51972051479&text=Hola+%2AAutomotores+Inka%2A%21+Quiero+hacer+un+Test+Drive+en+Automotores+Inka+https%3A%2F%2Fautomotoresinka.pe&type=phone_number&app_absent=0";
+
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="flex justify-between items-center">
-        <div className="w-[160px] lg:w-[280px] p-0 lg:p-6">
-          <div className="uppercase text-left">
-            <p className="text-2xl lg:text-4xl font-headRegular">
-              {marca.name}
-            </p>
+      <div className="flex flex-col md:flex-row md:justify-between py-5 px-1 items-center gap-5">
+        <div className="flex flex-row md:flex-col gap-5 justify-between w-full md:w-[400px]">
+          <div className="w-[220px] md:w-[350px]">
+            <p className="text-xl lg:text-4xl font-headRegular">{marca.name}</p>
             <p className="text-3xl lg:text-5xl font-headMedium">{name}</p>
           </div>
-          <div className="mt-5 flex flex-col gap-y-3">
-            <Button
-              className="bg-redInka text-white text-sm w-fit md:w-full md:text-base rounded-full hover:bg-redDarkInka font-textMedium"
-              onClick={() => router.push(`/cotizacion?modelo=${params.modelo}`)}
+          <div className="flex flex-col gap-2 w-full md:w-[250px] my-auto">
+            <Link
+              href={`/cotizacion?modelo=${params.modelo}`}
+              className={cn(
+                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium ",
+                "hover:bg-white hover:text-redInka hover:border hover:border-redInka hover:underline"
+              )}
             >
               Cotízalo ahora
-            </Button>
-            <Button
-              variant="outline"
-              className="border border-redInka rounded-full text-sm w-fit md:w-full md:text-base text-redInka font-textMedium hover:bg-white hover:text-redDarkInka"
+            </Link>
+            <Link
+              className={cn(
+                "px-4 py-2 text-center border border-redInka rounded-full text-sm w-full md:text-base text-redInka font-textMedium ",
+                "hover:bg-redInka hover:text-white hover:underline"
+              )}
+              href={rutaTestDrive}
             >
               Solicita un test drive
-            </Button>
+            </Link>
           </div>
         </div>
-        <RevealElement position="bottom" className="lg:-mr-28">
-          <img
-            className="w-[600px] h-auto object-cover drop-shadow-xl"
+        <RevealElement position="bottom" className="relative w-full">
+          <Image
+            className="object-cover"
             src={imageUrl}
             alt={name}
+            width={600}
+            height={500}
+            priority
           />
         </RevealElement>
       </div>

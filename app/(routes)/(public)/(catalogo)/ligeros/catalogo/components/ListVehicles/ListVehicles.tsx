@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardProductModel } from "@/components/Shared/CardProductModel";
 
-import { Frown } from "lucide-react";
 import { iListVehicle, iModelo } from "@/types";
+import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
 export function ListVehicles(props: iListVehicle) {
   const { models } = props;
@@ -16,14 +16,14 @@ export function ListVehicles(props: iListVehicle) {
     setCounterVehicles(counterVehicles + 3);
   };
 
-  if (!dataFilteredVehicles || !models) {
-    return;
-  }
+  // if (!dataFilteredVehicles || !models) {
+  //   return <AutoLoadingSpinner />;
+  // }
 
   return (
     <section>
       <h2 className="text-xl font-bold uppercase mb-3 text-blueInka">
-        Ofertas en Autos, SUV's y Pickup's
+        Ofertas en Autos, SUVs y Pickups
       </h2>
 
       <p className="text-grisDarkInka text-justify mb-10 leading-snug">
@@ -32,11 +32,12 @@ export function ListVehicles(props: iListVehicle) {
         Comienza el sueño de tu nuevo auto con nosotros.
       </p>
 
-      {models?.length === 0 && (
-        <p className="text-3xl text-center">
-          No se han encontrado vehículos con estos filtros
-          <Frown className="w-20 h-20 mx-auto" />
-        </p>
+      {models.length === 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5">
+          {[...Array(3)].map((_, index) => (
+            <CardSkeletonModel key={index} />
+          ))}
+        </div>
       )}
 
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

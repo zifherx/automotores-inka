@@ -28,7 +28,7 @@ export function CardUbicanos(props: iCardUbicanos) {
         <h2 className="font-bold text-lg text-blueInka drop-shadow-md">
           {name}
         </h2>
-        <p className="font-light font-base">{address}</p>
+        <p className="font-light font-base text-xs">{address}</p>
         <h2 className="font-bold text-grisDarkInka mt-4">
           Horario de atención
         </h2>

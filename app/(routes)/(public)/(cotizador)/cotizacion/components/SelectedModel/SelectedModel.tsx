@@ -1,7 +1,7 @@
-import { formatPENPrice, formatUSDPrice } from "@/lib";
+import Image from "next/image";
 
 import { iCardModel } from "@/types";
-import { Car } from "lucide-react";
+import { formatPENPrice, formatUSDPrice } from "@/lib";
 
 export function SelectedModel(props: iCardModel) {
   const { model } = props;
@@ -11,15 +11,16 @@ export function SelectedModel(props: iCardModel) {
 
   return (
     <div className="flex flex-col md:pt-24">
-      <div className="sticky top-0 z-20 text-center">
-        <img
-          className="object-cover w-full hover:drop-shadow-lg "
+      <div className="sticky top-10 z-20 text-center">
+        <Image
           src={imageUrl}
           alt={name}
+          width={800}
+          height={500}
+          className="object-cover w-full"
         />
         <p className="uppercase font-headLight text-2xl">{marca.name}</p>
         <p className="flex items-center justify-center gap-3 text-xl uppercase">
-          {/* <Car className="w-5 h-5 ml-3" /> */}
           {carroceria.name}
         </p>
         <p className="uppercase font-headRegular text-3xl">{name}</p>

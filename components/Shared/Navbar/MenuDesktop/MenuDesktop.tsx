@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
+
 import { ListItem } from "../ListItem";
 import {
   NavigationMenu,
@@ -14,12 +17,29 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import { listMarcas } from "@/data";
 import { listServiciosPosventa } from "@/data";
+import { iBrand } from "@/types";
 
 export function MenuDesktop() {
+  const [listBrands, setListBrands] = useState<iBrand[]>([]);
+
   const linkBolsaTrabajo =
     "https://pe.computrabajo.com/sociedad%20de%20automotores%20inka%20sac/empleos";
+
+  const getBrands = async () => {
+    try {
+      const query = await axios.get("/api/marca");
+      if (query.status === 200) {
+        setListBrands(query.data.obj);
+      }
+    } catch (err) {
+      setListBrands([]);
+    }
+  };
+
+  useEffect(() => {
+    getBrands();
+  }, []);
 
   return (
     <NavigationMenu className="z-50">
@@ -42,12 +62,12 @@ export function MenuDesktop() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-5 md:w-[500px] lg:grid-cols-2">
-              {listMarcas.map(
-                ({ id, name, value, isActive }) =>
+              {listBrands.map(
+                ({ _id, name, isActive, slug }) =>
                   isActive && (
                     <ListItem
-                      key={id}
-                      href={`/ligeros/catalogo?marca=${value}`}
+                      key={_id}
+                      href={`/ligeros/catalogo?marca=${slug}`}
                       title={name}
                     />
                   )
@@ -65,7 +85,7 @@ export function MenuDesktop() {
                 Trabajamos con marcas líderes en el rubro automotriz desde hace
                 más de 12 años.
               </ListItem>
-              <ListItem href="/nosotros/ubicanos" title="Ubícanos">
+              <ListItem href="/nosotros/ubicanos2" title="Ubícanos">
                 Concesionario peruano autorizado con presencia en Chiclayo,
                 Trujillo, Chimbote y Lima.
               </ListItem>
@@ -77,8 +97,9 @@ export function MenuDesktop() {
                 href="/nosotros/libro-reclamaciones"
                 title="Libro de Reclamaciones"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Exercitationem, tempore.
+                En Sociedad Automotores Inka SAC y Grupo Peramas SAC, valoramos
+                tu opinión. Aquí puedes registrar tus inquietudes y sugerencias
+                para mejorar nuestro servicio.
               </ListItem>
             </ul>
           </NavigationMenuContent>

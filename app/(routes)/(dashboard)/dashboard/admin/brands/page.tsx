@@ -8,14 +8,14 @@ import { ListBrands } from "./components/ListBrands";
 import { dbConnect, isAdministrator, serializeDocument } from "@/lib";
 import Marca from "@/models/Marca";
 
-export async function loadBrands() {
+async function loadBrands() {
   await dbConnect();
   const query = await Marca.find();
   return query.map(serializeDocument);
 }
 
 export default async function BrandsPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

@@ -7,9 +7,12 @@ import { Trash, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { onToast } from "@/lib/toastMessage";
 import { iCardBrand } from "@/types";
+import Image from "next/image";
+import { cn } from "@/lib";
 
 export function CardBrand(props: iCardBrand) {
   const { brand } = props;
+  const { name, isActive, imageUrl, slug } = brand;
 
   const router = useRouter();
 
@@ -33,12 +36,20 @@ export function CardBrand(props: iCardBrand) {
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
-      <img
+      <Image
+        src={imageUrl}
+        alt={name}
+        width={300}
+        height={150}
+        priority
+        className={cn("object-cover h-[150px] mx-auto mt-10")}
+      />
+      {/* <img
         src={brand.imageUrl}
         alt={brand.name}
         className="object-cover mx-auto"
-      />
-      {brand.isActive ? (
+      /> */}
+      {isActive ? (
         <p className="absolute top-0 rigt-0 w-full p-1 text-center text-white bg-green-700 rounded-t-lg">
           Activo
         </p>
@@ -50,10 +61,8 @@ export function CardBrand(props: iCardBrand) {
 
       <div className="relative p-5">
         <div className="flex flex-col mb-8 gap-x-4">
-          <p className="text-lg min-h-16 lg:min-h-fit font-bold">
-            Alt: {brand.name}
-          </p>
-          <p className="text-xs">Slug: {brand.slug}</p>
+          <p className="text-lg min-h-16 lg:min-h-fit font-bold">Alt: {name}</p>
+          <p className="text-xs">Slug: {slug}</p>
         </div>
 
         <div className="flex items-center justify-between gap-4">

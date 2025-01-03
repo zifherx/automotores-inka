@@ -15,3 +15,11 @@ export const formatUSDPrice = (price: number) => {
     roundingIncrement: 10,
   }).format(price);
 };
+
+export const formatPENTipoCambio = (price: number) => {
+  return Intl.NumberFormat("es-PE", {
+    style: "currency",
+    currency: "PEN",
+    maximumFractionDigits: 2,
+  }).format(price);
+};

@@ -23,6 +23,7 @@ export interface iGallery {
   id: number;
   name: string;
   imageUrl: string;
+  size?: string;
 }
 
 export interface iModel extends Document {
@@ -35,8 +36,10 @@ export interface iModel extends Document {
   carroceria: iChasis;
   isEntrega48H: boolean;
   isGLP: boolean;
+  isLiquidacion: boolean;
+  isNuevo: boolean;
   colores: iColor[];
-  features: iFeatures[];
+  features: iFeatures;
   galeria: iGallery[];
   isActive: boolean;
   createdBy: string;
@@ -51,6 +54,8 @@ const modeloSchema: Schema = new Schema<iModel>(
     fichaTecnica: { type: String },
     isEntrega48H: { type: Boolean },
     isGLP: { type: Boolean },
+    isLiquidacion: { type: Boolean, default: false },
+    isNuevo: { type: Boolean, default: false },
     colores: [
       {
         label: { type: String },

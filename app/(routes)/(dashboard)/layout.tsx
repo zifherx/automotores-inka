@@ -1,7 +1,15 @@
 import { ReactNode } from "react";
+import type { Metadata } from "next";
 
 import { SidebarDashboard } from "./dashboard/components/SidebarDashboard";
 import { NavbarDashboard } from "./dashboard/components/NavbarDashboard";
+
+export const metadata: Metadata = {
+  title: {
+    default: "CMS Dashboard",
+    template: "",
+  },
+};
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +19,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="w-full h-full xl:ml-80">
         <NavbarDashboard />
-        <div className="p-6 h-max">{children}</div>
+        <div className="p-4 h-max">{children}</div>
       </div>
     </div>
   );

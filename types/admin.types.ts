@@ -1,4 +1,21 @@
-import { iCarroceria, iCover, iMarca, iModel, iSucursal } from "@/models";
+import { LucideIcon } from "lucide-react";
+import {
+  iCarroceria,
+  iCover,
+  iMarca,
+  iModel,
+  iSucursal,
+  iReclamo,
+  iSystemEmail,
+  iCotizacion,
+  iCliente,
+  iConcurso,
+  iCita,
+  iCybermotor,
+} from "@/models";
+import { iSedeDealer } from "./public.types";
+import { iUser } from "@/interfaces/iAdmin";
+import { User } from "@clerk/nextjs/server";
 
 // Cover
 export type iListCover = {
@@ -60,6 +77,53 @@ export type iCardSede = {
 
 export type iSede = iSucursal & { _id: string };
 
-export type iFormCotizacionGeneral = {
-  brands: iBrand[];
+export type iFormCotizacionGeneral = iListBrand & {
+  listDepartamentos: iSedeDealer[];
 };
+
+//Citas
+export type iAppointment = iCita & { _id: string };
+
+//Reclamos
+export type iReclamation = iReclamo & { _id: string };
+
+//Cliente
+export type iCustomer = iCliente & { _id: string };
+
+//Cotizacion
+export type iLead = iCotizacion & { _id: string };
+
+// EMAIL SYSTEM
+export type iMailSystem = iSystemEmail & { _id: string };
+
+export type iListMailSystem = {
+  mails: iMailSystem[];
+};
+
+//Dashboard Cards
+export type tDashbordCard = {
+  title: string;
+  icon: LucideIcon;
+  mainValue: string;
+  subtitle: string;
+  isLoadingValue?: boolean;
+};
+
+// Concurso Types
+export type iListContest = {
+  contests: iContest[];
+};
+
+export type iCardContest = {
+  contest: iContest;
+};
+
+export type iContest = iConcurso & { _id: string };
+
+export type tCybermotor = iCybermotor & { _id: string };
+
+export type tUserPage = {
+  users: iUser[];
+};
+
+export type tUser = User & iUser;

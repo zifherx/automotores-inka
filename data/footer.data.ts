@@ -55,12 +55,12 @@ export const listSubmenuFooter: iMenuFooter[] = [
         label: "Catálogo de Ligeros",
         icon: Car,
       },
-      {
-        id: 2,
-        href: "/camiones/catalogo",
-        label: "Catálogo de Camiones",
-        icon: Truck,
-      },
+      // {
+      //   id: 2,
+      //   href: "/camiones/catalogo",
+      //   label: "Catálogo de Camiones",
+      //   icon: Truck,
+      // },
     ],
   },
   {

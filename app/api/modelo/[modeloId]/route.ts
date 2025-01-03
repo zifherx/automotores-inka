@@ -12,7 +12,7 @@ export async function PATCH(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { modeloId } = params;
     const { isActive } = await req.json();
 
@@ -32,7 +32,7 @@ export async function PATCH(
 
     return NextResponse.json(query);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -44,7 +44,7 @@ export async function DELETE(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { modeloId } = params;
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
@@ -59,6 +59,37 @@ export async function DELETE(
 
     return NextResponse.json(query);
   } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function GET(
+  req: Request,
+  { params }: { params: { modeloId: string } }
+) {
+  await dbConnect();
+
+  try {
+    const { modeloId } = params;
+
+    const query = await Modelo.findOne({ slug: modeloId })
+      .populate({ path: "marca", select: "_id name slug imageUrl" })
+      .populate({
+        path: "carroceria",
+        select: "_id name slug",
+      });
+
+    if (!query)
+      return NextResponse.json(
+        {
+          message: `Modelo ${modeloId} no existe`,
+        },
+        { status: 404 }
+      );
+
+    return NextResponse.json(query);
+  } catch (err) {
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
