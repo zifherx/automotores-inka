@@ -12,7 +12,7 @@ export async function PATCH(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { portadaId } = params;
     const { isActive } = await req.json();
 

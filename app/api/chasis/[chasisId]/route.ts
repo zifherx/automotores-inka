@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { dbConnect } from "@/lib/dbConnect";
 import { auth } from "@clerk/nextjs/server";
+
+import { dbConnect } from "@/lib/dbConnect";
 import Carroceria from "@/models/Carroceria";
 
 export async function PATCH(
@@ -10,9 +11,11 @@ export async function PATCH(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { chasisId } = params;
     const { isActive } = await req.json();
+
+    console.log(params);
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
 

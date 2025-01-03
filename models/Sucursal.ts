@@ -1,6 +1,11 @@
 import { Document, Schema, model, models } from "mongoose";
 import { iBrand } from "@/types";
 
+export interface iCoordenada {
+  latitud: string;
+  longitud: string;
+}
+
 export interface iSucursal extends Document {
   name: string;
   slug: string;
@@ -12,6 +17,7 @@ export interface iSucursal extends Document {
   scheduleExtended: string;
   linkHowArrived: string;
   marcasDisponibles: iBrand[];
+  coordenadasMapa: iCoordenada;
   isActive: boolean;
   createdBy: string;
 }
@@ -28,6 +34,10 @@ const sucursalSchema: Schema = new Schema<iSucursal>(
     scheduleExtended: { type: String },
     linkHowArrived: { type: String },
     marcasDisponibles: [{ type: Schema.Types.ObjectId, ref: "Marca" }],
+    coordenadasMapa: {
+      latitud: { type: String, default: "" },
+      longitud: { type: String, default: "" },
+    },
     isActive: { type: Boolean },
     createdBy: { type: String },
   },

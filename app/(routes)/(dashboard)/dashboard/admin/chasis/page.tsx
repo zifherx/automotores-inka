@@ -15,7 +15,7 @@ async function loadChasis() {
 }
 
 export default async function ChasisPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

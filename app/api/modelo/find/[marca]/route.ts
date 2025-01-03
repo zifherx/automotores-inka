@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { dbConnect } from "@/lib";
 import Modelo from "@/models/Modelo";
 import Marca from "@/models/Marca";
+
+import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";
 
 export async function GET(

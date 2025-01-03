@@ -15,7 +15,7 @@ async function loadBrands() {
 }
 
 export default async function BrandsPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

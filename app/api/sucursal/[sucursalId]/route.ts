@@ -11,7 +11,7 @@ export async function PATCH(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { sucursalId } = params;
     const { isActive } = await req.json();
 
@@ -42,7 +42,7 @@ export async function DELETE(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { sucursalId } = params;
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });

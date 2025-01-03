@@ -1,7 +1,8 @@
-import { dbConnect } from "@/lib";
+import { NextRequest, NextResponse } from "next/server";
 import Marca from "@/models/Marca";
 import Sucursal from "@/models/Sucursal";
-import { NextRequest, NextResponse } from "next/server";
+
+import { dbConnect } from "@/lib";
 
 export async function GET(
   req: NextRequest,
@@ -21,7 +22,7 @@ export async function GET(
 
     const query = await Sucursal.find({
       marcasDisponibles: { $in: [marcaFound._id] },
-      isActive: true
+      isActive: true,
     })
       .select("_id name slug address ciudad isActive codexHR marcasDisponibles")
       .populate({
