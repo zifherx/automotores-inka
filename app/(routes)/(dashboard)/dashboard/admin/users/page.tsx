@@ -4,8 +4,10 @@ import { UsersView } from "./components/UsersView";
 import { iUser } from "@/interfaces/iAdmin";
 
 export default async function UserAdminPage() {
-  const userResponse = await clerkClient().users.getUserList();
-  const usuarios = userResponse.data.map((item) => {
+  const clientClerk = await clerkClient();
+  const users = await clientClerk.users.getUserList();
+
+  const usuarios = users.data.map((item) => {
     let newPlain: iUser = {
       id: item.id,
       firstName: item.firstName,
@@ -22,9 +24,5 @@ export default async function UserAdminPage() {
     return newPlain;
   });
 
-  return (
-    <div>
-      <UsersView users={usuarios} />
-    </div>
-  );
+  return <div>{<UsersView users={usuarios} />}</div>;
 }

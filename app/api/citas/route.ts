@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 import Cita from "@/models/Citas";
 import Cliente from "@/models/Cliente";
+import Modelo from "@/models/Modelo";
+import Sucursal from "@/models/Sucursal";
 
 import { dbConnect } from "@/lib";
 import { iAppointment, iCustomer } from "@/types";
-import Modelo from "@/models/Modelo";
-import Sucursal from "@/models/Sucursal";
 
 export async function GET(req: NextRequest) {
   await dbConnect();

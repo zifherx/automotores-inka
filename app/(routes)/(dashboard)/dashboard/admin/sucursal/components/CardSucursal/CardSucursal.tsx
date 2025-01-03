@@ -79,6 +79,11 @@ export function CardSucursal(props: iCardSede) {
             </p>
           </div>
           <p className="text-xs">{sede.address}</p>
+          <p className="text-xs font-semibold">Coordenadas:</p>
+          <p className="text-xs ml-2">Latitud:{sede.coordenadasMapa.latitud}</p>
+          <p className="text-xs ml-2">
+            Longitud:{sede.coordenadasMapa.longitud}
+          </p>
         </div>
 
         <div className="flex items-center justify-between gap-4">

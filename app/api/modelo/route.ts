@@ -37,7 +37,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   await dbConnect();
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const data = await req.json();
 
     const brandFound = await Marca.findOne({ slug: data.marca });

@@ -24,8 +24,7 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { RefreshCw } from "lucide-react";
 import { onToast } from "@/lib";
 
-export function FormEditSucursal(props: iFormEditSucursal) {
-  const { sede, setOpenDialog } = props;
+export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
   const [btnLoading, setBtnLoading] = useState(false);
   const router = useRouter();
 
@@ -40,6 +39,14 @@ export function FormEditSucursal(props: iFormEditSucursal) {
       linkHowArrived: sede.linkHowArrived,
       scheduleRegular: sede.scheduleRegular,
       scheduleExtended: sede.scheduleExtended,
+      coordenadasMapa: {
+        latitud: sede.coordenadasMapa?.latitud
+          ? sede.coordenadasMapa.latitud
+          : "",
+        longitud: sede.coordenadasMapa?.longitud
+          ? sede.coordenadasMapa.longitud
+          : "",
+      },
       isActive: sede.isActive ? sede.isActive : false,
     },
   });
@@ -193,6 +200,36 @@ export function FormEditSucursal(props: iFormEditSucursal) {
                 <FormLabel className="font-headMedium">Horario FDS</FormLabel>
                 <FormControl>
                   <Input placeholder="08:00am - 12:30pm..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Latitud */}
+          <FormField
+            control={form.control}
+            name="coordenadasMapa.latitud"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Latitud</FormLabel>
+                <FormControl>
+                  <Input placeholder="-7.1221521" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Longitud */}
+          <FormField
+            control={form.control}
+            name="coordenadasMapa.longitud"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Longitud</FormLabel>
+                <FormControl>
+                  <Input placeholder="-79.04056178016265" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

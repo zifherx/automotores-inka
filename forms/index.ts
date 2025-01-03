@@ -78,6 +78,10 @@ export const formAddSucursalSchema = z.object({
   scheduleExtended: z
     .string()
     .min(1, "Este campo debe contener al menos 1 caracter"),
+  coordenadasMapa: z.object({
+    latitud: z.string(),
+    longitud: z.string(),
+  }),
   linkHowArrived: z.string().url("Debe ingresar una url válida"),
   isActive: z.boolean(),
 });
@@ -94,6 +98,10 @@ export const formEditSucursalSchema = z.object({
   scheduleExtended: z
     .string()
     .min(1, "Este campo debe contener al menos 1 caracter"),
+  coordenadasMapa: z.object({
+    latitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+    longitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  }),
   linkHowArrived: z.string().url("Debe ingresar una url válida"),
   isActive: z.boolean(),
 });

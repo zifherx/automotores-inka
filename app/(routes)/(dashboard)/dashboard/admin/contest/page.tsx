@@ -11,7 +11,7 @@ async function loadContest() {
 }
 
 export default async function AdminContestPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");
