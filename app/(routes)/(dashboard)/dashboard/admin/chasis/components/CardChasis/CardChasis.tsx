@@ -15,7 +15,7 @@ export function CardChasis(props: iCardChasis) {
 
   const handlerActive = async (active: boolean) => {
     try {
-      const query = await axios.patch(`/api/chasis/${chasis.id}`, {
+      const query = await axios.patch(`/api/chasis/${chasis._id}`, {
         isActive: active,
       });
 

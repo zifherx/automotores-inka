@@ -9,7 +9,7 @@ export async function PATCH(
 ) {
   await dbConnect();
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { marcaId } = params;
     const { isActive } = await req.json();
 

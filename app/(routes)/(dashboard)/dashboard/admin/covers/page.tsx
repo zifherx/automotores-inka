@@ -15,7 +15,7 @@ async function loadCovers() {
 }
 
 export default async function CoversPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

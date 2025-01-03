@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 
 import NextTopLoader from "nextjs-toploader";
-import { ClerkProvider } from "@clerk/nextjs";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
@@ -27,6 +26,7 @@ import {
 
 import "./globals.css";
 import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: {

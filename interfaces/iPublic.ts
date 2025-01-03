@@ -56,3 +56,8 @@ export interface iCompany {
   ruc: string;
   nomenclatura: string;
 }
+
+export interface iPosition {
+  lat: number;
+  lng: number;
+}

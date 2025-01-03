@@ -6,7 +6,7 @@ import { isAdministrator } from "@/lib";
 import { ModelDashboardPage } from "./components/ModelDashboardPage";
 
 export default async function ModelsPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId || !isAdministrator(userId)) {
     return redirect("/");

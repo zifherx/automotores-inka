@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import Sucursal from "@/models/Sucursal";
+import Sucursal, { iCoordenada } from "@/models/Sucursal";
 import { dbConnect } from "@/lib";
 
 export async function PATCH(
@@ -10,7 +10,7 @@ export async function PATCH(
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { sucursalId } = params;
     const dataForm = await req.json();
 
@@ -27,6 +27,7 @@ export async function PATCH(
         linkHowArrived: dataForm.linkHowArrived,
         scheduleRegular: dataForm.scheduleRegular,
         scheduleExtended: dataForm.scheduleExtended,
+        coordenadasMapa: dataForm.coordenadasMapa,
         isActive: dataForm.isActive,
       },
       { new: true }

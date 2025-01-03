@@ -1,17 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
+import { LucideIcon } from "lucide-react";
+import { Map } from "leaflet";
+
 import { iColor, iGallery } from "@/models";
 import {
   iBrand,
   iCardModel,
+  iCardSede,
   iChasis,
   iListBrand,
   iListModels,
+  iListSede,
   iModelo,
   iSede,
 } from "./admin.types";
-import { iOracion } from "@/interfaces";
-import { LucideIcon } from "lucide-react";
+import { iOracion, iPosition } from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
-import { Dispatch, SetStateAction } from "react";
 
 export type iVideosYoutube = {
   src: string;
@@ -61,6 +65,11 @@ export type iFiltros = {
     marca: string;
     carroceria: string;
   };
+};
+
+export type tFilterUbicanos = {
+  value: string;
+  onChange: (value: string) => void;
 };
 
 export type iListVehicle = {
@@ -226,4 +235,18 @@ export type tCustomvideo = {
   parrafo: string | string[];
   uriVideoYoutube: string;
   bgSection: string;
+};
+
+export type tMarkerLocation = iCardSede & {
+  selectionMarker?: (position: iPosition, fn: fnType) => void;
+};
+
+type fnType = Map;
+
+export type tsidebarLocation = iListSede & {
+  onSelectDealer: (dealer: iSede) => void;
+};
+
+export type tLocationMap = iListSede & {
+  mapCenter: [number, number];
 };

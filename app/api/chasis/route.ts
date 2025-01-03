@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   await dbConnect();
 
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const data = await req.json();
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
