@@ -56,7 +56,7 @@ export const listItemMenuMobile: iMenuMobile[] = [
   {
     id: 5,
     title: "Ubícanos",
-    href: "/nosotros/ubicanos",
+    href: "/nosotros/new-ubicanos",
     icon: MapPin,
   },
 ];

@@ -85,7 +85,7 @@ export function MenuDesktop() {
                 Trabajamos con marcas líderes en el rubro automotriz desde hace
                 más de 12 años.
               </ListItem>
-              <ListItem href="/nosotros/ubicanos2" title="Ubícanos">
+              <ListItem href="/nosotros/new-ubicanos" title="Ubícanos">
                 Concesionario peruano autorizado con presencia en Chiclayo,
                 Trujillo, Chimbote y Lima.
               </ListItem>

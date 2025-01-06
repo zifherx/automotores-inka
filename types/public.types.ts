@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { LucideIcon } from "lucide-react";
 import { Map } from "leaflet";
 
@@ -239,6 +239,7 @@ export type tCustomvideo = {
 
 export type tMarkerLocation = iCardSede & {
   selectionMarker?: (position: iPosition, fn: fnType) => void;
+  markersRef: MutableRefObject<{ [key: string]: L.Marker }>;
 };
 
 type fnType = Map;
@@ -249,4 +250,6 @@ export type tsidebarLocation = iListSede & {
 
 export type tLocationMap = iListSede & {
   mapCenter: [number, number];
+  openPopupId: string | null;
+  markersRef: MutableRefObject<{ [key: string]: L.Marker }>;
 };

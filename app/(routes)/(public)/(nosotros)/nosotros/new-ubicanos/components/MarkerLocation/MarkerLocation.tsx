@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Marker, Popup } from "react-leaflet";
 
-export function MarkerLocation({ sede }: tMarkerLocation) {
+export function MarkerLocation({ sede, markersRef }: tMarkerLocation) {
   const {
     _id,
     coordenadasMapa,
@@ -30,10 +30,15 @@ export function MarkerLocation({ sede }: tMarkerLocation) {
         lng: parseFloat(coordenadasMapa.longitud),
       }}
       icon={customIcon}
+      ref={(ref) => {
+        if (ref) {
+          markersRef.current[_id] = ref;
+        }
+      }}
     >
       <Popup autoClose maxWidth={600}>
-        <div className="flex p-0 gap-4 w-[500px]">
-          <div className="flex-shrink-0 my-auto">
+        <div className="flex p-0 gap-4 w-[250px] md:w-[500px]">
+          <div className="hidden md:flex flex-shrink-0 my-auto">
             <Image
               src={imageUrl}
               alt={name}

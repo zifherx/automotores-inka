@@ -7,14 +7,42 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MarkerLocation } from "../MarkerLocation";
 
 import { iSede, tLocationMap } from "@/types";
+import { MutableRefObject, useEffect } from "react";
 
-function MapController({ center }: { center: [number, number] }) {
+function MapController({
+  center,
+  openPopup,
+  markersRef,
+}: {
+  center: [number, number];
+  openPopup: string | null;
+  markersRef: MutableRefObject<{ [key: string]: L.Marker }>;
+}) {
   const map = useMap();
-  map.setView(center, 15);
+
+  useEffect(() => {
+    map.setView(center, 15);
+  }, [center, map]);
+
+  useEffect(() => {
+    if (openPopup) {
+      const marker = markersRef.current[openPopup];
+      if (marker) {
+        marker.openPopup();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openPopup]);
+
   return null;
 }
 
-export function Mapa({ sedes, mapCenter }: tLocationMap) {
+export function Mapa({
+  sedes,
+  mapCenter,
+  openPopupId,
+  markersRef,
+}: tLocationMap) {
   const urlCartoon =
     "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png";
   const urlStreetMap = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -32,9 +60,17 @@ export function Mapa({ sedes, mapCenter }: tLocationMap) {
             <TileLayer url={urlStreetMap} />
 
             {sedes.map((dealer: iSede) => (
-              <MarkerLocation key={dealer._id} sede={dealer} />
+              <MarkerLocation
+                key={dealer._id}
+                sede={dealer}
+                markersRef={markersRef}
+              />
             ))}
-            <MapController center={mapCenter} />
+            <MapController
+              center={mapCenter}
+              openPopup={openPopupId}
+              markersRef={markersRef}
+            />
           </MapContainer>
         </div>
       </CardContent>

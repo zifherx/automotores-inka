@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
 
@@ -18,10 +18,9 @@ const LocationMap = dynamic(
 export function ViewUbicanos() {
   const [search, setSearch] = useState("");
   const [dealers, setDealers] = useState<iSede[]>([]);
-  const [selectedDealer, setSelectedDealer] = useState<iSede | null>(() => {
-    const activeDealer = dealers.find((dealer) => dealer.isActive);
-    return activeDealer || null;
-  });
+  const [selectedDealer, setSelectedDealer] = useState<iSede | null>(null);
+  const [openPopupId, setOpenPopupId] = useState<string | null>(null);
+  const markersRef = useRef<{ [key: string]: L.Marker }>({});
 
   const getSedes = async () => {
     const query = await axios.get(`/api/sucursal`);
@@ -43,7 +42,7 @@ export function ViewUbicanos() {
           dealer.isActive
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [search]
+    [dealers, search]
   );
 
   const mapCenter = useMemo(() => {
@@ -53,20 +52,34 @@ export function ViewUbicanos() {
         parseFloat(selectedDealer.coordenadasMapa.longitud),
       ] as [number, number];
     }
+
+    if (filteredDealers.length > 0) {
+      return [
+        parseFloat(filteredDealers[0].coordenadasMapa.latitud),
+        parseFloat(filteredDealers[0].coordenadasMapa.longitud),
+      ] as [number, number];
+    }
+
     return [-12.11249985070803, -77.01393015682699] as [number, number]; //Default dealer of Lima (Surquillo)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDealer]);
+  }, [selectedDealer, filteredDealers]);
 
   const handleSelectDealer = useCallback((dealer: iSede) => {
     setSelectedDealer(dealer);
+    setOpenPopupId(dealer._id);
   }, []);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-4 md:py-8">
       <MigajasView />
       <FilterSearchView value={search} onChange={setSearch} />
-      <div className="grid md:grid-cols-3 gap-8">
-        <LocationMap sedes={filteredDealers} mapCenter={mapCenter} />
+      <div className="flex flex-col-reverse md:grid md:grid-cols-3 gap-8">
+        <LocationMap
+          sedes={filteredDealers}
+          mapCenter={mapCenter}
+          openPopupId={openPopupId}
+          markersRef={markersRef}
+        />
         <SidebarUbicanos
           sedes={filteredDealers}
           onSelectDealer={handleSelectDealer}
