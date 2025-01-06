@@ -12,12 +12,12 @@ export function SidebarUbicanos({ onSelectDealer, sedes }: tsidebarLocation) {
         <CardTitle>Concesionarios</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-[750px]">
+        <ScrollArea className="h-[300px] md:h-[750px]">
           <div className="space-y-4 p-4">
             {sedes.map((dealer) => (
               <div
                 key={dealer._id}
-                className="flex items space-x-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
                 onClick={() => onSelectDealer(dealer)}
               >
                 <div className="flex-shrink-0">

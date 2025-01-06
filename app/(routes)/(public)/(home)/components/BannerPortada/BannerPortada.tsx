@@ -26,8 +26,8 @@ export function BannerPortada(props: iListCover) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="ml-20" />
-        <CarouselNext className="mr-20" />
+        {covers.length > 1 && <CarouselPrevious className="ml-20" />}
+        {covers.length > 1 && <CarouselNext className="mr-20" />}
       </Carousel>
     </div>
   );

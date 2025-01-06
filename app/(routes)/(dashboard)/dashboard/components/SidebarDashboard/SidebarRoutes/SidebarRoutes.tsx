@@ -26,6 +26,8 @@ import {
 export function SidebarRoutes() {
   const { userId } = useAuth();
 
+  console.log("Usuario", userId);
+
   return (
     <>
       <div className="flex flex-col justify-between h-full">
