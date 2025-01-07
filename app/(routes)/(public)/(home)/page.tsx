@@ -12,12 +12,6 @@ import { ModelosEnLiquidacion } from "./components/ModelosEnLiquidacion";
 import { VideoCustom } from "@/components/Shared/VideoCustom";
 import { tCustomvideo } from "@/types";
 
-async function loadCovers() {
-  await dbConnect();
-  const query = await Cover.find({ isActive: true });
-  return query.map(serializeDocument);
-}
-
 async function loadBrands() {
   await dbConnect();
 
@@ -26,7 +20,6 @@ async function loadBrands() {
 }
 
 export default async function HomePage() {
-  const queryCovers = await loadCovers();
   const queryBrands = await loadBrands();
 
   const dataNewVideoMazda5: tCustomvideo = {
@@ -41,7 +34,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <BannerPortada covers={queryCovers} />
+      <BannerPortada />
       <BrandSlider brands={queryBrands} />
       <ModelosEnLiquidacion />
       <VideoCustom
@@ -50,11 +43,6 @@ export default async function HomePage() {
         title={dataNewVideoMazda5.title}
         uriVideoYoutube={dataNewVideoMazda5.uriVideoYoutube}
       />
-      {/* <BannerHome
-        imageAlt="Cybermotor"
-        imageSource="cybermotor-cta.png"
-        href="#"
-      /> */}
       <ServiciosSlider />
       <VideoBienvenida />
       {/* <BannerHome
@@ -62,7 +50,6 @@ export default async function HomePage() {
         imageSource="geely-action2.jpeg"
         href="/posventa/separa-tu-cita"
       /> */}
-      {/* <AsesoriaAction /> */}
     </>
   );
 }
