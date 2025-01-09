@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
+import axios from 'axios'
 
 import { Title } from "@/components/Shared/Title";
 import { Subtitle } from "@/components/Shared/Subtitle";
@@ -15,17 +16,27 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { iBrand } from "@/types";
 
-import { iListBrand } from "@/types";
-
-export function BrandSlider(props: iListBrand) {
-  const { brands } = props;
-
+export function BrandSlider() {
+  const [brands, setBrands] = useState<iBrand[]>([])
   const router = useRouter();
   const plugin = useRef(Autoplay({ delay: 3000 }));
 
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if(query.status === 200) {
+      const marcasActivas = query.data.obj.filter((marca: iBrand) => marca.isActive)
+      setBrands(marcasActivas)
+    }
+  }
+
   const subtitle =
     "Contamos con la mayor oferta de marcas del mercado. Desliza y escoge la marca de tu preferencia";
+
+useEffect(() => {
+  getBrands()
+}, [])
 
   return (
     <div className="bg-transparent w-full">

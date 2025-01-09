@@ -1,26 +1,14 @@
-import BannerHome from "@/components/Shared/BannerHome/BannerHome";
 
 import { BannerPortada } from "./components/BannerPortada";
 import { VideoBienvenida } from "./components/VideoBienvenida";
 import { ServiciosSlider } from "./components/ServiciosSlider";
 import { BrandSlider } from "./components/BrandSlider";
-
-import { dbConnect, serializeDocument } from "@/lib/";
-import Cover from "@/models/Cover";
-import Marca from "@/models/Marca";
 import { ModelosEnLiquidacion } from "./components/ModelosEnLiquidacion";
 import { VideoCustom } from "@/components/Shared/VideoCustom";
+
 import { tCustomvideo } from "@/types";
 
-async function loadBrands() {
-  await dbConnect();
-
-  const query = await Marca.find({ isActive: true }).sort({ name: 1 });
-  return query.map(serializeDocument);
-}
-
 export default async function HomePage() {
-  const queryBrands = await loadBrands();
 
   const dataNewVideoMazda5: tCustomvideo = {
     bgSection: "bg-[url('/images/fondo-tramado-gris.png')]",
@@ -35,7 +23,7 @@ export default async function HomePage() {
   return (
     <>
       <BannerPortada />
-      <BrandSlider brands={queryBrands} />
+      <BrandSlider />
       <ModelosEnLiquidacion />
       <VideoCustom
         bgSection={dataNewVideoMazda5.bgSection}
