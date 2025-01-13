@@ -2,7 +2,7 @@ import { VideosYoutube } from "@/components/Shared/VideosYoutube";
 
 export function VideoBienvenida() {
   return (
-    <div className="bg-slate-300 w-full bg-[url('/images/fondo-tramado-gris.png')] bg-cover bg-center bg-no-repeat">
+    <section className="bg-slate-300 w-full bg-[url('/images/fondo-tramado-gris.png')] bg-cover bg-center bg-no-repeat">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[60%,1fr] text-black px-4 py-8 md:px-0 md:py-10">
         <div className="p-0">
           <VideosYoutube
@@ -22,6 +22,6 @@ export function VideoBienvenida() {
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

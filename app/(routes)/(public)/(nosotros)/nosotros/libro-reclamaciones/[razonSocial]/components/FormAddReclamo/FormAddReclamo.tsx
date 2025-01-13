@@ -89,7 +89,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
       `LRD-${setNomenclaturaLRD(slugType)}-${formatNumberToSixDigits(
         numeroReclamo + 1
       )}-${today.getFullYear()}-${
-        sedeSelected?.codexHR ? sedeSelected!.codexHR.toUpperCase() : ""
+        sedeSelected?.codexHR ? sedeSelected!.codexHR.toUpperCase().trim() : ""
       }`
     );
   }, [slugType, getNumeroReclamo]);

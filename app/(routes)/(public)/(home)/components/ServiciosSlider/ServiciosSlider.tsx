@@ -17,7 +17,7 @@ import { listServiciosSVG } from "@/data/public.data";
 export function ServiciosSlider() {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   return (
-    <div className="bg-plomoInka w-full py-20">
+    <section className="bg-plomoInka w-full py-20">
       <div className="max-w-7xl mx-auto items-center justify-center px-14 lg:px-0">
         <Title
           title="Nuestros Servicios"
@@ -40,6 +40,6 @@ export function ServiciosSlider() {
           <CarouselNext />
         </Carousel>
       </div>
-    </div>
+    </section>
   );
 }

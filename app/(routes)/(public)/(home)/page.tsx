@@ -1,4 +1,3 @@
-
 import { BannerPortada } from "./components/BannerPortada";
 import { VideoBienvenida } from "./components/VideoBienvenida";
 import { ServiciosSlider } from "./components/ServiciosSlider";
@@ -9,7 +8,6 @@ import { VideoCustom } from "@/components/Shared/VideoCustom";
 import { tCustomvideo } from "@/types";
 
 export default async function HomePage() {
-
   const dataNewVideoMazda5: tCustomvideo = {
     bgSection: "bg-[url('/images/fondo-tramado-gris.png')]",
     title: "Mazda MX-5: El Placer de la Libertad",
@@ -33,11 +31,6 @@ export default async function HomePage() {
       />
       <ServiciosSlider />
       <VideoBienvenida />
-      {/* <BannerHome
-        imageAlt="Cover Geely 2"
-        imageSource="geely-action2.jpeg"
-        href="/posventa/separa-tu-cita"
-      /> */}
     </>
   );
 }

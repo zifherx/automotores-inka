@@ -87,7 +87,7 @@ export const listSubmenuFooter: iMenuFooter[] = [
       },
       {
         id: 2,
-        href: "/nosotros/ubicanos",
+        href: "/nosotros/new-ubicanos",
         label: "Ubícanos",
         icon: Building,
       },

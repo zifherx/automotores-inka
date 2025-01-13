@@ -72,8 +72,8 @@ export const makePDFCorreoReclamo = (params?: tClaimAll) => {
     .text("HOJA DE RECLAMACIÓN", 122, 26);
   doc
     .setFont("times", "normal")
-    .setFontSize(12)
-    .text(params!.numeroReclamo, 124, 36); //dinámico
+    .setFontSize(11)
+    .text(params!.numeroReclamo, 148, 36, { align: "center" }); //dinámico
 
   doc
     .setFont("times", "bold")

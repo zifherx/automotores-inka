@@ -26,7 +26,7 @@ export function CarouselLiquidacion() {
       const query = await axios.get("/api/modelo");
       if (query.status === 200) {
         const modelosLiquidacion: iModelo[] = query.data.obj.filter(
-          (modelo: any) => modelo.isLiquidacion == true
+          (modelo: iModelo) => modelo.isLiquidacion === true && modelo.isActive
         );
         setListModelos(modelosLiquidacion);
         setIsLoading(false);
