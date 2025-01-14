@@ -2,32 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { Trash, Upload } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { onToast } from "@/lib/toastMessage";
+import { BtnEditChasis } from "../BtnEditChasis";
+import { BtnDeleteChasis } from "../BtnDeleteChasis";
+
 import { iCardChasis } from "@/types";
+import { onToast } from "@/lib";
 
-export function CardChasis(props: iCardChasis) {
-  const { chasis } = props;
-
+export function CardChasis({ chasis }: iCardChasis) {
   const router = useRouter();
 
-  const handlerActive = async (active: boolean) => {
+  const deleteChasis = async () => {
     try {
-      const query = await axios.patch(`/api/chasis/${chasis._id}`, {
-        isActive: active,
-      });
-
-      if (active) {
-        onToast("Chasis Activa ✌️");
-      } else {
-        onToast("Chasis Inactiva 😒");
+      const query = await axios.delete(`/api/chasis/${chasis._id}`);
+      if (query.status === 200) {
+        onToast(query.data.message);
       }
-
-      router.refresh();
     } catch (err) {
+      console.log(err);
       onToast("Algo salió mal 😭", "", true);
+    } finally {
+      router.refresh();
     }
   };
 
@@ -44,39 +39,17 @@ export function CardChasis(props: iCardChasis) {
       )}
 
       <div className="relative p-5 mt-5">
-        <div className="flex flex-col mb-8 gap-x-4">
+        <div className="flex flex-col mb-5 gap-x-4">
           <p className="text-lg min-h-16 lg:min-h-fit font-bold">
-            Alt: {chasis.name}
+            {chasis.name}
           </p>
           <p className="text-xs">Slug: {chasis.slug}</p>
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <Button
-            variant="outline"
-            className="text-sm hover:bg-redInka hover:text-white"
-          >
-            Eliminar
-            <Trash className="w-4 h-4 ml-2" />
-          </Button>
-          <p>Boton Editar</p>
+          <BtnDeleteChasis deleteItem={deleteChasis} />
+          <BtnEditChasis chasis={chasis} />
         </div>
-
-        {chasis.isActive ? (
-          <Button
-            className="w-full mt-3"
-            variant="outline"
-            onClick={() => handlerActive(false)}
-          >
-            Desactivar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        ) : (
-          <Button className="w-full mt-3" onClick={() => handlerActive(true)}>
-            Activar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        )}
       </div>
     </div>
   );

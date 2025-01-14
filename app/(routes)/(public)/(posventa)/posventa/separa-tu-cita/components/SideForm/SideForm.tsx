@@ -5,16 +5,20 @@ import axios from "axios";
 
 import { Title } from "@/components/Shared/Title";
 import { FormMantenimiento } from "../FormMantenimiento";
+import { MasonryBrands } from "../MasonryBrands";
 
 import { iBrand } from "@/types";
-import { MasonryBrands } from "../MasonryBrands";
 
 export function SideForm() {
   const [brandList, setBrandList] = useState<iBrand[]>([]);
+
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setBrandList(query.data.obj);
+      const marcasActivas = query.data.obj.filter(
+        (marca: iBrand) => marca.isActive
+      );
+      setBrandList(marcasActivas);
     }
   };
 

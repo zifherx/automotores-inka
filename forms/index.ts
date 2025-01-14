@@ -86,6 +86,8 @@ export const formAddSucursalSchema = z.object({
   isActive: z.boolean(),
 });
 
+export const formMarcasDisponiblesSchema = z.string();
+
 export const formEditSucursalSchema = z.object({
   name: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
   slug: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
@@ -98,6 +100,7 @@ export const formEditSucursalSchema = z.object({
   scheduleExtended: z
     .string()
     .min(1, "Este campo debe contener al menos 1 caracter"),
+  marcasDisponibles: z.array(z.string()),
   coordenadasMapa: z.object({
     latitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
     longitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
@@ -245,6 +248,7 @@ export const formCybermotorSchema = z.object({
   celular: z.string().length(9),
 });
 
+export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
 export type SucursalFormValues = z.infer<typeof formAddSucursalSchema>;

@@ -1,29 +1,26 @@
-"use client";
-
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Pencil } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { FormEditChasis } from "../FormEditChasis";
 
-import { FormAddChasis } from "../FormAddChasis";
+import { iCardChasis } from "@/types";
 
-export function BtnAddChasis() {
+export function BtnEditChasis({ chasis }: iCardChasis) {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -31,26 +28,28 @@ export function BtnAddChasis() {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
-                className="font-semibold text-lg"
                 variant="outline"
+                className="hover:bg-orange-400 hover:text-white"
                 onClick={() => setOpenDialog(true)}
               >
-                <Plus className="w-5 h-5" strokeWidth={2} />
+                <Pencil className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="left">
-              <p className="capitalize">Nuevo chasis</p>
+            <TooltipContent>
+              <p>Editar chasis</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
-          <DialogTitle className="mb-5 text-left">Nueva Carrocería</DialogTitle>
+          <DialogTitle className="uppercase font-bold text-xl">
+            Editar Chasis
+          </DialogTitle>
           <DialogDescription>
-            <FormAddChasis setOpenDialog={setOpenDialog} />
+            <FormEditChasis chasis={chasis} setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

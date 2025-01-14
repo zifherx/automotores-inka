@@ -1,10 +1,12 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { formEditSucursalSchema, SucursalFormEditValues } from "@/forms";
-import { iFormEditSucursal } from "@/types";
+import { iBrand, tFormEditSucursal } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -23,10 +25,23 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { RefreshCw } from "lucide-react";
 import { onToast } from "@/lib";
+import { Checkbox } from "@/components/ui/checkbox";
 
-export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
+export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
   const [btnLoading, setBtnLoading] = useState(false);
+  const [marcas, setMarcas] = useState<iBrand[]>([]);
   const router = useRouter();
+
+  const getBrands = async () => {
+    const query = await axios.get("/api/marca");
+    if (query.status === 200) {
+      setMarcas(query.data.obj.filter((brand: iBrand) => brand.isActive));
+    }
+  };
+
+  useEffect(() => {
+    getBrands();
+  }, []);
 
   const form = useForm<SucursalFormEditValues>({
     resolver: zodResolver(formEditSucursalSchema),
@@ -39,6 +54,7 @@ export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
       linkHowArrived: sede.linkHowArrived,
       scheduleRegular: sede.scheduleRegular,
       scheduleExtended: sede.scheduleExtended,
+      marcasDisponibles: sede.marcasDisponibles.map((marca) => marca._id),
       coordenadasMapa: {
         latitud: sede.coordenadasMapa?.latitud
           ? sede.coordenadasMapa.latitud
@@ -52,17 +68,19 @@ export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
   });
 
   const onSubmit = async (values: SucursalFormEditValues) => {
+    setBtnLoading(true);
     try {
       const query = await axios.patch(`/api/sucursal/edit/${sede._id}`, values);
-
       if (query.status === 200) {
-        onToast("Sede actualizada ✅");
+        onToast(query.data.message);
         setOpenDialog(false);
         router.refresh();
       }
     } catch (err) {
       console.log(err);
       onToast("Algo salió mal ❌", "", true);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -206,6 +224,55 @@ export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
             )}
           />
 
+          {/* MarcasDisponibles */}
+          <FormField
+            control={form.control}
+            name="marcasDisponibles"
+            render={() => (
+              <FormItem className="col-span-2">
+                <FormLabel className="font-headMedium">
+                  Marcas Disponibles
+                </FormLabel>
+                <div className="grid grid-cols-3 gap-4">
+                  {marcas.map(({ _id, name }) => (
+                    <FormField
+                      key={_id}
+                      control={form.control}
+                      name="marcasDisponibles"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={_id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(_id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, _id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== _id
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {name}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Latitud */}
           <FormField
             control={form.control}
@@ -256,11 +323,12 @@ export function FormEditSucursal({ sede, setOpenDialog }: iFormEditSucursal) {
           <Button
             type="submit"
             className="w-full md:col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+            disabled={btnLoading}
           >
             {btnLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Enviando...
+                Actualizando...
               </>
             ) : (
               <>

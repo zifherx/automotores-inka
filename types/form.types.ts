@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { iMailSystem, iSede } from "./admin.types";
+import { iChasis, iMailSystem, iSede } from "./admin.types";
 
 export type iFormAddCover = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
@@ -21,10 +21,6 @@ export type iFormAddSucursal = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
 };
 
-export type iFormEditSucursal = iFormAddSucursal & {
-  sede: iSede;
-};
-
 export type iFormAddGeneral = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
 };
@@ -35,4 +31,16 @@ export type iFormEditMail = iFormAddGeneral & {
 
 export type iFormAddContest = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
-}
+};
+
+export type tFormAdding = {
+  setOpenDialog: Dispatch<SetStateAction<boolean>>;
+};
+
+export type tFormEditSucursal = tFormAdding & {
+  sede: iSede;
+};
+
+export type tFormEditChasis = tFormAdding & {
+  chasis: iChasis;
+};

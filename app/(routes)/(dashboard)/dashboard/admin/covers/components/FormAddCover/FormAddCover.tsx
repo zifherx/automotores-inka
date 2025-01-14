@@ -27,11 +27,9 @@ import { UploadButton } from "@/utils/uploadthing";
 import { onToast } from "@/lib/toastMessage";
 
 import { formAddCoverSchema } from "@/forms";
-import { iFormAddCover } from "@/types";
+import { tFormAdding } from "@/types";
 
-export function FormAddPortada(props: iFormAddCover) {
-  const { setOpenDialog } = props;
-
+export function FormAddPortada({ setOpenDialog }: tFormAdding) {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const router = useRouter();

@@ -11,7 +11,10 @@ import { iSede } from "@/types";
 
 async function loadSedes() {
   await dbConnect();
-  const query = await Sucursal.find();
+  const query = await Sucursal.find({}).populate({
+    path: "marcasDisponibles",
+    select: "_id name imageUrl",
+  });
   return query.map(serializeDocument) as iSede[];
 }
 
@@ -22,22 +25,22 @@ export default async function BrandsPage() {
     return redirect("/");
   }
 
-  const querySedes = await loadSedes();
+  const listaSedes = await loadSedes();
 
   return (
     <>
       <div className="flex justify-between mb-5">
         <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
           Gestión de Sedes -{" "}
-          {querySedes.length === 0 ? (
+          {listaSedes.length === 0 ? (
             <p> nulo 😭</p>
           ) : (
-            <p>{querySedes.length} 😍</p>
+            <p>{listaSedes.length} 😍</p>
           )}
         </h2>
         <BtnAddSucursal />
       </div>
-      <ListSucursal sedes={querySedes} />
+      <ListSucursal sedes={listaSedes} />
     </>
   );
 }

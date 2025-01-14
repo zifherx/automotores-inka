@@ -1,17 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
 import { dbConnect } from "@/lib/dbConnect";
 import Sucursal from "@/models/Sucursal";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Sucursal.find({}).sort({ name: 1 }).populate({
-      path: "marcasDisponibles",
-      select: "_id name slug imageUrl",
-    });
+    const query = await Sucursal.find({}).sort({ name: 1 });
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     console.log(err);
@@ -19,7 +16,7 @@ export async function GET(req: Request) {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   await dbConnect();
   try {
     const { userId } = await auth();

@@ -13,26 +13,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-import { PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { FormAddPortada } from "../FormAddCover";
-import { Separator } from "@/components/ui/separator";
 
 export function BtnAddCover() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogTrigger asChild>
-        <Button
-          className="font-semibold text-lg"
-          variant="outline"
-          onClick={() => setOpenDialog(true)}
-        >
-          <span className="hidden sm:flex">Nueva Portada</span>
-          <PlusCircle className="w-5 h-5 ml-0 sm:ml-2" />
-        </Button>
+      <DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                className="font-semibold text-lg"
+                variant="outline"
+                onClick={() => setOpenDialog(true)}
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p className="capitalize text-lg">Nueva Portada</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
@@ -41,9 +54,6 @@ export function BtnAddCover() {
             <FormAddPortada setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild></DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import axios from "axios";
 import { Trash, Upload } from "lucide-react";
 
@@ -10,40 +11,22 @@ import { BtnEditSucursal } from "../BtnEditSucursal";
 
 import { onToast } from "@/lib";
 import { iCardSede } from "@/types";
-import Image from "next/image";
+import { BtnDeleteSucursal } from "../BtnDeleteSucursal";
 
-export function CardSucursal(props: iCardSede) {
-  const { sede } = props;
-
+export function CardSucursal({ sede }: iCardSede) {
   const router = useRouter();
 
   const deleteItem = async () => {
     try {
       const query = await axios.delete(`/api/sucursal/${sede._id}`);
       if (query.status === 200) {
-        onToast("Sucursal eliminada ❌");
-        router.refresh();
+        onToast(query.data.message);
       }
     } catch (err) {
+      console.log(err);
       onToast("Algo salió mal 😭", "", true);
-    }
-  };
-
-  const handlerActive = async (active: boolean) => {
-    try {
-      const query = await axios.patch(`/api/sucursal/${sede._id}`, {
-        isActive: active,
-      });
-
-      if (active) {
-        onToast("Sede Activa ✌️");
-      } else {
-        onToast("Sede Inactiva 😒");
-      }
-
+    } finally {
       router.refresh();
-    } catch (err) {
-      onToast("Algo salió mal 😭", "", true);
     }
   };
 
@@ -67,7 +50,7 @@ export function CardSucursal(props: iCardSede) {
       )}
 
       <div className="relative p-5">
-        <div className="flex flex-col mb-8 gap-x-4">
+        <div className="flex flex-col mb-2 gap-x-4">
           <p className="text-lg min-h-16 lg:min-h-fit font-bold">
             Alt: {sede.name}
           </p>
@@ -86,33 +69,25 @@ export function CardSucursal(props: iCardSede) {
           </p>
         </div>
 
-        <div className="flex items-center justify-between gap-4">
-          <Button
-            variant="outline"
-            className="text-sm hover:bg-redInka hover:text-white"
-            onClick={deleteItem}
-          >
-            Eliminar
-            <Trash className="w-4 h-4 ml-2" />
-          </Button>
-          <BtnEditSucursal sede={sede} />
+        <div className="mb-4">
+          <h5 className="font-semibold text-xs">Marcas:</h5>
+          <div className="grid grid-cols-4 lg:flex lg:flex-row lg:justify-between p-0">
+            {sede.marcasDisponibles.map(({ _id, name, imageUrl }) => (
+              <Image
+                key={_id}
+                src={imageUrl}
+                alt={name}
+                width={60}
+                height={60}
+              />
+            ))}
+          </div>
         </div>
 
-        {sede.isActive ? (
-          <Button
-            className="w-full mt-3"
-            variant="outline"
-            onClick={() => handlerActive(false)}
-          >
-            Desactivar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        ) : (
-          <Button className="w-full mt-3" onClick={() => handlerActive(true)}>
-            Activar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        )}
+        <div className="flex items-center justify-between gap-4">
+          <BtnDeleteSucursal deleteItem={deleteItem} />
+          <BtnEditSucursal sede={sede} />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,10 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import Sucursal, { iCoordenada } from "@/models/Sucursal";
+
 import { dbConnect } from "@/lib";
+import { auth } from "@clerk/nextjs/server";
+
+import Sucursal from "@/models/Sucursal";
+import { iSede } from "@/types";
 
 export async function PATCH(
   req: Request,
@@ -27,9 +30,10 @@ export async function PATCH(
         linkHowArrived: dataForm.linkHowArrived,
         scheduleRegular: dataForm.scheduleRegular,
         scheduleExtended: dataForm.scheduleExtended,
+        marcasDisponibles: dataForm.marcasDisponibles,
         coordenadasMapa: dataForm.coordenadasMapa,
         isActive: dataForm.isActive,
-      },
+      } as iSede,
       { new: true }
     );
 
@@ -39,7 +43,11 @@ export async function PATCH(
         { status: 404 }
       );
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Sucursal actualizada con éxito ✅`,
+      new: query,
+    });
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

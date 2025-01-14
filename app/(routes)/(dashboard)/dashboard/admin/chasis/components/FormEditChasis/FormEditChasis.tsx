@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import axios from "axios";
+
+import { tFormEditChasis } from "@/types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChasisFormValues, formAddChasisSchema } from "@/forms";
 
 import {
   Form,
@@ -16,50 +17,48 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
+import { onToast } from "@/lib";
+import { RefreshCw } from "lucide-react";
 
-import { onToast } from "@/lib/toastMessage";
-
-import { tFormAdding } from "@/types";
-import { ChasisFormValues, formAddChasisSchema } from "@/forms";
-
-export function FormAddChasis({ setOpenDialog }: tFormAdding) {
-  const [btnLoading, setBtnLoading] = useState(false);
+export function FormEditChasis({ chasis, setOpenDialog }: tFormEditChasis) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<ChasisFormValues>({
     resolver: zodResolver(formAddChasisSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      isActive: true,
+      name: chasis.name,
+      slug: chasis.slug,
+      isActive: chasis.isActive,
     },
   });
 
   const onSubmit = async (values: ChasisFormValues) => {
-    setBtnLoading(true);
+    setIsLoading(true);
     try {
-      const query = await axios.post("/api/chasis", values);
+      const query = await axios.patch(`/api/chasis/edit/${chasis._id}`, values);
       if (query.status === 200) {
         onToast(query.data.message);
         setOpenDialog(false);
         router.refresh();
       }
-    } catch (er) {
+    } catch (err) {
+      console.log(err);
       onToast("Algo salió mal ❌", "", true);
     } finally {
-      setBtnLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid gap-6 grid-cols-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-[70%,1fr] md:gap-6 text-left">
           {/* Name */}
           <FormField
             control={form.control}
@@ -68,43 +67,43 @@ export function FormAddChasis({ setOpenDialog }: tFormAdding) {
               <FormItem>
                 <FormLabel className="font-headMedium">Carrocería</FormLabel>
                 <FormControl>
-                  <Input placeholder="Chasis..." {...field} />
+                  <Input placeholder="Carrocería..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           {/* isActive */}
           <FormField
             control={form.control}
             name="isActive"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem>
                 <FormLabel className="font-headMedium">Estado</FormLabel>
                 <FormControl>
-                  <div className="flex gap-2 pt-1 items-center">
+                  <div className="flex gap-2 items-center">
                     <Switch
                       id="formSwitch"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                     <Label htmlFor="formSwitch">
-                      {field.value ? "Activo 👍" : "Inactivo 👎"}
+                      {field.value ? `Activo 👍` : `Inactivo 👎`}
                     </Label>
                   </div>
                 </FormControl>
               </FormItem>
             )}
           />
+
           {/* Slug */}
           <FormField
             control={form.control}
             name="slug"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-headMedium">
-                  Slug de Chasis
-                </FormLabel>
+                <FormLabel className="font-headMedium">Slug</FormLabel>
                 <FormControl>
                   <Input placeholder="Slug..." {...field} />
                 </FormControl>
@@ -115,16 +114,19 @@ export function FormAddChasis({ setOpenDialog }: tFormAdding) {
 
           <Button
             type="submit"
-            className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            disabled={btnLoading}
+            className="w-full md:col-span-2 font-headMedium text-lg uppercase bg-black hover:bg-grisDarkInka"
+            disabled={isLoading}
           >
-            {btnLoading ? (
+            {isLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Guardando...
+                Actualizando...
               </>
             ) : (
-              <>Guardar</>
+              <>
+                Actualizar
+                <RefreshCw className="w-5 h-5 ml-2" />
+              </>
             )}
           </Button>
         </div>

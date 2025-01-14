@@ -10,7 +10,7 @@ import Carroceria from "@/models/Carroceria";
 
 async function loadChasis() {
   await dbConnect();
-  const query = await Carroceria.find();
+  const query = await Carroceria.find({});
   return query.map(serializeDocument);
 }
 
@@ -25,7 +25,7 @@ export default async function ChasisPage() {
 
   return (
     <>
-      <div className="flex justify-between mb-5">
+      <div className="flex justify-between mb-2">
         <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
           Gestión de Carrocería -{" "}
           {query.length === 0 ? <p> nulo 😭</p> : <p>{query.length} 😍</p>}

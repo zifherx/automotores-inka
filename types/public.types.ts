@@ -253,3 +253,7 @@ export type tLocationMap = iListSede & {
   openPopupId: string | null;
   markersRef: MutableRefObject<{ [key: string]: L.Marker }>;
 };
+
+export type deleteFnProps = {
+  deleteItem: () => Promise<void>;
+};

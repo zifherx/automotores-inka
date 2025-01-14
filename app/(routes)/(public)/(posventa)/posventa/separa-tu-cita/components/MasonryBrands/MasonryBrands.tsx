@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { iListBrand } from "@/types";
 
-export function MasonryBrands(props: iListBrand) {
-  const { brands } = props;
-
+export function MasonryBrands({ brands }: iListBrand) {
   return (
     <div className="grid grid-cols-4 md:grid-cols-3 gap-4 md:gap-5">
       {brands.map(({ _id, imageUrl, name }) => (

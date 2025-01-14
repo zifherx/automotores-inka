@@ -18,7 +18,10 @@ export async function POST(req: Request) {
 
     const query = await newChasis.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Carrocería creada ✅`,
+    });
   } catch (err) {
     // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

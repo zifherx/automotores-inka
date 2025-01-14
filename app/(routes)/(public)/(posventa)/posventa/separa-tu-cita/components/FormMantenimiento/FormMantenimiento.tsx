@@ -82,20 +82,21 @@ export function FormMantenimiento() {
   const getSucursales = async () => {
     let sedesSinDuplicados;
     const query = await axios.get("/api/sucursal");
+    console.log("Sucursales: ", query);
     if (query.status === 200) {
       sedesSinDuplicados = query.data.obj.filter(
         (item: any, index: any, self: any) =>
           index === self.findIndex((a: any) => a.ciudad === item.ciudad)
       );
       setListaSedes(sedesSinDuplicados);
-      setListaConcesionarios(query.data);
+      setListaConcesionarios(query.data.obj);
     }
   };
 
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setListaMarcas(query.data);
+      setListaMarcas(query.data.obj);
     }
   };
 
