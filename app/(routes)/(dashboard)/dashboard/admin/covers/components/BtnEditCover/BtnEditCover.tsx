@@ -1,14 +1,10 @@
-"use client";
-
 import { useState } from "react";
+import { Pencil } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,12 +15,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
-import { FormAddSucursal } from "../FormAddSucursal";
+import { iCardCover } from "@/types";
+import { FormEditPortada } from "../FormEditCover";
 
-import { Plus } from "lucide-react";
-
-export function BtnAddSucursal() {
+export function BtnEditCover({ cover }: iCardCover) {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -34,24 +30,25 @@ export function BtnAddSucursal() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className="font-semibold text-lg"
                 variant="outline"
-                onClick={() => setOpenDialog(true)}
+                className="text-sm hover:bg-orange-400 hover:text-white"
               >
-                <Plus className="w-5 h-5" strokeWidth={2} />
+                <Pencil className="w-4 h-4" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="left">
-              <p className="capitalize text-lg">Nueva Sede</p>
+            <TooltipContent>
+              <p>Editar Portada</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
-          <DialogTitle className="mb-5">Nueva Sede</DialogTitle>
+          <DialogTitle className="uppercase font-bold text-xl">
+            Editar Portada
+          </DialogTitle>
           <DialogDescription>
-            <FormAddSucursal setOpenDialog={setOpenDialog} />
+            <FormEditPortada portada={cover} setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

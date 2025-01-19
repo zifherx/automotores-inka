@@ -248,6 +248,7 @@ export const formCybermotorSchema = z.object({
   celular: z.string().length(9),
 });
 
+export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;

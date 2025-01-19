@@ -1,9 +1,8 @@
 import { CardCover } from "../CardCover";
+
 import { iListCover } from "@/types";
 
-export function ListCovers(props: iListCover) {
-  const { covers } = props;
-
+export function ListCovers({ covers }: iListCover) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-2 md:p-5">
       {covers.length === 0 ? (

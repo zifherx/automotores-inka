@@ -8,7 +8,10 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Sucursal.find({}).sort({ name: 1 });
+    const query = await Sucursal.find({}).sort({ name: 1 }).populate({
+      path: "marcasDisponibles",
+      select: "_id name slug imageUrl",
+    });
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     console.log(err);
@@ -28,8 +31,12 @@ export async function POST(req: NextRequest) {
 
     const query = await newObj.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Sede creada ✅`,
+    });
   } catch (err) {
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,12 +18,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { FormAddTipoCambio } from "../FormAddTipoCambio";
 
-import { FormAddSucursal } from "../FormAddSucursal";
-
-import { Plus } from "lucide-react";
-
-export function BtnAddSucursal() {
+export function BtnAddTipoCambio() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -42,16 +38,16 @@ export function BtnAddSucursal() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">
-              <p className="capitalize text-lg">Nueva Sede</p>
+              <p className="capitalize text-lg">Nuevo Tipo de Cambio</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
-          <DialogTitle className="mb-5">Nueva Sede</DialogTitle>
+          <DialogTitle className="mb-5">Nuevo Tipo de Cambio</DialogTitle>
           <DialogDescription>
-            <FormAddSucursal setOpenDialog={setOpenDialog} />
+            <FormAddTipoCambio setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

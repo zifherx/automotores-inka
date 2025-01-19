@@ -5,7 +5,7 @@ import Carroceria from "@/models/Carroceria";
 
 import { dbConnect } from "@/lib/dbConnect";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   await dbConnect();
 
   try {
