@@ -1,1 +1,1 @@
-export * from "./FormAddTipo-Cambio";
+export * from "./FormAddTipoCambio";

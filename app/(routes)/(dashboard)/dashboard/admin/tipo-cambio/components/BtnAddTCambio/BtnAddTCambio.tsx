@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -18,19 +17,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { FormAddTipoCambio } from "../FormAddTipoCambio";
 
-export function BtnAddTipoCambio() {
+export function BtnAddTCambio() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
-                className="font-semibold text-lg"
+                className="font-semibold text-lg hover:shadow-xl"
                 variant="outline"
                 onClick={() => setOpenDialog(true)}
               >
@@ -45,11 +45,13 @@ export function BtnAddTipoCambio() {
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
-          <DialogTitle className="mb-5">Nuevo Tipo de Cambio</DialogTitle>
+          <DialogTitle className="text-xl">Nuevo Tipo de Cambio</DialogTitle>
           <DialogDescription>
-            <FormAddTipoCambio setOpenDialog={setOpenDialog} />
+            Gestión del tipo de cambio para la cotización de unidades
+            vehiculares.
           </DialogDescription>
         </DialogHeader>
+        <FormAddTipoCambio setOpenDialog={setOpenDialog} />
       </DialogContent>
     </Dialog>
   );

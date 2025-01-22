@@ -3,9 +3,6 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
-import { Trash, Upload } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 
 import { BtnEditSucursal } from "../BtnEditSucursal";
 

@@ -34,11 +34,9 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { onToast } from "@/lib";
 import { UploadButton } from "@/utils/uploadthing";
 import { formAddModeloSchema, ModelFormValues } from "@/forms";
-import { iBrand, iChasis, iFormAddModel } from "@/types";
+import { iBrand, iChasis, tFormAdding } from "@/types";
 
-export function FormAddModel(props: iFormAddModel) {
-  const { setOpenDialog } = props;
-
+export function FormAddModel({ setOpenDialog }: tFormAdding) {
   const [marcas, setMarcas] = useState<iBrand[]>([]);
   const [carrocerias, setCarrocerias] = useState<iChasis[]>([]);
   const [imageBaseUploaded, setImageBaseUploaded] = useState(false);
@@ -810,11 +808,11 @@ export function FormAddModel(props: iFormAddModel) {
               {btnLoading ? (
                 <>
                   <LoadingIcon effect="default" />
-                  Enviando...
+                  Guardando...
                 </>
               ) : (
                 <>
-                  Enviar
+                  Guardar
                   <Send className="w-5 h-5 ml-2" />
                 </>
               )}

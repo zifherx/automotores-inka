@@ -265,7 +265,7 @@ export function FormAddSucursal({ setOpenDialog }: tFormAdding) {
             {btnLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Guardarndo...
+                Guardando...
               </>
             ) : (
               <>
