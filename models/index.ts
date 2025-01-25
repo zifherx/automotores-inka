@@ -10,3 +10,4 @@ export * from "./Cliente";
 export * from "./Concurso";
 export * from "./Citas";
 export * from "./Cybermotor";
+export * from "./Tipo-Cambio";

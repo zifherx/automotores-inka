@@ -43,7 +43,6 @@ export function FormMantenimiento() {
 
   const [listaSedes, setListaSedes] = useState<iSede[]>([]);
   const [listaConcesionarios, setListaConcesionarios] = useState<iSede[]>([]);
-  const [listaMarcas, setListaMarcas] = useState<iBrand[]>([]);
   const [listaMarcasDisponibles, setListaMarcasDisponibles] = useState<
     iBrand[]
   >([]);
@@ -82,7 +81,6 @@ export function FormMantenimiento() {
   const getSucursales = async () => {
     let sedesSinDuplicados;
     const query = await axios.get("/api/sucursal");
-    console.log("Sucursales: ", query);
     if (query.status === 200) {
       sedesSinDuplicados = query.data.obj.filter(
         (item: any, index: any, self: any) =>
@@ -90,13 +88,6 @@ export function FormMantenimiento() {
       );
       setListaSedes(sedesSinDuplicados);
       setListaConcesionarios(query.data.obj);
-    }
-  };
-
-  const getBrands = async () => {
-    const query = await axios.get("/api/marca");
-    if (query.status === 200) {
-      setListaMarcas(query.data.obj);
     }
   };
 
@@ -109,7 +100,6 @@ export function FormMantenimiento() {
 
   useEffect(() => {
     getSucursales();
-    getBrands();
   }, []);
 
   useEffect(() => {
@@ -124,7 +114,6 @@ export function FormMantenimiento() {
           marcasDuplicadas.findIndex((m) => m.slug === marca.slug) === index
         );
       });
-
       setListaMarcasDisponibles(uniqueBrands);
     }
   }, [sedeSelected]);
@@ -322,7 +311,7 @@ export function FormMantenimiento() {
               )}
             />
 
-            {/* Placa */}
+            {/* Kilometraje */}
             <FormField
               control={form.control}
               name="kilometraje"

@@ -12,6 +12,7 @@ import {
   iConcurso,
   iCita,
   iCybermotor,
+  iTipoCambio,
 } from "@/models";
 import { iSedeDealer } from "./public.types";
 import { iUser } from "@/interfaces/iAdmin";
@@ -127,3 +128,13 @@ export type tUserPage = {
 };
 
 export type tUser = User & iUser;
+
+export type iExchange = iTipoCambio & { _id: string };
+
+export type iListTCambio = {
+  tCambios: iExchange[];
+};
+
+export type iCardTCambio = {
+  tCambio: iExchange;
+};

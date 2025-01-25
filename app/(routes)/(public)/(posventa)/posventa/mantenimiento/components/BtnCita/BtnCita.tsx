@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 import { CustomIconTitle } from "@/components/Shared/CustomIconTitle";
@@ -24,17 +23,14 @@ export function BtnCita() {
             </p>
 
             <Link
-            href="/posventa/separa-tu-cita"
-            className="px-3 py-2 rounded-lg flex flex-row border-2 border-blueInka text-blueInka bg-white w-fit items-center justify-center mx-auto hover:shadow-lg hover:bg-blueDarkInka hover:text-white uppercase font-bold"
+              href="/posventa/separa-tu-cita"
+              className="px-3 py-2 rounded-lg flex flex-row border-2 border-blueInka text-blueInka bg-white w-fit items-center justify-center mx-auto hover:shadow-lg hover:bg-blueDarkInka hover:text-white uppercase font-bold"
             >
               Agenda aquí
               <Calendar className="w-5 h-5 ml-2" />
             </Link>
           </div>
         </div>
-        {/* <div>
-            Servicito reagendar
-        </div> */}
       </div>
     </div>
   );

@@ -70,7 +70,7 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
   const onSubmit = async (values: SucursalFormEditValues) => {
     setBtnLoading(true);
     try {
-      const query = await axios.patch(`/api/sucursal/edit/${sede._id}`, values);
+      const query = await axios.patch(`/api/sucursal/${sede._id}`, values);
       if (query.status === 200) {
         onToast(query.data.message);
         setOpenDialog(false);

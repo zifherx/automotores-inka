@@ -79,6 +79,7 @@ export function CardProductModel(props: iCardProductModel) {
           {formatUSDPrice(precioBase)} &nbsp;&nbsp; | &nbsp;&nbsp;
           {formatPENPrice(precioBase * tc)}
         </p>
+        <p className="text-[10px] font-light text-center">*Incluye bonos de financiamiento</p>
 
         <Link
           href={`/ligeros/${getRouteForModel(marca.slug)}/${slug}`}

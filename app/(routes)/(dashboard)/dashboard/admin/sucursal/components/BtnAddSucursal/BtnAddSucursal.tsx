@@ -22,7 +22,7 @@ import {
 
 import { FormAddSucursal } from "../FormAddSucursal";
 
-import { Plus, PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export function BtnAddSucursal() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,9 +54,6 @@ export function BtnAddSucursal() {
             <FormAddSucursal setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild></DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

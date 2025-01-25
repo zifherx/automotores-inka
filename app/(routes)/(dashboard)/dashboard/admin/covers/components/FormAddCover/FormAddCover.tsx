@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
@@ -26,7 +25,7 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { UploadButton } from "@/utils/uploadthing";
 import { onToast } from "@/lib/toastMessage";
 
-import { formAddCoverSchema } from "@/forms";
+import { formAddCoverSchema, PortadasFormValues } from "@/forms";
 import { tFormAdding } from "@/types";
 
 export function FormAddPortada({ setOpenDialog }: tFormAdding) {
@@ -34,7 +33,7 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
   const [btnLoading, setBtnLoading] = useState(false);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formAddCoverSchema>>({
+  const form = useForm<PortadasFormValues>({
     resolver: zodResolver(formAddCoverSchema),
     defaultValues: {
       name: "",
@@ -44,17 +43,19 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formAddCoverSchema>) => {
+  const onSubmit = async (values: PortadasFormValues) => {
+    setBtnLoading(true);
     try {
       const query = await axios.post("/api/portada", values);
-
       if (query.status === 200) {
-        onToast("Portada creada ✅");
+        onToast(query.data.message);
         setOpenDialog(false);
         router.refresh();
       }
-    } catch (er) {
+    } catch (err) {
       onToast("Algo salió mal ❌", "", true);
+    } finally {
+      setBtnLoading(true);
     }
   };
 
@@ -151,15 +152,16 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
           <Button
             type="submit"
             className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+            disabled={btnLoading}
           >
             {btnLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Enviando...
+                Guardando...
               </>
             ) : (
               <>
-                Enviar
+                Guardar
                 <Send className="w-5 h-5 ml-2" />
               </>
             )}

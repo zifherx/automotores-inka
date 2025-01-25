@@ -23,12 +23,10 @@ import { Send } from "lucide-react";
 import { UploadButton } from "@/utils/uploadthing";
 import { onToast } from "@/lib/toastMessage";
 
-import { iFormAddSucursal } from "@/types";
+import { tFormAdding } from "@/types";
 import { formAddSucursalSchema, SucursalFormValues } from "@/forms";
 
-export function FormAddSucursal(props: iFormAddSucursal) {
-  const { setOpenDialog } = props;
-
+export function FormAddSucursal({ setOpenDialog }: tFormAdding) {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
@@ -51,16 +49,18 @@ export function FormAddSucursal(props: iFormAddSucursal) {
   });
 
   const onSubmit = async (values: SucursalFormValues) => {
+    setBtnLoading(true);
     try {
       const query = await axios.post("/api/sucursal", values);
-
       if (query.status === 200) {
-        onToast("Sede creada ✅");
+        onToast(query.data.message);
         setOpenDialog(false);
         router.refresh();
       }
     } catch (err) {
       onToast("Algo salió mal ❌", "", true);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -260,15 +260,16 @@ export function FormAddSucursal(props: iFormAddSucursal) {
           <Button
             type="submit"
             className="w-full md:col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+            disabled={btnLoading}
           >
             {btnLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Enviando...
+                Guardando...
               </>
             ) : (
               <>
-                Enviar
+                Guardar
                 <Send className="w-5 h-5 ml-2" />
               </>
             )}

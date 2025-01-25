@@ -29,7 +29,7 @@ export function BtnAddCover() {
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>

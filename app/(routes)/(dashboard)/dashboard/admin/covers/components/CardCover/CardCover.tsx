@@ -1,35 +1,28 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import axios from "axios";
-import { Trash2, Upload } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-
-import { onToast } from "@/lib";
 import { iCardCover } from "@/types";
+import { BtnEditCover } from "../BtnEditCover";
+import { BtnDeleteCover } from "../BtnDeleteCover";
+import { onToast } from "@/lib";
 
-export function CardCover(props: iCardCover) {
-  const { cover } = props;
-
+export function CardCover({ cover }: iCardCover) {
   const router = useRouter();
 
-  const handlerActive = async (active: boolean) => {
+  const deletePortada = async () => {
     try {
-      const query = await axios.patch(`/api/portada/${cover._id}`, {
-        isActive: active,
-      });
-
-      if (active) {
-        onToast("Portada Activa ✌️");
-      } else {
-        onToast("Portada Inactiva 😒");
+      const query = await axios.delete(`/api/portada/${cover._id}`);
+      if (query.status === 200) {
+        onToast(query.data.message);
       }
-
-      router.refresh();
     } catch (err) {
-      onToast("Algo salió mal 😭", "", true);
+      console.log(err);
+      onToast(`Algo salió mal 😭`, "", true);
+    } finally {
+      router.refresh();
     }
   };
 
@@ -61,31 +54,9 @@ export function CardCover(props: iCardCover) {
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <Button
-            variant="outline"
-            className="text-sm hover:bg-redInka hover:text-white"
-          >
-            Eliminar
-            <Trash2 className="w-4 h-4 ml-2" />
-          </Button>
-          <p>Boton Editar</p>
+          <BtnDeleteCover deleteItem={deletePortada} />
+          <BtnEditCover cover={cover} />
         </div>
-
-        {cover.isActive ? (
-          <Button
-            className="w-full mt-3"
-            variant="outline"
-            onClick={() => handlerActive(false)}
-          >
-            Desactivar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        ) : (
-          <Button className="w-full mt-3" onClick={() => handlerActive(true)}>
-            Activar
-            <Upload className="w-4 h-4 ml-2" />
-          </Button>
-        )}
       </div>
     </div>
   );

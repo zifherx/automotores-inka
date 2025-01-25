@@ -26,6 +26,7 @@ import { onToast } from "@/lib/toastMessage";
 
 import { tFormAdding } from "@/types";
 import { ChasisFormValues, formAddChasisSchema } from "@/forms";
+import { Send } from "lucide-react";
 
 export function FormAddChasis({ setOpenDialog }: tFormAdding) {
   const [btnLoading, setBtnLoading] = useState(false);
@@ -124,7 +125,10 @@ export function FormAddChasis({ setOpenDialog }: tFormAdding) {
                 Guardando...
               </>
             ) : (
-              <>Guardar</>
+              <>
+                Guardar
+                <Send className="w-5 h-5 ml-2" />
+              </>
             )}
           </Button>
         </div>

@@ -25,8 +25,12 @@ export async function POST(req: Request) {
 
     const query = await newPortada.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Portada creada ✅`,
+    });
   } catch (err) {
+    // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

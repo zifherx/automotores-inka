@@ -8,6 +8,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
 import { Analytics } from "@vercel/analytics/react";
+import {esMX} from '@clerk/localizations'
 
 import { cn } from "@/lib/utils";
 
@@ -93,7 +94,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={esMX}>
       <html lang="es-PE">
         <body
           className={cn(

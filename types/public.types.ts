@@ -257,3 +257,10 @@ export type tLocationMap = iListSede & {
 export type deleteFnProps = {
   deleteItem: () => Promise<void>;
 };
+
+export type PaginationType = {
+  paginaAnterior: () => void;
+  paginaSiguiente: () => void;
+  getPaginaAnterior: () => void;
+  getPaginaSiguiente: () => void;
+};

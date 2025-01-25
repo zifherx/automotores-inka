@@ -106,7 +106,7 @@ export const columnsQuotes: ColumnDef<iLead>[] = [
           size="sm"
           onClick={() => console.log("Delete:", row.original._id)}
         >
-          <Trash2 className="w-5 h-5 text-purple-500" />
+          <Trash2 className="w-5 h-5 text-redInka" />
         </Button>
       </div>
     ),

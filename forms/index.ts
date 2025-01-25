@@ -248,6 +248,15 @@ export const formCybermotorSchema = z.object({
   celular: z.string().length(9),
 });
 
+export const formTipoCambio = z.object({
+  fechaTC: z.date({ required_error: `Campo obligatorio` }),
+  tipo_cambio: z
+    .number({ message: "Campo obligatorio" })
+    .min(3.7, "Debe superar los 3.70")
+    .max(4.5, "No debe superar los 4.50"),
+});
+
+export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
 export type ModelFormValues = z.infer<typeof formAddModeloSchema>;
@@ -266,3 +275,4 @@ export type SolicitudServicioFormValues = z.infer<
 export type EmailModuleFormValues = z.infer<typeof formEmailModule>;
 export type ContestFormValues = z.infer<typeof formContestSchema>;
 export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>;
+export type TCambioFormValues = z.infer<typeof formTipoCambio>;

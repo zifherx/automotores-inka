@@ -70,3 +70,18 @@ export const getCompanyByCode = (codigo: string): iCompany | null => {
     return null;
   }
 };
+
+export const formatDateToPeru = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "America/Lima",
+    hour12: true,
+  };
+
+  return date.toLocaleDateString("es-PE", options);
+};
