@@ -25,11 +25,10 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 import { UploadButton } from "@/utils/uploadthing";
 import { onToast } from "@/lib/toastMessage";
 
-import { iFormAddBrand } from "@/types";
+import { tFormAdding } from "@/types";
 import { BrandFormValues, formAddBrandSchema } from "@/forms";
 
-export function FormAddBrand(props: iFormAddBrand) {
-  const { setOpenDialog } = props;
+export function FormAddBrand({setOpenDialog}: tFormAdding) {
 
   const [imageUploaded, setImageUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -151,15 +150,16 @@ export function FormAddBrand(props: iFormAddBrand) {
           <Button
             type="submit"
             className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+            disabled={btnLoading}
           >
             {btnLoading ? (
               <>
                 <LoadingIcon effect="default" />
-                Enviando...
+                Guardando...
               </>
             ) : (
               <>
-                Enviar
+                Guardar
                 <Send className="w-5 h-5 ml-2" />
               </>
             )}
