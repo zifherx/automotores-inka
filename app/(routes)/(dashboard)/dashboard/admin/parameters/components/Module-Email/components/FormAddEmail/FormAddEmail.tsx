@@ -19,11 +19,11 @@ import { Button } from "@/components/ui/button";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { EmailModuleFormValues, formEmailModule } from "@/forms";
-import { iFormAddGeneral } from "@/types";
+import { tFormAdding } from "@/types";
 import { Send } from "lucide-react";
 import { onToast } from "@/lib";
 
-export function FormAddEmail(props: iFormAddGeneral) {
+export function FormAddEmail(props: tFormAdding) {
   const { setOpenDialog } = props;
 
   const router = useRouter();
