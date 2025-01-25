@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { onToast } from "@/lib/toastMessage";
-import { iFormAddContest } from "@/types";
+import { tFormAdding } from "@/types";
 import { ContestFormValues, formContestSchema } from "@/forms";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -43,7 +43,7 @@ import { cn } from "@/lib";
 import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export function FormAddContest(props: iFormAddContest) {
+export function FormAddContest(props: tFormAdding) {
   const { setOpenDialog } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
