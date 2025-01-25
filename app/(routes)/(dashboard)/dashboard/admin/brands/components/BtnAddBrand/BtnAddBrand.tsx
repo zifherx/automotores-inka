@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { FormAddBrand } from "../FormAddBrand";
 
@@ -25,12 +25,11 @@ export function BtnAddBrand() {
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <Button
-          className="font-semibold text-lg"
           variant="outline"
+          size="sm"
           onClick={() => setOpenDialog(true)}
         >
-          <span className="hidden sm:flex">Nueva Marca</span>
-          <PlusCircle className="w-5 h-5 ml-0 sm:ml-2" />
+          <Plus className="w-5 h-5" strokeWidth={2} />
         </Button>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>

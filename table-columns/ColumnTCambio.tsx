@@ -4,7 +4,6 @@ import { formatDateToPeru } from "@/lib";
 import { iExchange } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash } from "lucide-react";
-import moment from "moment";
 
 export const columnTCambio: ColumnDef<iExchange>[] = [
   {

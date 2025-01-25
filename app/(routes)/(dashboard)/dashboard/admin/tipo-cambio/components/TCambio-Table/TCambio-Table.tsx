@@ -60,6 +60,12 @@ export function TCambioTable() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection
+    }
   });
 
   return (
