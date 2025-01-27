@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const query = await Cotizacion.find({})
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .populate([
         {
           path: "cliente",

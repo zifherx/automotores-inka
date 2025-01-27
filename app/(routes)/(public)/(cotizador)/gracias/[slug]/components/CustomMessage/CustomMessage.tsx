@@ -1,38 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-import { getEmailFromResend } from "@/app/api/actions";
-import { iCustomMessage } from "@/types";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
-export function CustomMessage(props: iCustomMessage) {
-  const { message, volverInicio } = props;
+import { iCustomMessage } from "@/types";
 
-  const [email, setEmail] = useState("");
+export function CustomMessage({ volverInicio }: iCustomMessage) {
+  // const [email, setEmail] = useState("");
 
-  const getEmailCliente = async () => {
-    const query = await getEmailFromResend(message);
-    if (query?.email !== undefined) {
-      setEmail(query.email);
-    }
-  };
-
-  useEffect(() => {
-    getEmailCliente();
-  }, [message]);
-
-  // async function getCustomerMail() {
+  // const getEmailCliente = async () => {
   //   const query = await getEmailFromResend(message);
-
   //   if (query?.email !== undefined) {
   //     setEmail(query.email);
   //   }
-  // }
+  // };
 
-  // getCustomerMail();
+  // useEffect(() => {
+  //   getEmailCliente();
+  // }, [message]);
 
   return (
     <div className="max-w-2xl w-full mx-auto bg-white rounded-t-2xl shadow-lg transform transition-all hover:scale-105 duration-300 overflow-hidden">
@@ -53,8 +39,8 @@ export function CustomMessage(props: iCustomMessage) {
           y te contactará pronto con los detalles.
         </p>
         <p className="text-sm text-gray-500">
-          En breve nos pondremos en contacto contigo al correo suministrado{" "}
-          {email}
+          En breve nos pondremos en contacto contigo al correo suministrado
+          {/* {email} */}
         </p>
 
         <div className="flex justify-center mt-8">

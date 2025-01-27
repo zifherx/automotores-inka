@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import { dbConnect } from "@/lib";
+import { dbConnect, validarItem } from "@/lib";
 import Cover from "@/models/Cover";
 
 export async function PATCH(
@@ -26,7 +26,7 @@ export async function PATCH(
         { status: 404 }
       );
 
-    const respuestaValidacion = validarPortada(
+    const respuestaValidacion = validarItem(
       coverFounded.imageUrl,
       payload.imageUrl
     );
@@ -51,7 +51,7 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      message: "Portada actualizada con éxito ✅",
+      message: "Portada actualizada ✅",
       res: query,
     });
   } catch (err) {
@@ -77,6 +77,7 @@ export async function DELETE(
     if (!query) {
       return NextResponse.json(
         {
+          success: false,
           message: `Portada no encontrada`,
         },
         { status: 404 }
@@ -93,10 +94,3 @@ export async function DELETE(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
-const validarPortada = (uriDB: string, uriPayload: string): boolean => {
-  if (uriDB === uriPayload) {
-    return true;
-  }
-  return false;
-};

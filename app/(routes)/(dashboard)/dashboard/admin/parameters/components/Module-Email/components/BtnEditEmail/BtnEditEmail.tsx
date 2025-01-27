@@ -41,7 +41,6 @@ export default function BtnEditEmail() {
                 variant="link"
                 size="icon"
                 className="text-orange-500 hover:shadow-xl hover:rounded-full"
-                onClick={() => setOpenDialog(true)}
               >
                 <Pencil className="w-5 h-5" strokeWidth={2} />
               </Button>

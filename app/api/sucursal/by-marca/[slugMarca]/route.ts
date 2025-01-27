@@ -3,6 +3,7 @@ import Marca from "@/models/Marca";
 import Sucursal from "@/models/Sucursal";
 
 import { dbConnect } from "@/lib";
+import { iSede } from "@/types";
 
 export async function GET(
   req: NextRequest,

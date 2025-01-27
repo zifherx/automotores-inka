@@ -1,5 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
-import { iChasis, iMailSystem, iPortada, iSede } from "./admin.types";
+import {
+  iCardBrand,
+  iChasis,
+  iMailSystem,
+  iPortada,
+  iSede,
+} from "./admin.types";
 
 export type tFormAdding = {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
@@ -20,3 +26,5 @@ export type tFormEditChasis = tFormAdding & {
 export type tFormEditCover = tFormAdding & {
   portada: iPortada;
 };
+
+export type tFormEditMarca = tFormAdding & iCardBrand;

@@ -1,8 +1,7 @@
-"use client";
-
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -19,11 +17,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { FormEditSucursal } from "../FormEditSucursal";
+import { iCardBrand } from "@/types";
+import { FormEditMarca } from "../FormEditMarca";
 
-import { iCardSede } from "@/types";
-
-export function BtnEditSucursal({ sede }: iCardSede) {
+export function BtnEditBrand({ brand }: iCardBrand) {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -31,16 +28,16 @@ export function BtnEditSucursal({ sede }: iCardSede) {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 variant="outline"
                 className="hover:bg-orange-400 hover:text-white"
               >
-                <Pencil className="w-4 h-4" />
+                <Pencil className="w-4 h-4" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Editar sede</p>
+              <p>Editar Marca</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -48,10 +45,10 @@ export function BtnEditSucursal({ sede }: iCardSede) {
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="uppercase font-bold text-xl">
-            Editar Sede
+            Editar Marca
           </DialogTitle>
           <DialogDescription>
-            <FormEditSucursal setOpenDialog={setOpenDialog} sede={sede} />
+            <FormEditMarca brand={brand} setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

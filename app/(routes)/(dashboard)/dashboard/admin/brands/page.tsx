@@ -25,7 +25,7 @@ export default async function BrandsPage() {
 
   return (
     <>
-      <div className="flex justify-between mb-5">
+      <div className="flex justify-between mb-2">
         <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
           Gestión de Marcas -{" "}
           {query.length === 0 ? <p> nulo 😭</p> : <p>{query.length} 😍</p>}

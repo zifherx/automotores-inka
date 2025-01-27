@@ -28,11 +28,10 @@ export function BtnEditChasis({ chasis }: iCardChasis) {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
                 variant="outline"
                 className="hover:bg-orange-400 hover:text-white"
-                onClick={() => setOpenDialog(true)}
               >
                 <Pencil className="w-4 h-4" strokeWidth={2} />
               </Button>

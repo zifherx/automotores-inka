@@ -10,8 +10,7 @@ import Link from "next/link";
 export function BarraFlotante() {
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
 
-  const urlWhatsapp =
-    "https://api.whatsapp.com/send/?phone=51972051479&text=Hola+%2AAutomotores+Inka%2A%21+Necesito+informaci%C3%B3n+de+Automotores+Inka+https%3A%2F%2Fautomotoresinka.pe&type=phone_number&app_absent=0";
+  const urlWhatsapp = "https://wa.link/z3h48l";
 
   return (
     <div

@@ -1,7 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Send, X } from "lucide-react";
 import axios from "axios";
 
 import {
@@ -12,54 +15,58 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { formAddCoverSchema, PortadasFormValues } from "@/forms";
-import { onToast } from "@/lib";
-import { tFormEditCover } from "@/types";
-import { Button } from "@/components/ui/button";
-import { LoadingIcon } from "@/components/Shared/LoadingIcon";
-import { Send, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { LoadingIcon } from "@/components/Shared/LoadingIcon";
+
+import { onToast } from "@/lib";
+import { BrandFormValues, formAddBrandSchema } from "@/forms";
+import { tFormEditMarca } from "@/types";
 import { UploadButton } from "@/utils/uploadthing";
 
-export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
+export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
   const [isLoading, setIsLoading] = useState(false);
   const [imageUploaded, setImageUploaded] = useState(false);
-  const [linkImagen, setLinkImagen] = useState<string>("");
+  const [linkImg, setLinkImg] = useState<string>("");
+
   const router = useRouter();
 
-  const form = useForm<PortadasFormValues>({
-    resolver: zodResolver(formAddCoverSchema),
+  const form = useForm<BrandFormValues>({
+    resolver: zodResolver(formAddBrandSchema),
     defaultValues: {
-      name: portada.name,
-      slug: portada.slug,
-      isActive: portada.isActive,
-      imageUrl: portada.imageUrl,
+      name: brand.name,
+      isActive: brand.isActive,
+      slug: brand.slug,
+      imageUrl: brand.imageUrl,
     },
   });
 
   useEffect(() => {
-    if (portada.imageUrl !== "") {
-      setLinkImagen(portada.imageUrl);
+    if (brand.imageUrl !== "") {
+      setLinkImg(brand.imageUrl);
       setImageUploaded(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = async (values: PortadasFormValues) => {
+  const onSubmit = async (values: BrandFormValues) => {
     setIsLoading(true);
     try {
-      const query = await axios.patch(`/api/portada/${portada._id}`, values);
+      const query = await axios.patch(`/api/marca/${brand._id}`, values);
       if (query.status === 200) {
         onToast(query.data.message);
         setOpenDialog(false);
         router.refresh();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      onToast(`Algo salió mal ❌`, "", true);
+      onToast(
+        "Algo salió mal ❌",
+        !err.response.data.success ? err.response.data.message : "",
+        true
+      );
     } finally {
       setIsLoading(false);
     }
@@ -67,22 +74,22 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
 
   const handleImageUpload = (res: any) => {
     if (res && res[0]) {
-      setLinkImagen(res[0].url);
+      setLinkImg(res[0].url);
       form.setValue("imageUrl", res[0].url);
       setImageUploaded(true);
     }
   };
 
   const handleImageDelete = () => {
-    setLinkImagen("");
+    setLinkImg("");
     form.setValue("imageUrl", "");
     setImageUploaded(false);
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <div className="grid grid-cols-[70%,1fr] gap-x-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="grid grid-cols-[70%,1fr] gap-2">
           {/* Name */}
           <FormField
             control={form.control}
@@ -90,10 +97,10 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-headMedium">
-                  Nombre de Portada
+                  Nombre de Marca
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Nombre..." {...field} />
+                  <Input placeholder="Marca..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,17 +112,17 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
             control={form.control}
             name="isActive"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="">
                 <FormLabel className="font-headMedium">Estado</FormLabel>
                 <FormControl>
-                  <div className="flex items-center gap-2 pt-1">
+                  <div className="flex gap-2 pt-1 items-center">
                     <Switch
                       id="formSwitch"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                     <Label htmlFor="formSwitch">
-                      {field.value ? `Activo 👍` : `Inactivo 👎`}
+                      {field.value ? "Activo 👍" : "Inactivo 👎"}
                     </Label>
                   </div>
                 </FormControl>
@@ -130,7 +137,7 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
           name="slug"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-headMedium">Slug de Portada</FormLabel>
+              <FormLabel className="font-headMedium">Slug de Marca</FormLabel>
               <FormControl>
                 <Input placeholder="Slug..." {...field} />
               </FormControl>
@@ -145,15 +152,16 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Imagen de Portada</FormLabel>
+              <FormLabel>Imagen de Marca</FormLabel>
               <FormControl>
                 <div className="space-y-4">
                   {!imageUploaded ? (
                     <UploadButton
                       className="rounded-lg bg-slate-600/20 text-slate-800 outline-dotted outline-1"
+                      {...field}
                       endpoint="imageUploaded"
                       onClientUploadComplete={handleImageUpload}
-                      onUploadError={(err: Error) => {
+                      onUploadError={(err) => {
                         console.log(err);
                       }}
                       {...field}
@@ -163,6 +171,7 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
                       <p className="px-2 py-1 text-sm bg-green-700 text-white rounded-xl text-center">
                         Imagen cargada! 👍
                       </p>
+
                       <Button
                         type="button"
                         variant="outline"
@@ -174,10 +183,10 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
                       </Button>
                     </div>
                   )}
-                  {linkImagen && (
+                  {linkImg && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={linkImagen}
+                      src={linkImg}
                       alt="Imagen cargada"
                       className="mt-2 max-w-xs rounded-md mx-auto"
                     />
@@ -191,18 +200,18 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
 
         <Button
           type="submit"
-          className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
+          className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
           disabled={isLoading}
         >
           {isLoading ? (
             <>
               <LoadingIcon effect="default" />
-              Actualizando...
+              Guardando...
             </>
           ) : (
             <>
-              Actualizar
-              <Send className="w-5 h-5 ml-2" strokeWidth={2} />
+              Guardar
+              <Send className="w-5 h-5 ml-2" />
             </>
           )}
         </Button>

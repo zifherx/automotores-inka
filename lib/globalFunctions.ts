@@ -85,3 +85,10 @@ export const formatDateToPeru = (date: Date): string => {
 
   return date.toLocaleDateString("es-PE", options);
 };
+
+export const validarItem = (uriDB: string, uriPayload: string): boolean => {
+  if (uriDB === uriPayload) {
+    return true;
+  }
+  return false;
+};

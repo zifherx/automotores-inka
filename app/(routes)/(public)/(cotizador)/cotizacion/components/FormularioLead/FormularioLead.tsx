@@ -104,24 +104,24 @@ export function FormularioLead(props: iCardModel) {
       });
 
       if (query.status === 200) {
-        const envioCorreo = await axios.post("/api/send-email/cotizacion", {
-          ...values,
-          departamento: watchSede,
-          concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
-          slugConcesionario: watchConcesionario,
-          marca: model.marca.name,
-          carroceria: model.carroceria.name,
-          modelo: model.name,
-          slugModelo: model.slug,
-          imageUrl: model.imageUrl,
-          precioBase: model.precioBase,
-        });
+        // const envioCorreo = await axios.post("/api/send-email/cotizacion", {
+        //   ...values,
+        //   departamento: watchSede,
+        //   concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+        //   slugConcesionario: watchConcesionario,
+        //   marca: model.marca.name,
+        //   carroceria: model.carroceria.name,
+        //   modelo: model.name,
+        //   slugModelo: model.slug,
+        //   imageUrl: model.imageUrl,
+        //   precioBase: model.precioBase,
+        // });
 
-        if (envioCorreo.status === 200) {
-          setIsLoading(false);
-          onToast(query.data.message);
-          router.push(`/gracias/${envioCorreo.data.mail.id}`);
-        }
+        // if (envioCorreo.status === 200) {
+        setIsLoading(false);
+        onToast(query.data.message);
+        router.push(`/gracias/${query.data.obj._id}`);
+        // }
       }
     } catch (err) {
       // console.log(err);

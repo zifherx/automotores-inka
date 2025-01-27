@@ -110,7 +110,8 @@ export function CotizadorStep() {
   const getCityByBrand = async (brand: string) => {
     if (brand !== "" || brand !== undefined) {
       const query = await axios.get(`/api/sucursal/by-marca/${brand}`);
-      if (query.status == 200) {
+      console.log("Q:", query);
+      if (query.status === 200) {
         const sedesSinDuplicados = query.data.filter(
           (item: any, index: any, self: any) =>
             index === self.findIndex((a: any) => a.ciudad === item.ciudad)
@@ -189,24 +190,24 @@ export function CotizadorStep() {
         const query = await axios.post("/api/cotizacion", newObj);
 
         if (query.status === 200) {
-          const envioCorreo = await axios.post("/api/send-email/cotizacion", {
-            ...values,
-            departamento: watchCiudad,
-            concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
-            slugConcesionario: watchConcesionario,
-            marca: selectedModel!.marca.name,
-            carroceria: selectedModel!.carroceria.name,
-            modelo: selectedModel!.name,
-            slugModelo: selectedModel!.slug,
-            imageUrl: selectedModel!.imageUrl,
-            precioBase: selectedModel!.precioBase,
-          });
+          // const envioCorreo = await axios.post("/api/send-email/cotizacion", {
+          //   ...values,
+          //   departamento: watchCiudad,
+          //   concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+          //   slugConcesionario: watchConcesionario,
+          //   marca: selectedModel!.marca.name,
+          //   carroceria: selectedModel!.carroceria.name,
+          //   modelo: selectedModel!.name,
+          //   slugModelo: selectedModel!.slug,
+          //   imageUrl: selectedModel!.imageUrl,
+          //   precioBase: selectedModel!.precioBase,
+          // });
 
-          if (envioCorreo.status === 200) {
-            setIsLoading(false);
-            onToast(query.data.message);
-            router.push(`/gracias/${envioCorreo.data.mail.id}`);
-          }
+          // if (envioCorreo.status === 200) {
+          setIsLoading(false);
+          onToast(query.data.message);
+          router.push(`/gracias/${query.data.obj._id}`);
+          // }
         }
       }
     } catch (err) {

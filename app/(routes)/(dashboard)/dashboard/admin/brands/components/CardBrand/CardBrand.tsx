@@ -1,49 +1,43 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { Pencil, Trash, Upload } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { onToast } from "@/lib/toastMessage";
-import { iCardBrand } from "@/types";
 import Image from "next/image";
-import { cn } from "@/lib";
+import axios from "axios";
 
-export function CardBrand({brand}: iCardBrand) {
-  const { name, isActive, imageUrl, slug } = brand;
+import { iCardBrand } from "@/types";
+import { cn, onToast } from "@/lib";
 
+import { BtnDeleteBrand } from "../BtnDeleteBrand";
+import { BtnEditBrand } from "../BtnEditBrand";
+
+export function CardBrand({ brand }: iCardBrand) {
   const router = useRouter();
 
-  const handlerActive = async (active: boolean) => {
+  const deleteBrand = async () => {
     try {
-      const query = await axios.patch(`/api/marca/${brand._id}`, {
-        isActive: active,
-      });
-
-      if (active) {
-        onToast("Marca Activa ✌️");
-      } else {
-        onToast("Marca Inactiva 😒");
+      const query = await axios.delete(`/api/marca/${brand._id}`);
+      if (query.status === 200) {
+        onToast(query.data.message);
       }
-
-      router.refresh();
     } catch (err) {
-      onToast("Algo salió mal 😭", "", true);
+      console.log(err);
+      onToast(`Algo salió mal 😭`, "", true);
+    } finally {
+      router.refresh();
     }
   };
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
       <Image
-        src={imageUrl}
-        alt={name}
+        src={brand.imageUrl}
+        alt={brand.name}
         width={150}
         height={100}
         priority
         className={cn("object-cover h-[80px] mx-auto mt-10")}
       />
-      {isActive ? (
+      {brand.isActive ? (
         <p className="absolute top-0 rigt-0 w-full p-1 text-center text-white bg-green-700 rounded-t-lg">
           Activo
         </p>
@@ -55,21 +49,13 @@ export function CardBrand({brand}: iCardBrand) {
 
       <div className="relative p-4">
         <div className="flex flex-col mb-3">
-          <p className="font-bold">Alt: {name}</p>
-          <p className="text-xs">Slug: {slug}</p>
+          <p className="font-bold">Alt: {brand.name}</p>
+          <p className="text-xs">Slug: {brand.slug}</p>
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <Button
-            variant="outline"
-            className="hover:bg-redInka hover:text-white"
-            size="sm"
-          >
-            <Trash className="w-4 h-4" strokeWidth={2}/>
-          </Button>
-          <Button variant="outline" className="hover:bg-orange-400 hover:text-white" size="icon">
-            <Pencil className="w-4 h-4" strokeWidth={2}/>
-          </Button>
+          <BtnDeleteBrand deleteItem={deleteBrand} />
+          <BtnEditBrand brand={brand} />
         </div>
       </div>
     </div>
