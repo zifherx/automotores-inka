@@ -52,7 +52,7 @@ export const listSubmenuFooter: iMenuFooter[] = [
       {
         id: 1,
         href: "/ligeros/catalogo",
-        label: "Catálogo de Ligeros",
+        label: "Catálogo de Vehículos",
         icon: Car,
       },
       // {

@@ -42,6 +42,16 @@ export function CardProductModel(props: iCardProductModel) {
           className="absolute -top-5 left-1 z-10"
         />
       )}
+      {isNuevo && (
+        <Image
+          src={`/images/offers/tag-nuevo.png`}
+          alt="Unidad nueva"
+          width={150}
+          height={60}
+          priority
+          className="absolute top-0 -right-5 z-20"
+        />
+      )}
       <p className="text-xs text-grisDarkInka text-right mr-5">
         Imagen referencial
       </p>
@@ -79,7 +89,9 @@ export function CardProductModel(props: iCardProductModel) {
           {formatUSDPrice(precioBase)} &nbsp;&nbsp; | &nbsp;&nbsp;
           {formatPENPrice(precioBase * tc)}
         </p>
-        <p className="text-[10px] font-light text-center">*Incluye bonos de financiamiento</p>
+        <p className="text-[10px] font-light text-center">
+          *Incluye bonos de financiamiento
+        </p>
 
         <Link
           href={`/ligeros/${getRouteForModel(marca.slug)}/${slug}`}

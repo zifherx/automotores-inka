@@ -1,12 +1,12 @@
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 
 import { dbConnect } from "@/lib";
 
 import Modelo from "@/models/Modelo";
 
 export async function PATCH(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { modeloId: string } }
 ) {
   await dbConnect();
@@ -30,7 +30,11 @@ export async function PATCH(
         { status: 404 }
       );
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Modelo actualizado ✅`,
+      res: query,
+    });
   } catch (err) {
     // console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
@@ -38,7 +42,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { modeloId: string } }
 ) {
   await dbConnect();
@@ -53,11 +57,15 @@ export async function DELETE(
 
     if (!query)
       return NextResponse.json(
-        { message: `Modelo ${modeloId} no encontrado` },
+        { success: false, message: `Modelo ${modeloId} no encontrado` },
         { status: 404 }
       );
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Modelo eliminado ❌`,
+      res: query,
+    });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }

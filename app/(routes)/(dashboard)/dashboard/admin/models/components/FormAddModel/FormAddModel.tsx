@@ -51,6 +51,7 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
     defaultValues: {
       name: "",
       slug: "",
+      codigo_flashdealer: "",
       imageUrl: "",
       precioBase: 0,
       fichaTecnica: "",
@@ -132,15 +133,16 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
       const query = await axios.post("/api/modelo/", values);
       // console.log(query);
       if (query.status === 200) {
-        onToast(`${query.data.message} ✅`);
+        onToast(`${query.data.message}`);
         setBtnLoading(false);
         setOpenDialog(false);
-        router.refresh();
       }
     } catch (err) {
       // console.log(err);
       setBtnLoading(false);
       onToast("Algo salió mal ❌", "", true);
+    } finally {
+      router.refresh();
     }
   };
 
@@ -207,6 +209,23 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
                 )}
               />
             </div>
+
+            {/* CODIGO FLASHDEALER */}
+            <FormField
+              control={form.control}
+              name="codigo_flashdealer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-headMedium">
+                    Código Flashdealer
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Código modelo..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* ImageUrl */}
             <FormField

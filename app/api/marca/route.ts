@@ -15,7 +15,11 @@ export async function POST(req: Request) {
 
     const query = await newMarca.save();
 
-    return NextResponse.json(query);
+    return NextResponse.json({
+      success: true,
+      message: `Marca creada ✅`,
+      res: query,
+    });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }

@@ -1,14 +1,7 @@
-"use client";
-
 import { useState } from "react";
+import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -17,12 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-import { Car, Plus } from "lucide-react";
+import { iCardModel } from "@/types";
+import { FormEditModel } from "../FormEditModel";
 
-import { FormAddModel } from "../FormAddModel";
-
-export function BtnAddModel() {
+export function BtnEditModel({ model }: iCardModel) {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -31,12 +29,15 @@ export function BtnAddModel() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Button variant="outline">
-                <Plus className="w-5 h-5" strokeWidth={2} />
+              <Button
+                variant="outline"
+                className="hover:bg-orange-400 hover:text-white"
+              >
+                <Pencil className="w-4 h-4" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="left">
-              <p className="text-base">Nuevo Modelo</p>
+            <TooltipContent>
+              <p>Editar modelo</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -46,12 +47,11 @@ export function BtnAddModel() {
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="mb-5 flex flex-row uppercase gap-3 items-center justify-start">
-            Nuevo Modelo
-            <Car className="w-5 h-5" />
+          <DialogTitle className="uppercase font-bold text-xl">
+            Editar Modelo
           </DialogTitle>
           <DialogDescription>
-            <FormAddModel setOpenDialog={setOpenDialog} />
+            <FormEditModel setOpenDialog={setOpenDialog} model={model} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

@@ -28,7 +28,7 @@ export function BtnEditBrand({ brand }: iCardBrand) {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
                 variant="outline"
                 className="hover:bg-orange-400 hover:text-white"
@@ -42,7 +42,10 @@ export function BtnEditBrand({ brand }: iCardBrand) {
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
-      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="uppercase font-bold text-xl">
             Editar Marca

@@ -28,8 +28,7 @@ import { onToast } from "@/lib/toastMessage";
 import { tFormAdding } from "@/types";
 import { BrandFormValues, formAddBrandSchema } from "@/forms";
 
-export function FormAddBrand({setOpenDialog}: tFormAdding) {
-
+export function FormAddBrand({ setOpenDialog }: tFormAdding) {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const router = useRouter();
@@ -45,16 +44,18 @@ export function FormAddBrand({setOpenDialog}: tFormAdding) {
   });
 
   const onSubmit = async (values: BrandFormValues) => {
+    setBtnLoading(true);
     try {
       const query = await axios.post("/api/marca", values);
-
       if (query.status === 200) {
-        onToast("Marca creada ✅");
+        onToast(query.data.message);
         setOpenDialog(false);
-        router.refresh();
+        setBtnLoading(false);
       }
-    } catch (er) {
+    } catch (err) {
       onToast("Algo salió mal ❌", "", true);
+    } finally {
+      router.refresh();
     }
   };
 
@@ -132,7 +133,6 @@ export function FormAddBrand({setOpenDialog}: tFormAdding) {
                       {...field}
                       endpoint="imageUploaded"
                       onClientUploadComplete={(res) => {
-                        console.log("complete", res);
                         form.setValue("imageUrl", res ? res?.[0].url : "");
                         setImageUploaded(true);
                       }}

@@ -43,6 +43,7 @@ export const formGallerySchema = z.object({
 export const formAddModeloSchema = z.object({
   name: z.string().min(2),
   slug: z.string().min(2),
+  codigo_flashdealer: z.string().min(2),
   imageUrl: z.string(),
   precioBase: z.number(),
   fichaTecnica: z.string(),

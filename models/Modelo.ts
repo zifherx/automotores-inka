@@ -29,6 +29,7 @@ export interface iGallery {
 export interface iModel extends Document {
   name: string;
   slug: string;
+  codigo_flashdealer: string;
   imageUrl: string;
   precioBase: number;
   fichaTecnica: string;
@@ -49,6 +50,7 @@ const modeloSchema: Schema = new Schema<iModel>(
   {
     name: { type: String, required: true },
     slug: { type: String, required: true },
+    codigo_flashdealer: { type: String, required: true, default: "" },
     imageUrl: { type: String },
     precioBase: { type: Number },
     fichaTecnica: { type: String },

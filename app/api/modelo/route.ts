@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   try {
     const query: iModelo[] = await Modelo.find({})
       .select(
-        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP"
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP codigo_flashdealer"
       )
       .populate([
         {
@@ -38,26 +38,26 @@ export async function POST(req: Request) {
   await dbConnect();
   try {
     const { userId } = await auth();
-    const data = await req.json();
+    const dataForm = await req.json();
 
-    const brandFound = await Marca.findOne({ slug: data.marca });
+    const brandFound = await Marca.findOne({ slug: dataForm.marca });
     if (!brandFound)
       return NextResponse.json(
-        { message: `Marca ${data.marca} no encontrada` },
+        { message: `Marca ${dataForm.marca} no encontrada` },
         { status: 404 }
       );
 
-    const chasisFound = await Carroceria.findOne({ slug: data.carroceria });
+    const chasisFound = await Carroceria.findOne({ slug: dataForm.carroceria });
     if (!chasisFound)
       return NextResponse.json(
-        { message: `Chasis ${data.carroceria} no encontrado` },
+        { message: `Chasis ${dataForm.carroceria} no encontrado` },
         { status: 404 }
       );
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
 
     const newModelo = new Modelo({
-      ...data,
+      ...dataForm,
       createdBy: userId,
       marca: brandFound,
       carroceria: chasisFound,
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
     const query = await newModelo.save();
 
     return NextResponse.json({
-      message: `Modelo ${data.name} creado con éxito`,
+      message: `Modelo ${dataForm.name} creado ✅`,
       obj: query,
     });
   } catch (err) {

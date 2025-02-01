@@ -6,9 +6,7 @@ import { CardProductModel } from "@/components/Shared/CardProductModel";
 import { iListVehicle, iModelo } from "@/types";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
-export function ListVehicles(props: iListVehicle) {
-  const { models } = props;
-
+export function ListVehicles({ models }: iListVehicle) {
   const [counterVehicles, setCounterVehicles] = useState(9);
   const dataFilteredVehicles = models?.slice(0, counterVehicles);
 

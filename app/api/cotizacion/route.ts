@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
 
 import Cliente from "@/models/Cliente";
 import Modelo from "@/models/Modelo";
@@ -6,7 +7,10 @@ import Sucursal from "@/models/Sucursal";
 import Cotizacion from "@/models/Cotizacion";
 
 import { dbConnect } from "@/lib";
-import { iCustomer, iLead } from "@/types";
+import { iCustomer, iLead, iModelo, iSede } from "@/types";
+
+const URI_LEADS_FD = process.env.ENDPOINT_FD;
+const TOKEN_FD = process.env.TOKEN_FD;
 
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -42,8 +46,10 @@ export async function POST(req: NextRequest) {
   const dataForm = await req.json();
   let newCustomer = null;
 
+  console.log("###PAYLOAD", dataForm);
+
   try {
-    const customerFound = await Cliente.findOne({
+    const customerFound: iCustomer | null = await Cliente.findOne({
       numeroDocumento: dataForm.numeroDocumento,
     });
     if (!customerFound) {
@@ -60,26 +66,69 @@ export async function POST(req: NextRequest) {
       newCustomer = await qCustomer.save();
     }
 
-    const vehicleFound = await Modelo.findOne({ slug: dataForm.slugModelo });
+    const vehicleFound: iModelo | null = await Modelo.findOne({
+      slug: dataForm.slugModelo,
+    }).populate({
+      path: "marca",
+      select: "name",
+    });
 
-    const sedeFound = await Sucursal.findOne({
+    const sedeFound: iSede | null = await Sucursal.findOne({
       slug: dataForm.slugConcesionario,
     });
 
     const qCotizacion = new Cotizacion({
       cliente: customerFound ? customerFound._id : newCustomer?._id,
-      vehiculo: vehicleFound._id,
+      vehiculo: vehicleFound!._id,
       ciudad: dataForm.departamento,
-      sede: sedeFound._id,
+      sede: sedeFound!._id,
       intencionCompra: dataForm.intencionCompra,
     }) as iLead;
 
     const query = await qCotizacion.save();
 
-    return NextResponse.json({
-      message: `Cotización ${new Date().getTime()} registrada con éxito.`,
-      obj: query,
-    });
+    // console.log("customerFound", customerFound);
+    // console.log("vehicleFound", vehicleFound);
+    // console.log("sedeFound", sedeFound);
+    console.log("URI_LEADS_FD", URI_LEADS_FD);
+    console.log("TOKEN_FD", TOKEN_FD);
+    console.log("query", query);
+
+    const objFD = {
+      document: customerFound
+        ? customerFound.numeroDocumento
+        : newCustomer?.numeroDocumento,
+      email: customerFound ? customerFound.email : newCustomer!.email,
+      pone_number: `+51${
+        customerFound ? customerFound.celular : newCustomer!.celular
+      }`,
+      mark: vehicleFound!.marca.name.toUpperCase(),
+      model: vehicleFound!.codigo_flashdealer,
+      year: "",
+      vehicle: "",
+      mileage: "",
+      form_id: "",
+      form_name: "NUEVOS",
+      campaign_id: "",
+      page_id: "",
+      page_name: "",
+      platform: "WEB",
+      city: sedeFound!.ciudad.toUpperCase(),
+    };
+    console.log("####objFD", objFD);
+    if (query) {
+      const responseFlashDealer = await axios.post(`${URI_LEADS_FD}`, objFD, {
+        headers: {
+          Authorization: TOKEN_FD,
+        },
+      });
+      console.log("####RESPONSE-FD", responseFlashDealer.data);
+      return NextResponse.json({
+        success: true,
+        message: `Cotización ${new Date().getTime()} registrada con éxito.`,
+        obj: query,
+      });
+    }
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

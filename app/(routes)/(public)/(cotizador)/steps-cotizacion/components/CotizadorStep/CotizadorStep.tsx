@@ -110,7 +110,6 @@ export function CotizadorStep() {
   const getCityByBrand = async (brand: string) => {
     if (brand !== "" || brand !== undefined) {
       const query = await axios.get(`/api/sucursal/by-marca/${brand}`);
-      console.log("Q:", query);
       if (query.status === 200) {
         const sedesSinDuplicados = query.data.filter(
           (item: any, index: any, self: any) =>
@@ -185,6 +184,8 @@ export function CotizadorStep() {
       precioBase: selectedModel!.precioBase,
     };
 
+    console.log("###PAYLOAD VALUES:", newObj);
+
     try {
       if (selectedModel !== null) {
         const query = await axios.post("/api/cotizacion", newObj);
@@ -205,6 +206,7 @@ export function CotizadorStep() {
 
           // if (envioCorreo.status === 200) {
           setIsLoading(false);
+          // onToast("Testing");
           onToast(query.data.message);
           router.push(`/gracias/${query.data.obj._id}`);
           // }
