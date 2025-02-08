@@ -7,6 +7,7 @@ import {
   House,
   Images,
   MapPin,
+  Newspaper,
   NotebookText,
   Scale,
   ShoppingBag,
@@ -85,6 +86,12 @@ export const listItemMenuGeneral: iMenuDashboard[] = [
     icon: MapPin,
     label: "Gestión de Sucursales",
     href: "/dashboard/admin/sucursal",
+  },
+  {
+    id: 5,
+    icon: Newspaper,
+    label: "Gestión de Noticias",
+    href: "/dashboard/admin/noticias",
   },
 ];
 
