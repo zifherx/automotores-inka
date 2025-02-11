@@ -6,6 +6,7 @@ import Modelo from "@/models/Modelo";
 import Sucursal from "@/models/Sucursal";
 import Cotizacion from "@/models/Cotizacion";
 
+import Bitacora from "@/models/Bitacora";
 import { dbConnect } from "@/lib";
 import { iCustomer, iLead, iModelo, iSede } from "@/types";
 
@@ -88,7 +89,7 @@ export async function POST(req: NextRequest) {
   const dataForm = await req.json();
   let newCustomer = null;
 
-  console.log("###PAYLOAD", dataForm);
+  // console.log("###PAYLOAD", dataForm);
 
   try {
     const customerFound: iCustomer | null = await Cliente.findOne({
@@ -129,13 +130,6 @@ export async function POST(req: NextRequest) {
 
     const query = await qCotizacion.save();
 
-    // console.log("customerFound", customerFound);
-    // console.log("vehicleFound", vehicleFound);
-    // console.log("sedeFound", sedeFound);
-    console.log("URI_LEADS_FD", URI_LEADS_FD);
-    console.log("TOKEN_FD", TOKEN_FD);
-    console.log("query", query);
-
     const objFD = {
       document: customerFound
         ? customerFound.numeroDocumento
@@ -154,25 +148,56 @@ export async function POST(req: NextRequest) {
       campaign_id: "",
       page_id: "",
       page_name: "",
-      platform: "WEB",
+      platform: "PAGINA WEB",
       city: sedeFound!.ciudad.toUpperCase(),
     };
-    console.log("####objFD", objFD);
+    // console.log("####objFD", objFD);
     if (query) {
       const responseFlashDealer = await axios.post(`${URI_LEADS_FD}`, objFD, {
         headers: {
           Authorization: TOKEN_FD,
         },
       });
-      console.log("####RESPONSE-FD", responseFlashDealer.data);
+
+      const objBitacora = new Bitacora({
+        request: {
+          body: JSON.stringify(objFD),
+          authorization: responseFlashDealer.config.headers.Authorization,
+          accept: responseFlashDealer.config.headers.Accept,
+        },
+        response: {
+          body: JSON.stringify(responseFlashDealer.data),
+          code: responseFlashDealer.status,
+          statusText: responseFlashDealer.statusText,
+        },
+        method: responseFlashDealer.config.method,
+        url: responseFlashDealer.config.url,
+      });
+      await objBitacora.save();
+
       return NextResponse.json({
         success: true,
-        message: `Cotización ${new Date().getTime()} registrada con éxito.`,
+        message: `Cotización ${new Date().getTime()} registrada ✅`,
         obj: query,
       });
     }
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    const objBitacoraError = new Bitacora({
+      request: {
+        body: JSON.stringify(err.response.config.data),
+        authorization: err.response.headers.Authorization,
+        accept: err.config.headers.Accept,
+      },
+      response: {
+        body: JSON.stringify(err.response.data),
+        code: err.response.status,
+        statusText: err.response.statusText,
+      },
+      method: err.response.config.method,
+      url: err.response.config.url,
+    });
+    await objBitacoraError.save();
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
