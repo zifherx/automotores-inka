@@ -54,12 +54,34 @@ export const columnsQuotes: ColumnDef<iLead>[] = [
     },
   },
   {
+    accessorFn: (row) => row.cliente.numeroDocumento,
+    id: "clienteDocumento",
+    header: () => (
+      <div className="text-center uppercase font-headBold">Documento</div>
+    ),
+    cell: ({ getValue }) => {
+      const customer = getValue() as string;
+      return <p className="text-center capitalize font-medium">{customer}</p>;
+    },
+  },
+  {
     accessorKey: "ciudad",
     header: () => (
       <div className="text-center uppercase font-headBold">Ciudad</div>
     ),
     cell: ({ row }) => <p className="text-center">{row.getValue("ciudad")}</p>,
     enableGrouping: true,
+  },
+  {
+    accessorFn: (row) => row.sede.name,
+    id: "dealer",
+    header: () => (
+      <div className="text-center uppercase font-headBold">Dealer</div>
+    ),
+    cell: ({ getValue }) => {
+      const dealer = getValue() as string;
+      return <p className="text-center capitalize font-medium">{dealer}</p>;
+    },
   },
   {
     accessorFn: (row) => row.vehiculo.name,
@@ -112,3 +134,65 @@ export const columnsQuotes: ColumnDef<iLead>[] = [
     ),
   },
 ];
+
+export const COLUMN_DEFINITION_EXPORTING = [
+  {
+    id: "createdAt",
+    label: "Fecha",
+    accessor: (row: iLead) => row.createdAt,
+  },
+  {
+    id: "cliente.nombre",
+    label: "Cliente",
+    accessor: (row: iLead) => row.cliente.name,
+  },
+  {
+    id: "cliente.numeroDocumento",
+    label: "Documento",
+    accessor: (row: iLead) => row.cliente.numeroDocumento,
+  },
+  {
+    id: "cliente.celular",
+    label: "Celular",
+    accessor: (row: iLead) => row.cliente.celular,
+  },
+  {
+    id: "cliente.email",
+    label: "Email",
+    accessor: (row: iLead) => row.cliente.email,
+  },
+  {
+    id: "vehiculo.name",
+    label: "Modelo",
+    accessor: (row: iLead) => row.vehiculo.name,
+  },
+  {
+    id: "vehiculo.marca.name",
+    label: "Marca",
+    accessor: (row: iLead) => row.vehiculo.marca.name,
+  },
+  {
+    id: "ciudad",
+    label: "Ciudad",
+    accessor: (row: iLead) => row.ciudad,
+  },
+  {
+    id: "sede.name",
+    label: "Concesionario",
+    accessor: (row: iLead) => row.sede.name,
+  },
+  {
+    id: "intencionCompra",
+    label: "Intención de Compra",
+    accessor: (row: iLead) => row.intencionCompra,
+  },
+] as const;
+
+export type ColumnQuoteDef = (typeof COLUMN_DEFINITION_EXPORTING)[number];
+
+export const columnsExport: ColumnDef<iLead>[] =
+  COLUMN_DEFINITION_EXPORTING.map((col) => ({
+    accessorKey: col.id,
+    header: col.label,
+    cell: ({ row }) => col.accessor(row.original),
+  }));

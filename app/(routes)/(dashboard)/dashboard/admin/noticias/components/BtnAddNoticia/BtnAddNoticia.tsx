@@ -20,9 +20,9 @@ import {
 
 import { Plus } from "lucide-react";
 
-import { FormAddPortada } from "../FormAddCover";
+import { FormAddNoticia } from "../FormAddNoticia";
 
-export function BtnAddCover() {
+export function BtnAddNoticia() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -36,16 +36,19 @@ export function BtnAddCover() {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">
-              <p className="capitalize text-lg">Nueva Portada</p>
+              <p className="capitalize text-lg">Nueva Noticia</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
-      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
-          <DialogTitle className="mb-5 text-left">Nueva Portada</DialogTitle>
+          <DialogTitle className="mb-5 text-left">Nueva Noticia</DialogTitle>
           <DialogDescription>
-            <FormAddPortada setOpenDialog={setOpenDialog} />
+            <FormAddNoticia setOpenDialog={setOpenDialog} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

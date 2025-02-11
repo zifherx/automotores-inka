@@ -470,7 +470,7 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
               {colorFields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="space-y-4 p-4 border rounded-mb mb-4"
+                  className="space-y-4 p-4 border rounded-md mb-4"
                 >
                   {/* Color Label */}
                   <FormField
