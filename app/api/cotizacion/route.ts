@@ -14,27 +14,69 @@ const TOKEN_FD = process.env.TOKEN_FD;
 
 export async function GET(req: NextRequest) {
   await dbConnect();
+  let query;
+
+  const paramFrom = await req.nextUrl.searchParams.get("from");
+  const paramTo = await req.nextUrl.searchParams.get("to");
 
   try {
-    const query = await Cotizacion.find({})
-      .sort({ createdAt: -1 })
-      .populate([
-        {
-          path: "cliente",
-          select:
-            "_id name tipoDocumento numeroDocumento celular email createdAt",
-        },
-        {
-          path: "vehiculo",
-          select: "_id name slug imageUrl precioBase isActive createdAt",
-        },
-        {
-          path: "sede",
-          select: "_id name slug ciudad isActive createdAt codexHR",
-        },
-      ]);
-
-    return NextResponse.json({ total: query.length, obj: query });
+    if (paramFrom == null || paramTo == null) {
+      console.log("Sin Filtros");
+      query = await Cotizacion.find({})
+        .sort({ createdAt: -1 })
+        .populate([
+          {
+            path: "cliente",
+            select:
+              "_id name tipoDocumento numeroDocumento celular email createdAt",
+          },
+          {
+            path: "vehiculo",
+            select:
+              "_id name slug imageUrl marca precioBase isActive createdAt",
+            populate: [
+              {
+                path: "marca",
+                select: "name",
+              },
+            ],
+          },
+          {
+            path: "sede",
+            select: "_id name slug ciudad isActive createdAt codexHR",
+          },
+        ]);
+      return NextResponse.json({ total: query.length, obj: query });
+    } else {
+      console.log("Con Filtros");
+      query = await Cotizacion.find({
+        createdAt: { $gte: new Date(paramFrom), $lte: new Date(paramTo) },
+      })
+        .sort({ createdAt: -1 })
+        .populate([
+          {
+            path: "cliente",
+            select:
+              "_id name tipoDocumento numeroDocumento celular email createdAt",
+          },
+          {
+            path: "vehiculo",
+            select:
+              "_id name slug imageUrl marca precioBase isActive createdAt",
+            populate: [
+              {
+                path: "marca",
+                select: "name",
+              },
+            ],
+          },
+          {
+            path: "sede",
+            select: "_id name slug ciudad isActive createdAt codexHR",
+          },
+        ]);
+      return NextResponse.json({ total: query.length, obj: query });
+    }
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal Error", { status: 500 });

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 import {
   ColumnFiltersState,
@@ -27,11 +28,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { iLead } from "@/types";
 import { Button } from "@/components/ui/button";
 import { columnsQuotes } from "@/table-columns";
 import {
   Building,
+  CalendarIcon,
   Car,
   ChevronDown,
   ChevronLeft,
@@ -39,10 +40,16 @@ import {
   ShoppingBasket,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { useQuotes } from "@/context/quotes/quotesContext";
 
 export function TableQuotes() {
-  const [quotes, setQuotes] = useState<iLead[]>([]);
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const { quotes, isLoading, rangoFechas, setRangoFechas } = useQuotes();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -50,22 +57,6 @@ export function TableQuotes() {
   const [rowSelection, setRowSelection] = useState({});
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
-
-  const getQuotes = async () => {
-    try {
-      const query = await axios.get("/api/cotizacion");
-      if (query.status === 200) {
-        setQuotes(query.data.obj);
-        setIsDataLoading(false);
-      }
-    } catch (err) {
-      setIsDataLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getQuotes();
-  }, []);
 
   const table = useReactTable({
     data: quotes,
@@ -102,25 +93,81 @@ export function TableQuotes() {
     });
   };
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!quotes || quotes.length === 0) {
+    return <p>No existen registros</p>;
+  }
+
   return (
     <div className="w-full p-2">
-      <div className="flex items-center justify-between pb-8">
-        <Input
-          placeholder="Filtrar por cliente..."
-          value={
-            (table.getColumn("clienteNombre")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("clienteNombre")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-
-        <div>
+      <div className="flex flex-col gap-2 pb-4">
+        <div className="flex flex-col md:flex-row md:justify-between w-full">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="rangoFecha" className="font-headMedium">
+              Fechas
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="rangoFechas"
+                  variant="outline"
+                  className="w-full md:w-[300px] justify-start text-left font-normal"
+                >
+                  <CalendarIcon />
+                  {rangoFechas?.from ? (
+                    rangoFechas.to ? (
+                      <>
+                        {format(rangoFechas.from, "LLLL dd, y", { locale: es })}{" "}
+                        - {format(rangoFechas.to, "LLLL dd, y", { locale: es })}
+                      </>
+                    ) : (
+                      format(rangoFechas.from, "LLL dd, y", { locale: es })
+                    )
+                  ) : (
+                    <span>Selecciona un rango de fechas</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={rangoFechas?.from}
+                  selected={rangoFechas}
+                  onSelect={setRangoFechas}
+                  numberOfMonths={2}
+                  locale={es}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="inputCliente" className="font-headMedium">
+              Cliente
+            </label>
+            <Input
+              placeholder="Filtrar por cliente..."
+              className="w-full md:w-[300px] justify-start text-left font-normal"
+              value={
+                (table
+                  .getColumn("clienteNombre")
+                  ?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table
+                  .getColumn("clienteNombre")
+                  ?.setFilterValue(event.target.value)
+              }
+            />
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row items-start justify-start md:justify-end gap-1 w-full">
           <Button
             variant="outline"
             size="sm"
-            className="ml-4"
             onClick={() => toggleGrouping("ciudad")}
           >
             <Building className="w-5 h-5 mr-2" />
@@ -130,7 +177,6 @@ export function TableQuotes() {
           <Button
             variant="outline"
             size="sm"
-            className="ml-4"
             onClick={() => toggleGrouping("vehiculoModelo")}
           >
             <Car className="w-5 h-5 mr-2" />
@@ -141,7 +187,6 @@ export function TableQuotes() {
           <Button
             variant="outline"
             size="sm"
-            className="ml-4"
             onClick={() => toggleGrouping("intencionCompra")}
           >
             <ShoppingBasket className="w-5 h-5 mr-2" />

@@ -55,7 +55,7 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
     } catch (err) {
       onToast("Algo salió mal ❌", "", true);
     } finally {
-      setBtnLoading(true);
+      setBtnLoading(false);
     }
   };
 

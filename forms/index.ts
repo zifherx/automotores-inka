@@ -257,6 +257,23 @@ export const formTipoCambio = z.object({
     .max(4.5, "No debe superar los 4.50"),
 });
 
+export const formOracionSchema = z.object({
+  oracion: z.string(),
+});
+
+export const formParrafoSchema = z.object({
+  title: z.string(),
+  parrafos: z.array(formOracionSchema),
+});
+
+export const formNoticia = z.object({
+  title: z.string(),
+  slug: z.string(),
+  excerpt: z.string(),
+  content: z.array(formParrafoSchema),
+  imagePortada: z.string().url(),
+});
+
 export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
@@ -277,3 +294,4 @@ export type EmailModuleFormValues = z.infer<typeof formEmailModule>;
 export type ContestFormValues = z.infer<typeof formContestSchema>;
 export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>;
 export type TCambioFormValues = z.infer<typeof formTipoCambio>;
+export type NoticiasFormValues = z.infer<typeof formNoticia>;

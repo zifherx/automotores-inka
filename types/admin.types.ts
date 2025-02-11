@@ -18,6 +18,12 @@ import { iSedeDealer } from "./public.types";
 import { iUser } from "@/interfaces/iAdmin";
 import { User } from "@clerk/nextjs/server";
 
+export type defaultDocument = {
+  _id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
 // Cover
 export type iListCover = {
   covers: iPortada[];
@@ -27,7 +33,7 @@ export type iCardCover = {
   cover: iPortada;
 };
 
-export type iPortada = iCover & { _id: string };
+export type iPortada = iCover & defaultDocument;
 
 // Brand
 export type iListBrand = {
@@ -38,7 +44,7 @@ export type iCardBrand = {
   brand: iBrand;
 };
 
-export type iBrand = iMarca & { _id: string };
+export type iBrand = iMarca & defaultDocument;
 
 // Chasis
 export type iListChasis = {
@@ -49,7 +55,7 @@ export type iCardChasis = {
   chasis: iChasis;
 };
 
-export type iChasis = iCarroceria & { _id: string };
+export type iChasis = iCarroceria & defaultDocument;
 
 // Modelo
 export type iListModels = {
@@ -60,7 +66,7 @@ export type iCardModel = {
   model: iModelo;
 };
 
-export type iModelo = iModel & { _id: string };
+export type iModelo = iModel & defaultDocument;
 
 export type iBtnAddModel = {
   brands: iBrand[];
@@ -76,26 +82,26 @@ export type iCardSede = {
   sede: iSede;
 };
 
-export type iSede = iSucursal & { _id: string };
+export type iSede = iSucursal & defaultDocument;
 
 export type iFormCotizacionGeneral = iListBrand & {
   listDepartamentos: iSedeDealer[];
 };
 
 //Citas
-export type iAppointment = iCita & { _id: string };
+export type iAppointment = iCita & defaultDocument;
 
 //Reclamos
-export type iReclamation = iReclamo & { _id: string };
+export type iReclamation = iReclamo & defaultDocument;
 
 //Cliente
-export type iCustomer = iCliente & { _id: string };
+export type iCustomer = iCliente & defaultDocument;
 
 //Cotizacion
-export type iLead = iCotizacion & { _id: string };
+export type iLead = iCotizacion & defaultDocument;
 
 // EMAIL SYSTEM
-export type iMailSystem = iSystemEmail & { _id: string };
+export type iMailSystem = iSystemEmail & defaultDocument;
 
 export type iListMailSystem = {
   mails: iMailSystem[];
@@ -119,9 +125,9 @@ export type iCardContest = {
   contest: iContest;
 };
 
-export type iContest = iConcurso & { _id: string };
+export type iContest = iConcurso & defaultDocument;
 
-export type tCybermotor = iCybermotor & { _id: string };
+export type tCybermotor = iCybermotor & defaultDocument;
 
 export type tUserPage = {
   users: iUser[];
@@ -129,7 +135,7 @@ export type tUserPage = {
 
 export type tUser = User & iUser;
 
-export type iExchange = iTipoCambio & { _id: string };
+export type iExchange = iTipoCambio & defaultDocument;
 
 export type iListTCambio = {
   tCambios: iExchange[];
