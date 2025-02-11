@@ -30,7 +30,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -183,8 +182,6 @@ export function CotizadorStep() {
       imageUrl: selectedModel!.imageUrl,
       precioBase: selectedModel!.precioBase,
     };
-
-    console.log("###PAYLOAD VALUES:", newObj);
 
     try {
       if (selectedModel !== null) {
