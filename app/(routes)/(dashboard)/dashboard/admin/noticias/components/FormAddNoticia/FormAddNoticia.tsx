@@ -1,6 +1,13 @@
-import { LoadingIcon } from "@/components/Shared/LoadingIcon";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Minus, Plus, Send, Trash } from "lucide-react";
+import axios from "axios";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -12,15 +19,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+
+import { LoadingIcon } from "@/components/Shared/LoadingIcon";
+
 import { formNoticia, NoticiasFormValues } from "@/forms";
 import { tFormAdding } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Minus, Plus, Send, Trash, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { onToast } from "@/lib";
+import { UploadButton } from "@/utils/uploadthing";
 
 export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
   const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [imageUploaded, setImageUploaded] = useState(false);
+
+  const router = useRouter();
 
   const form = useForm<NoticiasFormValues>({
     resolver: zodResolver(formNoticia),
@@ -45,24 +56,32 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
   const onSubmit = async (values: NoticiasFormValues) => {
     setIsLoadingButton(true);
     try {
-      setTimeout(() => {
-        console.log(values);
-        alert("SE guarda noticia");
+      const query = await axios.post(`/api/noticia`, values);
+      if (query.status === 200) {
+        onToast(query.data.message);
         setIsLoadingButton(false);
-        // setOpenDialog(false)
-      }, 3000);
+        setOpenDialog(false);
+      }
     } catch (err) {
-      console.log(err);
+      setOpenDialog(false);
+      onToast("Algo salió mal ❌", "", true);
     } finally {
-      console.log("Finalizó");
+      router.refresh();
+    }
+  };
+
+  const handleImageIpload = (res: any) => {
+    if (res && res[0]) {
+      form.setValue("imagePortada", res[0].url);
+      setImageUploaded(true);
     }
   };
 
   return (
-    // <div className="h-[calc(100vh-4rem)] flex flex-col">
     <ScrollArea className="w-full h-96">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* Titulo */}
           <FormField
             control={form.control}
             name="title"
@@ -71,6 +90,63 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
                 <FormLabel className="font-headMedium">Título</FormLabel>
                 <FormControl>
                   <Input placeholder="Título..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Slug */}
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Slug</FormLabel>
+                <FormControl>
+                  <Input placeholder="Slug..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Excerpt */}
+          <FormField
+            control={form.control}
+            name="excerpt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Excerpt</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Excerpt..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* ImagenPortada */}
+          <FormField
+            control={form.control}
+            name="imagePortada"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Imagen de Noticia</FormLabel>
+                <FormControl>
+                  {imageUploaded ? (
+                    <p className="text-sm bg-green-700 text-white rounded-xl text-center">
+                      Imagen cargada! 👍
+                    </p>
+                  ) : (
+                    <UploadButton
+                      className="rounded-lg bg-slate-600/20 text-slate-800 outline-dotted outline-1 p-1"
+                      endpoint="imageUploaded"
+                      onClientUploadComplete={handleImageIpload}
+                      onUploadError={(err: Error) => console.log(err)}
+                      {...field}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -211,6 +287,5 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
         </form>
       </Form>
     </ScrollArea>
-    // </div>
   );
 }

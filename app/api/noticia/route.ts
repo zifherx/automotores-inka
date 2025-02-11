@@ -1,7 +1,8 @@
-import { dbConnect } from "@/lib";
-import { Noticia } from "@/models/Noticia";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+
+import { dbConnect } from "@/lib";
+import { Noticia } from "@/models";
 
 export async function POST(req: NextRequest) {
   await dbConnect();
@@ -13,8 +14,10 @@ export async function POST(req: NextRequest) {
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
 
     const newNews = new Noticia({
-      createdBy: userId,
       ...data,
+      createdBy: userId,
+      category: null,
+      isActive: true,
     });
 
     const query = await newNews.save();

@@ -11,6 +11,7 @@ export interface iNoticia extends Document {
   date: Date;
   imagePortada: string;
   createdBy: string;
+  isActive: boolean;
 }
 
 const OracionSchema: Schema = new Schema<iOracion>(
@@ -26,7 +27,7 @@ const OracionSchema: Schema = new Schema<iOracion>(
 const ParrafoSchema: Schema = new Schema<iParrafo>(
   {
     id: { type: Number },
-    title: { type: String, required: true },
+    title: { type: String },
     parrafos: [OracionSchema],
   },
   {
@@ -45,6 +46,7 @@ const noticiaSchema: Schema = new Schema<iNoticia>(
     date: { type: Date, default: Date.now },
     imagePortada: { type: String, required: true },
     createdBy: { type: String },
+    isActive: { type: Boolean, default: true },
   },
   {
     versionKey: false,
