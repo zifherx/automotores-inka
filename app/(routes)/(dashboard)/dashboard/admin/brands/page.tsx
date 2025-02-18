@@ -1,38 +1,26 @@
-import { redirect } from "next/navigation";
+"use client";
 
-import { auth } from "@clerk/nextjs/server";
+import { BrandsProvider } from "@/context/brands/marcaContext";
 
 import { BtnAddBrand } from "./components/BtnAddBrand";
 import { ListBrands } from "./components/ListBrands";
+import { BtnRefresh } from "./components/BtnRefresh";
 
-import { dbConnect, isAdministrator, serializeDocument } from "@/lib";
-import Marca from "@/models/Marca";
-
-async function loadBrands() {
-  await dbConnect();
-  const query = await Marca.find();
-  return query.map(serializeDocument);
-}
-
-export default async function BrandsPage() {
-  const { userId } = await auth();
-
-  if (!userId || !isAdministrator(userId)) {
-    return redirect("/");
-  }
-
-  const query = await loadBrands();
-
+export default function AdminBrandsPage() {
   return (
-    <>
-      <div className="flex justify-between mb-2">
-        <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
-          Gestión de Marcas -{" "}
-          {query.length === 0 ? <p> nulo 😭</p> : <p>{query.length} 😍</p>}
-        </h2>
-        <BtnAddBrand />
+    <BrandsProvider>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
+            Gestión de Marcas
+          </h2>
+          <div className="flex justify-between gap-1">
+            <BtnAddBrand />
+            <BtnRefresh />
+          </div>
+        </div>
+        <ListBrands />
       </div>
-      <ListBrands brands={query} />
-    </>
+    </BrandsProvider>
   );
 }

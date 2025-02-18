@@ -264,3 +264,21 @@ export type PaginationType = {
   getPaginaAnterior: () => void;
   getPaginaSiguiente: () => void;
 };
+
+export type RefreshProps = {
+  refreshAction: () => void;
+};
+
+export type ErrorResponse = {
+  success: false;
+  message: string;
+  error?: string;
+};
+
+export type SuccessResponse<T> = {
+  success: true;
+  message: string;
+  data: T;
+};
+
+export type APIResponse<T> = ErrorResponse | SuccessResponse<T>;

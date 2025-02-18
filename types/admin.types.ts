@@ -13,6 +13,7 @@ import {
   iCita,
   iCybermotor,
   iTipoCambio,
+  iNoticia,
 } from "@/models";
 import { iSedeDealer } from "./public.types";
 import { iUser } from "@/interfaces/iAdmin";
@@ -82,6 +83,10 @@ export type iCardSede = {
   sede: iSede;
 };
 
+export type iCardNoticia = {
+  noticia: iNews;
+};
+
 export type iSede = iSucursal & defaultDocument;
 
 export type iFormCotizacionGeneral = iListBrand & {
@@ -102,6 +107,9 @@ export type iLead = iCotizacion & defaultDocument;
 
 // EMAIL SYSTEM
 export type iMailSystem = iSystemEmail & defaultDocument;
+
+// Noticias
+export type iNews = iNoticia & defaultDocument;
 
 export type iListMailSystem = {
   mails: iMailSystem[];

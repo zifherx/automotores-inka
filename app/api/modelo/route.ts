@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import Marca from "@/models/Marca";
+import { Marca } from "@/models/Marca";
 import Carroceria from "@/models/Carroceria";
 import Modelo from "@/models/Modelo";
 

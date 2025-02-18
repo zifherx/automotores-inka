@@ -1,36 +1,55 @@
-import { NextRequest, NextResponse } from "next/server";
-import { dbConnect } from "@/lib/dbConnect";
 import { auth } from "@clerk/nextjs/server";
-import Cover from "@/models/Cover";
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
-  await dbConnect();
-  try {
-    const query = await Cover.find({}).sort({ createdBy: 1 });
-    return NextResponse.json({ total: query.length, obj: query });
-  } catch (err) {
-    return new NextResponse("Internal Error", { status: 500 });
-  }
-}
+import { DIContainer } from "@/config/di-container";
+import { MongoosePortadaRepositoryImplement } from "@/repositories/implementations/mongoose/portada.repository";
+import { PortadaService } from "@/services/portada.services";
+import { ResponseFactory } from "@/utils/response-factory";
+import { APIMessages } from "@/utils/constants";
+
+import { dbConnect, UnauthorizedError } from "@/lib";
+import { Cover } from "@/models";
+
+const RESOURCE_NAME = "Portada";
+
+const container = DIContainer.getInstance();
+const portadaRepository = new MongoosePortadaRepositoryImplement(Cover);
+container.register("IPortadaRepository", portadaRepository);
+const portadaService = new PortadaService(container.get("IPortadaRepository"));
 
 export async function POST(req: Request) {
   await dbConnect();
+
   try {
     const { userId } = await auth();
-    const data = await req.json();
+    const body = await req.json();
 
-    if (!userId) return new NextResponse("No Autorizado", { status: 401 });
+    if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await portadaService.createResource(body);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getCreateMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
+  }
+}
 
-    const newPortada = new Cover({ createdBy: userId, ...data });
+export async function GET(req: NextRequest) {
+  await dbConnect();
 
-    const query = await newPortada.save();
+  try {
+    const { userId } = await auth();
+    const { searchParams } = req.nextUrl;
+    const params = Object.fromEntries(searchParams);
 
-    return NextResponse.json({
-      success: true,
-      message: `Portada creada ✅`,
-    });
-  } catch (err) {
-    // console.log(err);
-    return new NextResponse("Internal Error", { status: 500 });
+    // if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await portadaService.getResources(params);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getListedMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
   }
 }

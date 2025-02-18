@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import {
   iCardBrand,
   iCardModel,
+  iCardNoticia,
   iChasis,
   iMailSystem,
   iPortada,
@@ -30,3 +31,4 @@ export type tFormEditCover = tFormAdding & {
 
 export type tFormEditMarca = tFormAdding & iCardBrand;
 export type tFormEditModelo = tFormAdding & iCardModel;
+export type tFormEditNoticia = tFormAdding & iCardNoticia;

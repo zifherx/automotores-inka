@@ -25,6 +25,4 @@ const marcaSchema: Schema = new Schema<iMarca>(
   }
 );
 
-const Marca = models.Marca || model<iMarca>("Marca", marcaSchema);
-
-export default Marca;
+export const Marca = models.Marca || model<iMarca>("Marca", marcaSchema);

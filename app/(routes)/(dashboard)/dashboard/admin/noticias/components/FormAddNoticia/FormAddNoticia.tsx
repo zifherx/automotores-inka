@@ -26,12 +26,11 @@ import { formNoticia, NoticiasFormValues } from "@/forms";
 import { tFormAdding } from "@/types";
 import { onToast } from "@/lib";
 import { UploadButton } from "@/utils/uploadthing";
+import { useNews } from "@/context/news/noticeContext";
 
 export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
-  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const { createNew, isLoadingData } = useNews();
   const [imageUploaded, setImageUploaded] = useState(false);
-
-  const router = useRouter();
 
   const form = useForm<NoticiasFormValues>({
     resolver: zodResolver(formNoticia),
@@ -53,22 +52,7 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
     name: "content",
   });
 
-  const onSubmit = async (values: NoticiasFormValues) => {
-    setIsLoadingButton(true);
-    try {
-      const query = await axios.post(`/api/noticia`, values);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setIsLoadingButton(false);
-        setOpenDialog(false);
-      }
-    } catch (err) {
-      setOpenDialog(false);
-      onToast("Algo salió mal ❌", "", true);
-    } finally {
-      router.refresh();
-    }
-  };
+  const actionSubmit = async (values: NoticiasFormValues) => createNew(values);
 
   const handleImageIpload = (res: any) => {
     if (res && res[0]) {
@@ -80,7 +64,7 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
   return (
     <ScrollArea className="w-full h-96">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-4">
           {/* Titulo */}
           <FormField
             control={form.control}
@@ -269,10 +253,10 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
 
           <Button
             type="submit"
-            disabled={isLoadingButton}
+            disabled={isLoadingData}
             className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
           >
-            {isLoadingButton ? (
+            {isLoadingData ? (
               <>
                 <LoadingIcon effect="default" />
                 Guardando...

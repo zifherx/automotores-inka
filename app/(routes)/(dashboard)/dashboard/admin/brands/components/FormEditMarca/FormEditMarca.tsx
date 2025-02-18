@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send, X } from "lucide-react";
-import axios from "axios";
 
 import {
   Form,
@@ -21,17 +19,17 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
-import { onToast } from "@/lib";
+import { UploadButton } from "@/utils/uploadthing";
+import { useBrands } from "@/context/brands/marcaContext";
+
 import { BrandFormValues, formAddBrandSchema } from "@/forms";
 import { tFormEditMarca } from "@/types";
-import { UploadButton } from "@/utils/uploadthing";
 
 export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoadingData, updateBrand } = useBrands();
+
   const [imageUploaded, setImageUploaded] = useState(false);
   const [linkImg, setLinkImg] = useState<string>("");
-
-  const router = useRouter();
 
   const form = useForm<BrandFormValues>({
     resolver: zodResolver(formAddBrandSchema),
@@ -42,35 +40,6 @@ export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
       imageUrl: brand.imageUrl,
     },
   });
-
-  useEffect(() => {
-    if (brand.imageUrl !== "") {
-      setLinkImg(brand.imageUrl);
-      setImageUploaded(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSubmit = async (values: BrandFormValues) => {
-    setIsLoading(true);
-    try {
-      const query = await axios.patch(`/api/marca/${brand._id}`, values);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setOpenDialog(false);
-        router.refresh();
-      }
-    } catch (err: any) {
-      console.log(err);
-      onToast(
-        "Algo salió mal ❌",
-        !err.response.data.success ? err.response.data.message : "",
-        true
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleImageUpload = (res: any) => {
     if (res && res[0]) {
@@ -86,9 +55,19 @@ export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
     setImageUploaded(false);
   };
 
+  const actionSubmit = async (values: BrandFormValues) =>
+    updateBrand(brand._id, values);
+
+  useEffect(() => {
+    if (brand.imageUrl !== "") {
+      setLinkImg(brand.imageUrl);
+      setImageUploaded(true);
+    }
+  }, []);
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-4">
         <div className="grid grid-cols-[70%,1fr] gap-2">
           {/* Name */}
           <FormField
@@ -158,10 +137,9 @@ export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
                   {!imageUploaded ? (
                     <UploadButton
                       className="rounded-lg bg-slate-600/20 text-slate-800 outline-dotted outline-1"
-                      {...field}
                       endpoint="imageUploaded"
                       onClientUploadComplete={handleImageUpload}
-                      onUploadError={(err) => {
+                      onUploadError={(err: Error) => {
                         console.log(err);
                       }}
                       {...field}
@@ -201,16 +179,16 @@ export function FormEditMarca({ brand, setOpenDialog }: tFormEditMarca) {
         <Button
           type="submit"
           className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-          disabled={isLoading}
+          disabled={isLoadingData}
         >
-          {isLoading ? (
+          {isLoadingData ? (
             <>
               <LoadingIcon effect="default" />
-              Guardando...
+              Actualizando...
             </>
           ) : (
             <>
-              Guardar
+              Actualizar
               <Send className="w-5 h-5 ml-2" />
             </>
           )}

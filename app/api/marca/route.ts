@@ -1,27 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { dbConnect } from "@/lib/dbConnect";
-import Marca from "@/models/Marca";
+import { NextRequest } from "next/server";
+
+import { MongooseMarcaRepositoryImplement } from "@/repositories/implementations/mongoose/marca.repository";
+import { MarcaService } from "@/services/marca.services";
+import { DIContainer } from "@/config/di-container";
+import { ResponseFactory } from "@/utils/response-factory";
+import { APIMessages } from "@/utils/constants";
+
+import { dbConnect, UnauthorizedError } from "@/lib";
+import { Marca } from "@/models";
+
+const RESOURCE_NAME = "Marca";
+
+const container = DIContainer.getInstance();
+const marcaRepository = new MongooseMarcaRepositoryImplement(Marca);
+container.register("IMarcaRepository", marcaRepository);
+const marcaService = new MarcaService(container.get("IMarcaRepository"));
 
 export async function POST(req: NextRequest) {
   await dbConnect();
   try {
     const { userId } = await auth();
-    const data = await req.json();
+    const body = await req.json();
 
-    if (!userId) return new NextResponse("No Autorizado", { status: 401 });
-
-    const newMarca = new Marca({ createdBy: userId, ...data });
-
-    const query = await newMarca.save();
-
-    return NextResponse.json({
-      success: true,
-      message: `Marca creada ✅`,
-      res: query,
-    });
-  } catch (err) {
-    return new NextResponse("Internal Error", { status: 500 });
+    if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await marcaService.createResource(body);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getCreateMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
   }
 }
 
@@ -29,12 +38,17 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Marca.find({}).sort({ name: 1 });
-    return NextResponse.json({
-      total: query.length,
-      obj: JSON.parse(JSON.stringify(query)),
-    });
-  } catch (err) {
-    return new NextResponse("Internal Error", { status: 500 });
+    const { userId } = await auth();
+    const { searchParams } = req.nextUrl;
+    const params = Object.fromEntries(searchParams);
+
+    // if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await marcaService.getResources(params);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getListedMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
   }
 }

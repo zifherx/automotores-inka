@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
-import axios from "axios";
 
 import {
   Form,
@@ -23,15 +20,15 @@ import { Label } from "@/components/ui/label";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { UploadButton } from "@/utils/uploadthing";
-import { onToast } from "@/lib/toastMessage";
 
 import { formAddCoverSchema, PortadasFormValues } from "@/forms";
 import { tFormAdding } from "@/types";
+import { useCovers } from "@/context/covers/coverContext";
 
 export function FormAddPortada({ setOpenDialog }: tFormAdding) {
+  const { isLoadingData, createCover } = useCovers();
+
   const [imageUploaded, setImageUploaded] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
-  const router = useRouter();
 
   const form = useForm<PortadasFormValues>({
     resolver: zodResolver(formAddCoverSchema),
@@ -43,25 +40,19 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
     },
   });
 
-  const onSubmit = async (values: PortadasFormValues) => {
-    setBtnLoading(true);
-    try {
-      const query = await axios.post("/api/portada", values);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setOpenDialog(false);
-        router.refresh();
-      }
-    } catch (err) {
-      onToast("Algo salió mal ❌", "", true);
-    } finally {
-      setBtnLoading(false);
+  const handleImageUpload = (res: any) => {
+    if (res && res[0]) {
+      form.setValue("imageUrl", res[0].url);
+      setImageUploaded(true);
     }
   };
 
+  const actionSubmit = async (values: PortadasFormValues) =>
+    createCover(values);
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-4">
         <div className="grid gap-6 grid-cols-2">
           {/* Name */}
           <FormField
@@ -79,6 +70,7 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* isActive */}
           <FormField
             control={form.control}
@@ -101,6 +93,7 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* Slug */}
           <FormField
             control={form.control}
@@ -117,6 +110,7 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* ImageUrl */}
           <FormField
             control={form.control}
@@ -132,15 +126,12 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
                   ) : (
                     <UploadButton
                       className="rounded-lg bg-slate-600/20 text-slate-800 outline-dotted outline-1"
-                      {...field}
                       endpoint="imageUploaded"
-                      onClientUploadComplete={(res) => {
-                        form.setValue("imageUrl", res?.[0].url);
-                        setImageUploaded(true);
-                      }}
+                      onClientUploadComplete={handleImageUpload}
                       onUploadError={(err: Error) => {
                         console.log(err);
                       }}
+                      {...field}
                     />
                   )}
                 </FormControl>
@@ -152,9 +143,9 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
           <Button
             type="submit"
             className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            disabled={btnLoading}
+            disabled={isLoadingData}
           >
-            {btnLoading ? (
+            {isLoadingData ? (
               <>
                 <LoadingIcon effect="default" />
                 Guardando...

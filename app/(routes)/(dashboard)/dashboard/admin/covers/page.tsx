@@ -1,38 +1,26 @@
-import { redirect } from "next/navigation";
+"use client";
 
-import { auth } from "@clerk/nextjs/server";
+import { CoverProvider } from "@/context/covers/coverContext";
 
-import { BtnAddCover } from "./components/BtnAddCover";
 import { ListCovers } from "./components/ListCovers";
+import { BtnAddCover } from "./components/BtnAddCover";
+import { BtnRefreshList } from "./components/BtnRefreshList";
 
-import { dbConnect, serializeDocument, isAdministrator } from "@/lib";
-import Cover from "@/models/Cover";
-
-async function loadCovers() {
-  await dbConnect();
-  const query = await Cover.find();
-  return query.map(serializeDocument);
-}
-
-export default async function CoversPage() {
-  const { userId } = await auth();
-
-  if (!userId || !isAdministrator(userId)) {
-    return redirect("/");
-  }
-
-  const query = await loadCovers();
-
+export default function CoversPage() {
   return (
-    <>
-      <div className="flex justify-between mb-5">
-        <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
-          Gestión de Portadas -
-          {query.length === 0 ? <p> nulo 😭</p> : <p>{query.length} 😍</p>}
-        </h2>
-        <BtnAddCover />
+    <CoverProvider>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
+            Gestión de Portadas
+          </h2>
+          <div className="flex justify-between gap-1">
+            <BtnAddCover />
+            <BtnRefreshList />
+          </div>
+        </div>
+        <ListCovers />
       </div>
-      <ListCovers covers={query} />
-    </>
+    </CoverProvider>
   );
 }

@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { Send } from "lucide-react";
 
 import {
@@ -23,15 +20,15 @@ import { Label } from "@/components/ui/label";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { UploadButton } from "@/utils/uploadthing";
-import { onToast } from "@/lib/toastMessage";
 
 import { tFormAdding } from "@/types";
 import { BrandFormValues, formAddBrandSchema } from "@/forms";
+import { useBrands } from "@/context/brands/marcaContext";
 
 export function FormAddBrand({ setOpenDialog }: tFormAdding) {
+  const { isLoadingData, createBrand } = useBrands();
+
   const [imageUploaded, setImageUploaded] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
-  const router = useRouter();
 
   const form = useForm<BrandFormValues>({
     resolver: zodResolver(formAddBrandSchema),
@@ -43,25 +40,18 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
     },
   });
 
-  const onSubmit = async (values: BrandFormValues) => {
-    setBtnLoading(true);
-    try {
-      const query = await axios.post("/api/marca", values);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setOpenDialog(false);
-        setBtnLoading(false);
-      }
-    } catch (err) {
-      onToast("Algo salió mal ❌", "", true);
-    } finally {
-      router.refresh();
+  const handleImageUpload = (res: any) => {
+    if (res && res[0]) {
+      form.setValue("imageUrl", res[0].url);
+      setImageUploaded(true);
     }
   };
 
+  const actionSubmit = (values: BrandFormValues) => createBrand(values);
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-2 md:gap-6">
           {/* Name */}
           <FormField
@@ -79,6 +69,7 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* isActive */}
           <FormField
             control={form.control}
@@ -101,6 +92,7 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* Slug */}
           <FormField
             control={form.control}
@@ -115,6 +107,7 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
               </FormItem>
             )}
           />
+
           {/* ImageUrl */}
           <FormField
             control={form.control}
@@ -130,15 +123,12 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
                   ) : (
                     <UploadButton
                       className="rounded-lg bg-slate-600/20 text-slate-800 outline-dotted outline-1"
-                      {...field}
                       endpoint="imageUploaded"
-                      onClientUploadComplete={(res) => {
-                        form.setValue("imageUrl", res ? res?.[0].url : "");
-                        setImageUploaded(true);
-                      }}
+                      onClientUploadComplete={handleImageUpload}
                       onUploadError={(err) => {
                         console.log(err);
                       }}
+                      {...field}
                     />
                   )}
                 </FormControl>
@@ -150,9 +140,9 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
           <Button
             type="submit"
             className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            disabled={btnLoading}
+            disabled={isLoadingData}
           >
-            {btnLoading ? (
+            {isLoadingData ? (
               <>
                 <LoadingIcon effect="default" />
                 Guardando...

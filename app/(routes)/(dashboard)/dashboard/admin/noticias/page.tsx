@@ -1,39 +1,26 @@
-import { Fragment } from "react";
-import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
+"use client";
+
+import { NewsProvider } from "@/context/news/noticeContext";
 
 import { BtnAddNoticia } from "./components/BtnAddNoticia";
 import { ListNoticias } from "./components/ListNoticias";
+import { BtnRefreshNoticia } from "./components/BtnRefreshNoticia";
 
-import { dbConnect, isAdministrator } from "@/lib";
-import { Noticia } from "@/models/Noticia";
-
-async function loadNoticias() {
-  await dbConnect();
-  // const query = await Noticia.find({}).lean();
-  const query = await Noticia.find({});
-  return query;
-}
-
-export default async function AdminNewsPage() {
-  const { userId } = await auth();
-  if (!userId || !isAdministrator(userId)) {
-    return redirect("/");
-  }
-
-  const query = await loadNoticias();
-
-  console.log("####QUERY:", query);
-
+export default function AdminNewsPage() {
   return (
-    <Fragment>
-      <div className="flex justify-between">
-        <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
-          Gestión de Noticias
-        </h2>
-        <BtnAddNoticia />
+    <NewsProvider>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <h2 className="flex items-center gap-1 text-xl md:text-3xl font-headMedium">
+            Gestión de Noticias
+          </h2>
+          <div className="flex justify-between gap-1">
+            <BtnAddNoticia />
+            <BtnRefreshNoticia />
+          </div>
+        </div>
+        <ListNoticias />
       </div>
-      <ListNoticias />
-    </Fragment>
+    </NewsProvider>
   );
 }

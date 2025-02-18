@@ -31,8 +31,8 @@ export function BtnAddNoticia() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Button className="font-semibold text-lg" variant="outline">
-                <Plus className="w-5 h-5" />
+              <Button variant="outline" size="sm">
+                <Plus className="w-5 h-5" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">
@@ -46,7 +46,9 @@ export function BtnAddNoticia() {
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="mb-5 text-left">Nueva Noticia</DialogTitle>
+          <DialogTitle className="mb-5 text-left text-xl uppercase">
+            Nueva Noticia
+          </DialogTitle>
           <DialogDescription>
             <FormAddNoticia setOpenDialog={setOpenDialog} />
           </DialogDescription>
