@@ -6,9 +6,9 @@ import { TableLoading } from "@/components/Shared/TableLoading";
 import { CardCover } from "../CardCover";
 
 export function ListCovers() {
-  const { covers, isLoadingData } = useCovers();
+  const { covers, isLoading } = useCovers();
 
-  if (isLoadingData) {
+  if (isLoading) {
     return <TableLoading />;
   }
 
