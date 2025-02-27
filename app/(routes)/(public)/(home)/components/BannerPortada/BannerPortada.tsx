@@ -24,7 +24,7 @@ export function BannerPortada() {
     try {
       const query = await axios.get("/api/portada");
       if (query.status === 200) {
-        const portadasActivas = query.data.obj.filter(
+        const portadasActivas = query.data.data.filter(
           (portada: iPortada) => portada.isActive
         );
         setPortadas(portadasActivas);

@@ -10,7 +10,7 @@ import Link from "next/link";
 export function BarraFlotante() {
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
 
-  const urlWhatsapp = "https://wa.link/z3h48l";
+  const urlWhatsapp = "https://wa.link/17o4p4";
 
   return (
     <div

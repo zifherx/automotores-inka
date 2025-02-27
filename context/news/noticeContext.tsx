@@ -9,18 +9,16 @@ import {
   useState,
 } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 import { iNews } from "@/types";
-import { NoticiasFormValues } from "@/forms";
 import { onToast } from "@/lib";
 
 interface NoticeContextType {
   news: iNews[];
-  isLoadingData: boolean;
+  isLoading: boolean;
   refreshNews: () => Promise<void>;
-  createNew: (data: NoticiasFormValues) => Promise<void>;
-  updateNew: (id: string, data: NoticiasFormValues) => Promise<void>;
+  createNew: (noticia: Omit<iNews, "_id">) => Promise<iNews | void>;
+  updateNew: (id: string, noticia: Partial<iNews>) => Promise<iNews | void>;
   deleteNew: (id: string) => Promise<void>;
 }
 
@@ -30,68 +28,70 @@ export const NewsContext = createContext<NoticeContextType | undefined>(
 
 export function NewsProvider({ children }: { children: ReactNode }) {
   const [news, setNews] = useState<iNews[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(false);
-
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const getNews = useCallback(async () => {
-    setIsLoadingData(true);
     try {
+      setIsLoading(true);
       const query = await axios.get("/api/noticia");
       if (query.status === 200) {
         setNews(query.data.data);
-        setIsLoadingData(false);
+        setIsLoading(false);
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
     }
   }, []);
 
-  const createNew = useCallback(async (data: NoticiasFormValues) => {
-    setIsLoadingData(true);
-    try {
-      const query = await axios.post("/api/noticia", data);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setIsLoadingData(false);
+  const createNew = useCallback(
+    async (noticia: Omit<iNews, "_id">): Promise<iNews | void> => {
+      try {
+        const query = await axios.post("/api/noticia", noticia);
+        if (query.status === 200) {
+          const newNoticia = query.data.data;
+          setNews((prevNews) => [...prevNews, newNoticia]);
+          onToast(query.data.message);
+          return newNoticia;
+        }
+      } catch (err: any) {
+        onToast("Algo salió mal ❌", err.message, true);
       }
-      setIsLoadingData(false);
-      router.refresh();
-    } catch (err: any) {
-      onToast("Algo salió mal ❌", err.message, true);
-    }
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    []
+  );
 
   const refreshNews = useCallback(async () => {
     await getNews();
   }, [getNews]);
 
-  const deleteNew = useCallback(async (id: string) => {
+  const deleteNew = useCallback(async (id: string): Promise<void> => {
     try {
       const query = await axios.delete(`/api/noticia/${id}`);
       if (query.status === 200) {
+        setNews((preNews) => preNews.filter((a) => a._id !== id));
         onToast(query.data.message);
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.response.data.message, true);
-    } finally {
-      router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateNew = useCallback(
-    async (id: string, data: NoticiasFormValues) => {
-      setIsLoadingData(true);
+    async (id: string, noticia: Partial<iNews>): Promise<iNews | void> => {
       try {
-        const query = await axios.patch(`/api/noticia/${id}`, data);
+        const query = await axios.patch(`/api/noticia/${id}`, noticia);
         if (query.status === 200) {
+          const updateNew = query.data.data;
           onToast(query.data.message);
+          setNews((prevNews) =>
+            prevNews.map((a) => (a._id === id ? updateNew : a))
+          );
+          return updateNew;
         }
       } catch (err) {
         onToast("Algo salió mal ❌", "", true);
-      } finally {
-        router.refresh();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,7 +106,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
     <NewsContext.Provider
       value={{
         news,
-        isLoadingData,
+        isLoading,
         refreshNews,
         createNew,
         updateNew,

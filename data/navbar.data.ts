@@ -67,7 +67,7 @@ export const listItemMenuGeneral: iMenuDashboard[] = [
     id: 1,
     icon: Images,
     label: "Gestión de Portadas",
-    href: "/dashboard/admin/covers",
+    href: "/dashboard/admin/portadas",
   },
   {
     id: 2,

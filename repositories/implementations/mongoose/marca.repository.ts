@@ -28,7 +28,7 @@ export class MongooseMarcaRepositoryImplement implements iMarcaRepository {
 
   async findAll(filter?: FilterQuery<iBrand>): Promise<iBrand[]> {
     try {
-      const resources = await this.model.find(filter || {});
+      const resources = await this.model.find(filter || {}).sort({ name: 1 });
       return resources.map((resource) => resource.toObject());
     } catch (err) {
       throw new AppError(500, "Error al listar los recursos");

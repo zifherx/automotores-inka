@@ -69,13 +69,13 @@ export function FormularioLead(props: iCardModel) {
     if (marca !== "" || marca !== undefined) {
       const query = await axios.get(`/api/sucursal/by-marca/${marca}`);
       if (query.status === 200) {
-        const ciudadesUnicas = query.data.filter(
+        const ciudadesUnicas = query.data.all.filter(
           (item: any, index: any, self: any) =>
             index === self.findIndex((a: any) => a.ciudad === item.ciudad)
         );
 
         setSedeSinDuplicados(ciudadesUnicas);
-        setConcesionarios(query.data);
+        setConcesionarios(query.data.all);
       }
     }
   };

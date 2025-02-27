@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 
@@ -28,12 +30,12 @@ export function BtnEditCover({ cover }: iCardCover) {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
                 variant="outline"
-                className="text-sm hover:bg-orange-400 hover:text-white"
+                className="hover:bg-orange-400 hover:text-white"
               >
-                <Pencil className="w-4 h-4" strokeWidth={2} />
+                <Pencil className="w-5 h-5" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -42,9 +44,12 @@ export function BtnEditCover({ cover }: iCardCover) {
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
-      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
-          <DialogTitle className="uppercase font-bold text-xl">
+          <DialogTitle className="uppercase font-bold text-xl mb-5">
             Editar Portada
           </DialogTitle>
           <DialogDescription>

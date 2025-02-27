@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ForwardRefRenderFunction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send, X } from "lucide-react";
 
+import { useCovers } from "@/context/covers/coverContext";
+import { UploadButton } from "@/utils/uploadthing";
+
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Form,
   FormControl,
@@ -14,73 +20,96 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
-import { UploadButton } from "@/utils/uploadthing";
-import { useBrands } from "@/context/brands/marcaContext";
+import { formAddCoverSchema, PortadasFormValues } from "@/forms";
+import { tFormGeneric } from "@/types";
 
-import { BrandFormValues, formAddBrandSchema } from "@/forms";
-import { tFormEditMarca } from "@/types";
-
-export function FormEditMarca({ brand }: tFormEditMarca) {
-  const { isLoadingData, updateBrand } = useBrands();
-
+export function FormPortada({ onSubmit, portada }: tFormGeneric) {
+  const { createCover, updateCover, isLoading } = useCovers();
   const [imageUploaded, setImageUploaded] = useState(false);
-  const [linkImg, setLinkImg] = useState<string>("");
+  const [linkImagen, setLinkImagen] = useState<string>("");
 
-  const form = useForm<BrandFormValues>({
-    resolver: zodResolver(formAddBrandSchema),
+  const form = useForm<PortadasFormValues>({
+    resolver: zodResolver(formAddCoverSchema),
     defaultValues: {
-      name: brand.name,
-      isActive: brand.isActive,
-      slug: brand.slug,
-      imageUrl: brand.imageUrl,
+      name: "",
+      slug: "",
+      imageUrl: "",
+      isActive: false,
     },
   });
 
+  useEffect(() => {
+    if (portada) {
+      form.reset({
+        name: portada.name,
+        slug: portada.slug,
+        imageUrl: portada.imageUrl,
+        isActive: portada.isActive,
+      });
+    }
+  }, [portada, form]);
+
+  useEffect(() => {
+    if (portada) {
+      setLinkImagen(portada.imageUrl);
+      setImageUploaded(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onFormSubmit = async (values: PortadasFormValues) => {
+    if (portada) {
+      await updateCover(portada._id, values);
+    } else {
+      await createCover(values);
+    }
+    onSubmit();
+  };
+
   const handleImageUpload = (res: any) => {
     if (res && res[0]) {
-      setLinkImg(res[0].url);
+      setLinkImagen(res[0].url);
       form.setValue("imageUrl", res[0].url);
       setImageUploaded(true);
     }
   };
 
   const handleImageDelete = () => {
-    setLinkImg("");
+    setLinkImagen("");
     form.setValue("imageUrl", "");
     setImageUploaded(false);
   };
 
-  const actionSubmit = async (values: BrandFormValues) =>
-    updateBrand(brand._id, values);
-
-  useEffect(() => {
-    if (brand.imageUrl !== "") {
-      setLinkImg(brand.imageUrl);
-      setImageUploaded(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-4">
-        <div className="grid grid-cols-[70%,1fr] gap-2">
-          {/* Name */}
+      <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-4">
+        {/* Name */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre</FormLabel>
+              <FormControl>
+                <Input placeholder="Nombre de la portada" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-[60%,1fr] gap-x-4">
+          {/* Slug */}
           <FormField
             control={form.control}
-            name="name"
+            name="slug"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-headMedium">
-                  Nombre de Marca
-                </FormLabel>
+                <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input placeholder="Marca..." {...field} />
+                  <Input placeholder="Slug de la portada" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,39 +121,25 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
             control={form.control}
             name="isActive"
             render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="font-headMedium">Estado</FormLabel>
+              <FormItem>
+                <FormLabel>Estado</FormLabel>
                 <FormControl>
-                  <div className="flex gap-2 pt-1 items-center">
+                  <div className="flex items-center gap-2 pt-2">
                     <Switch
                       id="formSwitch"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                     <Label htmlFor="formSwitch">
-                      {field.value ? "Activo 👍" : "Inactivo 👎"}
+                      {field.value ? `Activo ✅` : `Inactivo ❌`}
                     </Label>
                   </div>
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
         </div>
-
-        {/* Slug */}
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-headMedium">Slug de Marca</FormLabel>
-              <FormControl>
-                <Input placeholder="Slug..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         {/* ImageUrl */}
         <FormField
@@ -132,7 +147,7 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Imagen de Marca</FormLabel>
+              <FormLabel>Imagen de Portada</FormLabel>
               <FormControl>
                 <div className="space-y-4">
                   {!imageUploaded ? (
@@ -150,7 +165,6 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
                       <p className="px-2 py-1 text-sm bg-green-700 text-white rounded-xl text-center">
                         Imagen cargada! 👍
                       </p>
-
                       <Button
                         type="button"
                         variant="outline"
@@ -162,10 +176,10 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
                       </Button>
                     </div>
                   )}
-                  {linkImg && (
+                  {linkImagen && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={linkImg}
+                      src={linkImagen}
                       alt="Imagen cargada"
                       className="mt-2 max-w-xs rounded-md mx-auto"
                     />
@@ -177,20 +191,16 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-          disabled={isLoadingData}
-        >
-          {isLoadingData ? (
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? (
             <>
               <LoadingIcon effect="default" />
-              Actualizando...
+              Cargando...
             </>
           ) : (
             <>
-              Actualizar
-              <Send className="w-5 h-5 ml-2" strokeWidth={2} />
+              <Send className="h-5 w-5 mr-2" strokeWidth={2} />
+              {portada ? "Actualizar" : "Guardar"}
             </>
           )}
         </Button>

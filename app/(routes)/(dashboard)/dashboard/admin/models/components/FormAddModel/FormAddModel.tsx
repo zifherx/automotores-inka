@@ -74,7 +74,7 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setMarcas(query.data.obj);
+      setMarcas(query.data.data);
     }
   };
 

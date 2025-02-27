@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   createContext,
   ReactNode,
@@ -12,16 +10,15 @@ import {
 } from "react";
 import axios from "axios";
 
-import { PortadasFormValues } from "@/forms";
 import { iPortada } from "@/types";
 import { onToast } from "@/lib";
 
 interface CoverContextType {
   covers: iPortada[];
-  isLoadingData: boolean;
+  isLoading: boolean;
   refreshCovers: () => Promise<void>;
-  createCover: (data: PortadasFormValues) => Promise<void>;
-  updateCover: (id: string, data: PortadasFormValues) => Promise<void>;
+  createCover: (data: Partial<iPortada>) => Promise<void>;
+  updateCover: (id: string, data: Partial<iPortada>) => Promise<void>;
   deleteCover: (id: string) => Promise<void>;
 }
 
@@ -31,34 +28,32 @@ export const CoverContext = createContext<CoverContextType | undefined>(
 
 export function CoverProvider({ children }: { children: ReactNode }) {
   const [covers, setCovers] = useState<iPortada[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(false);
-
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const getCovers = useCallback(async () => {
-    setIsLoadingData(true);
     try {
+      setIsLoading(true);
       const query = await axios.get("/api/portada");
       if (query.status === 200) {
         setCovers(query.data.data);
-        setIsLoadingData(false);
+        setIsLoading(false);
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
     }
   }, []);
 
-  const createCover = useCallback(async (data: PortadasFormValues) => {
-    setIsLoadingData(true);
+  const createCover = useCallback(async (data: Partial<iPortada>) => {
+    setIsLoading(true);
     try {
       const query = await axios.post("/api/portada", data);
       if (query.status === 200) {
         setCovers(query.data.data);
-        setIsLoadingData(false);
-        router.refresh();
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -67,18 +62,17 @@ export function CoverProvider({ children }: { children: ReactNode }) {
   }, [getCovers]);
 
   const updateCover = useCallback(
-    async (id: string, data: PortadasFormValues) => {
-      setIsLoadingData(true);
+    async (id: string, data: Partial<iPortada>) => {
+      setIsLoading(true);
       try {
         const query = await axios.patch(`/api/portada/${id}`, data);
         if (query.status === 200) {
           onToast(query.data.message);
-          setIsLoadingData(false);
         }
       } catch (err: any) {
         onToast("Algo salió mal ❌", err.message, true);
       } finally {
-        router.refresh();
+        setIsLoading(false);
       }
     },
     []
@@ -92,20 +86,15 @@ export function CoverProvider({ children }: { children: ReactNode }) {
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
-    } finally {
-      router.refresh();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    refreshCovers();
-  }, [refreshCovers]);
 
   return (
     <CoverContext.Provider
       value={{
         covers,
-        isLoadingData,
+        isLoading,
         createCover,
         refreshCovers,
         updateCover,

@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 
-import { iCardCover } from "@/types";
 import { BtnEditCover } from "../BtnEditCover";
 import { BtnDeleteCover } from "../BtnDeleteCover";
+
 import { useCovers } from "@/context/covers/coverContext";
+
+import { iCardCover } from "@/types";
 
 export function CardCover({ cover }: iCardCover) {
   const { deleteCover } = useCovers();

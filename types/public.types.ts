@@ -265,10 +265,6 @@ export type PaginationType = {
   getPaginaSiguiente: () => void;
 };
 
-export type RefreshProps = {
-  refreshAction: () => void;
-};
-
 export type ErrorResponse = {
   success: false;
   message: string;

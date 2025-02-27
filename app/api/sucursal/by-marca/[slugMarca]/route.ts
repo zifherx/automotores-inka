@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import Marca from "@/models/Marca";
+import { Marca } from "@/models/Marca";
 import Sucursal from "@/models/Sucursal";
 
 import { dbConnect } from "@/lib";
-import { iSede } from "@/types";
 
 export async function GET(
   req: NextRequest,
@@ -31,8 +30,8 @@ export async function GET(
         select: "_id name slug imageUrl isActive",
       });
 
-    // return NextResponse.json({total: query.length, all: query});
-    return NextResponse.json(query);
+    return NextResponse.json({ total: query.length, all: query });
+    // return NextResponse.json(query);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
   }

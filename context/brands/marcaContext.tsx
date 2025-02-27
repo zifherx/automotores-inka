@@ -54,11 +54,10 @@ export function BrandsProvider({ children }: { children: ReactNode }) {
       if (query.status === 200) {
         onToast(query.data.message);
         setIsLoadingData(false);
+        router.refresh();
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
-    } finally {
-      router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -74,11 +73,10 @@ export function BrandsProvider({ children }: { children: ReactNode }) {
       if (query.status === 200) {
         onToast(query.data.message);
         setIsLoadingData(false);
+        router.refresh();
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
-    } finally {
-      router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -88,11 +86,10 @@ export function BrandsProvider({ children }: { children: ReactNode }) {
       const query = await axios.delete(`/api/marca/${id}`);
       if (query.status === 200) {
         onToast(query.data.message);
+        router.refresh();
       }
     } catch (err: any) {
       onToast("Algo salió mal ❌", err.message, true);
-    } finally {
-      router.refresh();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
