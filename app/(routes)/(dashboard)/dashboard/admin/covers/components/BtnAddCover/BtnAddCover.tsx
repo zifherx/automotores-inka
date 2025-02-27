@@ -30,9 +30,9 @@ export function BtnAddCover() {
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              <Button className="font-semibold text-lg" variant="outline">
-                <Plus className="w-5 h-5" />
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Plus className="w-5 h-5" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">
@@ -41,9 +41,14 @@ export function BtnAddCover() {
           </Tooltip>
         </TooltipProvider>
       </DialogTrigger>
-      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
-          <DialogTitle className="mb-5 text-left">Nueva Portada</DialogTitle>
+          <DialogTitle className="mb-5 text-left text-xl uppercase">
+            Nueva Portada
+          </DialogTitle>
           <DialogDescription>
             <FormAddPortada setOpenDialog={setOpenDialog} />
           </DialogDescription>

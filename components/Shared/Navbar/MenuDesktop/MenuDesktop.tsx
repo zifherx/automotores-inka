@@ -30,7 +30,7 @@ export function MenuDesktop() {
     try {
       const query = await axios.get("/api/marca");
       if (query.status === 200) {
-        setListBrands(query.data.obj);
+        setListBrands(query.data.data);
       }
     } catch (err) {
       setListBrands([]);

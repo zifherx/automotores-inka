@@ -1,8 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { Send, X } from "lucide-react";
 
 import {
   Form,
@@ -12,23 +13,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { formAddCoverSchema, PortadasFormValues } from "@/forms";
-import { onToast } from "@/lib";
-import { tFormEditCover } from "@/types";
 import { Button } from "@/components/ui/button";
-import { LoadingIcon } from "@/components/Shared/LoadingIcon";
-import { Send, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { UploadButton } from "@/utils/uploadthing";
+import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
-export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
-  const [isLoading, setIsLoading] = useState(false);
+import { useCovers } from "@/context/covers/coverContext";
+
+import { UploadButton } from "@/utils/uploadthing";
+import { formAddCoverSchema, PortadasFormValues } from "@/forms";
+import { tFormEditCover } from "@/types";
+
+export function FormEditPortada({ portada }: tFormEditCover) {
+  const { isLoading, updateCover } = useCovers();
+
   const [imageUploaded, setImageUploaded] = useState(false);
   const [linkImagen, setLinkImagen] = useState<string>("");
-  const router = useRouter();
 
   const form = useForm<PortadasFormValues>({
     resolver: zodResolver(formAddCoverSchema),
@@ -40,30 +41,8 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
     },
   });
 
-  useEffect(() => {
-    if (portada.imageUrl !== "") {
-      setLinkImagen(portada.imageUrl);
-      setImageUploaded(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSubmit = async (values: PortadasFormValues) => {
-    setIsLoading(true);
-    try {
-      const query = await axios.patch(`/api/portada/${portada._id}`, values);
-      if (query.status === 200) {
-        onToast(query.data.message);
-        setOpenDialog(false);
-        router.refresh();
-      }
-    } catch (err) {
-      console.log(err);
-      onToast(`Algo salió mal ❌`, "", true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const actionSubmit = async (values: PortadasFormValues) =>
+    updateCover(portada._id, values);
 
   const handleImageUpload = (res: any) => {
     if (res && res[0]) {
@@ -79,9 +58,17 @@ export function FormEditPortada({ portada, setOpenDialog }: tFormEditCover) {
     setImageUploaded(false);
   };
 
+  useEffect(() => {
+    if (portada.imageUrl !== "") {
+      setLinkImagen(portada.imageUrl);
+      setImageUploaded(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(actionSubmit)} className="space-y-3">
         <div className="grid grid-cols-[70%,1fr] gap-x-2">
           {/* Name */}
           <FormField

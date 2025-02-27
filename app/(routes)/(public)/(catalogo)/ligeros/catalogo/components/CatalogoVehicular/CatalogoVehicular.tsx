@@ -27,7 +27,7 @@ export function CatalogoVehicular() {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      const brandsActive: iBrand[] = query.data.obj.filter(
+      const brandsActive: iBrand[] = query.data.data.filter(
         (a: iBrand) => a.isActive
       );
       setMarcas(brandsActive);

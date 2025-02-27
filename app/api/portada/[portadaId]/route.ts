@@ -1,62 +1,41 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import { dbConnect, validarItem } from "@/lib";
-import Cover from "@/models/Cover";
+import { DIContainer } from "@/config/di-container";
+import { MongoosePortadaRepositoryImplement } from "@/repositories/implementations/mongoose/portada.repository";
+import { PortadaService } from "@/services/portada.services";
+import { ResponseFactory } from "@/utils/response-factory";
+import { APIMessages } from "@/utils/constants";
+
+import { dbConnect, UnauthorizedError } from "@/lib";
+import { Cover } from "@/models";
+
+const RESOURCE_NAME = "Portada";
+
+const container = DIContainer.getInstance();
+const portadaRepository = new MongoosePortadaRepositoryImplement(Cover);
+container.register("IPortadaRepository", portadaRepository);
+const portadaService = new PortadaService(container.get("IPortadaRepository"));
 
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { portadaId: string } }
 ) {
   await dbConnect();
-  let query;
+
+  const { userId } = await auth();
+  const { portadaId } = params;
+  const body = await req.json();
 
   try {
-    const { userId } = await auth();
-    const { portadaId } = params;
-    const payload = await req.json();
-
-    if (!userId) return new NextResponse("No Autorizado", { status: 401 });
-
-    const coverFounded = await Cover.findById(portadaId);
-
-    if (!coverFounded)
-      return NextResponse.json(
-        { message: `Portada ${portadaId} no encontrada` },
-        { status: 404 }
-      );
-
-    const respuestaValidacion = validarItem(
-      coverFounded.imageUrl,
-      payload.imageUrl
+    if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await portadaService.updateResource(portadaId, body);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getUpdatedMessage(RESOURCE_NAME)
     );
-
-    if (!respuestaValidacion) {
-      query = await Cover.findByIdAndUpdate(
-        portadaId,
-        { ...payload },
-        { new: true }
-      );
-    } else {
-      query = await Cover.findByIdAndUpdate(
-        portadaId,
-        {
-          name: payload.name,
-          slug: payload.slug,
-          isActive: payload.isActive,
-        },
-        { new: true }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: "Portada actualizada ✅",
-      res: query,
-    });
-  } catch (err) {
-    console.log(err);
-    return new NextResponse("Internal Error", { status: 500 });
+  } catch (err: any) {
+    return ResponseFactory.error(err);
   }
 }
 
@@ -70,27 +49,35 @@ export async function DELETE(
     const { userId } = await auth();
     const { portadaId } = params;
 
-    if (!userId) return new NextResponse("No Autorizado", { status: 401 });
+    if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await portadaService.deleteResource(portadaId);
 
-    const query = await Cover.findByIdAndDelete(portadaId);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getDeletedMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
+  }
+}
 
-    if (!query) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: `Portada no encontrada`,
-        },
-        { status: 404 }
-      );
-    }
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { portadaId: string } }
+) {
+  await dbConnect();
 
-    return NextResponse.json({
-      success: true,
-      message: `Carrocería eliminada ❌`,
-      res: query,
-    });
-  } catch (err) {
-    console.log(err);
-    return new NextResponse("Internal Error", { status: 500 });
+  try {
+    const { userId } = await auth();
+    const { portadaId } = params;
+
+    if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await portadaService.getResource(portadaId);
+    return ResponseFactory.success(
+      query,
+      APIMessages.getFetchedMessage(RESOURCE_NAME)
+    );
+  } catch (err: any) {
+    return ResponseFactory.error(err);
   }
 }

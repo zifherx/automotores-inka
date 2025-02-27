@@ -4,12 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Send, ShoppingCart } from "lucide-react";
+import { Send } from "lucide-react";
 
 import { MenuDesktop } from "./MenuDesktop";
 import { MenuMobile } from "./MenuMobile";
 import { cn } from "@/lib";
-import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const router = useRouter();

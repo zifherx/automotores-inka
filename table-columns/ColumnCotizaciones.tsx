@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 
 import moment from "moment";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 
 import { iLead } from "@/types";
 
@@ -121,7 +121,7 @@ export const columnsQuotes: ColumnDef<iLead>[] = [
           size="sm"
           onClick={() => console.log("Update:", row.original._id)}
         >
-          <Pencil className="w-5 h-5 text-orange-500" />
+          <Eye className="w-5 h-5 text-orange-500" />
         </Button>
         <Button
           variant="link"

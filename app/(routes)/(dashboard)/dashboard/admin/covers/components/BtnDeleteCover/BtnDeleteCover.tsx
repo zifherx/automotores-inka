@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash } from "lucide-react";
 
 import {
   Tooltip,
@@ -32,7 +32,7 @@ export function BtnDeleteCover({ deleteItem }: deleteFnProps) {
                 variant="outline"
                 className="text-sm hover:bg-redInka hover:text-white"
               >
-                <Trash2 className="w-4 h-4" strokeWidth={2} />
+                <Trash className="w-4 h-4" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>

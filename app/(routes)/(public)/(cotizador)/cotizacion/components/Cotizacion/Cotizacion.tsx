@@ -7,8 +7,7 @@ import axios from "axios";
 import { SideForm } from "../SideForm";
 import { SelectedModel } from "../SelectedModel";
 
-import { getRouteForModel } from "@/lib";
-import { iListModels, iModelo } from "@/types";
+import { iModelo } from "@/types";
 import { AutoLoadingSpinner } from "@/components/Shared/Auto-Loading-Spinner";
 import { Error404 } from "@/components/Shared/Error404";
 

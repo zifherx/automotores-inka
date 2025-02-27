@@ -1,30 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 
-import { iCardCover } from "@/types";
 import { BtnEditCover } from "../BtnEditCover";
 import { BtnDeleteCover } from "../BtnDeleteCover";
-import { onToast } from "@/lib";
+
+import { useCovers } from "@/context/covers/coverContext";
+
+import { iCardCover } from "@/types";
 
 export function CardCover({ cover }: iCardCover) {
-  const router = useRouter();
-
-  const deletePortada = async () => {
-    try {
-      const query = await axios.delete(`/api/portada/${cover._id}`);
-      if (query.status === 200) {
-        onToast(query.data.message);
-      }
-    } catch (err) {
-      console.log(err);
-      onToast(`Algo salió mal 😭`, "", true);
-    } finally {
-      router.refresh();
-    }
-  };
+  const { deleteCover } = useCovers();
 
   return (
     <div className="relative pb-1 bg-white rounded-lg shadow-lg hover:shadow-xl">
@@ -54,7 +40,7 @@ export function CardCover({ cover }: iCardCover) {
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <BtnDeleteCover deleteItem={deletePortada} />
+          <BtnDeleteCover deleteItem={() => deleteCover(cover._id)} />
           <BtnEditCover cover={cover} />
         </div>
       </div>

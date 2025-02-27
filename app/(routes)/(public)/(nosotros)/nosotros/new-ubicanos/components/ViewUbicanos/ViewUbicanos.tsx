@@ -73,16 +73,16 @@ export function ViewUbicanos() {
     <div className="container mx-auto py-4 md:py-8">
       <MigajasView />
       <FilterSearchView value={search} onChange={setSearch} />
-      <div className="flex flex-col-reverse md:grid md:grid-cols-3 gap-8">
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        <SidebarUbicanos
+          sedes={filteredDealers}
+          onSelectDealer={handleSelectDealer}
+        />
         <LocationMap
           sedes={filteredDealers}
           mapCenter={mapCenter}
           openPopupId={openPopupId}
           markersRef={markersRef}
-        />
-        <SidebarUbicanos
-          sedes={filteredDealers}
-          onSelectDealer={handleSelectDealer}
         />
       </div>
     </div>

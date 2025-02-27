@@ -5,6 +5,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { DateRange } from "react-day-picker";
@@ -12,11 +13,7 @@ import axios from "axios";
 import { utils, writeFile } from "xlsx";
 
 import { iLead } from "@/types";
-import {
-  COLUMN_DEFINITION_EXPORTING,
-  ColumnQuoteDef,
-  columnsQuotes,
-} from "@/table-columns";
+import { COLUMN_DEFINITION_EXPORTING, ColumnQuoteDef } from "@/table-columns";
 
 interface QuoteContextType {
   quotes: iLead[];
@@ -103,6 +100,10 @@ export function QuotesProvider({ children }: { children: ReactNode }) {
     [quotes]
   );
 
+  useEffect(() => {
+    refreshQuotes();
+  }, [refreshQuotes]);
+
   return (
     <QuotesContext.Provider
       value={{
@@ -123,7 +124,7 @@ export function QuotesProvider({ children }: { children: ReactNode }) {
 export function useQuotes() {
   const context = useContext(QuotesContext);
   if (context === undefined) {
-    throw new Error("useQuotes must be use within q QuotesProvider");
+    throw new Error("useQuotes must be use within QuotesProvider");
   }
   return context;
 }

@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const formAddCoverSchema = z.object({
   name: z.string().min(4).max(50),
-  imageUrl: z.string(),
-  slug: z.string(),
+  imageUrl: z.string().url({ message: "imageUrl debe ser una URL válida" }),
+  slug: z.string().min(1, { message: "slug no puede estar vacío" }),
   isActive: z.boolean(),
 });
 

@@ -22,4 +22,4 @@ const coverSchema: Schema = new Schema(
   }
 );
 
-export default models.Cover || model<iCover>("Cover", coverSchema);
+export const Cover = models.Cover || model<iCover>("Cover", coverSchema);

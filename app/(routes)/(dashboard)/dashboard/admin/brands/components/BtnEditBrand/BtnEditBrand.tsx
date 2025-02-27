@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 
@@ -33,7 +35,7 @@ export function BtnEditBrand({ brand }: iCardBrand) {
                 variant="outline"
                 className="hover:bg-orange-400 hover:text-white"
               >
-                <Pencil className="w-4 h-4" strokeWidth={2} />
+                <Pencil className="w-5 h-5" strokeWidth={2} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -47,7 +49,7 @@ export function BtnEditBrand({ brand }: iCardBrand) {
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="uppercase font-bold text-xl">
+          <DialogTitle className="uppercase font-bold text-xl mb-5">
             Editar Marca
           </DialogTitle>
           <DialogDescription>

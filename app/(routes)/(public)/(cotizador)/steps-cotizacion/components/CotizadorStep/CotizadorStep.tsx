@@ -95,7 +95,7 @@ export function CotizadorStep() {
   const getBrands = async () => {
     const query = await axios.get("/api/marca");
     if (query.status === 200) {
-      setBrands(query.data.obj);
+      setBrands(query.data.data);
     }
   };
 
@@ -110,12 +110,12 @@ export function CotizadorStep() {
     if (brand !== "" || brand !== undefined) {
       const query = await axios.get(`/api/sucursal/by-marca/${brand}`);
       if (query.status === 200) {
-        const sedesSinDuplicados = query.data.filter(
+        const sedesSinDuplicados = query.data.all.filter(
           (item: any, index: any, self: any) =>
             index === self.findIndex((a: any) => a.ciudad === item.ciudad)
         );
         setCiudades(sedesSinDuplicados);
-        setConcesionarios(query.data);
+        setConcesionarios(query.data.all);
       }
     }
   };

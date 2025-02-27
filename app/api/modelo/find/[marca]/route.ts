@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import Modelo from "@/models/Modelo";
-import Marca from "@/models/Marca";
+import { Marca } from "@/models/Marca";
 
 import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";

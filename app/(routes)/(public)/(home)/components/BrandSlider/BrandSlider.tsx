@@ -34,7 +34,7 @@ export function BrandSlider() {
     try {
       const query = await axios.get("/api/marca");
       if (query.status === 200) {
-        const marcasActivas = query.data.obj.filter(
+        const marcasActivas = query.data.data.filter(
           (marca: iBrand) => marca.isActive
         );
         setBrands(marcasActivas);
