@@ -5,9 +5,9 @@ import { CardNoticia } from "../CardNoticia";
 import { TableLoading } from "@/components/Shared/TableLoading";
 
 export function ListNoticias() {
-  const { news, isLoadingData } = useNews();
+  const { news, isLoading } = useNews();
 
-  if (isLoadingData) {
+  if (isLoading) {
     return <TableLoading />;
   }
   return (

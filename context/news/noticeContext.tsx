@@ -17,7 +17,7 @@ interface NoticeContextType {
   news: iNews[];
   isLoading: boolean;
   refreshNews: () => Promise<void>;
-  createNew: (noticia: Omit<iNews, "_id">) => Promise<iNews | void>;
+  createNew: (noticia: Partial<iNews>) => Promise<iNews | void>;
   updateNew: (id: string, noticia: Partial<iNews>) => Promise<iNews | void>;
   deleteNew: (id: string) => Promise<void>;
 }
@@ -44,7 +44,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const createNew = useCallback(
-    async (noticia: Omit<iNews, "_id">): Promise<iNews | void> => {
+    async (noticia: Partial<iNews>): Promise<iNews | void> => {
       try {
         const query = await axios.post("/api/noticia", noticia);
         if (query.status === 200) {

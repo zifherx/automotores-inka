@@ -26,7 +26,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import { formNoticia, NoticiasFormValues } from "@/forms";
 
 export function FormEditNoticia({ noticia, setOpenDialog }: tFormEditNoticia) {
-  const { isLoadingData, updateNew } = useNews();
+  const { isLoading, updateNew } = useNews();
 
   const [imageUploaded, setImageUploaded] = useState(false);
   const [linkImage, setLinkImage] = useState("");
@@ -290,10 +290,10 @@ export function FormEditNoticia({ noticia, setOpenDialog }: tFormEditNoticia) {
 
           <Button
             type="submit"
-            disabled={isLoadingData}
+            disabled={isLoading}
             className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
           >
-            {isLoadingData ? (
+            {isLoading ? (
               <>
                 <LoadingIcon effect="default" />
                 Actualizando...

@@ -24,12 +24,11 @@ import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 import { formNoticia, NoticiasFormValues } from "@/forms";
 import { tFormAdding } from "@/types";
-import { onToast } from "@/lib";
 import { UploadButton } from "@/utils/uploadthing";
 import { useNews } from "@/context/news/noticeContext";
 
 export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
-  const { createNew, isLoadingData } = useNews();
+  const { createNew, isLoading } = useNews();
   const [imageUploaded, setImageUploaded] = useState(false);
 
   const form = useForm<NoticiasFormValues>({
@@ -253,10 +252,10 @@ export function FormAddNoticia({ setOpenDialog }: tFormAdding) {
 
           <Button
             type="submit"
-            disabled={isLoadingData}
+            disabled={isLoading}
             className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
           >
-            {isLoadingData ? (
+            {isLoading ? (
               <>
                 <LoadingIcon effect="default" />
                 Guardando...
