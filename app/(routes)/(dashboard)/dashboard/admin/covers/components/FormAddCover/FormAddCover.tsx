@@ -26,7 +26,7 @@ import { tFormAdding } from "@/types";
 import { useCovers } from "@/context/covers/coverContext";
 
 export function FormAddPortada({ setOpenDialog }: tFormAdding) {
-  const { isLoadingData, createCover } = useCovers();
+  const { isLoading, createCover } = useCovers();
 
   const [imageUploaded, setImageUploaded] = useState(false);
 
@@ -143,9 +143,9 @@ export function FormAddPortada({ setOpenDialog }: tFormAdding) {
           <Button
             type="submit"
             className="w-full col-span-2 font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-            disabled={isLoadingData}
+            disabled={isLoading}
           >
-            {isLoadingData ? (
+            {isLoading ? (
               <>
                 <LoadingIcon effect="default" />
                 Guardando...
