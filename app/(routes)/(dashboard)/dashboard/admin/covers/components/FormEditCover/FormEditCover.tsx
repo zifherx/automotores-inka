@@ -26,7 +26,7 @@ import { formAddCoverSchema, PortadasFormValues } from "@/forms";
 import { tFormEditCover } from "@/types";
 
 export function FormEditPortada({ portada }: tFormEditCover) {
-  const { isLoadingData, updateCover } = useCovers();
+  const { isLoading, updateCover } = useCovers();
 
   const [imageUploaded, setImageUploaded] = useState(false);
   const [linkImagen, setLinkImagen] = useState<string>("");
@@ -179,9 +179,9 @@ export function FormEditPortada({ portada }: tFormEditCover) {
         <Button
           type="submit"
           className="w-full font-headMedium text-xl uppercase bg-black hover:bg-grisDarkInka"
-          disabled={isLoadingData}
+          disabled={isLoading}
         >
-          {isLoadingData ? (
+          {isLoading ? (
             <>
               <LoadingIcon effect="default" />
               Actualizando...
