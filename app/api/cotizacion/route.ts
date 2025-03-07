@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
         ? customerFound.numeroDocumento
         : newCustomer?.numeroDocumento,
       email: customerFound ? customerFound.email : newCustomer!.email,
-      pone_number: `+51${
+      phone_number: `+51${
         customerFound ? customerFound.celular : newCustomer!.celular
       }`,
       mark: vehicleFound!.marca.name.toUpperCase(),
