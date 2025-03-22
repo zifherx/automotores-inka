@@ -17,3 +17,7 @@ export const isPosventa = (userId: string | null | undefined) => {
 export const isLegal = (userId: string | null | undefined) => {
   return userId === process.env.NEXT_PUBLIC_LEGAL;
 };
+
+export const isMarketing = (userId: string | null | undefined) => {
+  return userId === process.env.NEXT_PUBLIC_MARKETING;
+};

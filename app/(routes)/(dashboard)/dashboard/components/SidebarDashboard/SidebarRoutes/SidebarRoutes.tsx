@@ -10,6 +10,7 @@ import {
   listItemMenuComercial,
   listItemMenuGeneral,
   listItemMenuLegal,
+  listItemMenuMarketing,
   listItemMenuPosventa,
   listItemMenuSistema,
 } from "@/data";
@@ -20,6 +21,7 @@ import {
   isADV,
   isComercial,
   isLegal,
+  isMarketing,
   isPosventa,
 } from "@/lib";
 
@@ -53,6 +55,17 @@ export function SidebarRoutes() {
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">Comercial</p>
               {listItemMenuComercial.map((items) => (
+                <SidebarItem key={items.id} items={items} />
+              ))}
+            </div>
+          )}
+
+          <Separator />
+
+          {(isAdministrator(userId) || isMarketing(userId)) && (
+            <div className="p-2 md:p-4">
+              <p className="mb-2 text-slate-500">Marketing</p>
+              {listItemMenuMarketing.map((items) => (
                 <SidebarItem key={items.id} items={items} />
               ))}
             </div>

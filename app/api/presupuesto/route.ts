@@ -2,20 +2,24 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
 import { DIContainer } from "@/config/di-container";
-import { MongoosePortadaRepositoryImplement } from "@/repositories/implementations/mongoose/portada.repository";
-import { PortadaService } from "@/services/portada.service";
+import { MongoosePresupuestoRepositoryImplement } from "@/repositories/implementations/mongoose/presupuesto.repository";
+import { PresupuestoService } from "@/services/presupuesto.service";
 import { ResponseFactory } from "@/utils/response-factory";
 import { APIMessages } from "@/utils/constants";
 
 import { dbConnect, UnauthorizedError } from "@/lib";
-import { Cover } from "@/models";
+import { Presupuesto } from "@/models/Presupuesto";
 
-const RESOURCE_NAME = "Portada";
+const RESOURCE_NAME = "Presupuesto";
 
 const container = DIContainer.getInstance();
-const portadaRepository = new MongoosePortadaRepositoryImplement(Cover);
-container.register("IPortadaRepository", portadaRepository);
-const portadaService = new PortadaService(container.get("IPortadaRepository"));
+const presupuestoRepository = new MongoosePresupuestoRepositoryImplement(
+  Presupuesto
+);
+container.register("IPresupuestoRepository", presupuestoRepository);
+const presupuestoService = new PresupuestoService(
+  container.get("IPresupuestoRepository")
+);
 
 export async function POST(req: NextRequest) {
   await dbConnect();
@@ -24,8 +28,9 @@ export async function POST(req: NextRequest) {
     const { userId } = await auth();
     const body = await req.json();
 
-    if (!userId) throw new UnauthorizedError("No autorizado");
-    const query = await portadaService.createResource(body);
+    // if (!userId) throw new UnauthorizedError("No autorizado");
+    const query = await presupuestoService.createResource(body);
+
     return ResponseFactory.success(
       query,
       APIMessages.getCreateMessage(RESOURCE_NAME)
@@ -43,8 +48,8 @@ export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const params = Object.fromEntries(searchParams);
 
-    // if (!userId) throw new UnauthorizedError("No autorizado");
-    const query = await portadaService.getResources(params);
+    // if(!userId) throw new UnauthorizedError("No autorizado")
+    const query = await presupuestoService.getResources(params);
     return ResponseFactory.success(
       query,
       APIMessages.getListedMessage(RESOURCE_NAME)

@@ -1,8 +1,10 @@
 import {
   BadgeDollarSign,
   Cable,
+  Calendar,
   Car,
   CarFront,
+  ChartBar,
   Cog,
   House,
   Images,
@@ -11,6 +13,7 @@ import {
   NotebookText,
   Scale,
   ShoppingBag,
+  ShoppingBasket,
   SquareGanttChart,
   Truck,
   Users,
@@ -67,31 +70,31 @@ export const listItemMenuGeneral: iMenuDashboard[] = [
     id: 1,
     icon: Images,
     label: "Gestión de Portadas",
-    href: "/dashboard/admin/portadas",
+    href: "/dashboard/admin/general/portadas",
   },
   {
     id: 2,
     icon: Cable,
     label: "Gestión de Carrocería",
-    href: "/dashboard/admin/chasis",
+    href: "/dashboard/admin/general/chasis",
   },
   {
     id: 3,
     icon: BadgeDollarSign,
     label: "Gestión de Tipo Cambio",
-    href: "/dashboard/admin/tipo-cambio",
+    href: "/dashboard/admin/general/tipo-cambio",
   },
   {
     id: 4,
     icon: MapPin,
     label: "Gestión de Sucursales",
-    href: "/dashboard/admin/sucursal",
+    href: "/dashboard/admin/general/sucursal",
   },
   {
     id: 5,
     icon: Newspaper,
     label: "Gestión de Noticias",
-    href: "/dashboard/admin/noticias",
+    href: "/dashboard/admin/general/noticias",
   },
 ];
 
@@ -100,7 +103,7 @@ export const listItemMenuLegal: iMenuDashboard[] = [
     id: 1,
     icon: Scale,
     label: "Gestión de Reclamos",
-    href: "/dashboard/admin/claims",
+    href: "/dashboard/admin/legal/claims",
   },
 ];
 
@@ -109,13 +112,13 @@ export const listItemMenuADV: iMenuDashboard[] = [
     id: 1,
     icon: SquareGanttChart,
     label: "Gestión de Marcas",
-    href: "/dashboard/admin/brands",
+    href: "/dashboard/admin/adv/brands",
   },
   {
     id: 2,
     icon: CarFront,
     label: "Gestión de Vehículos",
-    href: "/dashboard/admin/models",
+    href: "/dashboard/admin/adv/models",
   },
   // {
   //   id: 3,
@@ -130,13 +133,13 @@ export const listItemMenuComercial: iMenuDashboard[] = [
     id: 1,
     icon: BadgeDollarSign,
     label: "Gestión de Cotizaciones",
-    href: "/dashboard/admin/quotes",
+    href: "/dashboard/admin/comercial/quotes",
   },
   {
     id: 2,
     icon: ShoppingBag,
     label: "Gestión de Concursos",
-    href: "/dashboard/admin/contest",
+    href: "/dashboard/admin/comercial/contest",
   },
 ];
 
@@ -145,7 +148,7 @@ export const listItemMenuPosventa: iMenuDashboard[] = [
     id: 1,
     icon: Wrench,
     label: "Gestión de Citas",
-    href: "/dashboard/admin/appointments",
+    href: "/dashboard/admin/pos-venta/appointments",
   },
 ];
 
@@ -161,5 +164,26 @@ export const listItemMenuSistema: iMenuDashboard[] = [
     icon: Users,
     label: "Gestión de Usuarios",
     href: "/dashboard/admin/users",
+  },
+];
+
+export const listItemMenuMarketing: iMenuDashboard[] = [
+  {
+    id: 1,
+    icon: Calendar,
+    label: "Presupuestos",
+    href: "/dashboard/admin/marketing/presupuestos",
+  },
+  {
+    id: 2,
+    icon: ShoppingBasket,
+    label: "Proyección de Gastos",
+    href: "/dashboard/admin/marketing/proyeccion-gastos",
+  },
+  {
+    id: 3,
+    icon: ChartBar,
+    label: "Reportes",
+    href: "/dashboard/admin/marketing/reportes",
   },
 ];

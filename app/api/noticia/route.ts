@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
 import { MongooseNoticiaRepositoryImplement } from "@/repositories/implementations/mongoose/noticia.repository";
-import { NoticiaService } from "@/services/noticia.services";
+import { NoticiaService } from "@/services/noticia.service";
 import { DIContainer } from "@/config/di-container";
 import { ResponseFactory } from "@/utils/response-factory";
 import { APIMessages } from "@/utils/constants";

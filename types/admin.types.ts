@@ -18,6 +18,7 @@ import {
 import { iSedeDealer } from "./public.types";
 import { iUser } from "@/interfaces/iAdmin";
 import { User } from "@clerk/nextjs/server";
+import { iPresupuesto } from "@/models/Presupuesto";
 
 export type defaultDocument = {
   _id: string;
@@ -152,3 +153,5 @@ export type iListTCambio = {
 export type iCardTCambio = {
   tCambio: iExchange;
 };
+
+export type iBudget = iPresupuesto & defaultDocument;
