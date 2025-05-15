@@ -1417,3 +1417,19 @@ export const listTipoServicio: iTipoServicio[] = [
     value: "otros",
   },
 ];
+
+export const LegalPromocionesData: iParrafo[] = [
+  {
+    id: 1,
+    title: "¡Frena seguro con Automotores Inka!",
+    parrafos: [
+      {
+        oracion:
+          "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales.",
+      },
+      {
+        oracion: "Imagen referencial. Vigencia del 12 de mayo al 31 de julio.",
+      },
+    ],
+  },
+];

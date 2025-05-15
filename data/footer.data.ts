@@ -11,7 +11,7 @@ import {
   Copyright,
   NotebookText,
   Scale,
-  Truck,
+  ShoppingBag,
   Users,
 } from "lucide-react";
 
@@ -111,21 +111,27 @@ export const listSubmenuFooter: iMenuFooter[] = [
     submenu: [
       {
         id: 1,
+        href: "/legal/accesibilidad",
+        label: "Accesibilidad",
+        icon: Cookie,
+      },
+      {
+        id: 2,
         href: "/legal/copyright",
         label: "Copyright",
         icon: Copyright,
       },
       {
-        id: 2,
+        id: 3,
+        href: "/legal/promociones",
+        label: "Promociones",
+        icon: ShoppingBag,
+      },
+      {
+        id: 4,
         href: "/legal/terminos-condiciones",
         label: "Términos y condiciones",
         icon: Scale,
-      },
-      {
-        id: 3,
-        href: "/legal/accesibilidad",
-        label: "Accesibilidad",
-        icon: Cookie,
       },
     ],
   },
