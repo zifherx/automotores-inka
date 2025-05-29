@@ -1438,7 +1438,8 @@ export const LegalPromocionesData: iParrafo[] = [
     parrafos: [
       {
         oracion:
-          "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales",
+          "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales.",
+          linkHref: "Codigo_Campana_De_Frenos_Hyundai.pdf"
       },
       {
         oracion: "Imagen referencial. Vigencia del 12 de mayo al 31 de julio.",

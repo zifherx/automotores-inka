@@ -178,6 +178,7 @@ export type iParrafo = {
   id?: number;
   title: string;
   parrafos: iOracion[];
+  
 };
 
 export type iCustomIconTitle = {
