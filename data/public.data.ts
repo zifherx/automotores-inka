@@ -1432,4 +1432,30 @@ export const LegalPromocionesData: iParrafo[] = [
       },
     ],
   },
+  {
+    id: 2,
+    title: "¡Campaña Discos y Pastillas de Freno - Hyundai!",
+    parrafos: [
+      {
+        oracion:
+          "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales",
+      },
+      {
+        oracion: "Imagen referencial. Vigencia del 12 de mayo al 31 de julio.",
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "¡Campaña de Lubricación!",
+    parrafos: [
+      {
+        oracion:
+          "El servicio incluye cambio de aceite de motor, filtro de aceite y arandela. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales.",
+      },
+      {
+        oracion: "Imagen referencial. Vigencia del 15 de mayo al 31 de mayo",
+      },
+    ],
+  },
 ];
