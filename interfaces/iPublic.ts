@@ -49,6 +49,7 @@ export interface tProvincia {
 
 export interface iOracion {
   oracion: string;
+  linkHref?: string;
 }
 
 export interface iCompany {
