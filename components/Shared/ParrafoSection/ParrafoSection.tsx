@@ -2,9 +2,7 @@ import { Title } from "../Title";
 
 import { iParrafo } from "@/types";
 
-export function ParrafoSection(props: iParrafo) {
-  const { parrafos, title } = props;
-
+export function ParrafoSection({parrafos,title}: iParrafo) {
   return (
     <div>
       {title !== "" && (
@@ -14,9 +12,17 @@ export function ParrafoSection(props: iParrafo) {
         />
       )}
 
-      <div className="text-base font-normal flex flex-col gap-y-5 leading-7 text-justify text-grisDarkInka">
-        {parrafos.map(({ oracion }, index) => (
-          <p key={index}>{oracion}</p>
+      <div>
+        {parrafos.map(({ oracion, linkHref }, index) => (
+            <p key={index} className="text-base font-normal gap-y-4 leading-7 text-grisDarkInka text-justify">
+              {oracion}
+              { linkHref ? (
+                <a href={`/documents/${linkHref}`} target="_blank" className="text-blueInka hover:underline">
+                  {" "}Más detalles aquí
+                </a>
+              ) : ""}
+            </p>
+
         ))}
       </div>
     </div>
