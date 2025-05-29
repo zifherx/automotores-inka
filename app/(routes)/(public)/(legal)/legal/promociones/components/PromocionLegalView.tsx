@@ -11,7 +11,7 @@ export function PromocionLegalView() {
       />
 
       {LegalPromocionesData.map(({ id, title, parrafos }) => (
-        <ParrafoSection key={id} title={title} parrafos={parrafos} />
+        <ParrafoSection key={id} title={title} parrafos={parrafos}/>
       ))}
     </div>
   );
