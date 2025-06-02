@@ -22,10 +22,22 @@ import { iMenuDashboard, iMenuMobile, iServicioPosventa } from "@/interfaces";
 export const listServiciosPosventa: iServicioPosventa[] = [
   {
     id: 1,
+    title: "Accesorios",
+    href: "/posventa/accesorios",
+    description: "Lista de accesorios según marca y modelo",
+  },
+  {
+    id: 1,
     title: "Separa tu cita",
     href: "/posventa/mantenimiento",
     description:
       "Ofrecemos mantenimientos preventivos y correctivos para tu vehículo.",
+  },
+  {
+    id: 3,
+    title: "Talleres",
+    href: "/posventa/talleres",
+    description: "Talleres autorizados de Sociedad de Automotores Inka",
   },
 ];
 
