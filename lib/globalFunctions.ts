@@ -1,4 +1,4 @@
-import { iCompany } from "@/interfaces";
+import { iCompany, iTalleres } from "@/interfaces";
 
 export const switchRS = (rs: string) => {
   switch (rs) {
@@ -91,4 +91,11 @@ export const validarItem = (uriDB: string, uriPayload: string): boolean => {
     return true;
   }
   return false;
+};
+
+export const createWhatsAppLinkForTallerContact = (taller: iTalleres) => {
+  const message = encodeURIComponent(
+    `Hola, vengo desde la página web de Sociedad de Automotores Inka. Estoy interesado en sacar una cita en ${taller.nombre} ubicado en ${taller.ciudad}.`
+  );
+  return `https://wa.me/51${taller.telefono}?text=${message}`;
 };
