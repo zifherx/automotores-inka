@@ -14,8 +14,9 @@ import {
   iModelo,
   iSede,
 } from "./admin.types";
-import { iOracion, iPosition } from "@/interfaces";
+import { iIconText, iOracion, iPosition, iTalleres } from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
+import { IconType } from "react-icons/lib";
 
 export type iVideosYoutube = {
   src: string;
@@ -278,3 +279,22 @@ export type SuccessResponse<T> = {
 };
 
 export type APIResponse<T> = ErrorResponse | SuccessResponse<T>;
+
+export type IconProp = LucideIcon | IconType;
+
+export type IconTextProp = iIconText;
+
+export type FilterTalleresProp = {
+  ciudadSeleccionada: string;
+  setCiudadSeleccionada: Dispatch<SetStateAction<string>>;
+  marcaSeleccionada: string;
+  setMarcaSeleccionada: Dispatch<SetStateAction<string>>;
+};
+
+export type TalleresProp = {
+  talleres: iTalleres[];
+};
+
+export type CardTallerProp = {
+  taller: iTalleres;
+};

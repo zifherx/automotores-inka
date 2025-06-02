@@ -1,3 +1,4 @@
+import { IconProp } from "@/types";
 import { LucideIcon } from "lucide-react";
 
 export interface iServicioSVG {
@@ -60,4 +61,36 @@ export interface iCompany {
 export interface iPosition {
   lat: number;
   lng: number;
+}
+
+export interface iIconText {
+  id: number;
+  icon: IconProp;
+  text: string;
+}
+
+export interface iFiltrosTalleres {
+  ciudad: string;
+}
+
+export interface iTalleres {
+  id: number;
+  nombre: string;
+  ciudad: string;
+  direccion: string;
+  telefono: string;
+  marcas: iMarcaTaller[];
+  horarios: iHorarioTaller;
+  imageSource: string;
+}
+
+export interface iMarcaTaller {
+  id: number;
+  title: string;
+  imageSource: string;
+}
+
+export interface iHorarioTaller {
+  semana: string;
+  sabado: string;
 }

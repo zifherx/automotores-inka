@@ -1,14 +1,25 @@
 import {
+  iIconText,
   iListLinkUtiles,
   iListValores,
   iObjetivosEmpresa,
   iReclamosRS,
   iServicioSVG,
+  iTalleres,
   tDepartamento,
 } from "@/interfaces/iPublic";
 import { iParrafo, iTipoServicio } from "@/types";
 
-import { Blocks, Handshake, Medal, Star, Users } from "lucide-react";
+import {
+  Blocks,
+  Car,
+  Clock,
+  Handshake,
+  MapPin,
+  Medal,
+  Star,
+  Users,
+} from "lucide-react";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
@@ -1428,8 +1439,273 @@ export const LegalPromocionesData: iParrafo[] = [
           "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales.",
       },
       {
-        oracion: "Imagen referencial. Vigencia del 12 de mayo al 31 de julio.",
+        oracion: "Vigencia del 12 de mayo al 31 de julio.",
       },
     ],
+  },
+  {
+    id: 2,
+    title: "¡Campaña Discos y Pastillas de Freno - Hyundai",
+    parrafos: [
+      {
+        oracion:
+          "Promoción válida solo para el modelo y códigos de repuestos de frenos especificados. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales.",
+      },
+      {
+        oracion: "Vigencia del 12 de mayo al 31 de julio.",
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "¡Campaña de Lubricación!",
+    parrafos: [
+      {
+        oracion:
+          "El servicio incluye cambio de aceite de motor, filtro de aceite y arandela. El precio corresponde al servicio estándar e incluye únicamente lo detallado en la promoción; no aplica para trabajos adicionales. No acumulable con otras promociones o descuentos especiales. Imagen referencial.",
+      },
+      {
+        oracion: "Vigencia del 15 de mayo al 31 de mayo.",
+      },
+    ],
+  },
+];
+
+export const IconTextTalleresData: iIconText[] = [
+  {
+    id: 1,
+    icon: Clock,
+    text: "Horarios Extendidos",
+  },
+  {
+    id: 2,
+    icon: Car,
+    text: "Múltiples Marcas",
+  },
+  {
+    id: 3,
+    icon: MapPin,
+    text: "4 Ubicaciones",
+  },
+];
+
+export const CiudadesTalleresData = [
+  "Todas",
+  "Chiclayo",
+  "Chimbote",
+  "Trujillo",
+];
+
+export const TalleresData: iTalleres[] = [
+  {
+    id: 1,
+    nombre: "Cluster",
+    ciudad: "Trujillo",
+    direccion:
+      "Las Casuarinas Predio B, Victor Larco Herrera (Frente a Tecsup)",
+    telefono: "943882585",
+    marcas: [
+      {
+        id: 1,
+        title: "GWM",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOLsOPOAafoP4DpcYeZVGiOFgHRhQ6wI3fqznB",
+      },
+      {
+        id: 2,
+        title: "JAC",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOP2CreHQVXueBARj3742ygwQDrMoCHZldahqb",
+      },
+      {
+        id: 3,
+        title: "JAC Camiones",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOuoNAAHKRNb37Tw0naGzlX1AQVyMx4YRqLUvP",
+      },
+      {
+        id: 4,
+        title: "Mazda",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO5CqzbbJkpBWN3vh240yqOdjsEADxHYaGFug8",
+      },
+      {
+        id: 5,
+        title: "Renault",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOQ0fsyFYXJ63FR8o9VAEKiI2UaDk7fsYxnyed",
+      },
+      {
+        id: 6,
+        title: "DFSK",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO6excwEQ9Bc5OSTXZuIjiFChPnWJwY4gNadsp",
+      },
+      {
+        id: 7,
+        title: "Subaru",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOELSJSSDefj9uCIXgaldKRkJNSxinPm263Tp5",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 8:00 am a 5:45 pm",
+      sabado: "Sábado de 8:00 am a 12:15 pm",
+    },
+    imageSource:
+      "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOS8CFS7Nofij75n2UTAxSLhBMb0aDo4HsvJdr",
+  },
+  {
+    id: 2,
+    nombre: "Píerola",
+    ciudad: "Trujillo",
+    direccion: "Av. Nicolas de Piérola N° 1830 (Pan Norte km 562-B)",
+    telefono: "943882810",
+    marcas: [
+      {
+        id: 1,
+        title: "Hyundai",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtlliS4kcOqxX2R1Wm6ukViLC8zKaje7GyESh",
+      },
+      {
+        id: 2,
+        title: "Geely",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOS8CjNWeofij75n2UTAxSLhBMb0aDo4HsvJdr",
+      },
+      {
+        id: 3,
+        title: "JMC",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOxcUoVR4uScOlVJi5KCg138pyo6xjtsrWdweE",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 8:00 am a 5:45 pm",
+      sabado: "Sábado de 8:00 am a 12:15 pm",
+    },
+    imageSource:
+      "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOpYZOJqLRb6QUFrH4dsYzehL2GKVtMvBxjN0A",
+  },
+  {
+    id: 3,
+    nombre: "Chiclayo",
+    ciudad: "Chiclayo",
+    direccion: "Av. Panamericana N° 4200 (Ex fundo iris)",
+    telefono: "987103383",
+    marcas: [
+      {
+        id: 1,
+        title: "Hyundai",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtlliS4kcOqxX2R1Wm6ukViLC8zKaje7GyESh",
+      },
+      {
+        id: 2,
+        title: "Geely",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOS8CjNWeofij75n2UTAxSLhBMb0aDo4HsvJdr",
+      },
+      {
+        id: 3,
+        title: "JMC",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOxcUoVR4uScOlVJi5KCg138pyo6xjtsrWdweE",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 8:00 am a 5:45 pm",
+      sabado: "Sábado de 8:00 am a 12:15 pm",
+    },
+    imageSource:
+      "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO80Lpz0cEgOfKoyeu0JP1iQAtzpnGFdXD8RwT",
+  },
+  {
+    id: 4,
+    nombre: "Chimbote",
+    ciudad: "Chimbote",
+    direccion: "Av. Enrique Meiggs N° 1144",
+    telefono: "994152130",
+    marcas: [
+      {
+        id: 1,
+        title: "Changan",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOuoHoOaSRNb37Tw0naGzlX1AQVyMx4YRqLUvP",
+      },
+      {
+        id: 2,
+        title: "GWM",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOLsOPOAafoP4DpcYeZVGiOFgHRhQ6wI3fqznB",
+      },
+      {
+        id: 3,
+        title: "JAC",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOP2CreHQVXueBARj3742ygwQDrMoCHZldahqb",
+      },
+      {
+        id: 4,
+        title: "JAC Camiones",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOuoNAAHKRNb37Tw0naGzlX1AQVyMx4YRqLUvP",
+      },
+      {
+        id: 5,
+        title: "Mazda",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO5CqzbbJkpBWN3vh240yqOdjsEADxHYaGFug8",
+      },
+      {
+        id: 6,
+        title: "Renault",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOQ0fsyFYXJ63FR8o9VAEKiI2UaDk7fsYxnyed",
+      },
+      {
+        id: 7,
+        title: "DFSK",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO6excwEQ9Bc5OSTXZuIjiFChPnWJwY4gNadsp",
+      },
+      {
+        id: 8,
+        title: "Subaru",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOELSJSSDefj9uCIXgaldKRkJNSxinPm263Tp5",
+      },
+      {
+        id: 9,
+        title: "Suzuki",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOFGtKVmMsCqESdLAKY9QDw4mphTHOc2PgX5ZG",
+      },
+      {
+        id: 10,
+        title: "Haval",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uO4ZJctFmksNaVR9rPCLmoSnlWvuTU8fHei1zp",
+      },
+      {
+        id: 11,
+        title: "Mitsubishi",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOJr48Yg9xqRsYE96QUm8jMZfbvecylArHPdt7",
+      },
+      {
+        id: 12,
+        title: "Fuso",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOJLgoZy9xqRsYE96QUm8jMZfbvecylArHPdt7",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 8:00 am a 5:45 pm",
+      sabado: "Sábado de 8:00 am a 12:15 pm",
+    },
+    imageSource:
+      "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtdw6CV2kcOqxX2R1Wm6ukViLC8zKaje7GyES",
   },
 ];
