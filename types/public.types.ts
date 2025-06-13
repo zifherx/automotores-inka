@@ -25,6 +25,7 @@ import {
 } from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
+import { IconType } from "react-icons/lib";
 
 export type iVideosYoutube = {
   src: string;

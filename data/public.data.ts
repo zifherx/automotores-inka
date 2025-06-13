@@ -1,5 +1,6 @@
 import {
   iIconText,
+  iIconText,
   iListLinkUtiles,
   iListValores,
   iObjetivosEmpresa,
@@ -12,6 +13,16 @@ import {
 } from "@/interfaces/iPublic";
 import { iParrafo, iTipoServicio, ProductCategory } from "@/types";
 
+import {
+  Blocks,
+  Car,
+  Clock,
+  Handshake,
+  MapPin,
+  Medal,
+  Star,
+  Users,
+} from "lucide-react";
 import {
   Blocks,
   Car,
