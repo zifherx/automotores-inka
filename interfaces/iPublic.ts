@@ -1,4 +1,4 @@
-import { IconProp } from "@/types";
+import { IconProp, ProductCategory } from "@/types";
 import { LucideIcon } from "lucide-react";
 
 export interface iServicioSVG {
@@ -93,4 +93,37 @@ export interface iMarcaTaller {
 export interface iHorarioTaller {
   semana: string;
   sabado: string;
+}
+
+export interface iProduct {
+  id: number;
+  codigo: string;
+  name: string;
+  slug: string;
+  description: string;
+  specifications: string;
+  category: ProductCategory;
+  brand: string;
+  model: string;
+  price: number;
+  imageSource: string;
+  featured: boolean;
+  features?: string[];
+}
+
+export interface FilterState {
+  searchTerm: string;
+  selectedCategory: string;
+  selectedBrand: string;
+  selectedModel: string;
+}
+
+export interface ModelsByBrand {
+  [key: string]: string[];
+}
+
+export interface ProductFilters {
+  categories: ProductCategory[];
+  brands: string[];
+  modelsByBrand: ModelsByBrand;
 }

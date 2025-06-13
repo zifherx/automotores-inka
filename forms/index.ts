@@ -274,6 +274,31 @@ export const formNoticia = z.object({
   imagePortada: z.string().url(),
 });
 
+export const formContactAccesorios = z.object({
+  name: z
+    .string()
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(50, "El nombre no puede exceder 50 caracteres")
+    .regex(
+      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+      "El nombre solo puede contener letras y espacios"
+    ),
+  email: z
+    .string()
+    .min(1, "El correo electrónico es requerido")
+    .email("Ingresa un correo electrónico válido"),
+  phone: z
+    .string()
+    .length(9, "El teléfono debe tener al menos 9 dígitos")
+    .regex(/^[+]?[\d\s-()]+$/, "Formato de teléfono inválido")
+    .optional()
+    .or(z.literal("")),
+  message: z
+    .string()
+    .min(10, "El mensaje debe tener al menos 10 caracteres")
+    .max(500, "El mensaje no puede exceder 500 caracteres"),
+});
+
 export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
@@ -295,3 +320,4 @@ export type ContestFormValues = z.infer<typeof formContestSchema>;
 export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>;
 export type TCambioFormValues = z.infer<typeof formTipoCambio>;
 export type NoticiasFormValues = z.infer<typeof formNoticia>;
+export type ContactFormAccesoriesValues = z.infer<typeof formContactAccesorios>;

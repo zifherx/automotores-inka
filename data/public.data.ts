@@ -3,12 +3,14 @@ import {
   iListLinkUtiles,
   iListValores,
   iObjetivosEmpresa,
+  iProduct,
   iReclamosRS,
   iServicioSVG,
   iTalleres,
+  ModelsByBrand,
   tDepartamento,
 } from "@/interfaces/iPublic";
-import { iParrafo, iTipoServicio } from "@/types";
+import { iParrafo, iTipoServicio, ProductCategory } from "@/types";
 
 import {
   Blocks,
@@ -1707,5 +1709,226 @@ export const TalleresData: iTalleres[] = [
     },
     imageSource:
       "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtdw6CV2kcOqxX2R1Wm6ukViLC8zKaje7GyES",
+  },
+];
+
+export const categoriesAccesorios: ProductCategory[] = [
+  "INTERIOR",
+  "EXTERIOR",
+  "BATERIA",
+  "ADITIVO",
+];
+
+export const brandsAccesorios: string[] = [
+  "HYUNDAI",
+  "GEELY",
+  "Powermeister",
+  "i3000+",
+  "Wynns",
+  "GLASSCOAT",
+];
+
+export const modelsByBrandAccesorios: ModelsByBrand = {
+  HYUNDAI: [
+    "SANTA FE de 7 PLAZAS (2018-2023)",
+    "TUCSON 2022 hasta el modelo actual",
+    "KONA 2018 hasta el modelo actual",
+    "TUCSON 2024 /2.0 MPI AT",
+    "Grand i10 2018 1.2 MPI",
+  ],
+  GEELY: ["NEW COOLRAY", "OKAVANGO", "AZKARRA", "NEW COOLRAY/COOLRAY"],
+  Powermeister: [
+    "TUCSON 2024 /2.0 MPI AT",
+    "Grand i10 2018 1.2 MPI",
+    "Santa Fe (2010 - 2018)",
+    "VENUE 1.6 MPI",
+  ],
+  "i3000+": ["Aplica para unidades HYUNDAI y es compatible con otras marcas"],
+  Wynns: [
+    "Todos los modelos de vehículos con motor gasolinero",
+    "Todos los modelos de vehículos con motor diesel",
+    "H100, H1./TUCSON, SANTA FE",
+  ],
+  GLASSCOAT: ["Aplica para todos los modelos autos y SUV"],
+};
+
+export const AccesoriosData: iProduct[] = [
+  {
+    id: 1,
+    codigo: "S1122ADE07",
+    name: "Alfombra Maletera",
+    slug: "alfombra-maletera",
+    description:
+      "Bandeja protectora rígida para el suelo del maletero. Los bordes elevados protegen la moqueta de la suciedad y de la humedad.",
+    specifications:
+      "Material duradero y de alta calidad se limpia fácilmente. Fabricada a medida.",
+    category: "INTERIOR",
+    brand: "HYUNDAI",
+    model: "SANTA FE de 7 PLAZAS (2018-2023)",
+    price: 474,
+    imageSource: "https://placehold.co/300x300",
+    featured: true,
+    features: [
+      "Material duradero y resistente",
+      "Bordes elevados para máxima protección",
+      "Fácil limpieza y mantenimiento",
+      "Fabricada a medida para ajuste perfecto",
+      "Protección contra suciedad y humedad",
+    ],
+  },
+  {
+    id: 2,
+    codigo: "CWF46AC000",
+    name: "Juego de Escarpines",
+    slug: "juego-escarpines",
+    description:
+      "El juego incluye 4 escarpines en color negro. Incluye MO de instalación.",
+    specifications: "Protección exterior completa para tu vehículo.",
+    category: "EXTERIOR",
+    brand: "HYUNDAI",
+    model: "TUCSON 2022 hasta el modelo actual",
+    price: 209,
+    imageSource: "https://placehold.co/300x300",
+    featured: false,
+    features: [
+      "Juego completo de 4 escarpines",
+      "Color negro elegante",
+      "Incluye mano de obra de instalación",
+      "Protección exterior completa",
+      "Compatible con modelo específico",
+    ],
+  },
+  {
+    id: 3,
+    codigo: "J9211ADE00AL",
+    name: "Barra Transversales",
+    slug: "barra-transversales",
+    description:
+      "Fabricada en aluminio con diseño original y con el logo de la marca. Juego de 2 barras con soportes de fijación.",
+    specifications: "Incluye MO de instalación. Material de alta resistencia.",
+    category: "EXTERIOR",
+    brand: "HYUNDAI",
+    model: "KONA 2018 hasta el modelo actual",
+    price: 1485,
+    imageSource: "https://placehold.co/300x300",
+    featured: true,
+    features: [
+      "Material de aluminio de alta calidad",
+      "Diseño original con logo de marca",
+      "Juego de 2 barras completas",
+      "Soportes de fijación incluidos",
+      "Instalación profesional incluida",
+    ],
+  },
+  {
+    id: 4,
+    codigo: "6608195583",
+    name: "Pisos de Jebe (3D Full Protección)",
+    slug: "pisos-jebe",
+    description:
+      "Fabricados en jebe, duraderos y resistentes. Color negro. Juego de 3 piezas que incluye protección central de piso posterior.",
+    specifications: "Material resistente al desgaste y fácil limpieza.",
+    category: "INTERIOR",
+    brand: "GEELY",
+    model: "NEW COOLRAY",
+    price: 251,
+    imageSource: "https://placehold.co/300x300",
+    featured: false,
+    features: [
+      "Material de jebe duradero",
+      "Protección 3D completa",
+      "Juego de 3 piezas",
+      "Incluye protección central posterior",
+      "Resistente al desgaste",
+    ],
+  },
+  {
+    id: 5,
+    codigo: "4114110090",
+    name: "Estribos Laterales de Aluminio",
+    slug: "estribos-laterales",
+    description:
+      "El juego incluye 2 estribos de aluminio con el logo de la marca. Incluye MO de instalación.",
+    specifications: "Diseño robusto y elegante para fácil acceso al vehículo.",
+    category: "EXTERIOR",
+    brand: "GEELY",
+    model: "NEW COOLRAY/COOLRAY",
+    price: 1250,
+    imageSource: "https://placehold.co/300x300",
+    featured: true,
+    features: [
+      "Material de aluminio de alta calidad",
+      "Diseño robusto y elegante",
+      "Juego de 2 estribos completos",
+      "Logo de marca incluido",
+      "Instalación profesional incluida",
+    ],
+  },
+  {
+    id: 6,
+    codigo: "56077",
+    name: "Batería LB2 AH:60",
+    slug: "bateria-lb2",
+    description:
+      "Procedencia: Korea. Grupo: LB2 Voltaje: 12 Amperaje: 60 Capacidad de arranque: 570",
+    specifications: "Dimensiones: 242 x 174 x 175 Borne: Grueso N°Placas: 13",
+    category: "BATERIA",
+    brand: "Powermeister",
+    model: "TUCSON 2024 /2.0 MPI AT, TUCSON 2020 1.6 DCT /Elantra",
+    price: 438,
+    imageSource: "https://placehold.co/300x300",
+    featured: false,
+    features: [
+      "Procedencia coreana de alta calidad",
+      "Voltaje: 12V",
+      "Amperaje: 60 AH",
+      "Capacidad de arranque: 570 CCA",
+      "Borne grueso para mejor conexión",
+    ],
+  },
+  {
+    id: 7,
+    codigo: "080C720023",
+    name: "Aditivo de Combustible i3000+",
+    slug: "aditivo-combustible",
+    description:
+      "Procedencia: Koreana. Consiste en un tratamiento limpiador del sistema de combustible.",
+    specifications: "Se recomienda su uso cada 5,000 KM.",
+    category: "ADITIVO",
+    brand: "i3000+",
+    model: "Aplica para unidades HYUNDAI y es compatible con otras marcas",
+    price: 92,
+    imageSource: "https://placehold.co/300x300",
+    featured: false,
+    features: [
+      "Tratamiento limpiador completo",
+      "Procedencia coreana",
+      "Compatible con múltiples marcas",
+      "Uso recomendado cada 5,000 KM",
+      "Mejora el rendimiento del combustible",
+    ],
+  },
+  {
+    id: 8,
+    codigo: "10084",
+    name: "Kit Mantenimiento Motor Gasolina",
+    slug: "kit-mantenimiento-gasolina",
+    description:
+      "Se recomienda aplicar cada 5,000 KM. Beneficio: Tratamiento para limpieza interna del motor.",
+    specifications:
+      "Tratamiento antifricción. La bandeja limpia permite que el nuevo aceite se mantenga limpio más tiempo.",
+    category: "ADITIVO",
+    brand: "Wynns",
+    model: "Todos los modelos de vehículos con motor gasolinero",
+    price: 188,
+    imageSource: "https://placehold.co/300x300",
+    featured: true,
+    features: [
+      "Limpieza interna completa del motor",
+      "Tratamiento antifricción",
+      "Mantiene el aceite limpio por más tiempo",
+      "Compatible con motores gasolineros",
+      "Aplicación cada 5,000 KM",
+    ],
   },
 ];
