@@ -12,7 +12,6 @@ import {
   Scale,
   ShoppingBag,
   SquareGanttChart,
-  Truck,
   Users,
   Wrench,
 } from "lucide-react";
@@ -20,14 +19,15 @@ import {
 import { iMenuDashboard, iMenuMobile, iServicioPosventa } from "@/interfaces";
 
 export const listServiciosPosventa: iServicioPosventa[] = [
+  // {
+  //   id: 1,
+  //   title: "Accesorios",
+  //   // href: "/posventa/accesorios",
+  //   href: "/posventa/accesorios",
+  //   description: "Lista de accesorios según marca y modelo",
+  // },
   {
-    id: 1,
-    title: "Accesorios",
-    href: "/posventa/accesorios",
-    description: "Lista de accesorios según marca y modelo",
-  },
-  {
-    id: 1,
+    id: 2,
     title: "Separa tu cita",
     href: "/posventa/mantenimiento",
     description:
