@@ -89,12 +89,11 @@ export async function POST(req: NextRequest) {
   const dataForm = await req.json();
   let newCustomer = null;
 
-  // console.log("###PAYLOAD", dataForm);
-
   try {
-    const customerFound: iCustomer | null = await Cliente.findOne({
+    const customerFound = (await Cliente.findOne({
       numeroDocumento: dataForm.numeroDocumento,
-    });
+    })) as iCustomer;
+
     if (!customerFound) {
       const qCustomer = new Cliente({
         name: dataForm.nombres,
@@ -109,26 +108,33 @@ export async function POST(req: NextRequest) {
       newCustomer = await qCustomer.save();
     }
 
-    const vehicleFound: iModelo | null = await Modelo.findOne({
+    const vehicleFound = (await Modelo.findOne({
       slug: dataForm.slugModelo,
     }).populate({
       path: "marca",
       select: "name",
-    });
+    })) as iModelo;
 
-    const sedeFound: iSede | null = await Sucursal.findOne({
+    const sedeFound = (await Sucursal.findOne({
       slug: dataForm.slugConcesionario,
-    });
+    })) as iSede;
 
     const qCotizacion = new Cotizacion({
       cliente: customerFound ? customerFound._id : newCustomer?._id,
       vehiculo: vehicleFound!._id,
       ciudad: dataForm.departamento,
-      sede: sedeFound!._id,
+      sede: sedeFound._id,
       intencionCompra: dataForm.intencionCompra,
     }) as iLead;
 
     const query = await qCotizacion.save();
+
+    if (!query) {
+      console.log(query);
+      throw new NextResponse("No se pudo guardar la cotización", {
+        status: 500,
+      });
+    }
 
     const objFD = {
       document: customerFound
@@ -151,7 +157,6 @@ export async function POST(req: NextRequest) {
       platform: "PAGINA WEB",
       city: sedeFound!.ciudad.toUpperCase(),
     };
-    // console.log("####objFD", objFD);
     if (query) {
       const responseFlashDealer = await axios.post(`${URI_LEADS_FD}`, objFD, {
         headers: {
@@ -182,7 +187,6 @@ export async function POST(req: NextRequest) {
       });
     }
   } catch (err: any) {
-    console.log(err);
     const objBitacoraError = new Bitacora({
       request: {
         body: JSON.stringify(err.response.config.data),
@@ -198,6 +202,12 @@ export async function POST(req: NextRequest) {
       url: err.response.config.url,
     });
     await objBitacoraError.save();
-    return new NextResponse("Internal Error", { status: 500 });
+
+    console.log(err);
+    console.log(err.message);
+    if (err.name === "AbortError") {
+      return NextResponse.json({ error: "Request Timeout" }, { status: 504 });
+    }
+    return NextResponse.json("Internal Server Error", { status: 500 });
   }
 }

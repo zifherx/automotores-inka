@@ -14,7 +14,15 @@ import {
   iModelo,
   iSede,
 } from "./admin.types";
-import { iIconText, iOracion, iPosition, iTalleres } from "@/interfaces";
+import {
+  FilterState,
+  iIconText,
+  iOracion,
+  iPosition,
+  iProduct,
+  iTalleres,
+  ModelsByBrand,
+} from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
 
@@ -179,7 +187,6 @@ export type iParrafo = {
   id?: number;
   title: string;
   parrafos: iOracion[];
-  
 };
 
 export type iCustomIconTitle = {
@@ -298,4 +305,26 @@ export type TalleresProp = {
 
 export type CardTallerProp = {
   taller: iTalleres;
+};
+
+export type ProductCategory = "INTERIOR" | "EXTERIOR" | "BATERIA" | "ADITIVO";
+
+export type FeatureProductsProps = {
+  products: iProduct[];
+};
+
+export type CardProduct = {
+  product: iProduct;
+  featured?: boolean;
+  showDetailButton?: boolean;
+};
+
+export type SearchFilterProps = {
+  filters: FilterState;
+  onFiltersChange: (filters: Partial<FilterState>) => void;
+  categories: ProductCategory[];
+  brands: string[];
+  modelsByBrand: ModelsByBrand;
+  showFilters: boolean;
+  onToggleFilters: () => void;
 };
