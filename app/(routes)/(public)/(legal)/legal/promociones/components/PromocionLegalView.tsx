@@ -1,6 +1,7 @@
 import { ParrafoSection } from "@/components/Shared/ParrafoSection";
 import { Title } from "@/components/Shared/Title";
 import { LegalPromocionesData } from "@/data";
+import { AhorroNuncaSection } from "./AhorroNuncaSection";
 
 export function PromocionLegalView() {
   return (
@@ -11,8 +12,10 @@ export function PromocionLegalView() {
       />
 
       {LegalPromocionesData.map(({ id, title, parrafos }) => (
-        <ParrafoSection key={id} title={title} parrafos={parrafos}/>
+        <ParrafoSection key={id} title={title} parrafos={parrafos} />
       ))}
+
+      <AhorroNuncaSection />
     </div>
   );
 }

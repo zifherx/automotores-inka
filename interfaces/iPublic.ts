@@ -51,6 +51,7 @@ export interface tProvincia {
 export interface iOracion {
   oracion: string;
   linkHref?: string;
+  includeTable?: boolean;
 }
 
 export interface iCompany {
@@ -127,4 +128,28 @@ export interface ProductFilters {
   categories: ProductCategory[];
   brands: string[];
   modelsByBrand: ModelsByBrand;
+}
+
+export interface TableFormat {
+  tHead: ITableHead[];
+  tBody: ITableBody[];
+}
+
+export interface ITableCell {
+  id: number;
+  cell: string;
+}
+
+export interface ITableHead extends ITableCell {}
+export interface ITableBody {
+  id: number;
+  marca: string;
+  anioModelo: number;
+  modelo: string;
+  version: string;
+  precioUSD: number;
+  precioSOLES: number;
+  bonoMarca_USD: number;
+  bonoRetoma_USD: number;
+  bonoFinanciamiento_USD: number;
 }
