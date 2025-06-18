@@ -22,6 +22,7 @@ import {
   iProduct,
   iTalleres,
   ModelsByBrand,
+  TableFormat,
 } from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
@@ -328,3 +329,5 @@ export type SearchFilterProps = {
   showFilters: boolean;
   onToggleFilters: () => void;
 };
+
+export type TableConditionalProps = TableFormat;

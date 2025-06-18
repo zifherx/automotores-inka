@@ -11,7 +11,16 @@ export const formatUSDPrice = (price: number) => {
   return Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 2,
+    roundingIncrement: 10,
+  }).format(price);
+};
+
+export const formatPENPriceTable = (price: number) => {
+  return Intl.NumberFormat("es-PE", {
+    style: "currency",
+    currency: "PEN",
+    maximumFractionDigits: 2,
     roundingIncrement: 10,
   }).format(price);
 };
