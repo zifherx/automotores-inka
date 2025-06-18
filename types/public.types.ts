@@ -22,9 +22,9 @@ import {
   iProduct,
   iTalleres,
   ModelsByBrand,
+  TableFormat,
 } from "@/interfaces";
 import { HReclamoFormValues } from "@/forms";
-import { IconType } from "react-icons/lib";
 import { IconType } from "react-icons/lib";
 
 export type iVideosYoutube = {
@@ -329,3 +329,5 @@ export type SearchFilterProps = {
   showFilters: boolean;
   onToggleFilters: () => void;
 };
+
+export type TableConditionalProps = TableFormat;
