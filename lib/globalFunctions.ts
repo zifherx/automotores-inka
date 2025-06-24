@@ -99,3 +99,11 @@ export const createWhatsAppLinkForTallerContact = (taller: iTalleres) => {
   );
   return `https://wa.me/51${taller.telefono}?text=${message}`;
 };
+
+export const createConversationWhatsapp = (
+  messageTo: string,
+  message: string
+): string => {
+  const encodeMessage = encodeURIComponent(`${message}`);
+  return `https://wa.me/51${messageTo}?text=${encodeMessage}`;
+};

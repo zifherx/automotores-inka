@@ -10,30 +10,61 @@ import { iAppointment, iCustomer } from "@/types";
 
 export async function GET(req: NextRequest) {
   await dbConnect();
+  let query;
+
+  const paramFrom = await req.nextUrl.searchParams.get("from");
+  const paramTo = await req.nextUrl.searchParams.get("to");
 
   try {
-    const query = (await Cita.find({})
-      .sort({ createdAt: 1 })
-      .populate([
-        {
-          path: "cliente",
-          select:
-            "name tipoDocumento numeroDocumento celular email usoDatosPersonales",
-        },
-        {
-          path: "modelo",
-          select: "name slug imageUrl precioBase isActive marca",
-          populate: {
-            path: "marca",
-            select: "name slug imageUrl",
+    if (paramFrom == null || paramTo == null) {
+      console.log("Sin filtros");
+      query = await Cita.find({})
+        .sort({ createdAt: -1 })
+        .populate([
+          {
+            path: "cliente",
+            select:
+              "name tipoDocumento numeroDocumento celular email usoDatosPersonales",
           },
-        },
-        {
-          path: "concesionario",
-          select: "name slug ciudad address",
-        },
-      ])) as iAppointment[];
-
+          {
+            path: "modelo",
+            select: "name slug imageUrl precioBase isActive marca",
+            populate: {
+              path: "marca",
+              select: "name slug imageUrl",
+            },
+          },
+          {
+            path: "concesionario",
+            select: "name slug ciudad address",
+          },
+        ]);
+    } else {
+      console.log("Con filtros");
+      query = await Cita.find({
+        createdAt: { $gte: new Date(paramFrom), $lte: new Date(paramTo) },
+      })
+        .sort({ createdAt: -1 })
+        .populate([
+          {
+            path: "cliente",
+            select:
+              "name tipoDocumento numeroDocumento celular email usoDatosPersonales",
+          },
+          {
+            path: "modelo",
+            select: "name slug imageUrl precioBase isActive marca",
+            populate: {
+              path: "marca",
+              select: "name slug imageUrl",
+            },
+          },
+          {
+            path: "concesionario",
+            select: "name slug ciudad address",
+          },
+        ]);
+    }
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
@@ -80,8 +111,10 @@ export async function POST(req: NextRequest) {
       modeloFlat: dataForm.modelo,
       modelo: vehicleFound._id,
       concesionario: sedeFound._id,
-      tipoServicio: dataForm.concesionario,
+      tipoServicio: dataForm.tipoServicio,
       comentario: dataForm.comentario,
+      whatsappMessage: dataForm.whatsappMessage,
+      whatsappContact: dataForm.whatsappContact,
     }) as iAppointment;
 
     const query = await qCita.save();
