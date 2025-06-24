@@ -12,6 +12,8 @@ export interface iCita extends Document {
   concesionario: iSede;
   tipoServicio: string;
   comentario: string;
+  whatsappMessage: string;
+  whatsappContact: string;
 }
 
 const citaSchema: Schema = new Schema<iCita>(
@@ -26,6 +28,8 @@ const citaSchema: Schema = new Schema<iCita>(
     concesionario: { type: Schema.Types.ObjectId, ref: "Sucursal" },
     tipoServicio: { type: String, required: true },
     comentario: { type: String },
+    whatsappMessage: { type: String, default: "" },
+    whatsappContact: { type: String, default: "" },
   },
   { versionKey: false, timestamps: true }
 );

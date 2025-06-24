@@ -66,7 +66,8 @@ export function MainGracias() {
         />
 
         <p className="text-sm text-gray-500 text-center my-6">
-          Te enviaremos un recordatorio 24 horas antes de tu cita.
+          Pronto nos pondremos en contacto contigo para validar la cita
+          agendada.
         </p>
 
         <motion.div
