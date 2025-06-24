@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
 
   try {
     if (paramFrom == null || paramTo == null) {
-      console.log("Sin Filtros");
       query = await Cotizacion.find({})
         .sort({ createdAt: -1 })
         .populate([

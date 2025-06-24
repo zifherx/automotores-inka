@@ -18,6 +18,7 @@ export interface iSucursal extends Document {
   linkHowArrived: string;
   marcasDisponibles: iBrand[];
   coordenadasMapa: iCoordenada;
+  celularCitas: string;
   isActive: boolean;
   createdBy: string;
 }
@@ -38,6 +39,7 @@ const sucursalSchema: Schema = new Schema<iSucursal>(
       latitud: { type: String, default: "" },
       longitud: { type: String, default: "" },
     },
+    celularCitas: { type: String, default: "" },
     isActive: { type: Boolean },
     createdBy: { type: String },
   },
