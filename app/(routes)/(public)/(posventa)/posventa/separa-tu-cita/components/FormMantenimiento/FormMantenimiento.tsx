@@ -30,13 +30,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-import { getRouteForModel, onToast } from "@/lib";
+import { createConversationWhatsapp, getRouteForModel, onToast } from "@/lib";
 import { listTipoServicio } from "@/data";
 import { iBrand, iModelo, iSede } from "@/types";
 import {
   formServicioMantenimientoSchema,
   SolicitudServicioFormValues,
 } from "@/forms";
+import { APIMessages } from "@/utils/constants";
 
 export function FormMantenimiento() {
   const router = useRouter();
@@ -77,6 +78,11 @@ export function FormMantenimiento() {
   const tipoDocumento = form.watch("tipoDocumento");
   const watchMarca = form.watch("marca");
   const sedeSelected = form.watch("sede");
+  const dealerSelected = form.watch("concesionario");
+
+  // console.log("sedeSelected", sedeSelected);
+  // console.log("dealerSelected", dealerSelected);
+  // console.log("listaConcesionarios", listaConcesionarios);
 
   const getSucursales = async () => {
     let sedesSinDuplicados;
@@ -96,6 +102,10 @@ export function FormMantenimiento() {
     if (query.status === 200) {
       setListaModelos(query.data);
     }
+  };
+
+  const getDealerByslug = (slug: string) => {
+    return listaConcesionarios.filter((item) => item.slug === slug)[0];
   };
 
   useEffect(() => {
@@ -145,14 +155,36 @@ export function FormMantenimiento() {
 
   const onSubmit = async (values: SolicitudServicioFormValues) => {
     setIsLoading(true);
+    const dealer = getDealerByslug(dealerSelected);
+    const newMessageForWhatsapp = APIMessages.createMessageForCitaTaller({
+      ...values,
+      concesionario: dealer.name,
+      sede: dealer.ciudad,
+      marca: watchMarca,
+    });
 
     try {
-      const query = await axios.post("/api/citas", { ...values });
-
+      const query = await axios.post("/api/citas", {
+        ...values,
+        whatsappMessage: newMessageForWhatsapp,
+        whatsappContact: dealer.celularCitas,
+      });
+      // console.log("Values", {
+      //   ...values,
+      //   whatsappMessage: newMessageForWhatsapp,
+      //   whatsappContact: dealer.celularCitas,
+      // });
       if (query.status === 200) {
         setIsLoading(false);
         onToast(query.data.message);
         router.push(`/posventa/gracias/${getRouteForModel(watchUser)}`);
+        window.open(
+          createConversationWhatsapp(
+            dealer.celularCitas,
+            newMessageForWhatsapp
+          ),
+          "_blank"
+        );
       }
     } catch (err) {
       // console.log(err);
