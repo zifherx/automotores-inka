@@ -1,30 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-
 import { Title } from "@/components/Shared/Title";
 import { FormMantenimiento } from "../FormMantenimiento";
 import { MasonryBrands } from "../MasonryBrands";
 
-import { iBrand } from "@/types";
+import { useBrands } from "@/context/brands/marcaContext";
 
 export function SideForm() {
-  const [brandList, setBrandList] = useState<iBrand[]>([]);
-
-  const getBrands = async () => {
-    const query = await axios.get("/api/marca");
-    if (query.status === 200) {
-      const marcasActivas = query.data.data.filter(
-        (marca: iBrand) => marca.isActive
-      );
-      setBrandList(marcasActivas);
-    }
-  };
-
-  useEffect(() => {
-    getBrands();
-  }, []);
+  const { brands } = useBrands();
 
   return (
     <div className="max-w-6xl mx-auto p-2 md:p-10">
@@ -37,7 +20,7 @@ export function SideForm() {
           <FormMantenimiento />
         </div>
         <div className="p-2 flex items-center mx-auto">
-          <MasonryBrands brands={brandList} />
+          <MasonryBrands brands={brands} />
         </div>
       </div>
     </div>

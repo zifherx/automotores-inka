@@ -101,7 +101,8 @@ export const formEditSucursalSchema = z.object({
   scheduleExtended: z
     .string()
     .min(1, "Este campo debe contener al menos 1 caracter"),
-  marcasDisponibles: z.array(z.string()),
+  marcasDisponiblesVentas: z.array(z.string()),
+  marcasDisponiblesTaller: z.array(z.string()),
   coordenadasMapa: z.object({
     latitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
     longitud: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
@@ -211,15 +212,15 @@ export const formServicioMantenimientoSchema = z.object({
     message: "Ingrese un correo electrónico válido.",
   }),
   marca: z.string(),
-  modelo: z.string(),
+  // modelo: z.string(),
   tipoServicio: z.string({
     message: "Debe seleccionar un Tipo de Servicio",
   }),
   comentario: z.string().optional(),
   sede: z.string().min(1, {
-    message: "Debe seleccionar una sede.",
+    message: "Debe seleccionar una ciudad.",
   }),
-  concesionario: z.string(),
+  concesionario: z.string().min(1, { message: "Debe seleccionar un dealer" }),
   checkDatosPersonales: z.boolean({ required_error: "Check requerido" }),
   checkPromociones: z.string(),
 });

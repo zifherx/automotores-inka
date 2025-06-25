@@ -120,13 +120,13 @@ export const columnsCitas: ColumnDef<iAppointment>[] = [
     enableGrouping: true,
   },
   {
-    accessorFn: (row) => row.modelo.name,
-    id: "vehiculoModelo",
+    accessorFn: (row) => row.marcaFlat,
+    id: "marcaModelo",
     header: () => (
-      <div className="text-center uppercase font-headBold">Vehículo</div>
+      <div className="text-center uppercase font-headBold">Marca</div>
     ),
     cell: ({ getValue }) => {
-      const vehicle = getValue() as string;
+      const vehicle = getValue() as string | undefined;
       return <p className="text-center capitalize font-medium">{vehicle}</p>;
     },
     enableGrouping: true,

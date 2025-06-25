@@ -7,6 +7,7 @@ import Sucursal from "@/models/Sucursal";
 
 import { dbConnect } from "@/lib";
 import { iAppointment, iCustomer } from "@/types";
+import { Marca } from "@/models";
 
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
     const clienteFound = await Cliente.findOne({
       numeroDocumento: dataForm.numeroDocumento,
     });
+    console.log("Cliente:", clienteFound);
     if (!clienteFound) {
       const qCustomer = new Cliente({
         name: dataForm.nombres,
@@ -96,11 +98,15 @@ export async function POST(req: NextRequest) {
       newCustomer = await qCustomer.save();
     }
 
-    const vehicleFound = await Modelo.findOne({ slug: dataForm.modelo });
+    // const vehicleFound = await Modelo.findOne({ slug: dataForm.modelo });
+    // console.log("Vehiculo:", vehicleFound);
+    const marcaFound = await Marca.findOne({ slug: dataForm.marca });
+    console.log("Marca", marcaFound);
 
     const sedeFound = await Sucursal.findOne({
       slug: dataForm.concesionario,
     });
+    console.log("Sede:", sedeFound);
 
     const qCita = new Cita({
       cliente: clienteFound ? clienteFound._id : newCustomer?._id,
@@ -108,8 +114,9 @@ export async function POST(req: NextRequest) {
       kilometraje: dataForm.kilometraje,
       ciudadSede: dataForm.sede,
       marcaFlat: dataForm.marca,
-      modeloFlat: dataForm.modelo,
-      modelo: vehicleFound._id,
+      // modeloFlat: dataForm.modelo,
+      // modelo: vehicleFound._id,
+      marca: marcaFound._id,
       concesionario: sedeFound._id,
       tipoServicio: dataForm.tipoServicio,
       comentario: dataForm.comentario,
@@ -118,13 +125,15 @@ export async function POST(req: NextRequest) {
     }) as iAppointment;
 
     const query = await qCita.save();
+    console.log("Cita:", qCita);
 
     return NextResponse.json({
       message: `Cita de Servicio ${new Date().getTime()} registrada con éxito.`,
       obj: query,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

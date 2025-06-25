@@ -12,8 +12,11 @@ export async function GET(
 
   try {
     const { slugMarca } = params;
+    // console.log("slugMarca", slugMarca);
 
     const marcaFound = await Marca.findOne({ slug: slugMarca });
+    // console.log("marcaFound", marcaFound);
+
     if (!marcaFound)
       return NextResponse.json(
         { mesage: `Marca ${slugMarca.toUpperCase()} no encontrada` },
@@ -21,14 +24,22 @@ export async function GET(
       );
 
     const query = await Sucursal.find({
-      marcasDisponibles: { $in: [marcaFound._id] },
+      marcasDisponiblesVentas: { $in: [marcaFound._id] },
       isActive: true,
     })
-      .select("_id name slug address ciudad isActive codexHR marcasDisponibles")
-      .populate({
-        path: "marcasDisponibles",
-        select: "_id name slug imageUrl isActive",
-      });
+      .select(
+        "_id name slug address ciudad isActive codexHR marcasDisponiblesVentas marcasDisponiblesTaller"
+      )
+      .populate([
+        {
+          path: "marcasDisponiblesVentas",
+          select: "_id name slug imageUrl isActive",
+        },
+        {
+          path: "marcasDisponiblesTaller",
+          select: "_id name slug imageUrl isActive",
+        },
+      ]);
 
     return NextResponse.json({ total: query.length, all: query });
     // return NextResponse.json(query);

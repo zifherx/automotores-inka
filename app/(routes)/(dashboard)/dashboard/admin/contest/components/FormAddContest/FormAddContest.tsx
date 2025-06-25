@@ -73,7 +73,7 @@ export function FormAddContest(props: tFormAdding) {
 
   const onSubmit = async (values: ContestFormValues) => {
     setIsLoading(true);
-    console.log(values);
+    // console.log(values);
 
     try {
       const query = await axios.post("/api/concurso", {
