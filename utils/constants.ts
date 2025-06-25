@@ -47,11 +47,6 @@ export class APIMessages {
           : ""
       }
       ${
-        customerTaller.modelo
-          ? `*Modelo del vehículo:* ${customerTaller.modelo}`
-          : ""
-      }
-      ${
         customerTaller.placa
           ? `*Placa del vehículo:* ${customerTaller.placa}`
           : ""

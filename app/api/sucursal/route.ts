@@ -8,10 +8,18 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Sucursal.find({}).sort({ name: 1 }).populate({
-      path: "marcasDisponibles",
-      select: "_id name slug imageUrl",
-    });
+    const query = await Sucursal.find({})
+      .sort({ name: 1 })
+      .populate([
+        {
+          path: "marcasDisponiblesVentas",
+          select: "_id name slug imageUrl",
+        },
+        {
+          path: "marcasDisponiblesTaller",
+          select: "_id name slug imageUrl",
+        },
+      ]);
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err) {
     console.log(err);

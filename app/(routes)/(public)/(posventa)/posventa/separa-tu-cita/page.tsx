@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+
 import { SideForm } from "./components/SideForm";
+
+import { BrandsProvider } from "@/context/brands/marcaContext";
 
 export const metadata: Metadata = {
   title: {
@@ -10,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function SeparaTuCitaPage() {
   return (
-    <>
+    <BrandsProvider>
       <SideForm />
-    </>
+    </BrandsProvider>
   );
 }
