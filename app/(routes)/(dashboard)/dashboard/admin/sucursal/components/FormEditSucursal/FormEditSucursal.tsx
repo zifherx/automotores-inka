@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { RefreshCw } from "lucide-react";
 
-import { formEditSucursalSchema, SucursalFormEditValues } from "@/forms";
-import { iBrand, tFormEditSucursal } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -21,11 +20,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+
 import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
-import { RefreshCw } from "lucide-react";
+import { formEditSucursalSchema, SucursalFormEditValues } from "@/forms";
+import { iBrand, tFormEditSucursal } from "@/types";
 import { onToast } from "@/lib";
-import { Checkbox } from "@/components/ui/checkbox";
 
 export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
   const [btnLoading, setBtnLoading] = useState(false);
@@ -54,7 +55,12 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
       linkHowArrived: sede.linkHowArrived,
       scheduleRegular: sede.scheduleRegular,
       scheduleExtended: sede.scheduleExtended,
-      marcasDisponibles: sede.marcasDisponibles.map((marca) => marca._id),
+      marcasDisponiblesVentas: sede.marcasDisponiblesVentas.map(
+        (marca) => marca._id
+      ),
+      marcasDisponiblesTaller: sede.marcasDisponiblesTaller.map(
+        (marca) => marca._id
+      ),
       coordenadasMapa: {
         latitud: sede.coordenadasMapa?.latitud
           ? sede.coordenadasMapa.latitud
@@ -224,21 +230,70 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
             )}
           />
 
-          {/* MarcasDisponibles */}
+          {/* MarcasDisponiblesVentas */}
           <FormField
             control={form.control}
-            name="marcasDisponibles"
+            name="marcasDisponiblesVentas"
             render={() => (
               <FormItem className="col-span-2">
                 <FormLabel className="font-headMedium">
-                  Marcas Disponibles
+                  Marcas Disponibles Ventas
                 </FormLabel>
                 <div className="grid grid-cols-3 gap-4">
                   {marcas.map(({ _id, name }) => (
                     <FormField
                       key={_id}
                       control={form.control}
-                      name="marcasDisponibles"
+                      name="marcasDisponiblesVentas"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={_id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(_id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, _id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== _id
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {name}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* MarcasDisponiblesTaller */}
+          <FormField
+            control={form.control}
+            name="marcasDisponiblesTaller"
+            render={() => (
+              <FormItem className="col-span-2">
+                <FormLabel className="font-headMedium">
+                  Marcas Disponibles Taller
+                </FormLabel>
+                <div className="grid grid-cols-3 gap-4">
+                  {marcas.map(({ _id, name }) => (
+                    <FormField
+                      key={_id}
+                      control={form.control}
+                      name="marcasDisponiblesTaller"
                       render={({ field }) => {
                         return (
                           <FormItem

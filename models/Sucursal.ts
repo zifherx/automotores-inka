@@ -16,9 +16,11 @@ export interface iSucursal extends Document {
   scheduleRegular: string;
   scheduleExtended: string;
   linkHowArrived: string;
-  marcasDisponibles: iBrand[];
+  marcasDisponiblesVentas: iBrand[];
+  marcasDisponiblesTaller: iBrand[];
   coordenadasMapa: iCoordenada;
   celularCitas: string;
+  isTaller: boolean;
   isActive: boolean;
   createdBy: string;
 }
@@ -34,12 +36,14 @@ const sucursalSchema: Schema = new Schema<iSucursal>(
     scheduleRegular: { type: String },
     scheduleExtended: { type: String },
     linkHowArrived: { type: String },
-    marcasDisponibles: [{ type: Schema.Types.ObjectId, ref: "Marca" }],
+    marcasDisponiblesVentas: [{ type: Schema.Types.ObjectId, ref: "Marca" }],
+    marcasDisponiblesTaller: [{ type: Schema.Types.ObjectId, ref: "Marca" }],
     coordenadasMapa: {
       latitud: { type: String, default: "" },
       longitud: { type: String, default: "" },
     },
     celularCitas: { type: String, default: "" },
+    isTaller: { type: Boolean, default: false },
     isActive: { type: Boolean },
     createdBy: { type: String },
   },

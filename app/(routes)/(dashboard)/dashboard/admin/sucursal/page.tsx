@@ -11,10 +11,16 @@ import { iSede } from "@/types";
 
 async function loadSedes() {
   await dbConnect();
-  const query = await Sucursal.find({}).populate({
-    path: "marcasDisponibles",
-    select: "_id name imageUrl",
-  });
+  const query = await Sucursal.find({}).populate([
+    {
+      path: "marcasDisponiblesVentas",
+      select: "_id name imageUrl",
+    },
+    {
+      path: "marcasDisponiblesTaller",
+      select: "_id name imageUrl",
+    },
+  ]);
   return query.map(serializeDocument) as iSede[];
 }
 

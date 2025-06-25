@@ -47,7 +47,6 @@ export function FormMantenimiento() {
   const [listaMarcasDisponibles, setListaMarcasDisponibles] = useState<
     iBrand[]
   >([]);
-  const [listaModelos, setListaModelos] = useState<iModelo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -64,7 +63,6 @@ export function FormMantenimiento() {
       celular: "",
       correo: "",
       marca: "",
-      modelo: "",
       tipoServicio: "",
       sede: "",
       concesionario: "",
@@ -97,27 +95,16 @@ export function FormMantenimiento() {
     }
   };
 
-  const getModelByBrand = async (marca: string) => {
-    const query = await axios.get(`/api/modelo/find/${marca}`);
-    if (query.status === 200) {
-      setListaModelos(query.data);
-    }
-  };
-
   const getDealerByslug = (slug: string) => {
     return listaConcesionarios.filter((item) => item.slug === slug)[0];
   };
-
-  useEffect(() => {
-    getSucursales();
-  }, []);
 
   useEffect(() => {
     let marcasDuplicadas: iBrand[] = [];
     if (sedeSelected) {
       const filtrandoMarcas = listaConcesionarios
         .filter((sede) => sede.ciudad.toLowerCase() === sedeSelected)
-        .map((item) => item.marcasDisponibles);
+        .map((item) => item.marcasDisponiblesTaller);
       marcasDuplicadas = filtrandoMarcas.flat();
       const uniqueBrands = marcasDuplicadas.filter((marca, index) => {
         return (
@@ -129,10 +116,8 @@ export function FormMantenimiento() {
   }, [sedeSelected]);
 
   useEffect(() => {
-    if (watchMarca) {
-      getModelByBrand(watchMarca);
-    }
-  }, [watchMarca]);
+    getSucursales();
+  }, []);
 
   const validateDocumentLength = (value: string) => {
     if (!tipoDocumento) return true;
@@ -369,14 +354,14 @@ export function FormMantenimiento() {
             name="sede"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sede</FormLabel>
+                <FormLabel>Ciudad</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccione una sede" />
+                      <SelectValue placeholder="Seleccione una ciudad" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -414,39 +399,7 @@ export function FormMantenimiento() {
                     </FormControl>
                     <SelectContent>
                       {sedeSelected !== "" &&
-                        listaMarcasDisponibles.map(
-                          ({ _id, name, slug, imageUrl }) => (
-                            <SelectItem key={_id} value={slug}>
-                              {name}
-                            </SelectItem>
-                          )
-                        )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Modelo */}
-            <FormField
-              control={form.control}
-              name="modelo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Modelo</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccione un modelo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listaModelos.length > 0 &&
-                        listaModelos.map(({ _id, name, slug }) => (
+                        listaMarcasDisponibles.map(({ _id, name, slug }) => (
                           <SelectItem key={_id} value={slug}>
                             {name}
                           </SelectItem>
@@ -457,9 +410,7 @@ export function FormMantenimiento() {
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
             {/* Concesionario */}
             <FormField
               control={form.control}
@@ -478,12 +429,13 @@ export function FormMantenimiento() {
                     </FormControl>
                     <SelectContent>
                       {sedeSelected &&
-                        listaConcesionarios.length > 0 &&
                         listaConcesionarios
                           .filter(
                             (value) =>
+                              value.isTaller &&
                               value.ciudad.toLowerCase() === sedeSelected &&
-                              value.marcasDisponibles.some(
+                              value.marcasDisponiblesTaller.length > 0 &&
+                              value.marcasDisponiblesTaller.some(
                                 (item) => item.slug === watchMarca
                               )
                           )
@@ -501,36 +453,36 @@ export function FormMantenimiento() {
                 </FormItem>
               )}
             />
-
-            {/* Tipo de Servicio */}
-            <FormField
-              control={form.control}
-              name="tipoServicio"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tipo de Servicio</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccione tipo de servicio" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listTipoServicio.map(({ id, label, value }) => (
-                        <SelectItem key={id} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
+
+          {/* Tipo de Servicio */}
+          <FormField
+            control={form.control}
+            name="tipoServicio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tipo de Servicio</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccione tipo de servicio" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {listTipoServicio.map(({ id, label, value }) => (
+                      <SelectItem key={id} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           {/* Comentario */}
           <FormField

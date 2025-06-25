@@ -27,7 +27,11 @@ export async function POST(req: NextRequest) {
       from: `Automotores Inka 🤖 <bot@ziphonex.com>`,
       to: [`${dataForm.email}`],
       // bcc: [`automotores.inka@ziphonex.com`],
-      bcc: [`automotores.inka@ziphonex.com`, `${systemMail.email}`],
+      bcc: [
+        `automotores.inka@ziphonex.com`,
+        `${systemMail.email}`,
+        `marco.julca@automotoresinka.com`,
+      ],
       subject: `Nuevo Reclamo ❗ - ${dataForm.numeroDocumento}`,
       react: TEmailReclamo({
         nombres: dataForm.nombres,
