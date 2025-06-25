@@ -99,10 +99,6 @@ export function FormMantenimiento() {
     return listaConcesionarios.filter((item) => item.slug === slug)[0];
   };
 
-  const getDealerByslug = (slug: string) => {
-    return listaConcesionarios.filter((item) => item.slug === slug)[0];
-  };
-
   useEffect(() => {
     let marcasDuplicadas: iBrand[] = [];
     if (sedeSelected) {
