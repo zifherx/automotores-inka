@@ -1,4 +1,8 @@
-import { iCompany, iTalleres } from "@/interfaces";
+import axios from "axios";
+
+import { iCompany, IRequestFD, iTalleres } from "@/interfaces";
+import { CotizacionForm } from "@/types";
+import { CotizacionGeneralFormValues } from "@/forms";
 
 export const switchRS = (rs: string) => {
   switch (rs) {
@@ -106,4 +110,73 @@ export const createConversationWhatsapp = (
 ): string => {
   const encodeMessage = encodeURIComponent(`${message}`);
   return `https://wa.me/51${messageTo}?text=${encodeMessage}`;
+};
+
+export const buildCotizacionData = (values: CotizacionForm) => {
+  return { ...values };
+};
+
+export const createCotizacion = async (
+  values: CotizacionForm,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, values);
+    if (response.status !== 200) {
+      throw new Error(`Error al crear cotización: ${response.status}`);
+    }
+    return response;
+  } catch (err: any) {
+    console.error(`Error en createCotizacion:`, {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error(`Error al procesar cotización`);
+  }
+};
+
+export const sendCotizacionEmail = async (
+  data: CotizacionForm,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, data);
+
+    if (response.status !== 200) {
+      throw new Error(`Error al enviar email: ${response.status}`);
+    }
+
+    return response;
+  } catch (err: any) {
+    // Log específico para debugging
+    console.error("Error en sendCotizacionEmail:", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error("Error al enviar el email de cotización");
+  }
+};
+
+export const sendCotizacionFlashDealer = async (
+  values: IRequestFD,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, values);
+
+    if (response.status !== 200) {
+      throw new Error(`Error al enviar a FD: ${response.status}`);
+    }
+
+    return response;
+  } catch (err: any) {
+    console.error("Error en sendCotizacionFlashDealer:", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error("Error al enviar la cotización a Flashdealer");
+  }
 };

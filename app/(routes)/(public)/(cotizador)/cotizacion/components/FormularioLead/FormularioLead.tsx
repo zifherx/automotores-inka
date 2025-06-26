@@ -31,11 +31,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
 import { iCardModel, iSede } from "@/types";
-import { onToast } from "@/lib";
+import {
+  buildCotizacionData,
+  createCotizacion,
+  onToast,
+  sendCotizacionEmail,
+  sendCotizacionFlashDealer,
+} from "@/lib";
 
-export function FormularioLead(props: iCardModel) {
-  const { model } = props;
-
+export function FormularioLead({ model }: iCardModel) {
   const router = useRouter();
 
   const [sedeSinDuplicados, setSedeSinDuplicados] = useState<iSede[]>([]);
@@ -85,6 +89,72 @@ export function FormularioLead(props: iCardModel) {
       getCiudadesByBrand(marcaSelected);
     }
   }, [marcaSelected]);
+
+  const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
+    setIsLoading(true);
+    try {
+      const cotizacionData = buildCotizacionData({
+        ...values,
+        departamento: watchSede,
+        concesionario: watchConcesionario
+          .toLocaleUpperCase()
+          .replace(/-/g, " "),
+        slugConcesionario: watchConcesionario,
+        marca: model!.marca.name,
+        carroceria: model!.carroceria.name,
+        modelo: model!.name,
+        slugModelo: model!.slug,
+        imageUrl: model!.imageUrl,
+        precioBase: model!.precioBase,
+      });
+
+      const flashdealerData = {
+        numeroDocumento: values.numeroDocumento,
+        correoElectronico: values.email,
+        numeroCelular: values.celular,
+        marcaVehiculo: cotizacionData.marca.toUpperCase(),
+        codigoFlashDealer: model!.codigo_flashdealer,
+        ciudadCotizacion: watchSede,
+      } as const;
+
+      const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        createCotizacion(cotizacionData, "/api/cotizacion"),
+        // sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
+        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
+      ]);
+
+      // console.log("cotizacionResult", cotizacionResult);
+      // console.log("emailResult", emailResult);
+      // console.log("flashdealerResult", flashdealerResult);
+
+      if (cotizacionResult.status === "rejected") {
+        throw new Error(`Error al crear solicitud`);
+      }
+
+      if (flashdealerResult.status === "rejected") {
+        console.warn(`El envío a flashdealer falló pero se creo la cotización`);
+        onToast(
+          "Cotización creada. El envío a FD podría demorar unos minutos",
+          "",
+          false
+        );
+      } else {
+        onToast(cotizacionResult.value.data.message);
+      }
+
+      const redirectId =
+        flashdealerResult.status === "fulfilled"
+          ? new Date().getTime()
+          : cotizacionResult.value.data._id;
+
+      // console.log("redirectId", redirectId);
+      router.push(`/gracias/${redirectId}`);
+    } catch (err: any) {
+      handleOnSubmit(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
@@ -146,7 +216,10 @@ export function FormularioLead(props: iCardModel) {
   return (
     <div className="my-5 md:my-0 p-4 border md:border-0 rounded-2xl md:rounded-none">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <form
+          onSubmit={form.handleSubmit(handleOnSubmit)}
+          className="space-y-2"
+        >
           {/* Nombre y Apellido */}
           <FormField
             control={form.control}

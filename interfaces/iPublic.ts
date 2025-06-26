@@ -153,3 +153,30 @@ export interface ITableBody {
   bonoRetoma_USD: number;
   bonoFinanciamiento_USD: number;
 }
+
+export interface IFlashDealerObjectBD {
+  document: string;
+  email: string;
+  phone_number: string;
+  mark: string;
+  model: string;
+  year: string;
+  vehicle: string;
+  mileage: string;
+  form_id: string;
+  form_name: string;
+  campaign_id: string;
+  page_id: string;
+  page_name: string;
+  platform: string;
+  city: string;
+}
+
+export interface IRequestFD {
+  numeroDocumento: string;
+  correoElectronico: string;
+  numeroCelular: string;
+  marcaVehiculo: string;
+  codigoFlashDealer: string;
+  ciudadCotizacion: string;
+}

@@ -40,7 +40,12 @@ import {
   formCotizacionGeneralSchema,
 } from "@/forms";
 import { iBrand, iModelo, iSede } from "@/types";
-import { onToast } from "@/lib";
+import {
+  buildCotizacionData,
+  createCotizacion,
+  onToast,
+  sendCotizacionEmail,
+} from "@/lib";
 
 export function FormCotizacion() {
   const [listBrands, setListBrands] = useState<iBrand[]>([]);
@@ -128,6 +133,65 @@ export function FormCotizacion() {
     }
   }, [watchModelo]);
 
+  const handleOnSubmit = async (values: CotizacionGeneralFormValues) => {
+    setIsLoading(true);
+    try {
+      if (!vehicleSelected) {
+        onToast("Por favor seleccione un vehículo", "", true);
+        return;
+      }
+
+      const cotizacionData = buildCotizacionData({
+        ...values,
+        departamento: watchCiudad,
+        concesionario: watchConcesionario
+          .toLocaleUpperCase()
+          .replace(/-/g, " "),
+        slugConcesionario: watchConcesionario,
+        marca: vehicleSelected!.marca.name,
+        carroceria: vehicleSelected!.carroceria.name,
+        modelo: vehicleSelected!.name,
+        slugModelo: vehicleSelected!.slug,
+        imageUrl: vehicleSelected!.imageUrl,
+        precioBase: vehicleSelected!.precioBase,
+      });
+
+      const [cotizacionResult, emailResult] = await Promise.allSettled([
+        createCotizacion(cotizacionData, "/api/cotizacion"),
+        sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
+      ]);
+
+      console.log("cotizacionResult", cotizacionResult);
+      console.log("emailResult", emailResult);
+
+      if (cotizacionResult.status === "rejected") {
+        throw new Error(`Error al crear solicitud`);
+      }
+
+      if (emailResult.status === "rejected") {
+        console.warn(`El envío de correo falló pero se creo la cotización`);
+        onToast(
+          "Cotización creada. El email podría tardas unos minutos",
+          "",
+          false
+        );
+      } else {
+        onToast(cotizacionResult.value.data.message);
+      }
+
+      const redirectId =
+        emailResult.status === "fulfilled"
+          ? emailResult.value.data.mail.id
+          : cotizacionResult.value.data._id;
+
+      console.log("redirectId", redirectId);
+      // router.push(`/gracias/${redirectId}`);
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const onSubmit = async (values: CotizacionGeneralFormValues) => {
     setIsLoading(true);
     try {
@@ -166,8 +230,9 @@ export function FormCotizacion() {
           }
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
+      console.log(err.message);
       setIsLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }

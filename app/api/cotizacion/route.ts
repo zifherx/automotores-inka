@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 
 import Cliente from "@/models/Cliente";
 import Modelo from "@/models/Modelo";
 import Sucursal from "@/models/Sucursal";
 import Cotizacion from "@/models/Cotizacion";
 
-import Bitacora from "@/models/Bitacora";
 import { dbConnect } from "@/lib";
 import { iCustomer, iLead, iModelo, iSede } from "@/types";
-
-const URI_LEADS_FD = process.env.ENDPOINT_FD;
-const TOKEN_FD = process.env.TOKEN_FD;
 
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -129,84 +124,25 @@ export async function POST(req: NextRequest) {
     const query = await qCotizacion.save();
 
     if (!query) {
-      console.log(query);
-      throw new NextResponse("No se pudo guardar la cotización", {
+      throw new NextResponse("No se pudo guardar la cotización en BD", {
         status: 500,
       });
     }
 
-    const objFD = {
-      document: customerFound
-        ? customerFound.numeroDocumento
-        : newCustomer?.numeroDocumento,
-      email: customerFound ? customerFound.email : newCustomer!.email,
-      phone_number: `+51${
-        customerFound ? customerFound.celular : newCustomer!.celular
-      }`,
-      mark: vehicleFound!.marca.name.toUpperCase(),
-      model: vehicleFound!.codigo_flashdealer,
-      year: "",
-      vehicle: "",
-      mileage: "",
-      form_id: "",
-      form_name: "NUEVOS",
-      campaign_id: "",
-      page_id: "",
-      page_name: "",
-      platform: "PAGINA WEB",
-      city: sedeFound!.ciudad.toUpperCase(),
-    };
-    if (query) {
-      const responseFlashDealer = await axios.post(`${URI_LEADS_FD}`, objFD, {
-        headers: {
-          Authorization: TOKEN_FD,
-        },
-      });
-
-      const objBitacora = new Bitacora({
-        request: {
-          body: JSON.stringify(objFD),
-          authorization: responseFlashDealer.config.headers.Authorization,
-          accept: responseFlashDealer.config.headers.Accept,
-        },
-        response: {
-          body: JSON.stringify(responseFlashDealer.data),
-          code: responseFlashDealer.status,
-          statusText: responseFlashDealer.statusText,
-        },
-        method: responseFlashDealer.config.method,
-        url: responseFlashDealer.config.url,
-      });
-      await objBitacora.save();
-
-      return NextResponse.json({
-        success: true,
-        message: `Cotización ${new Date().getTime()} registrada ✅`,
-        obj: query,
-      });
-    }
-  } catch (err: any) {
-    const objBitacoraError = new Bitacora({
-      request: {
-        body: JSON.stringify(err.response.config.data),
-        authorization: err.response.headers.Authorization,
-        accept: err.config.headers.Accept,
-      },
-      response: {
-        body: JSON.stringify(err.response.data),
-        code: err.response.status,
-        statusText: err.response.statusText,
-      },
-      method: err.response.config.method,
-      url: err.response.config.url,
+    return NextResponse.json({
+      success: true,
+      message: `Cotización ${new Date().getTime()} registrada ✅`,
+      obj: query,
     });
-    await objBitacoraError.save();
-
-    console.log(err);
-    console.log(err.message);
+  } catch (err: any) {
+    console.error(err.message);
+    console.error(err);
     if (err.name === "AbortError") {
       return NextResponse.json({ error: "Request Timeout" }, { status: 504 });
     }
-    return NextResponse.json("Internal Server Error", { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Error interno en el servidor" },
+      { status: 500 }
+    );
   }
 }
