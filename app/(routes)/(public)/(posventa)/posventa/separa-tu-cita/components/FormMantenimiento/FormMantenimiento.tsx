@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
 
 import { createConversationWhatsapp, getRouteForModel, onToast } from "@/lib";
 import { listTipoServicio } from "@/data";
-import { iBrand, iModelo, iSede } from "@/types";
+import { iBrand, iSede } from "@/types";
 import {
   formServicioMantenimientoSchema,
   SolicitudServicioFormValues,

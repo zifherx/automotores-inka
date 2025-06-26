@@ -24,7 +24,7 @@ import {
   ModelsByBrand,
   TableFormat,
 } from "@/interfaces";
-import { HReclamoFormValues } from "@/forms";
+import { CotizacionGeneralFormValues, HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
 
 export type iVideosYoutube = {
@@ -331,3 +331,11 @@ export type SearchFilterProps = {
 };
 
 export type TableConditionalProps = TableFormat;
+
+export type CotizacionForm = CotizacionGeneralFormValues & {
+  slugConcesionario: string;
+  carroceria: string;
+  slugModelo: string;
+  imageUrl: string;
+  precioBase: number;
+};
