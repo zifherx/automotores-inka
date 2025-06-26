@@ -1,6 +1,8 @@
-import { CondicionesFormularios } from "@/components/Shared/CondicionesFormularios";
 import { Metadata } from "next";
-import { CotizadorStep } from "./components/CotizadorStep";
+
+import { StepsCotizacionView } from "./StepsCotizacionView";
+
+import { BrandsProvider } from "@/context/brands/marcaContext";
 
 export const metadata: Metadata = {
   title: {
@@ -11,11 +13,8 @@ export const metadata: Metadata = {
 
 export default function StepsCotizacionPage() {
   return (
-    <div className="bg-white">
-      <div className="max-w-7xl mx-auto">
-        <CotizadorStep />
-      </div>
-      <CondicionesFormularios />
-    </div>
+    <BrandsProvider>
+      <StepsCotizacionView />
+    </BrandsProvider>
   );
 }
