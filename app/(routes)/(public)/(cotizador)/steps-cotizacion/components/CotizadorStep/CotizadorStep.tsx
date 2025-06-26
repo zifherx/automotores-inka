@@ -2,6 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -16,7 +18,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { cn, formatPENPrice, formatUSDPrice, onToast } from "@/lib";
+import {
+  buildCotizacionData,
+  cn,
+  createCotizacion,
+  formatPENPrice,
+  formatUSDPrice,
+  onToast,
+  sendCotizacionFlashDealer,
+} from "@/lib";
 import { iBrand, iModelo, iSede } from "@/types";
 import {
   CotizacionGeneralFormValues,
@@ -30,8 +40,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
   ChevronRight,
@@ -52,8 +60,10 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BrandGrid } from "../BrandGrid";
+import { useBrands } from "@/context/brands/marcaContext";
 
 export function CotizadorStep() {
+  const { brands } = useBrands();
   const [step, setStep] = useState(1);
   const [showPanel, setShowPanel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +75,7 @@ export function CotizadorStep() {
   // Vehículo Seleccionado
   const [selectedModel, setSelectedModel] = useState<iModelo | null>(null);
   // Step 01
-  const [brands, setBrands] = useState<iBrand[]>([]);
+  // const [brands, setBrands] = useState<iBrand[]>([]);
   const [models, setModels] = useState<iModelo[]>([]);
   // Step 02
   const [ciudades, setCiudades] = useState<iSede[]>([]);
@@ -92,13 +102,6 @@ export function CotizadorStep() {
     },
   });
 
-  const getBrands = async () => {
-    const query = await axios.get("/api/marca");
-    if (query.status === 200) {
-      setBrands(query.data.data);
-    }
-  };
-
   const getModelos = async () => {
     const query = await axios.get("/api/modelo");
     if (query.status === 200) {
@@ -124,7 +127,6 @@ export function CotizadorStep() {
   const watchConcesionario = formSteps.watch("concesionario");
 
   useEffect(() => {
-    getBrands();
     getModelos();
   }, []);
 
@@ -213,6 +215,70 @@ export function CotizadorStep() {
       console.log(err);
       setIsLoading(false);
       onToast("Algo salió mal ❌", "", true);
+    }
+  };
+
+  const handleOnSubmit = async (values: CotizacionGeneralFormValues) => {
+    setIsLoading(true);
+
+    try {
+      const cotizacionData = buildCotizacionData({
+        ...values,
+        departamento: watchCiudad,
+        concesionario: watchConcesionario
+          .toLocaleUpperCase()
+          .replace(/-/g, " "),
+        slugConcesionario: watchConcesionario,
+        marca: selectedModel!.marca.name,
+        carroceria: selectedModel!.carroceria.name,
+        modelo: selectedModel!.name,
+        slugModelo: selectedModel!.slug,
+        imageUrl: selectedModel!.imageUrl,
+        precioBase: selectedModel!.precioBase,
+      });
+
+      const flashdealerData = {
+        numeroDocumento: values.numeroDocumento,
+        correoElectronico: values.email,
+        numeroCelular: values.celular,
+        marcaVehiculo: cotizacionData.marca.toUpperCase(),
+        codigoFlashDealer: selectedModel!.codigo_flashdealer,
+        ciudadCotizacion: watchCiudad,
+      } as const;
+
+      const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        createCotizacion(cotizacionData, "/api/cotizacion"),
+        sendCotizacionFlashDealer(flashdealerData, "/api/flashdealer/new-lead"),
+      ]);
+
+      // console.log("cotizacionResult", cotizacionResult);
+      // console.log("flashdealerResult", flashdealerResult);
+
+      if (cotizacionResult.status === "rejected") {
+        throw new Error(`Error al crear solicitud`);
+      }
+
+      if (flashdealerResult.status === "rejected") {
+        console.warn(`El envío a flashdealer falló pero se creo la cotización`);
+        onToast(
+          "Cotización creada. El envío a FD podría demorar unos minutos",
+          "",
+          false
+        );
+      } else {
+        onToast(cotizacionResult.value.data.message);
+      }
+
+      const redirectId =
+        flashdealerResult.status === "fulfilled"
+          ? new Date().getTime()
+          : cotizacionResult.value.data._id;
+
+      router.push(`/gracias/${redirectId}`);
+    } catch (err: any) {
+      handleOnSubmit(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -718,7 +784,7 @@ export function CotizadorStep() {
           <CardContent>
             <Form {...formSteps}>
               <form
-                onSubmit={formSteps.handleSubmit(onSubmit)}
+                onSubmit={formSteps.handleSubmit(handleOnSubmit)}
                 className="space-y-8"
               >
                 {renderStep()}
@@ -739,7 +805,7 @@ export function CotizadorStep() {
               </Button>
             ) : (
               <Button
-                onClick={formSteps.handleSubmit(onSubmit)}
+                onClick={formSteps.handleSubmit(handleOnSubmit)}
                 disabled={isLoading}
               >
                 {isLoading ? (
