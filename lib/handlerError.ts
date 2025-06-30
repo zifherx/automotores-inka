@@ -36,6 +36,7 @@ export class ForbiddenError extends AppError {
 }
 
 export const handleCotizacionError = (err: any) => {
+  console.log(err.message);
   // Log Detallado
   console.error("Error en función:", {
     message: err.message,

@@ -9,6 +9,7 @@ import axios from "axios";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,10 +35,17 @@ import { iCardModel, iSede } from "@/types";
 import {
   buildCotizacionData,
   createCotizacion,
+  handleCotizacionError,
   onToast,
-  sendCotizacionEmail,
   sendCotizacionFlashDealer,
 } from "@/lib";
+
+const tiposDocumento = [
+  { value: "DNI", label: "DNI", maxLength: 8 },
+  { value: "RUC", label: "RUC", maxLength: 11 },
+  { value: "CE", label: "Carnet de Extranjería", maxLength: 15 },
+  { value: "PASAPORTE", label: "Pasaporte", maxLength: 15 },
+] as const;
 
 export function FormularioLead({ model }: iCardModel) {
   const router = useRouter();
@@ -68,6 +76,21 @@ export function FormularioLead({ model }: iCardModel) {
   const marcaSelected = model.marca.slug;
   const watchSede = form.watch("departamento");
   const watchConcesionario = form.watch("concesionario");
+  const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
+  const numeroDocumento = form.watch("numeroDocumento");
+
+  const maxLengthDocumento =
+    tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
+      ?.maxLength || 0;
+
+  const handleNumeroDocumentoChange = (value: string) => {
+    if (tipoDocumentoSeleccionado) {
+      const maxLength = maxLengthDocumento;
+      if (value.length <= maxLength && /^\d*$/.test(value)) {
+        form.setValue("numeroDocumento", value);
+      }
+    }
+  };
 
   const getCiudadesByBrand = async (marca: string) => {
     if (marca !== "" || marca !== undefined) {
@@ -115,7 +138,7 @@ export function FormularioLead({ model }: iCardModel) {
         marcaVehiculo: cotizacionData.marca.toUpperCase(),
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
-      } as const;
+      };
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
         createCotizacion(cotizacionData, "/api/cotizacion"),
@@ -150,7 +173,7 @@ export function FormularioLead({ model }: iCardModel) {
       // console.log("redirectId", redirectId);
       router.push(`/gracias/${redirectId}`);
     } catch (err: any) {
-      handleOnSubmit(err);
+      handleCotizacionError(err);
     } finally {
       setIsLoading(false);
     }
@@ -247,7 +270,10 @@ export function FormularioLead({ model }: iCardModel) {
                   Tipo de Documento
                 </FormLabel>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.setValue("numeroDocumento", "");
+                  }}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -256,12 +282,11 @@ export function FormularioLead({ model }: iCardModel) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="dni">DNI</SelectItem>
-                    <SelectItem value="ruc">RUC</SelectItem>
-                    <SelectItem value="carnet de extranjeria">
-                      Carnet de Extranjería
-                    </SelectItem>
-                    <SelectItem value="pasaporte">Pasaporte</SelectItem>
+                    {tiposDocumento.map(({ label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -280,11 +305,25 @@ export function FormularioLead({ model }: iCardModel) {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Número de Documento"
-                    {...field}
                     type="number"
+                    placeholder={
+                      tipoDocumentoSeleccionado
+                        ? `Ingrese su ${tipoDocumentoSeleccionado.toLocaleLowerCase()}`
+                        : `Seleccione primero el tipo de documento`
+                    }
+                    disabled={!tipoDocumentoSeleccionado}
+                    value={field.value}
+                    onChange={(e) =>
+                      handleNumeroDocumentoChange(e.target.value)
+                    }
                   />
                 </FormControl>
+                {tipoDocumentoSeleccionado && (
+                  <FormDescription>
+                    Máximo {maxLengthDocumento} dígitos (
+                    {numeroDocumento.length}/{maxLengthDocumento})
+                  </FormDescription>
+                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -298,7 +337,12 @@ export function FormularioLead({ model }: iCardModel) {
               <FormItem>
                 <FormLabel className="font-headMedium">Celular</FormLabel>
                 <FormControl>
-                  <Input placeholder="Celular" {...field} type="number" />
+                  <Input
+                    placeholder="Celular"
+                    type="tel"
+                    maxLength={9}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -313,7 +357,7 @@ export function FormularioLead({ model }: iCardModel) {
               <FormItem>
                 <FormLabel className="font-headMedium">Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -427,29 +471,31 @@ export function FormularioLead({ model }: iCardModel) {
             control={form.control}
             name="checkDatosPersonales"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-2">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl>
                   <Checkbox
+                    className="h-5 w-5 border-redInka data-[state=checked]:bg-redInka text-white rounded-full"
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     color="#1B5094"
                   />
                 </FormControl>
-                <div className="text-xs leading-3 text-left">
-                  <FormLabel>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-sm font-normal leading-relaxed">
                     Mediante el envío del formulario declaro que he leído la
                     autorización y acepto la{" "}
                     <a
                       href="/legal/terminos-condiciones"
                       target="_blank"
-                      className="text-redInka hover:font-semibold"
+                      rel="noopener noreferrer"
+                      className="text-redInka underline hover:font-semibold"
                     >
                       Política de Protección de Datos Personales
                     </a>{" "}
                     y el tratamiento de mis datos personales a Automotores Inka
                   </FormLabel>
+                  <FormMessage />
                 </div>
-                <FormMessage />
               </FormItem>
             )}
           />

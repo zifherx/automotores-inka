@@ -37,6 +37,9 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Filter,
+  FilterIcon,
+  RefreshCcw,
   ShoppingBasket,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -47,10 +50,16 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useQuotes } from "@/context/quotes/quotesContext";
+import { DateRange } from "react-day-picker";
 
 export function TableQuotes() {
-  const { quotes, isLoading, rangoFechas, setRangoFechas } = useQuotes();
+  const { quotes, isLoading, setRangoFechas } = useQuotes();
 
+  const [fechaControl, setFechaControl] = useState<DateRange | undefined>({
+    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    to: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+  });
+  const [isFiltering, setIsFiltering] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -93,13 +102,11 @@ export function TableQuotes() {
     });
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!quotes || quotes.length === 0) {
-    return <p>No existen registros</p>;
-  }
+  const handleFiltrar = () => {
+    setIsFiltering(true);
+    setRangoFechas(fechaControl);
+    setIsFiltering(false);
+  };
 
   return (
     <div className="w-full p-2">
@@ -109,40 +116,62 @@ export function TableQuotes() {
             <label htmlFor="rangoFecha" className="font-headMedium">
               Fechas
             </label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  id="rangoFechas"
-                  variant="outline"
-                  className="w-full md:w-[300px] justify-start text-left font-normal"
-                >
-                  <CalendarIcon />
-                  {rangoFechas?.from ? (
-                    rangoFechas.to ? (
-                      <>
-                        {format(rangoFechas.from, "LLLL dd, y", { locale: es })}{" "}
-                        - {format(rangoFechas.to, "LLLL dd, y", { locale: es })}
-                      </>
+            <div className="space-x-2 flex items-center">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="rangoFechas"
+                    variant="outline"
+                    className="w-full md:w-[300px] justify-start text-left font-normal"
+                  >
+                    <CalendarIcon />
+                    {fechaControl?.from ? (
+                      fechaControl?.to ? (
+                        <>
+                          {format(fechaControl!.from, "LLLL dd, y", {
+                            locale: es,
+                          })}{" "}
+                          -{" "}
+                          {format(fechaControl!.to, "LLLL dd, y", {
+                            locale: es,
+                          })}
+                        </>
+                      ) : (
+                        format(fechaControl!.from, "LLL dd, y", { locale: es })
+                      )
                     ) : (
-                      format(rangoFechas.from, "LLL dd, y", { locale: es })
-                    )
-                  ) : (
-                    <span>Selecciona un rango de fechas</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  initialFocus
-                  mode="range"
-                  defaultMonth={rangoFechas?.from}
-                  selected={rangoFechas}
-                  onSelect={setRangoFechas}
-                  numberOfMonths={2}
-                  locale={es}
-                />
-              </PopoverContent>
-            </Popover>
+                      <span>Selecciona un rango de fechas</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={fechaControl!.from}
+                    selected={fechaControl}
+                    onSelect={setFechaControl}
+                    numberOfMonths={2}
+                    locale={es}
+                  />
+                </PopoverContent>
+              </Popover>
+              <Button
+                onClick={handleFiltrar}
+                disabled={isFiltering}
+                className="bg-redInka text-white"
+              >
+                {isFiltering ? (
+                  <>
+                    <RefreshCcw className="h-4 w-4 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    <FilterIcon className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="inputCliente" className="font-headMedium">
@@ -198,126 +227,139 @@ export function TableQuotes() {
         </div>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(({ id, headers }) => (
-              <TableRow key={id}>
-                {headers.map(({ id, isPlaceholder, column, getContext }) => (
-                  <TableHead key={id}>
-                    {isPlaceholder
-                      ? null
-                      : flexRender(column.columnDef.header, getContext())}
-                  </TableHead>
+      {isLoading ? (
+        <span>Cargando data...</span>
+      ) : !quotes || quotes.length === 0 ? (
+        <span>No existen registros</span>
+      ) : (
+        <>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map(({ id, headers }) => (
+                  <TableRow key={id}>
+                    {headers.map(
+                      ({ id, isPlaceholder, column, getContext }) => (
+                        <TableHead key={id}>
+                          {isPlaceholder
+                            ? null
+                            : flexRender(column.columnDef.header, getContext())}
+                        </TableHead>
+                      )
+                    )}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table
-                .getRowModel()
-                .rows.map(
-                  ({
-                    id,
-                    getIsSelected,
-                    getVisibleCells,
-                    getIsExpanded,
-                    getToggleExpandedHandler,
-                    subRows,
-                  }) => (
-                    <TableRow
-                      key={id}
-                      data-state={getIsSelected() && "selected"}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.length ? (
+                  table
+                    .getRowModel()
+                    .rows.map(
+                      ({
+                        id,
+                        getIsSelected,
+                        getVisibleCells,
+                        getIsExpanded,
+                        getToggleExpandedHandler,
+                        subRows,
+                      }) => (
+                        <TableRow
+                          key={id}
+                          data-state={getIsSelected() && "selected"}
+                        >
+                          {getVisibleCells().map(
+                            ({
+                              id,
+                              column,
+                              getContext,
+                              getIsGrouped,
+                              getIsAggregated,
+                              getIsPlaceholder,
+                            }) => (
+                              <TableCell key={id}>
+                                {getIsGrouped() ? (
+                                  <>
+                                    <Button
+                                      variant="ghost"
+                                      className="mr-2"
+                                      onClick={() => {
+                                        getToggleExpandedHandler()();
+                                      }}
+                                    >
+                                      {getIsExpanded() ? (
+                                        <ChevronDown className="h-4 w-4" />
+                                      ) : (
+                                        <ChevronRight className="h-4 w-4" />
+                                      )}
+                                    </Button>
+                                    {flexRender(
+                                      column.columnDef.cell,
+                                      getContext()
+                                    )}{" "}
+                                    ({subRows.length})
+                                  </>
+                                ) : getIsAggregated() ? (
+                                  flexRender(
+                                    column.columnDef.aggregatedCell ??
+                                      column.columnDef.cell,
+                                    getContext()
+                                  )
+                                ) : getIsPlaceholder() ? null : (
+                                  flexRender(
+                                    column.columnDef.cell,
+                                    getContext()
+                                  )
+                                )}
+                              </TableCell>
+                            )
+                          )}
+                        </TableRow>
+                      )
+                    )
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columnsQuotes.length}
+                      className="h-24 text-center"
                     >
-                      {getVisibleCells().map(
-                        ({
-                          id,
-                          column,
-                          getContext,
-                          getIsGrouped,
-                          getIsAggregated,
-                          getIsPlaceholder,
-                        }) => (
-                          <TableCell key={id}>
-                            {getIsGrouped() ? (
-                              <>
-                                <Button
-                                  variant="ghost"
-                                  className="mr-2"
-                                  onClick={() => {
-                                    getToggleExpandedHandler()();
-                                  }}
-                                >
-                                  {getIsExpanded() ? (
-                                    <ChevronDown className="h-4 w-4" />
-                                  ) : (
-                                    <ChevronRight className="h-4 w-4" />
-                                  )}
-                                </Button>
-                                {flexRender(
-                                  column.columnDef.cell,
-                                  getContext()
-                                )}{" "}
-                                ({subRows.length})
-                              </>
-                            ) : getIsAggregated() ? (
-                              flexRender(
-                                column.columnDef.aggregatedCell ??
-                                  column.columnDef.cell,
-                                getContext()
-                              )
-                            ) : getIsPlaceholder() ? null : (
-                              flexRender(column.columnDef.cell, getContext())
-                            )}
-                          </TableCell>
-                        )
-                      )}
-                    </TableRow>
-                  )
-                )
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columnsQuotes.length}
-                  className="h-24 text-center"
-                >
-                  No hay registros
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+                      No hay registros
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} de{" "}
-          {table.getFilteredRowModel().rows.length} fila(s) seleccionadas.
-        </div>
-        <div className="flex space-x-2 items-center">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="flex items-center gap-2"
-          >
-            Siguiente
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} de{" "}
+              {table.getFilteredRowModel().rows.length} fila(s) seleccionadas.
+            </div>
+            <div className="flex space-x-2 items-center">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Anterior
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className="flex items-center gap-2"
+              >
+                Siguiente
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

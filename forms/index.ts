@@ -114,40 +114,55 @@ export const formEditSucursalSchema = z.object({
 export const formCotizacionGeneralSchema = z.object({
   nombres: z
     .string()
-    .min(3, "Este campo no debe ser inferior a 3 caracteres")
-    .max(50, "Este campo no debe superar los 50 caracteres"),
+    .min(3, "Nombres no debe ser inferior a 3 caracteres")
+    .max(50, "Nombres no debe superar los 50 caracteres"),
   tipoDocumento: z.string(),
   numeroDocumento: z
     .string()
-    .min(8, "Este campo no debe ser inferior a 8 caracteres")
-    .max(20, "Este campo no debe superar los 20 caracteres"),
-  email: z.string().email(),
-  celular: z.string().length(9, "Este campo debe ser de 9 dígitos"),
+    .min(8, "Numero de Documento no debe ser inferior a 8 caracteres")
+    .max(20, "Numero de Documento no debe superar los 20 caracteres"),
+  email: z.string().email({ message: `Email es obligatorio` }),
+  celular: z.string().length(9, "Celular debe ser de 9 dígitos"),
   marca: z.string().min(1, { message: "Debe seleccionar una marca" }),
-  modelo: z.string(),
-  departamento: z.string(),
-  concesionario: z.string(),
-  intencionCompra: z.string(),
-  checkDatosPersonales: z.boolean(),
+  modelo: z.string().min(1, { message: `Debe seleccionar un modelo` }),
+  departamento: z.string().min(1, { message: "Debe seleccionar una sede" }),
+  concesionario: z
+    .string()
+    .min(1, { message: "Debe seleccionar un concesionario" }),
+  intencionCompra: z
+    .string()
+    .min(1, { message: "Debe seleccionar su intención de compra" }),
+  checkDatosPersonales: z.boolean().refine((val) => val === true, {
+    message: `Debe aceptar el tratamiento de Datos Personales`,
+  }),
   checkPromociones: z.string(),
 });
 
 export const formCotizacionModeloSchema = z.object({
   nombres: z
     .string()
-    .min(3, "Este campo debe superar 3 caracteres.")
-    .max(50, "No se puede exceder de 50 caracteres."),
-  tipoDocumento: z.string(),
+    .min(3, "Nombres debe superar 3 caracteres.")
+    .max(50, "Nombres no se puede exceder de 50 caracteres."),
+  tipoDocumento: z
+    .string()
+    .min(1, { message: "Debe seleccionar un tipo de documento" }),
   numeroDocumento: z
     .string()
-    .min(8, "El número de documento debe ser como mínimo de 8 dígitos.")
-    .max(20, "El número de documento no debe exceder los 20 caracteres."),
+    .min(8, "Número de documento debe ser como mínimo de 8 dígitos.")
+    .max(20, "Número de documento no debe exceder los 20 caracteres."),
   email: z.string().email("Debe ingresar un email válido."),
-  celular: z.string().length(9, "Este campo debe ser de 9 dígitos."),
-  departamento: z.string(),
-  concesionario: z.string(),
-  intencionCompra: z.string(),
-  checkDatosPersonales: z.boolean({ required_error: "Check requerido" }),
+  celular: z.string().length(9, "Celular debe ser de 9 dígitos."),
+  departamento: z.string().min(1, { message: "Debe seleccionar una sede" }),
+  concesionario: z
+    .string()
+    .min(1, { message: "Debe seleccionar un concesionario" }),
+  intencionCompra: z
+    .string()
+    .min(1, { message: "Debe seleccionar su intención de compra" }),
+  checkDatosPersonales: z.boolean().refine((val) => val === true, {
+    message:
+      "Debe estar de acuerdo con la Política de Protección de Datos Personales",
+  }),
   checkPromociones: z.string(),
 });
 
