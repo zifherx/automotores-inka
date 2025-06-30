@@ -15,6 +15,8 @@ export async function GET(req: NextRequest) {
   const paramFrom = await req.nextUrl.searchParams.get("from");
   const paramTo = await req.nextUrl.searchParams.get("to");
 
+  console.log("Filtro:", { paramFrom, paramTo });
+
   try {
     if (paramFrom == null || paramTo == null) {
       query = await Cotizacion.find({})

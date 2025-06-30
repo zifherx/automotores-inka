@@ -24,6 +24,7 @@ import {
   createCotizacion,
   formatPENPrice,
   formatUSDPrice,
+  handleCotizacionError,
   onToast,
   sendCotizacionFlashDealer,
 } from "@/lib";
@@ -35,6 +36,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -61,6 +63,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BrandGrid } from "../BrandGrid";
 import { useBrands } from "@/context/brands/marcaContext";
+
+const tiposDocumento = [
+  { value: "DNI", label: "DNI", maxLength: 8 },
+  { value: "RUC", label: "RUC", maxLength: 11 },
+  { value: "CE", label: "Carnet de Extranjería", maxLength: 15 },
+  { value: "PASAPORTE", label: "Pasaporte", maxLength: 15 },
+] as const;
 
 export function CotizadorStep() {
   const { brands } = useBrands();
@@ -125,6 +134,12 @@ export function CotizadorStep() {
 
   const watchCiudad = formSteps.watch("departamento");
   const watchConcesionario = formSteps.watch("concesionario");
+  const tipoDocumentoSeleccionado = formSteps.watch("tipoDocumento");
+  const numeroDocumento = formSteps.watch("numeroDocumento");
+
+  const maxLengthDocumento =
+    tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
+      ?.maxLength || 0;
 
   useEffect(() => {
     getModelos();
@@ -167,6 +182,15 @@ export function CotizadorStep() {
 
   const handlePrevious = () => {
     setStep(step - 1);
+  };
+
+  const handleNumeroDocumentoChange = (value: string) => {
+    if (tipoDocumentoSeleccionado) {
+      const maxLength = maxLengthDocumento;
+      if (value.length <= maxLength && /^\d*$/.test(value)) {
+        formSteps.setValue("numeroDocumento", value);
+      }
+    }
   };
 
   const onSubmit = async (values: CotizacionGeneralFormValues) => {
@@ -276,7 +300,7 @@ export function CotizadorStep() {
 
       router.push(`/gracias/${redirectId}`);
     } catch (err: any) {
-      handleOnSubmit(err);
+      handleCotizacionError(err);
     } finally {
       setIsLoading(false);
     }
@@ -517,7 +541,10 @@ export function CotizadorStep() {
                     Tipo de Documento
                   </FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      formSteps.setValue("numeroDocumento", "");
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -526,12 +553,11 @@ export function CotizadorStep() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="dni">DNI</SelectItem>
-                      <SelectItem value="ruc">RUC</SelectItem>
-                      <SelectItem value="carnet de extranjeria">
-                        Carnet de Extranjería
-                      </SelectItem>
-                      <SelectItem value="pasaporte">Pasaporte</SelectItem>
+                      {tiposDocumento.map(({ label, value }) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -550,11 +576,25 @@ export function CotizadorStep() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Número de Documento"
-                      {...field}
                       type="number"
+                      placeholder={
+                        tipoDocumentoSeleccionado
+                          ? `Ingrese su ${tipoDocumentoSeleccionado.toLocaleLowerCase()}`
+                          : `Seleccione primero el tipo de documento`
+                      }
+                      disabled={!tipoDocumentoSeleccionado}
+                      value={field.value}
+                      onChange={(e) =>
+                        handleNumeroDocumentoChange(e.target.value)
+                      }
                     />
                   </FormControl>
+                  {tipoDocumentoSeleccionado && (
+                    <FormDescription>
+                      Máximo {maxLengthDocumento} dígitos (
+                      {numeroDocumento.length}/{maxLengthDocumento})
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -628,6 +668,7 @@ export function CotizadorStep() {
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-2">
                   <FormControl>
                     <Checkbox
+                      className="h-5 w-5 data-[state=checked]:bg-redInka border-redInka rounded-full"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       color="#1B5094"
@@ -640,15 +681,15 @@ export function CotizadorStep() {
                       <a
                         href="/legal/terminos-condiciones"
                         target="_blank"
-                        className="text-redInka hover:font-semibold"
+                        className="text-redInka underline hover:font-semibold"
                       >
                         Política de Protección de Datos Personales
                       </a>{" "}
                       y el tratamiento de mis datos personales a Automotores
                       Inka
                     </FormLabel>
+                    <FormMessage />
                   </div>
-                  <FormMessage />
                 </FormItem>
               )}
             />
