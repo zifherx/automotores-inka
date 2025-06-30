@@ -85,6 +85,7 @@ export function CotizadorStep() {
   const [selectedModel, setSelectedModel] = useState<iModelo | null>(null);
   // Step 01
   // const [brands, setBrands] = useState<iBrand[]>([]);
+  // const [brands, setBrands] = useState<iBrand[]>([]);
   const [models, setModels] = useState<iModelo[]>([]);
   // Step 02
   const [ciudades, setCiudades] = useState<iSede[]>([]);
