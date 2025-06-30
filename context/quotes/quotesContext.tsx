@@ -33,27 +33,36 @@ export function QuotesProvider({ children }: { children: ReactNode }) {
   const [quotes, setQuotes] = useState<iLead[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [rangoFechas, setRangoFechas] = useState<DateRange | undefined>({
-    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    to: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+    from: undefined,
+    to: undefined,
   });
 
   const getQuotes = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const filterDate = {
-        from: rangoFechas?.from?.toISOString().substring(0, 10),
-        to: rangoFechas?.to?.toISOString().substring(0, 10),
-      };
+    if (rangoFechas?.from === undefined || rangoFechas.to === undefined) {
+      return;
+    }
 
-      const query = await axios.get(
-        `/api/cotizacion?from=${filterDate.from}&to=${filterDate.to}`
-      );
-      if (query.status === 200) {
-        setQuotes(query.data.obj);
-        setIsLoading(false);
+    const filterDate = {
+      from: rangoFechas!.from!.toISOString().substring(0, 10),
+      to: rangoFechas!.to!.toISOString().substring(0, 10),
+    };
+
+    if (filterDate.from !== undefined && filterDate.to !== undefined) {
+      console.log("rangoFechas", { rangoFechas });
+      console.log("filterFilter", { filterDate });
+      try {
+        setIsLoading(true);
+
+        const query = await axios.get(
+          `/api/cotizacion?from=${filterDate.from}&to=${filterDate.to}`
+        );
+        if (query.status === 200) {
+          setQuotes(query.data.obj);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.log({ err });
       }
-    } catch (err) {
-      console.log({ err });
     }
   }, [rangoFechas]);
 
