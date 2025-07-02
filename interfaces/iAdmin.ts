@@ -1,3 +1,4 @@
+import { ExcelRowStatus, iModelo } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 
 export interface iFilterBar {
@@ -25,4 +26,22 @@ export interface iUser {
   email: string;
   createdAt: number;
   updatedAt: number;
+}
+
+export interface IExcelData {
+  headers: string[];
+  data: any[][];
+}
+
+export interface IPriceImportRow {
+  marca: string;
+  modelo: string;
+  nombre_fd: string;
+  precio: number;
+  glp: boolean;
+  entrega: boolean;
+  liquidacion: boolean;
+  nuevo: boolean;
+  matchedVehicle?: iModelo;
+  status: ExcelRowStatus;
 }
