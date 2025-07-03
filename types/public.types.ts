@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, MutableRefObject, SetStateAction } from "react";
 import { LucideIcon } from "lucide-react";
 import { Map } from "leaflet";
 
@@ -26,6 +26,7 @@ import {
 } from "@/interfaces";
 import { CotizacionGeneralFormValues, HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
+import { IExcelData } from "@/interfaces/iAdmin";
 
 export type iVideosYoutube = {
   src: string;
@@ -338,4 +339,35 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
   slugModelo: string;
   imageUrl: string;
   precioBase: number;
+};
+
+export type UploadStatusType =
+  | "inactivo"
+  | "en proceso"
+  | "completado"
+  | "error";
+
+export type UploadSectionProp = {
+  uploadStatus: UploadStatusType;
+  isProcessing: boolean;
+  handleFile: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  preview: IExcelData;
+  rowsMatched: number;
+  rowsTotal: number;
+};
+
+export type ExcelPreviewProp = IExcelData;
+
+export type ExcelRowStatus = "pending" | "matched" | "not-found" | "updated";
+
+export type CardStatProp = {
+  title: string;
+  value: number;
+  icon: IconProp;
+  tienePorcentaje?: boolean;
+};
+
+export type StatisticsSectionProp = {
+  totalImportados: number;
+  matchImportados: number;
 };
