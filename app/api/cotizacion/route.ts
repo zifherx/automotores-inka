@@ -86,9 +86,11 @@ export async function POST(req: NextRequest) {
   let newCustomer = null;
 
   try {
-    const customerFound = (await Cliente.findOne({
+    const customerFound: iCustomer | null = await Cliente.findOne({
       numeroDocumento: dataForm.numeroDocumento,
-    })) as iCustomer;
+    });
+
+    // console.log("customerFound", customerFound);
 
     if (!customerFound) {
       const qCustomer = new Cliente({
@@ -102,6 +104,17 @@ export async function POST(req: NextRequest) {
       }) as iCustomer;
 
       newCustomer = await qCustomer.save();
+    } else {
+      const updateCliente = await Cliente.findByIdAndUpdate(
+        customerFound._id,
+        {
+          celular: dataForm.celular,
+          email: dataForm.email,
+          aceptaPromociones: dataForm.checkPromociones,
+        },
+        { new: true }
+      );
+      console.log("updateCliente", updateCliente);
     }
 
     const vehicleFound = (await Modelo.findOne({

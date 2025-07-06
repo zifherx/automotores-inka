@@ -19,6 +19,7 @@ import {
   iServicioSVG,
   iTalleres,
   ModelsByBrand,
+  StepFormI,
   TableFormat,
   tDepartamento,
 } from "@/interfaces/iPublic";
@@ -1493,6 +1494,8 @@ export const IconTextTalleresData: iIconText[] = [
   },
 ];
 
+export const CiudadesVentasData = ["Chiclayo", "Chimbote", "Lima", "Trujillo"];
+
 export const CiudadesTalleresData = [
   "Todas",
   "Chiclayo",
@@ -2445,3 +2448,82 @@ export const TableBonoAhorroNunca2025: TableFormat = {
     },
   ],
 };
+
+export const mockVehicles: any[] = [
+  {
+    _id: "1",
+    name: "CS55",
+    slug: "cs55",
+    codigo_flashdealer: "CS55",
+    imageUrl: "https://placehold.co/300x200",
+    precioBase: 17000,
+    fichaTecnica: "",
+    marca: {
+      _id: "1",
+      name: "Changan",
+      slug: "changan",
+      createdBy: "zifherx",
+      imageUrl: "",
+      isActive: true,
+    },
+    carroceria: {
+      _id: "1",
+      name: "SUV",
+      slug: "suv",
+      isActive: true,
+      createdBy: "zifherx",
+    },
+    isEntrega48H: true,
+    isGLP: true,
+    isLiquidacion: false,
+    isNuevo: true,
+    colores: [],
+    features: { feature1: [], feature2: [] },
+    galeria: [],
+    isActive: true,
+    createdBy: "admin",
+  },
+  {
+    _id: "2",
+    name: "New Alsvin",
+    slug: "new-alsvin",
+    codigo_flashdealer: "NEW_ALSVIN",
+    imageUrl: "https://placehold.co/300x200",
+    precioBase: 9500,
+    fichaTecnica: "",
+    marca: { _id: "1", name: "Changan", slug: "changan" },
+    carroceria: { _id: "2", name: "Sedan", slug: "sedan" },
+    isEntrega48H: false,
+    isGLP: false,
+    isLiquidacion: false,
+    isNuevo: true,
+    colores: [],
+    features: { feature1: [], feature2: [] },
+    galeria: [],
+    isActive: true,
+    createdBy: "admin",
+  },
+];
+
+export const stepsForm: StepFormI[] = [
+  {
+    id: 1,
+    title: "Marca",
+    description: "Elige tu marca favorita",
+  },
+  {
+    id: 2,
+    title: "Modelo",
+    description: "Selecciona el modelo ideal",
+  },
+  {
+    id: 3,
+    title: "Ubicación",
+    description: "Encuentra tu concesionario",
+  },
+  {
+    id: 4,
+    title: "Contacto",
+    description: "Completa tus datos",
+  },
+];

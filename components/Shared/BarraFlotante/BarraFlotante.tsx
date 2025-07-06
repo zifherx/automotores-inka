@@ -36,7 +36,7 @@ export function BarraFlotante() {
         </motion.button>
         <Link
           className="bg-blueInka text-white py-4 px-6 h-16 flex items-center shadow-lg cursor-pointer"
-          href="/steps-cotizacion"
+          href="/cotizador-pasos"
         >
           <span className="whitespace-nowrap text-lg font-semibold">
             ¡Cotiza tu unidad ya!

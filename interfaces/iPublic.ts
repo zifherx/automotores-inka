@@ -1,4 +1,9 @@
-import { IconProp, ProductCategory } from "@/types";
+import {
+  IconProp,
+  IntencionCompraType,
+  ProductCategory,
+  TipoDocumentoType,
+} from "@/types";
 import { LucideIcon } from "lucide-react";
 
 export interface iServicioSVG {
@@ -179,4 +184,21 @@ export interface IRequestFD {
   marcaVehiculo: string;
   codigoFlashDealer: string;
   ciudadCotizacion: string;
+}
+
+export interface CotizadorPasosFormData {
+  nombreCompleto: string;
+  tipoDocumento: TipoDocumentoType;
+  numeroDocumento: string;
+  celular: string;
+  email: string;
+  intencionCompra: IntencionCompraType;
+  aceptaPoliticas: boolean;
+  aceptaNewsletter: boolean;
+}
+
+export interface StepFormI {
+  id: number;
+  title: string;
+  description: string;
 }

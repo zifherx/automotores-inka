@@ -4,6 +4,7 @@ import {
   Car,
   CarFront,
   Cog,
+  DollarSign,
   House,
   Images,
   MapPin,
@@ -129,12 +130,12 @@ export const listItemMenuADV: iMenuDashboard[] = [
     label: "Gestión de Vehículos",
     href: "/dashboard/admin/models",
   },
-  // {
-  //   id: 3,
-  //   icon: Truck,
-  //   label: "Gestión de Camiones",
-  //   href: "/dashboard/admin/trucks",
-  // },
+  {
+    id: 3,
+    icon: DollarSign,
+    label: "Gestión de Precios",
+    href: "/dashboard/admin/precios",
+  },
 ];
 
 export const listItemMenuComercial: iMenuDashboard[] = [
