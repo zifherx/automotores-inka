@@ -20,7 +20,7 @@ export function CardProductModel(props: iCardProductModel) {
     isNuevo,
   } = model;
 
-  const tc = 3.8;
+  const tc = 4.1;
 
   return (
     <div className="relative p-1 rounded-xl shadow-md bg-white border border-grisInka/55 hover:border-black">

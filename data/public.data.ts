@@ -19,18 +19,12 @@ import {
   iServicioSVG,
   iTalleres,
   ModelsByBrand,
+  StepFormI,
   TableFormat,
   tDepartamento,
 } from "@/interfaces/iPublic";
 
-import {
-  iChasis,
-  iModelo,
-  iParrafo,
-  iTipoServicio,
-  ProductCategory,
-} from "@/types";
-import { iMarca } from "@/models";
+import { iParrafo, iTipoServicio, ProductCategory } from "@/types";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
@@ -1500,6 +1494,8 @@ export const IconTextTalleresData: iIconText[] = [
   },
 ];
 
+export const CiudadesVentasData = ["Chiclayo", "Chimbote", "Lima", "Trujillo"];
+
 export const CiudadesTalleresData = [
   "Todas",
   "Chiclayo",
@@ -2506,5 +2502,28 @@ export const mockVehicles: any[] = [
     galeria: [],
     isActive: true,
     createdBy: "admin",
+  },
+];
+
+export const stepsForm: StepFormI[] = [
+  {
+    id: 1,
+    title: "Marca",
+    description: "Elige tu marca favorita",
+  },
+  {
+    id: 2,
+    title: "Modelo",
+    description: "Selecciona el modelo ideal",
+  },
+  {
+    id: 3,
+    title: "Ubicación",
+    description: "Encuentra tu concesionario",
+  },
+  {
+    id: 4,
+    title: "Contacto",
+    description: "Completa tus datos",
   },
 ];

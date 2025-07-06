@@ -1,8 +1,8 @@
 import axios from "axios";
 
 import { iCompany, IRequestFD, iTalleres } from "@/interfaces";
+
 import { CotizacionForm } from "@/types";
-import { CotizacionGeneralFormValues } from "@/forms";
 
 export const switchRS = (rs: string) => {
   switch (rs) {
@@ -178,5 +178,20 @@ export const sendCotizacionFlashDealer = async (
       status: err.response?.status,
     });
     throw new Error("Error al enviar la cotización a Flashdealer");
+  }
+};
+
+export const getDocumentMaxLength = (documentType: string): number => {
+  switch (documentType) {
+    case "dni":
+      return 8;
+    case "ruc":
+      return 11;
+    case "pasaporte":
+      return 15;
+    case "ce":
+      return 15;
+    default:
+      return 8;
   }
 };

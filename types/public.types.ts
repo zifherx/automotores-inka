@@ -173,7 +173,8 @@ export interface iTEmailReclamo {
 }
 
 export type iCustomMessage = {
-  message: string;
+  customer: string;
+  celular: string;
   volverInicio: () => void;
 };
 
@@ -370,4 +371,46 @@ export type CardStatProp = {
 export type StatisticsSectionProp = {
   totalImportados: number;
   matchImportados: number;
+};
+
+export type TipoDocumentoType = "dni" | "ruc" | "pasaporte" | "ce";
+export type IntencionCompraType =
+  | "esta-semana"
+  | "este-mes"
+  | "proximo-mes"
+  | "mas-adelante";
+
+export type StepContentProp = {
+  currentStep: number;
+  previous: () => void;
+  next: () => void;
+  selectedBrand: iBrand | null;
+  setSelectedBrand: Dispatch<SetStateAction<iBrand | null>>;
+  selectedModel: iModelo | null;
+  setSelectedModel: Dispatch<SetStateAction<iModelo | null>>;
+  selectedLocation: iSede | null;
+  setSelectedLocation: Dispatch<SetStateAction<iSede | null>>;
+};
+
+export type BrandSelectionProp = {
+  onSelect: (marca: iBrand) => void;
+};
+
+export type ModelSelectionProp = {
+  selectedBrand: iBrand | null;
+  onSelect: (model: iModelo) => void;
+  onBack: () => void;
+};
+
+export type LocationSelectionProp = {
+  selectedBrand: iBrand | null;
+  onSelect: (location: iSede) => void;
+  onBack: () => void;
+};
+
+export type ContactFormProp = {
+  selectedBrand: iBrand | null;
+  selectedModel: iModelo | null;
+  selectedLocation: iSede | null;
+  onBack: () => void;
 };

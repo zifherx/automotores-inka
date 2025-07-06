@@ -165,13 +165,9 @@ export function FormularioLead({ model }: iCardModel) {
         onToast(cotizacionResult.value.data.message);
       }
 
-      const redirectId =
-        flashdealerResult.status === "fulfilled"
-          ? new Date().getTime()
-          : cotizacionResult.value.data._id;
-
-      // console.log("redirectId", redirectId);
-      router.push(`/gracias/${redirectId}`);
+      router.push(
+        `/gracias?nombre=${values.nombres}&celular=${values.celular}`
+      );
     } catch (err: any) {
       handleCotizacionError(err);
     } finally {
