@@ -315,6 +315,30 @@ export const formContactAccesorios = z.object({
     .max(500, "El mensaje no puede exceder 500 caracteres"),
 });
 
+export const cotizadorPasosSchema = z.object({
+  nombreCompleto: z
+    .string()
+    .min(2, { message: "Nombre debe tener al menos 2 caracteres" }),
+  tipoDocumento: z.enum(["dni", "ruc", "pasaporte", "ce"], {
+    required_error: "Selecciona un tipo de documento",
+  }),
+  numeroDocumento: z
+    .string()
+    .min(1, { message: "Ingresa el número de documento" }),
+  celular: z
+    .string()
+    .length(9, { message: "celular debe tener exactamente 9 dígitos" }),
+  email: z.string().email({ message: "Ingresa un email válido" }),
+  intencionCompra: z.enum(
+    ["esta-semana", "este-mes", "proximo-mes", "mas-adelante"],
+    { required_error: "Selecciona tu intención de compra" }
+  ),
+  aceptaPoliticas: z.boolean().refine((val) => val === true, {
+    message: "Debes aceptar las politicas de Protección de Datos Personales",
+  }),
+  aceptaNewsletter: z.boolean(),
+});
+
 export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
@@ -337,3 +361,4 @@ export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>;
 export type TCambioFormValues = z.infer<typeof formTipoCambio>;
 export type NoticiasFormValues = z.infer<typeof formNoticia>;
 export type ContactFormAccesoriesValues = z.infer<typeof formContactAccesorios>;
+export type CotizadorPasosFormValues = z.infer<typeof cotizadorPasosSchema>;

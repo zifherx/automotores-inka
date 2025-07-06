@@ -1,22 +1,25 @@
 import { Metadata } from "next";
 
-import { CatalogoVehicular } from "./components/CatalogoVehicular";
+import { CotizadorPasosView } from "./components/CotizadorPasosView";
 
 import { BrandsProvider } from "@/context/brands/marcaContext";
 import { ModelosProvider } from "@/context/modelos/modeloContext";
+import { SucursalProvider } from "@/context/sucursal/sucursalContext";
 
 export const metadata: Metadata = {
   title: {
+    default: "Cotizador Pasos",
     template: "",
-    default: "Catálogo",
   },
 };
 
-export default async function CatalogoPage() {
+export default function CotizadosPasosPage() {
   return (
     <BrandsProvider>
       <ModelosProvider>
-        <CatalogoVehicular />
+        <SucursalProvider>
+          <CotizadorPasosView />
+        </SucursalProvider>
       </ModelosProvider>
     </BrandsProvider>
   );
