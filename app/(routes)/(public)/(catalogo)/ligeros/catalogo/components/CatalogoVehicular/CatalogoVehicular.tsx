@@ -6,33 +6,27 @@ import axios from "axios";
 
 import { Breadcrumbs } from "@/components/Shared/Breadcrumbs";
 
-import { iBrand, iChasis, iModelo } from "@/types";
 import { Filtros } from "../Filtros";
 import { ListVehicles } from "../ListVehicles";
 
+import { useBrands } from "@/context/brands/marcaContext";
+import { iChasis, iModelo } from "@/types";
+import { useModelos } from "@/context/modelos/modeloContext";
+
 export function CatalogoVehicular() {
+  const { brands } = useBrands();
+  const { modelos } = useModelos();
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const marcaFound = searchParams.get("marca");
 
-  const [marcas, setMarcas] = useState<iBrand[]>([]);
   const [chasises, setChasises] = useState<iChasis[]>([]);
-  const [models, setModels] = useState<iModelo[]>([]);
   const [vehiculosFiltrados, setVehiculosFiltrados] = useState<iModelo[]>([]);
   const [filtros, setFiltros] = useState({
     marca: marcaFound ? marcaFound : "",
     carroceria: "",
   });
-
-  const getBrands = async () => {
-    const query = await axios.get("/api/marca");
-    if (query.status === 200) {
-      const brandsActive: iBrand[] = query.data.data.filter(
-        (a: iBrand) => a.isActive
-      );
-      setMarcas(brandsActive);
-    }
-  };
 
   const getChasises = async () => {
     const query = await axios.get("/api/chasis");
@@ -41,23 +35,12 @@ export function CatalogoVehicular() {
     }
   };
 
-  const getModels = async () => {
-    const query = await axios.get("/api/modelo");
-    if (query.status === 200) {
-      const soloActivos = query.data.obj.filter((a: iModelo) => a.isActive);
-      // console.log("Activados",soloActivos)
-      setModels(soloActivos);
-    }
-  };
-
   useEffect(() => {
-    getBrands();
     getChasises();
-    getModels();
   }, []);
 
   useEffect(() => {
-    let filtered = models;
+    let filtered = modelos;
 
     if (filtros.marca) {
       filtered = filtered.filter((item) => {
@@ -76,7 +59,7 @@ export function CatalogoVehicular() {
     }
 
     setVehiculosFiltrados(filtered);
-  }, [filtros, models]);
+  }, [filtros, modelos]);
 
   const handleFilterChange = (filterName: string, filterValue: string) => {
     setFiltros((prevFilters) => ({
@@ -100,7 +83,7 @@ export function CatalogoVehicular() {
         <Breadcrumbs marca={filtros.marca} />
         <div className="flex flex-col lg:flex-row gap-8">
           <Filtros
-            brands={marcas}
+            brands={brands.filter((brand) => brand.isActive)}
             chasises={chasises}
             clearFilter={clearFilters}
             filters={filtros}
