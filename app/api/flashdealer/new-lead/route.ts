@@ -60,15 +60,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       response: response.data,
     });
   } catch (err: any) {
-    console.error(err.message);
-    console.error(err);
+    console.log(err.message);
+    console.log(err);
 
     // Guardado en Bitacore - Error
     const bitacoraError = new Bitacora({
       request: {
         body: JSON.stringify(err.response.config.data),
-        authorization: err.response.headers.Authorization,
-        accept: err.config.headers.Accept,
+        authorization: err.response.headers.Authorization
+          ? err.response.headers.Authorization
+          : "",
+        accept: err.response.config.headers.Accept
+          ? err.response.config.headers.Accept
+          : "",
       },
       response: {
         body: JSON.stringify(err.response.data),
@@ -76,7 +80,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         statusText: err.response.statusText,
       },
       method: err.response.config.method,
-      url: err.response.config.url,
+      url: err.response.config.url ? err.response.config.url : "",
     });
     await bitacoraError.save();
 
