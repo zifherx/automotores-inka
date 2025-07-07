@@ -38,7 +38,7 @@ export function Navbar() {
         <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-5">
           <Link
             // href="/new-cotizacion"
-            href="/cotizador-pasos"
+            href="/steps-cotizacion"
             className={cn(
               pathname === "/new-cotizacion"
                 ? "hidden"

@@ -202,3 +202,67 @@ export interface StepFormI {
   title: string;
   description: string;
 }
+
+export interface FlashDealerRequest {
+  numeroDocumento: string;
+  correoElectronico: string;
+  numeroCelular: string;
+  marcaVehiculo: string;
+  codigoFlashDealer: string;
+  ciudadCotizacion: string;
+}
+
+export interface FlashDealerPayload {
+  document: string;
+  email: string;
+  phone_number: string;
+  mark: string;
+  model: string;
+  year: string;
+  vehicle: string;
+  mileage: string;
+  form_id: string;
+  form_name: string;
+  campaign_id: string;
+  page_id: string;
+  page_name: string;
+  platform: string;
+  city: string;
+}
+
+export interface BitacoraData {
+  request: RequestBitacora;
+  response: ResponseBitacora;
+  method: string;
+  url: string;
+}
+
+export interface RequestBitacora {
+  body: string;
+  authorization?: string;
+  accept?: string;
+}
+
+export interface ResponseBitacora {
+  body: string;
+  code: number;
+  statusText: string;
+}
+
+export interface LogData {
+  method: string;
+  url: string;
+  userAgent?: string;
+  ip?: string;
+  timestamp: string;
+  duration: number;
+  status: number;
+  error?: string;
+}
+
+export interface OptionsLoggerAdvanced {
+  logBody?: boolean;
+  logHeaders?: boolean;
+  excludeHeaders?: string[];
+  maxBodyLength?: number;
+}

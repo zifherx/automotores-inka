@@ -22,7 +22,7 @@ import {
 import { ExcelPreviewProp } from "@/types";
 
 export function ExcelPreview({ data, headers }: ExcelPreviewProp) {
-  const previewData = data.slice(0, 5);
+  const previewData = data.slice(0, 4);
 
   return (
     <Card className="mt-4">
@@ -52,7 +52,7 @@ export function ExcelPreview({ data, headers }: ExcelPreviewProp) {
           {/* Vista previa de datos */}
           <div>
             <h4 className="text-sm font-medium mb-2">Vista previa de datos:</h4>
-            <div className="rounded-md max-h-64 overflow-auto">
+            <div className="rounded-md max-h-72 overflow-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -76,9 +76,9 @@ export function ExcelPreview({ data, headers }: ExcelPreviewProp) {
                 </TableBody>
               </Table>
             </div>
-            {data.length > 5 && (
+            {data.length > 4 && (
               <p className="text-sm text-muted-foreground">
-                Mostrando 5 de {data.length} filas
+                Mostrando 4 de {data.length} filas
               </p>
             )}
           </div>

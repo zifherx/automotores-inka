@@ -7,11 +7,12 @@ import { EstadisticasSection } from "./EstadisticasSection";
 import { ResultsTableSection } from "./ResultsTableSection";
 import { UploadSection } from "./UploadSection";
 
+import { useModelos } from "@/context/modelos/modeloContext";
 import { UploadStatusType } from "@/types";
 import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
-import { mockVehicles } from "@/data";
 
 export function GestionPreciosView() {
+  const { modelos } = useModelos();
   const [importedData, setImportedData] = useState<IPriceImportRow[]>([]);
   const [uploadStatus, setUploadStatus] =
     useState<UploadStatusType>("inactivo");
@@ -101,7 +102,7 @@ export function GestionPreciosView() {
       console.log("PROCESSEDDATA:", processedData);
 
       const finalData = processedData.map((row) => {
-        const matchedVehicle = mockVehicles.find(
+        const matchedVehicle = modelos.find(
           (vehicle) =>
             vehicle.codigo_flashdealer.toLowerCase() ===
               row.nombre_fd.toLowerCase() ||
@@ -117,6 +118,8 @@ export function GestionPreciosView() {
         };
       });
 
+      // console.log("finalData", finalData);
+
       setImportedData(finalData);
       setUploadStatus("completado");
     } catch (err: any) {
@@ -127,13 +130,30 @@ export function GestionPreciosView() {
     }
   };
 
+  const handleSaveUpdates = async () => {
+    console.log("Guardar Datos");
+  };
+
+  const handleClearData = () => {
+    setImportedData([]);
+    setExcelData({ headers: [], data: [] });
+    setUploadStatus("inactivo");
+
+    const fileInput = document.getElementById(
+      "excel-upload"
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   const matchedCount = importedData.filter((row) => row.matchedVehicle).length;
   const totalCount = importedData.length;
 
-  console.log({ importedData });
+  // console.log({ importedData });
 
   return (
-    <div className="p-2">
+    <div className="p-2 space-y-4">
       <div className="flex items-center justify-between mb-3">
         <div>
           <h2 className="text-xl md:text-3xl font-headMedium">
@@ -150,14 +170,22 @@ export function GestionPreciosView() {
         preview={excelData}
         rowsMatched={matchedCount}
         rowsTotal={totalCount}
+        onClearData={handleClearData}
       />
-
-      {importedData.length > 0 && <ResultsTableSection />}
 
       {importedData.length > 0 && (
         <EstadisticasSection
           matchImportados={matchedCount}
           totalImportados={totalCount}
+        />
+      )}
+
+      {importedData.length > 0 && (
+        <ResultsTableSection
+          importedData={importedData}
+          isProcessing={isProcessing}
+          matchedCount={matchedCount}
+          onSaveUpdates={handleSaveUpdates}
         />
       )}
     </div>
