@@ -26,7 +26,7 @@ import {
 } from "@/interfaces";
 import { CotizacionGeneralFormValues, HReclamoFormValues } from "@/forms";
 import { IconType } from "react-icons/lib";
-import { IExcelData } from "@/interfaces/iAdmin";
+import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
 
 export type iVideosYoutube = {
   src: string;
@@ -355,6 +355,7 @@ export type UploadSectionProp = {
   preview: IExcelData;
   rowsMatched: number;
   rowsTotal: number;
+  onClearData: () => void;
 };
 
 export type ExcelPreviewProp = IExcelData;
@@ -366,6 +367,13 @@ export type CardStatProp = {
   value: number;
   icon: IconProp;
   tienePorcentaje?: boolean;
+};
+
+export type ResultsTableSectionProp = {
+  importedData: IPriceImportRow[];
+  isProcessing: boolean;
+  matchedCount: number;
+  onSaveUpdates: () => void;
 };
 
 export type StatisticsSectionProp = {
