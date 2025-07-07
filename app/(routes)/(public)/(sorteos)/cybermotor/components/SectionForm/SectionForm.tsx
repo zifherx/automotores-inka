@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 
 import { CybermotorFormValues, formCybermotorSchema } from "@/forms";
-import { TimelineStep } from "@/app/(routes)/(public)/(cotizador)/steps-cotizacion/components/TimelineStep";
+import { TimelineStep } from "@/app/(routes)/(public)/(cotizador)/steps-cotizacion2/components/TimelineStep";
 import { cn, onToast } from "@/lib";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
