@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowLeft, Clock, Fuel, Gauge, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowLeft, Clock, Fuel, Gauge, Loader2, Zap } from "lucide-react";
+import axios from "axios";
 
-import { useModelos } from "@/context/modelos/modeloContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,13 +13,38 @@ import { BtnAtrasForm } from "@/components/Shared/BtnAtrasForm";
 
 import { formatUSDPrice } from "@/lib";
 import { iModelo, ModelSelectionProp } from "@/types";
+import { LoadingIcon } from "@/components/Shared/LoadingIcon";
 
 export function ModelSelection({
   onBack,
   onSelect,
   selectedBrand,
 }: ModelSelectionProp) {
-  const { modelos } = useModelos();
+  // const { modelos } = useModelos();
+  const [modelos, setModelos] = useState<iModelo[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+
+  const getModelos = async () => {
+    setLoadingData(true);
+    try {
+      const query = await axios.get("/api/modelo");
+      if (query.status === 200) {
+        const modelosActivos = await query.data.obj.filter(
+          (modelo: iModelo) => modelo.isActive
+        );
+        setModelos(modelosActivos);
+      }
+    } catch (err: any) {
+      console.log("Error: ", err.message);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    getModelos();
+  }, []);
+
   const filteredModels: iModelo[] = modelos.filter(
     (modelo) => modelo.isActive && modelo.marca.slug === selectedBrand?.slug
   );
@@ -141,7 +167,17 @@ export function ModelSelection({
       {filteredModels.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg font-headBold">
-            No hay modelos disponibles para esta marca
+            {loadingData ? (
+              <>
+                Cargando modelos de la marca {selectedBrand?.name}
+                <Loader2
+                  className="text-redInka mx-auto w-16 h-16 animate-spin"
+                  strokeWidth={2}
+                />
+              </>
+            ) : (
+              "No hay modelos disponibles para esta marca"
+            )}
           </p>
         </div>
       )}
