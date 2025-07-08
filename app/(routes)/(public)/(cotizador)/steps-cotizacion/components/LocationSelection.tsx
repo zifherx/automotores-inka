@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, Clock, Loader2, MapPin, Phone } from "lucide-react";
+import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -15,21 +16,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { BtnAtrasForm } from "@/components/Shared/BtnAtrasForm";
 
-import { useSucursales } from "@/context/sucursal/sucursalContext";
-
 import { iSede, LocationSelectionProp } from "@/types";
-import { CiudadesVentasData } from "@/data";
 
 export function LocationSelection({
   onBack,
   onSelect,
   selectedBrand,
 }: LocationSelectionProp) {
-  const { sucursales } = useSucursales();
-
+  // const { sucursales } = useSucursales();
+  const [sucursales, setSucursales] = useState<iSede[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
+  const [ciudades, setCiudades] = useState<iSede[]>([]);
+
+  const getSucursales = async () => {
+    setLoadingData(true);
+    try {
+      const query = await axios.get("/api/sucursal");
+      if (query.status === 200) {
+        const allSucursales = query.data.obj.filter(
+          (sede: iSede) => sede.isActive
+        );
+        setSucursales(allSucursales);
+        setLoadingData(false);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  const getCiudadByBrand = async (marca: string) => {
+    if (marca) {
+      const query = await axios.get(`/api/sucursal/by-marca/${marca}`);
+      if (query.status === 200) {
+        const sedesUnicas = query.data.all.filter(
+          (item: any, index: any, self: any) =>
+            index === self.findIndex((a: any) => a.ciudad === item.ciudad)
+        );
+        setCiudades(sedesUnicas);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getSucursales();
+  }, []);
+
+  useEffect(() => {
+    if (selectedBrand !== null) {
+      getCiudadByBrand(selectedBrand.slug);
+    }
+  }, [selectedBrand]);
 
   const filteredSedes: iSede[] = sucursales.filter((sucursal) => {
     const hasCity = selectedCity ? sucursal.ciudad === selectedCity : true;
@@ -70,8 +110,8 @@ export function LocationSelection({
             <SelectValue placeholder="Elige una ciudad" />
           </SelectTrigger>
           <SelectContent>
-            {CiudadesVentasData.map((ciudad) => (
-              <SelectItem key={ciudad} value={ciudad}>
+            {ciudades.map(({ _id, ciudad }) => (
+              <SelectItem key={_id} value={ciudad}>
                 {ciudad}
               </SelectItem>
             ))}
@@ -155,8 +195,18 @@ export function LocationSelection({
 
       {filteredSedes.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">
-            No hay concesionarios disponibles para los filtros
+          <p className="text-gray-500 text-lg font-headBold">
+            {loadingData ? (
+              <>
+                Cargando sucursales para la marca {selectedBrand?.name}
+                <Loader2
+                  className="text-redInka mx-auto w-16 h-16 animate-spin"
+                  strokeWidth={2}
+                />
+              </>
+            ) : (
+              `No hay concesionarios disponibles para los filtros | ciudad: ${selectedCity}`
+            )}
           </p>
         </div>
       )}
