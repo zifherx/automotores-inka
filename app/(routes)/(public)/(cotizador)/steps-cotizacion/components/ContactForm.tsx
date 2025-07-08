@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -32,6 +32,7 @@ import {
   sendCotizacionFlashDealer,
 } from "@/lib";
 import { useRouter } from "next/navigation";
+import { DataLayerEvent, sendDataLayer } from "@/utils/analytics";
 
 export function ContactForm({
   onBack,
@@ -53,6 +54,10 @@ export function ContactForm({
   });
 
   const tipoDocumentoWatch = watch("tipoDocumento");
+
+  const trackEvent = useCallback((eventData: DataLayerEvent) => {
+    sendDataLayer(eventData);
+  }, []);
 
   const onSubmit = async (values: CotizadorPasosFormData) => {
     setIsSubmitting(true);
@@ -111,7 +116,14 @@ export function ContactForm({
         onToast(cotizacionResult.value.data.message);
       }
 
-      const cotizacionNumber = cotizacionResult.value.data._id;
+      const cotizacionNumber = cotizacionResult.value.data.obj._id;
+
+      await trackEvent({
+        event: "lead_form_submitted",
+        lead_interna: cotizacionNumber,
+      });
+
+      console.log("window-dataLayer", window.dataLayer);
 
       router.push(
         `/gracias?nombre=${values.nombreCompleto}&celular=${values.celular}`
