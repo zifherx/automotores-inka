@@ -31,8 +31,8 @@ export function Banner(props: iCardModel) {
             <Link
               href={`/cotizacion?modelo=${params.modelo}`}
               className={cn(
-                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium ",
-                "hover:bg-white hover:text-redInka hover:border hover:border-redInka hover:underline"
+                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium",
+                "hover:bg-redDarkInka hover:scale-105 transition-all duration-200"
               )}
             >
               Cotízalo ahora
