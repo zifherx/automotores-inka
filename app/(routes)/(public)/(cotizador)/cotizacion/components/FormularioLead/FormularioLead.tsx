@@ -80,6 +80,8 @@ export function FormularioLead({ model }: iCardModel) {
   const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
   const numeroDocumento = form.watch("numeroDocumento");
 
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
   const trackEvent = useCallback((eventData: DataLayerEvent) => {
     sendDataLayer(eventData);
   }, []);
@@ -116,6 +118,17 @@ export function FormularioLead({ model }: iCardModel) {
     if (marcaSelected) {
       getCiudadesByBrand(marcaSelected);
     }
+    
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+    
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+
   }, [marcaSelected]);
 
   const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
@@ -144,6 +157,28 @@ export function FormularioLead({ model }: iCardModel) {
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
       };
+
+
+      const form_api = {
+        "document": flashdealerData.numeroDocumento,
+        "full_name": cotizacionData.nombres,
+        "email": flashdealerData.correoElectronico,
+        "phone_number": flashdealerData.numeroCelular,
+        "mark": cotizacionData.marca,
+        "model": cotizacionData.modelo,
+        "city": cotizacionData.departamento,
+        // "vehicle": flashdealerData.numeroDocumento,
+        // "year": newObj.numeroDocumento,
+        "platform": utmParams.utm_source || 'web',
+        "form_name": "NUEVOS",
+      }
+      const query_api = await axios.post("https://api-prod-fd.digitaldealersuite.com/api/v1/webhook_fbleads", form_api, {
+        headers: {
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLXByb2QtZmQuZGlnaXRhbGRlYWxlcnN1aXRlLmNvbVwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3NDg4ODE1MDEsImV4cCI6MTc3OTk4NTUwMSwibmJmIjoxNzQ4ODgxNTAxLCJqdGkiOiJ3Y2lrS3FCaTFRbnlNUmVRIiwic3ViIjoxMzIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bwQNQokrUC_6UkO3dlqCfPjPGL4AkW-Sn0SxsgiwlUI`,
+        },
+      });
+      console.log('query_api----------------------------------------->', query_api);
+
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
         createCotizacion(cotizacionData, "/api/cotizacion"),

@@ -138,12 +138,27 @@ export function CotizadorStep() {
   const tipoDocumentoSeleccionado = formSteps.watch("tipoDocumento");
   const numeroDocumento = formSteps.watch("numeroDocumento");
 
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
   const maxLengthDocumento =
     tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
       ?.maxLength || 0;
 
   useEffect(() => {
     getModelos();
+    
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+
+
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+    
+
   }, []);
 
   useEffect(() => {
@@ -212,6 +227,28 @@ export function CotizadorStep() {
 
     try {
       if (selectedModel !== null) {
+        
+        const form_api = {
+          "document": newObj.numeroDocumento,
+          "full_name": newObj.nombres,
+          "email": newObj.email,
+          "phone_number": newObj.celular,
+          "mark": newObj.marca,
+          "model": newObj.modelo,
+          "city": newObj.departamento,
+          // "vehicle": newObj.numeroDocumento,
+          // "year": newObj.numeroDocumento,
+          "platform": utmParams.utm_source || 'web',
+          "form_name": "NUEVOS",
+        }
+        const query_api = await axios.post("https://api-prod-fd.digitaldealersuite.com/api/v1/webhook_fbleads", form_api, {
+          headers: {
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLXByb2QtZmQuZGlnaXRhbGRlYWxlcnN1aXRlLmNvbVwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3NDg4ODE1MDEsImV4cCI6MTc3OTk4NTUwMSwibmJmIjoxNzQ4ODgxNTAxLCJqdGkiOiJ3Y2lrS3FCaTFRbnlNUmVRIiwic3ViIjoxMzIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bwQNQokrUC_6UkO3dlqCfPjPGL4AkW-Sn0SxsgiwlUI`,
+          },
+        });
+        console.log('query_api----------------------------------------->', query_api);
+        
+
         const query = await axios.post("/api/cotizacion", newObj);
 
         if (query.status === 200) {
