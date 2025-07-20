@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+
 import {
   Card,
   CardContent,
@@ -10,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function ReclamoRegistrado() {
@@ -53,19 +54,19 @@ export default function ReclamoRegistrado() {
           </div>
           <ul className="space-y-2 text-sm text-gray-600">
             <li className="flex items-center">
-              <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
+              <ArrowRight className="w-4 h-4 mr-2 text-blueInka" />
               Revisaremos detalladamente tu reclamo.
             </li>
             <li className="flex items-center">
-              <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
+              <ArrowRight className="w-4 h-4 mr-2 text-blueInka" />
               Te contactaremos por correo electrónico.
             </li>
             <li className="flex items-center">
-              <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
+              <ArrowRight className="w-4 h-4 mr-2 text-blueInka" />
               La copia de tu reclamo llegará a tu correo electrónico.
             </li>
             <li className="flex items-center">
-              <ArrowRight className="w-4 h-4 mr-2 text-blue-500" />
+              <ArrowRight className="w-4 h-4 mr-2 text-blueInka" />
               Resolveremos tu caso lo antes posible.
             </li>
           </ul>
