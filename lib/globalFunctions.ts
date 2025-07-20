@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { iCompany, IRequestFD, iTalleres } from "@/interfaces";
 
-import { CotizacionForm } from "@/types";
+import { CotizacionForm, ReclamoDataBuildedType } from "@/types";
 
 export const switchRS = (rs: string) => {
   switch (rs) {
@@ -50,6 +50,18 @@ export const horaHoy = (fecha: Date) => {
     hour: "2-digit",
     minute: "2-digit",
   });
+};
+
+export const getCurrentDateTime = () => {
+  const now = new Date();
+  const fecha = now.toLocaleDateString("es-PE");
+  const hora = now.toLocaleTimeString("es-PE", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return { fecha, hora };
 };
 
 export const formatNumberToSixDigits = (num: number): string => {
@@ -113,6 +125,10 @@ export const createConversationWhatsapp = (
 };
 
 export const buildCotizacionData = (values: CotizacionForm) => {
+  return { ...values };
+};
+
+export const buildReclamoData = (values: ReclamoDataBuildedType) => {
   return { ...values };
 };
 
@@ -181,6 +197,47 @@ export const sendCotizacionFlashDealer = async (
   }
 };
 
+export const createReclamo = async (
+  values: ReclamoDataBuildedType,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, values);
+    if (response.status !== 200) {
+      throw new Error(`Error al crear cotización: ${response.status}`);
+    }
+    return response;
+  } catch (err: any) {
+    console.error(`Error en createReclamo:`, {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+  }
+};
+
+export const sendReclamoEmail = async (
+  data: ReclamoDataBuildedType,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, data);
+
+    if (response.status !== 200) {
+      throw new Error(`Error al enviar email: ${response.status}`);
+    }
+
+    return response;
+  } catch (err: any) {
+    console.error("Error en sendReclamoEmail:", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error("Error al enviar el email de reclamo");
+  }
+};
+
 export const getDocumentMaxLength = (documentType: string): number => {
   switch (documentType) {
     case "dni":
@@ -194,4 +251,16 @@ export const getDocumentMaxLength = (documentType: string): number => {
     default:
       return 8;
   }
+};
+
+export const createNumeroDeReclamo = (
+  razonSocial: string,
+  fecha: string,
+  numeroUltimoReclamo: number,
+  codeSede: string
+): string => {
+  const nomeclaturaLRD = setNomenclaturaLRD(razonSocial);
+  const numLRD = formatNumberToSixDigits(numeroUltimoReclamo + 1);
+  const yearLRD = fecha.split("/")[2];
+  return `LRD-${nomeclaturaLRD}-${numLRD}-${yearLRD}-${codeSede}`;
 };

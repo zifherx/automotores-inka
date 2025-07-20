@@ -144,7 +144,9 @@ export const makePDFCorreoReclamo = (params?: tClaimAll) => {
   doc
     .setFont("times", "normal")
     .setFontSize(8)
-    .text(params!.email.toUpperCase(), 115, 96, { align: "left" }); //dinámico
+    .text(params?.email ? params.email.toUpperCase() : "", 115, 96, {
+      align: "left",
+    }); //dinámico
 
   doc
     .setFont("times", "bold")
@@ -301,7 +303,7 @@ export const makePDFCorreoReclamo = (params?: tClaimAll) => {
   let legal1 =
     "* La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI";
   let legal2 =
-    "* El proveedor deberá dar respuesta al reclamo en un plazo no mayor a quince (15) días hábiles.";
+    "* El proveedor deberá dar respuesta al reclamo en un plazo no mayor a quince (15) días hábiles improrrogables.";
 
   doc
     .setFont("times", "normal")
@@ -464,7 +466,9 @@ export const makePDFReclamo = (params?: tClaimAll) => {
   doc
     .setFont("times", "normal")
     .setFontSize(8)
-    .text(params!.email.toUpperCase(), 115, 96, { align: "left" }); //dinámico
+    .text(params?.email ? params?.email.toUpperCase() : "", 115, 96, {
+      align: "left",
+    }); //dinámico
 
   doc
     .setFont("times", "bold")
