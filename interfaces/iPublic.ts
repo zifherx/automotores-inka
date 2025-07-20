@@ -266,3 +266,19 @@ export interface OptionsLoggerAdvanced {
   excludeHeaders?: string[];
   maxBodyLength?: number;
 }
+
+export interface ILegalItem {
+  id: number;
+  icon: IconProp;
+  title: string;
+  description: string;
+  iconBackground: string;
+  iconColor: string;
+}
+
+export interface InputControlI {
+  id: number;
+  icon: IconProp;
+  label: string;
+  value: string;
+}
