@@ -144,43 +144,44 @@ export function FormAddReclamo(props: iHojaReclamo) {
   const onSubmit = async (values: HReclamoFormValues) => {
     setIsLoading(true);
     try {
-      const query = await axios.post("/api/reclamo", {
-        ...values,
-        sedeCompra: sedeSelected!.ciudad,
-        sedeCodexHR: sedeSelected!.codexHR,
-        tipoBien: tipoBienSelected,
-        fecha: fechaToday,
-        hora: horaToday,
-        numeroReclamo: codigoLRD,
-        razonSocial: switchRS(slugType),
-        rucEmpresa: switchRuc(slugType),
-        direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
-        direccionSede: sedeSelected!.address,
-      });
+      console.log("VALUES:", values);
+      // const query = await axios.post("/api/reclamo", {
+      //   ...values,
+      //   sedeCompra: sedeSelected!.ciudad,
+      //   sedeCodexHR: sedeSelected!.codexHR,*
+      //   tipoBien: tipoBienSelected,
+      //   fecha: fechaToday,*
+      //   hora: horaToday,*
+      //   numeroReclamo: codigoLRD,*
+      //   razonSocial: switchRS(slugType),*
+      //   rucEmpresa: switchRuc(slugType),*
+      //   direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,*
+      //   direccionSede: sedeSelected!.address,*
+      // });
 
-      if (query.status === 200) {
-        const envioCorreo = await axios.post("/api/send-email/reclamo", {
-          ...values,
-          sedeCompra: sedeSelected!.ciudad,
-          sedeCodexHR: sedeSelected!.codexHR,
-          tipoBien: tipoBienSelected,
-          fecha: fechaToday,
-          hora: horaToday,
-          numeroReclamo: codigoLRD,
-          razonSocial: switchRS(slugType),
-          rucEmpresa: switchRuc(slugType),
-          direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
-          direccionSede: sedeSelected!.address,
-        });
+      // if (query.status === 200) {
+      //   const envioCorreo = await axios.post("/api/send-email/reclamo", {
+      //     ...values,
+      //     sedeCompra: sedeSelected!.ciudad,
+      //     sedeCodexHR: sedeSelected!.codexHR,
+      //     tipoBien: tipoBienSelected,
+      //     fecha: fechaToday,
+      //     hora: horaToday,
+      //     numeroReclamo: codigoLRD,
+      //     razonSocial: switchRS(slugType),
+      //     rucEmpresa: switchRuc(slugType),
+      //     direccionCliente: `${values.direccion} ,${values.distrito}, ${values.provincia}, ${values.departamento}`,
+      //     direccionSede: sedeSelected!.address,
+      //   });
 
-        if (envioCorreo.status === 200) {
-          setIsLoading(false);
-          onToast(query.data.message);
-          router.push("/nosotros/libro-reclamaciones/gracias");
-        }
-      }
-    } catch (err) {
-      // console.log(err);
+      //   if (envioCorreo.status === 200) {
+      //     setIsLoading(false);
+      //     onToast(query.data.message);
+      //     router.push("/nosotros/libro-reclamaciones/gracias");
+      //   }
+      // }
+    } catch (err: any) {
+      console.log(err.message);
       setIsLoading(false);
       onToast("Algo salió mal ❌", "", true);
     }
@@ -817,8 +818,7 @@ export function FormAddReclamo(props: iHojaReclamo) {
             </p>
             <p className="text-sm text-gray-500 leading-tight">
               * El proveedor deberá dar respuesta al reclamo en un plazo no
-              mayor a 15 días hábiles, pudiendo ampliaar el plazo hasta por
-              treinta (30) días más, previa comunicación al consumidor.
+              mayor a quince (15) días hábiles improrrogables.
             </p>
             <p className="text-sm text-gray-500 leading-tight">
               * En caso de que el consumidor no consigne como mínimo su nombre,

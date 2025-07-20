@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const query = await newObj.save();
 
     return NextResponse.json({
-      message: `Reclamo '${data.numeroReclamo}' ingresado con éxito`,
+      message: `Reclamo '${data.numeroReclamo}' ingresado con éxito ✅`,
       query: query,
     });
   } catch (err) {
