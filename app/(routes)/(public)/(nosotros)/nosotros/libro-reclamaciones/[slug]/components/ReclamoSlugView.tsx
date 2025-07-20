@@ -107,7 +107,7 @@ export function ReclamoSlugView() {
         );
       } else {
         onToast(reclamoResult.value?.data.message);
-        router.push(`/nosotros/libro-reclamaciones/gracias`);
+        router.push(`/nosotros/gracias`);
       }
     } catch (err: any) {
       console.log(err);
