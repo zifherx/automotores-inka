@@ -25,12 +25,12 @@ export async function POST(req: NextRequest) {
   try {
     const { data, error } = await resend.emails.send({
       from: `Automotores Inka 🤖 <bot@ziphonex.com>`,
-      to: [`${dataForm.email}`],
+      to: [`marco.julca@automotoresinka.com`],
       // bcc: [`automotores.inka@ziphonex.com`],
       bcc: [
         `automotores.inka@ziphonex.com`,
         `${systemMail.email}`,
-        `marco.julca@automotoresinka.com`,
+        `${dataForm.email ? dataForm.email : ""}`,
       ],
       subject: `Nuevo Reclamo ❗ - ${dataForm.numeroDocumento}`,
       react: TEmailReclamo({

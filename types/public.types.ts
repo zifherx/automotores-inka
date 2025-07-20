@@ -1,4 +1,10 @@
-import { ChangeEvent, Dispatch, MutableRefObject, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  MutableRefObject,
+  ReactNode,
+  SetStateAction,
+} from "react";
 import { LucideIcon } from "lucide-react";
 import { Map } from "leaflet";
 
@@ -17,16 +23,28 @@ import {
 import {
   FilterState,
   iIconText,
+  ILegalItem,
   iOracion,
   iPosition,
   iProduct,
+  iReclamosRS,
   iTalleres,
   ModelsByBrand,
   TableFormat,
 } from "@/interfaces";
-import { CotizacionGeneralFormValues, HReclamoFormValues } from "@/forms";
+import {
+  CotizacionGeneralFormValues,
+  HReclamoFormValues,
+  NewReclamoFormValues,
+} from "@/forms";
 import { IconType } from "react-icons/lib";
 import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 export type iVideosYoutube = {
   src: string;
@@ -342,6 +360,17 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
   precioBase: number;
 };
 
+export type ReclamoDataBuildedType = NewReclamoFormValues & {
+  sedeCodexHR: string;
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  razonSocial: string;
+  rucEmpresa: string;
+  direccionCliente: string;
+  direccionSede: string;
+};
+
 export type UploadStatusType =
   | "inactivo"
   | "en proceso"
@@ -421,4 +450,64 @@ export type ContactFormProp = {
   selectedModel: iModelo | null;
   selectedLocation: iSede | null;
   onBack: () => void;
+};
+
+export type LegalItemProp = {
+  legalProps: ILegalItem;
+};
+
+export type FormHeaderProp = {
+  razonSocial: iReclamosRS;
+  fecha: string;
+  hora: string;
+  codigoReclamo: string;
+  codexReclamo: string;
+  setCodigoReclamo: Dispatch<SetStateAction<string>>;
+};
+
+export type SectionHeaderProp = {
+  icon: IconProp;
+  title: string;
+  BgColor: string;
+  iconBgColor: string;
+  iconColor: string;
+};
+
+export type FormFieldProp = {
+  label: string;
+  required?: boolean;
+  optional?: boolean;
+  error?: string;
+  children: ReactNode;
+};
+
+export type ConsumerSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: FieldErrors<NewReclamoFormValues>;
+  numeroDocumentoDisabled: boolean;
+};
+
+export type ProductSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: FieldErrors<NewReclamoFormValues>;
+  sedeSelected: iSede | undefined;
+  setSedeSelected: Dispatch<SetStateAction<iSede | undefined>>;
+};
+
+export type ComplaintSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: FieldErrors<NewReclamoFormValues>;
+  isLoading: boolean;
+};
+
+export type CharacterCounterProp = {
+  current: number;
+  max: number;
+  label?: string;
 };
