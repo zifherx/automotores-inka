@@ -26,6 +26,7 @@ export async function POST(req: Request) {
 
     if (!userId) throw new UnauthorizedError("No autorizado");
     const query = await portadaService.createResource(body);
+    console.log("Q: ", query);
     return ResponseFactory.success(
       query,
       APIMessages.getCreateMessage(RESOURCE_NAME)
@@ -45,11 +46,16 @@ export async function GET(req: NextRequest) {
 
     // if (!userId) throw new UnauthorizedError("No autorizado");
     const query = await portadaService.getResources(params);
+
+    // console.log("Q: ", query);
+
     return ResponseFactory.success(
       query,
       APIMessages.getListedMessage(RESOURCE_NAME)
     );
   } catch (err: any) {
+    console.error(err);
+    console.error(err.message);
     return ResponseFactory.error(err);
   }
 }

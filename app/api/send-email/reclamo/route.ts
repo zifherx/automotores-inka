@@ -54,9 +54,12 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ error }, { status: 500 });
 
+    console.log("Q:", data);
+
     return NextResponse.json({ message: "Mensaje enviado", mail: data });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    console.log(err.message);
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }

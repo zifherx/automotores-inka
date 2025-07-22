@@ -22,8 +22,9 @@ export async function POST(req: NextRequest) {
       success: true,
       message: `Carrocería creada ✅`,
     });
-  } catch (err) {
-    // console.log(err);
+  } catch (err: any) {
+    console.log(err);
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -35,8 +36,9 @@ export async function GET(req: NextRequest) {
     const query = await Carroceria.find({}).sort({ name: 1 });
 
     return NextResponse.json({ total: query.length, obj: query });
-  } catch (err) {
-    // console.log(err);
+  } catch (err: any) {
+    console.log(err);
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

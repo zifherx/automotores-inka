@@ -2,14 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  AlertCircle,
-  CheckCircle,
-  CheckCircle2,
-  CheckCircleIcon,
-  FileText,
-  Loader2,
-} from "lucide-react";
+import { AlertCircle, CheckCircleIcon, FileText, Loader2 } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -17,13 +10,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
 import { SectionHeader } from "@/components/Shared/SectionHeader";
 import { CustomFormField } from "@/components/Shared/CustomFormField";
 import { CharacterCounter } from "./CharacterCounter";
 
 import { ComplaintSectionProp } from "@/types";
-import { Button } from "@/components/ui/button";
 
 export function ComplaintSection({
   errors,
@@ -132,11 +125,7 @@ export function ComplaintSection({
 
           <div className="space-y-4">
             <div
-              className={`flex items-start space-x-3 p-4 rounded-lg border ${
-                errors.isConforme
-                  ? "bg-red-50 border-red-200"
-                  : "bg-blue-50 border-blue-200"
-              }`}
+              className={`flex items-start space-x-3 p-4 rounded-lg bg-blue-50 border border-blue-200`}
             >
               <Checkbox
                 id="isConforme"
@@ -171,12 +160,6 @@ export function ComplaintSection({
                 </p>
               </div>
             </div>
-            {errors.isConforme && (
-              <p className="text-redInka text-sm flex items-center mt-2">
-                <AlertCircle className="h-5 w-5 mr-1" />
-                {errors.isConforme.message}
-              </p>
-            )}
           </div>
 
           <div className="flex flex-col gap-2 mt-8">

@@ -1,11 +1,7 @@
-import { redirect } from "next/navigation";
-
-import { auth } from "@clerk/nextjs/server";
-
 import { BtnAddChasis } from "./components/BtnAddChasis";
 import { ListChasis } from "./components/ListChasis";
 
-import { dbConnect, isAdministrator, serializeDocument } from "@/lib";
+import { dbConnect, serializeDocument } from "@/lib";
 import Carroceria from "@/models/Carroceria";
 
 async function loadChasis() {
@@ -15,12 +11,6 @@ async function loadChasis() {
 }
 
 export default async function ChasisPage() {
-  const { userId } = await auth();
-
-  if (!userId || !isAdministrator(userId)) {
-    return redirect("/");
-  }
-
   const query = await loadChasis();
 
   return (

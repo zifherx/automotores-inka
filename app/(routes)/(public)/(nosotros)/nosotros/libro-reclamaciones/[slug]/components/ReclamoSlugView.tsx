@@ -21,7 +21,7 @@ import {
   sendReclamoEmail,
   switchRuc,
 } from "@/lib";
-import { iSede } from "@/types";
+import { ExtendedFieldErrors, iSede } from "@/types";
 
 export function ReclamoSlugView() {
   const params = useParams();
@@ -42,7 +42,7 @@ export function ReclamoSlugView() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isSubmitting, isSubmitted },
+    formState: { errors },
   } = useForm<NewReclamoFormValues>({
     resolver: zodResolver(formNewReclamoSchema),
     defaultValues: {
@@ -109,6 +109,8 @@ export function ReclamoSlugView() {
         onToast(reclamoResult.value?.data.message);
         router.push(`/nosotros/gracias`);
       }
+      // console.log("claimData: ", claimData);
+      // onToast("Reclamo ingresado", JSON.stringify(claimData));
     } catch (err: any) {
       console.log(err);
       onToast("Algo salió mal ❌", err.message, true);
@@ -140,7 +142,7 @@ export function ReclamoSlugView() {
             register={register}
             setValue={setValue}
             watch={watch}
-            errors={errors}
+            errors={errors as ExtendedFieldErrors}
             numeroDocumentoDisabled={numeroDocumentoDisabled}
           />
           <ProductSection

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { User } from "lucide-react";
+import { AlertCircle, Info, User } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SectionHeader } from "@/components/Shared/SectionHeader";
 import { CustomFormField } from "@/components/Shared/CustomFormField";
 
 import { ConsumerSectionProp } from "@/types";
-import { listDepartamentos } from "@/data";
 import { tDepartamento } from "@/interfaces";
+import { listDepartamentos } from "@/data";
 import { getDocumentMaxLength } from "@/lib";
-import { watch } from "fs";
 
 export function ConsumerSection({
   errors,
@@ -34,6 +34,7 @@ export function ConsumerSection({
     useState<tDepartamento | null>(null);
 
   const tipoDocumentoWatch = watch("tipoDocumento");
+  const hasContactError = errors.contactInfo;
 
   return (
     <motion.section
@@ -120,6 +121,21 @@ export function ConsumerSection({
             </CustomFormField>
           </div>
 
+          <Alert className="border-blue-200 bg-blue-50">
+            <Info className="w-5 h-5 text-blueInka" />
+            <AlertDescription>
+              <strong>Información de contacto:</strong> Debe completar al menos
+              uno de los siguientes campos: Email, Celular o Dirección.
+            </AlertDescription>
+          </Alert>
+
+          {hasContactError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" strokeWidth={2} />
+              <AlertDescription>{hasContactError.message}</AlertDescription>
+            </Alert>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <CustomFormField
               label="Correo Electrónico"
@@ -130,7 +146,9 @@ export function ConsumerSection({
                 {...register("email")}
                 type="email"
                 placeholder="ejemplo@dominio.com"
-                className="h-12 border-gray-200 focus:border-blueInka"
+                className={`h-12 border-gray-200 focus:border-blueInka ${
+                  hasContactError ? "border-red-300 focus:border-red-500" : ""
+                }`}
               />
             </CustomFormField>
 
@@ -143,7 +161,9 @@ export function ConsumerSection({
                 {...register("celular")}
                 placeholder="999 666 000"
                 maxLength={9}
-                className="h-12 border-gray-200 focus:border-blueInka"
+                className={`h-12 border-gray-200 focus:border-blueInka ${
+                  hasContactError ? "border-red-300 focus:border-red-500" : ""
+                }`}
               />
             </CustomFormField>
           </div>
@@ -203,13 +223,15 @@ export function ConsumerSection({
 
           <CustomFormField
             label="Dirección Completa"
-            required
+            optional
             error={errors.direccion?.message}
           >
             <Textarea
               {...register("direccion")}
               placeholder="Av./Jr./Calle, N°, Urb., Referencia"
-              className="h-12 border-gray-200 focus:border-blueInka"
+              className={`h-12 border-gray-200 focus:border-blueInka ${
+                hasContactError ? "border-red-300 focus:border-red-500" : ""
+              }`}
             />
           </CustomFormField>
         </CardContent>
