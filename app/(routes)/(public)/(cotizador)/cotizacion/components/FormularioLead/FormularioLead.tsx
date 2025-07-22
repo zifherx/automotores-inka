@@ -35,6 +35,7 @@ import { iCardModel, iSede } from "@/types";
 import {
   buildCotizacionData,
   createCotizacion,
+  createWebhookFBLead,
   handleCotizacionError,
   onToast,
   sendCotizacionFlashDealer,
@@ -157,8 +158,6 @@ export function FormularioLead({ model }: iCardModel) {
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
       };
-
-
       const form_api = {
         "document": flashdealerData.numeroDocumento,
         "full_name": cotizacionData.nombres,
@@ -172,18 +171,14 @@ export function FormularioLead({ model }: iCardModel) {
         "platform": utmParams.utm_source || 'web',
         "form_name": "NUEVOS",
       }
-      const query_api = await axios.post("https://api-prod-fd.digitaldealersuite.com/api/v1/webhook_fbleads", form_api, {
-        headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLXByb2QtZmQuZGlnaXRhbGRlYWxlcnN1aXRlLmNvbVwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3NDg4ODE1MDEsImV4cCI6MTc3OTk4NTUwMSwibmJmIjoxNzQ4ODgxNTAxLCJqdGkiOiJ3Y2lrS3FCaTFRbnlNUmVRIiwic3ViIjoxMzIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bwQNQokrUC_6UkO3dlqCfPjPGL4AkW-Sn0SxsgiwlUI`,
-        },
-      });
-      console.log('query_api----------------------------------------->', query_api);
-
+      const URL_APIFB = process.env.NEXT_PUBLIC_URL_APIFB as string;
+      const TOKEN_APIFB = process.env.NEXT_PUBLIC_TOKEN_APIFB as string;
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
         // sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
-        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
+        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`), 
       ]);
 
       // console.log("cotizacionResult", cotizacionResult);

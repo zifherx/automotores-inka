@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import { CotizadorPasosFormData } from "@/interfaces";
 import {
   buildCotizacionData,
   createCotizacion,
+  createWebhookFBLead,
   getDocumentMaxLength,
   handleCotizacionError,
   onToast,
@@ -58,6 +59,21 @@ export function ContactForm({
   const trackEvent = useCallback((eventData: DataLayerEvent) => {
     sendDataLayer(eventData);
   }, []);
+
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+    
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+
+  },[]);
 
   const onSubmit = async (values: CotizadorPasosFormData) => {
     setIsSubmitting(true);
@@ -93,7 +109,24 @@ export function ContactForm({
         ciudadCotizacion: selectedLocation!.ciudad,
       } as const;
 
+      const form_api = {
+        "document": flashdealerData.numeroDocumento,
+        "full_name": cotizacionData.nombres,
+        "email": flashdealerData.correoElectronico,
+        "phone_number": flashdealerData.numeroCelular,
+        "mark": cotizacionData.marca,
+        "model": cotizacionData.modelo,
+        "city": cotizacionData.departamento,
+        // "vehicle": flashdealerData.numeroDocumento,
+        // "year": newObj.numeroDocumento,
+        "platform": utmParams.utm_source || 'web',
+        "form_name": "NUEVOS",
+      }
+      const URL_APIFB = process.env.NEXT_PUBLIC_URL_APIFB as string;
+      const TOKEN_APIFB = process.env.NEXT_PUBLIC_TOKEN_APIFB as string;
+
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
         sendCotizacionFlashDealer(flashdealerData, "/api/flashdealer/new-lead"),
       ]);
