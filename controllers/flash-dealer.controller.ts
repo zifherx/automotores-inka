@@ -32,12 +32,15 @@ export class FlashDealerController {
       // Respuesta asíncrona
       this.bitacoraService.logSuccess(response, payload).catch(console.error);
 
+      console.log(`FlashDealerController | handlePost | ${response}`);
+
       return NextResponse.json({
         success: true,
         message: `${response.data?.message.trim() || "Exito"} en FD`,
         response: response.data,
       });
-    } catch (err) {
+    } catch (err: any) {
+      console.error(err.message);
       return this.handleError(err, req);
     }
   }

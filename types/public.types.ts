@@ -21,6 +21,7 @@ import {
   iSede,
 } from "./admin.types";
 import {
+  ContactInfoError,
   FilterState,
   iIconText,
   ILegalItem,
@@ -485,7 +486,7 @@ export type ConsumerSectionProp = {
   register: UseFormRegister<NewReclamoFormValues>;
   setValue: UseFormSetValue<NewReclamoFormValues>;
   watch: UseFormWatch<NewReclamoFormValues>;
-  errors: FieldErrors<NewReclamoFormValues>;
+  errors: ExtendedFieldErrors;
   numeroDocumentoDisabled: boolean;
 };
 
@@ -511,3 +512,7 @@ export type CharacterCounterProp = {
   max: number;
   label?: string;
 };
+
+export type ExtendedFieldErrors = {
+  contactInfo?: ContactInfoError;
+} & Record<string, any>;

@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       message: `Sede creada ✅`,
     });
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
