@@ -339,45 +339,65 @@ export const cotizadorPasosSchema = z.object({
   aceptaNewsletter: z.boolean(),
 });
 
-export const formNewReclamoSchema = z.object({
-  // 1. Datos del Consumidor
-  tipoDocumento: z.string({ message: `Debe seleccionar una opción.` }),
-  numeroDocumento: z
-    .string()
-    .min(8, { message: `El campo debe contener al menos 8 caracteres.` })
-    .max(20, { message: `El campo no debe superar los 20 caracteres.` }),
-  nombres: z.string().min(3, `El campo debe contener al menos 3 caracteres.`),
-  apellidos: z.string().min(3, `El campo debe contener al menos 3 caracteres.`),
-  email: z
-    .string()
-    .email(`Debe ingresar un email válido`)
-    .optional()
-    .or(z.literal("")),
-  celular: z.string().optional(),
-  departamento: z.string(),
-  provincia: z.string(),
-  distrito: z.string(),
-  direccion: z.string().min(1, { message: `La dirección es obligatoria` }),
-  // 2. Datos del bien adquirido
-  tipoBien: z.string(),
-  vin: z.string().optional(),
-  placa: z.string().optional(),
-  sedeCompra: z.string(),
-  moneda: z.string(),
-  importeBien: z.number(),
-  descripcionBien: z.string().max(220),
-  // 3. Detalle del reclamo y solicitud del reclamante
-  tipoSolicitud: z.string(),
-  detalleSolicitud: z
-    .string()
-    .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
-  pedidoSolicitud: z
-    .string()
-    .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
-  isConforme: z.boolean().refine((val) => val === true, {
-    message: `Debe aceptar los términos y condiciones para continuar`,
-  }),
-});
+export const formNewReclamoSchema = z
+  .object({
+    // 1. Datos del Consumidor
+    tipoDocumento: z.string({ message: `Debe seleccionar una opción.` }),
+    numeroDocumento: z
+      .string()
+      .min(8, { message: `El campo debe contener al menos 8 caracteres.` })
+      .max(20, { message: `El campo no debe superar los 20 caracteres.` }),
+    nombres: z.string().min(3, `El campo debe contener al menos 3 caracteres.`),
+    apellidos: z
+      .string()
+      .min(3, `El campo debe contener al menos 3 caracteres.`),
+    email: z
+      .string()
+      .email(`Debe ingresar un email válido`)
+      .optional()
+      .or(z.literal("")),
+    celular: z
+      .string()
+      .length(9, { message: "El campo debe contener 9 dígitos" })
+      .optional()
+      .or(z.literal("")),
+    departamento: z.string(),
+    provincia: z.string(),
+    distrito: z.string(),
+    direccion: z.string().optional().or(z.literal("")),
+    // 2. Datos del bien adquirido
+    tipoBien: z.string(),
+    vin: z.string().optional(),
+    placa: z.string().optional(),
+    sedeCompra: z.string(),
+    moneda: z.string(),
+    importeBien: z.number(),
+    descripcionBien: z.string().max(220),
+    // 3. Detalle del reclamo y solicitud del reclamante
+    tipoSolicitud: z.string(),
+    detalleSolicitud: z
+      .string()
+      .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
+    pedidoSolicitud: z
+      .string()
+      .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
+    isConforme: z.boolean().optional(),
+  })
+  .refine(
+    (formulario) => {
+      // Validar al menos uno de los tres campos que este lleno
+      const hasEmail = formulario.email && formulario.email.trim() !== "";
+      const hasCelular = formulario.celular && formulario.celular.trim() !== "";
+      const hasDireccion =
+        formulario.direccion && formulario.direccion.trim() !== "";
+
+      return hasEmail || hasCelular || hasDireccion;
+    },
+    {
+      message: `Debe completar al menos uno de los siguientes campos: Email, Celular o Dirección`,
+      path: ["contactInfo"],
+    }
+  );
 
 export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;

@@ -10,6 +10,7 @@ import { UploadSection } from "./UploadSection";
 import { useModelos } from "@/context/modelos/modeloContext";
 import { UploadStatusType } from "@/types";
 import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
+import { onToast } from "@/lib";
 
 export function GestionPreciosView() {
   const { modelos } = useModelos();
@@ -132,6 +133,7 @@ export function GestionPreciosView() {
 
   const handleSaveUpdates = async () => {
     console.log("Guardar Datos");
+    onToast(`Se actualizaron ${importedData.length} precios`,'', false);
   };
 
   const handleClearData = () => {

@@ -282,3 +282,7 @@ export interface InputControlI {
   label: string;
   value: string;
 }
+
+export interface ContactInfoError {
+  message: string;
+}

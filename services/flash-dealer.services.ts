@@ -23,8 +23,12 @@ export class FlashDealerService {
         },
         timeout: 30000, // 30 segundos
       });
+
+      console.log(`FlashDealerService | sendLead | ${response}`);
+
       return response;
-    } catch (err) {
+    } catch (err: any) {
+      console.error(err.message);
       if (axios.isAxiosError(err)) {
         throw err;
       }
