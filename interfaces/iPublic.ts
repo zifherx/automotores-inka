@@ -1,4 +1,9 @@
-import { IconProp, ProductCategory } from "@/types";
+import {
+  IconProp,
+  IntencionCompraType,
+  ProductCategory,
+  TipoDocumentoType,
+} from "@/types";
 import { LucideIcon } from "lucide-react";
 
 export interface iServicioSVG {
@@ -179,4 +184,105 @@ export interface IRequestFD {
   marcaVehiculo: string;
   codigoFlashDealer: string;
   ciudadCotizacion: string;
+}
+
+export interface CotizadorPasosFormData {
+  nombreCompleto: string;
+  tipoDocumento: TipoDocumentoType;
+  numeroDocumento: string;
+  celular: string;
+  email: string;
+  intencionCompra: IntencionCompraType;
+  aceptaPoliticas: boolean;
+  aceptaNewsletter: boolean;
+}
+
+export interface StepFormI {
+  id: number;
+  title: string;
+  description: string;
+}
+
+export interface FlashDealerRequest {
+  numeroDocumento: string;
+  correoElectronico: string;
+  numeroCelular: string;
+  marcaVehiculo: string;
+  codigoFlashDealer: string;
+  ciudadCotizacion: string;
+}
+
+export interface FlashDealerPayload {
+  document: string;
+  email: string;
+  phone_number: string;
+  mark: string;
+  model: string;
+  year: string;
+  vehicle: string;
+  mileage: string;
+  form_id: string;
+  form_name: string;
+  campaign_id: string;
+  page_id: string;
+  page_name: string;
+  platform: string;
+  city: string;
+}
+
+export interface BitacoraData {
+  request: RequestBitacora;
+  response: ResponseBitacora;
+  method: string;
+  url: string;
+}
+
+export interface RequestBitacora {
+  body: string;
+  authorization?: string;
+  accept?: string;
+}
+
+export interface ResponseBitacora {
+  body: string;
+  code: number;
+  statusText: string;
+}
+
+export interface LogData {
+  method: string;
+  url: string;
+  userAgent?: string;
+  ip?: string;
+  timestamp: string;
+  duration: number;
+  status: number;
+  error?: string;
+}
+
+export interface OptionsLoggerAdvanced {
+  logBody?: boolean;
+  logHeaders?: boolean;
+  excludeHeaders?: string[];
+  maxBodyLength?: number;
+}
+
+export interface ILegalItem {
+  id: number;
+  icon: IconProp;
+  title: string;
+  description: string;
+  iconBackground: string;
+  iconColor: string;
+}
+
+export interface InputControlI {
+  id: number;
+  icon: IconProp;
+  label: string;
+  value: string;
+}
+
+export interface ContactInfoError {
+  message: string;
 }

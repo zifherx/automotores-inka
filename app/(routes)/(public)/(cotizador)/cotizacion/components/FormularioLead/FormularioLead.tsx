@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,6 +39,7 @@ import {
   onToast,
   sendCotizacionFlashDealer,
 } from "@/lib";
+import { DataLayerEvent, sendDataLayer } from "@/utils/analytics";
 
 const tiposDocumento = [
   { value: "DNI", label: "DNI", maxLength: 8 },
@@ -78,6 +79,10 @@ export function FormularioLead({ model }: iCardModel) {
   const watchConcesionario = form.watch("concesionario");
   const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
   const numeroDocumento = form.watch("numeroDocumento");
+
+  const trackEvent = useCallback((eventData: DataLayerEvent) => {
+    sendDataLayer(eventData);
+  }, []);
 
   const maxLengthDocumento =
     tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
@@ -165,13 +170,18 @@ export function FormularioLead({ model }: iCardModel) {
         onToast(cotizacionResult.value.data.message);
       }
 
-      const redirectId =
-        flashdealerResult.status === "fulfilled"
-          ? new Date().getTime()
-          : cotizacionResult.value.data._id;
+      const cotizacionNumber = cotizacionResult.value.data.obj._id;
 
-      // console.log("redirectId", redirectId);
-      router.push(`/gracias/${redirectId}`);
+      await trackEvent({
+        event: "lead_form_submitted",
+        lead_interna: cotizacionNumber,
+      });
+
+      console.log("window-dataLayer", window.dataLayer);
+
+      router.push(
+        `/gracias?nombre=${values.nombres}&celular=${values.celular}`
+      );
     } catch (err: any) {
       handleCotizacionError(err);
     } finally {
@@ -471,7 +481,7 @@ export function FormularioLead({ model }: iCardModel) {
             control={form.control}
             name="checkDatosPersonales"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex items-start space-x-2 space-y-0 py-5">
                 <FormControl>
                   <Checkbox
                     className="h-5 w-5 border-redInka data-[state=checked]:bg-redInka text-white rounded-full"
@@ -548,7 +558,7 @@ export function FormularioLead({ model }: iCardModel) {
             )}
           />
 
-          <p className="leading-tight font-textMedium pt-5">
+          <p className="leading-tight font-textMedium py-5">
             La presente cotización se realiza en función a los{" "}
             <a href="#" target="_blank" className="text-redInka">
               términos y condiciones.

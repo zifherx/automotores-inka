@@ -1,24 +1,34 @@
 import {
+  AlertCircle,
   Blocks,
+  Calendar,
   Car,
+  CheckCircle2,
   Clock,
+  FileText,
   Handshake,
+  Hash,
   MapPin,
   Medal,
+  Scale,
+  Shield,
   Star,
   Users,
 } from "lucide-react";
 
 import {
   iIconText,
+  ILegalItem,
   iListLinkUtiles,
   iListValores,
+  InputControlI,
   iObjetivosEmpresa,
   iProduct,
   iReclamosRS,
   iServicioSVG,
   iTalleres,
   ModelsByBrand,
+  StepFormI,
   TableFormat,
   tDepartamento,
 } from "@/interfaces/iPublic";
@@ -1500,6 +1510,8 @@ export const IconTextTalleresData: iIconText[] = [
   },
 ];
 
+export const CiudadesVentasData = ["Chiclayo", "Chimbote", "Lima", "Trujillo"];
+
 export const CiudadesTalleresData = [
   "Todas",
   "Chiclayo",
@@ -2506,5 +2518,106 @@ export const mockVehicles: any[] = [
     galeria: [],
     isActive: true,
     createdBy: "admin",
+  },
+];
+
+export const stepsForm: StepFormI[] = [
+  {
+    id: 1,
+    title: "Marca",
+    description: "Elige tu marca favorita",
+  },
+  {
+    id: 2,
+    title: "Modelo",
+    description: "Selecciona el modelo ideal",
+  },
+  {
+    id: 3,
+    title: "Ubicación",
+    description: "Encuentra tu concesionario",
+  },
+  {
+    id: 4,
+    title: "Contacto",
+    description: "Completa tus datos",
+  },
+];
+
+export const LegalItemData: ILegalItem[] = [
+  {
+    id: 1,
+    title: "Ley N° 29571 - Código de Protección y Defensa del Consumidor",
+    description:
+      "Esta ley garantiza tus derechos como consumidor y establece los mecanismo para su protección.",
+    icon: CheckCircle2,
+    iconBackground: "bg-green-100",
+    iconColor: "text-green-600",
+  },
+  {
+    id: 2,
+    title: "Plazo de Respuesta: 15 días hábiles",
+    description:
+      "El proveedor debe responder a tu reclamo en un plazo máximo de 15 días hábiles improrrogables.",
+    icon: Clock,
+    iconBackground: "bg-blue-100",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: 3,
+    title: "Requisitos Mínimos",
+    description:
+      "Nombre, DNI, domicilio o correo electrónico, fecha y detalle del reclamo son datos obligatorios.",
+    icon: AlertCircle,
+    iconBackground: "bg-orange-500",
+    iconColor: "text-orange-900",
+  },
+  {
+    id: 4,
+    title: "Derecho a Reclamar",
+    description:
+      "Presentar un reclamo no impide acudir a otras vias de solución de controversias.",
+    icon: Shield,
+    iconBackground: "bg-purple-100",
+    iconColor: "text-purple-600",
+  },
+  {
+    id: 5,
+    title: "INDECOPI",
+    description:
+      "Puedes presentar una denuncia ante INDECOPI independientemente de este reclamo.",
+    icon: Scale,
+    iconBackground: "bg-red-100",
+    iconColor: "text-red-600",
+  },
+  {
+    id: 6,
+    title: "Gratuidad",
+    description:
+      "El uso del libro de reclamaciones es completamente grauito para el consumidor.",
+    icon: FileText,
+    iconBackground: "bg-cyan-100",
+    iconColor: "text-cyan-600",
+  },
+];
+
+export const InputTextData: InputControlI[] = [
+  {
+    id: 1,
+    label: "Fecha",
+    value: "",
+    icon: Calendar,
+  },
+  {
+    id: 2,
+    label: "Hora",
+    value: "",
+    icon: Clock,
+  },
+  {
+    id: 3,
+    label: "N° Reclamo",
+    value: "",
+    icon: Hash,
   },
 ];

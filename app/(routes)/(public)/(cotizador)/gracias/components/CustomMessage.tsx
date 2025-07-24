@@ -6,20 +6,11 @@ import { Button } from "@/components/ui/button";
 
 import { iCustomMessage } from "@/types";
 
-export function CustomMessage({ volverInicio }: iCustomMessage) {
-  // const [email, setEmail] = useState("");
-
-  // const getEmailCliente = async () => {
-  //   const query = await getEmailFromResend(message);
-  //   if (query?.email !== undefined) {
-  //     setEmail(query.email);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getEmailCliente();
-  // }, [message]);
-
+export function CustomMessage({
+  volverInicio,
+  celular,
+  customer,
+}: iCustomMessage) {
   return (
     <div className="max-w-2xl w-full mx-auto bg-white rounded-t-2xl shadow-lg transform transition-all hover:scale-105 duration-300 overflow-hidden">
       <Image
@@ -29,18 +20,17 @@ export function CustomMessage({ volverInicio }: iCustomMessage) {
         height={600}
         className="object-cover w-full h-[300px] rounded-t-2xl"
       />
-      <div className="py-8 px-14 text-center">
-        {/* <Car className="w-24 h-24 mx-auto text-black mb-4" /> */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">
-          ¡Gracias por tu cotización!
+      <div className="py-6 px-8 text-center">
+        <h1 className="text-3xl font-headBold text-gray-800 mb-4">
+          ¡Gracias {customer} por tu cotización!
         </h1>
-        <p className="text-xl text-gray-600 mb-4">
+        <p className="text-xl text-gray-600 font-headLight mb-4">
           Hemos recibido tu solicitud de cotización. Nuestro equipo la revisará
           y te contactará pronto con los detalles.
         </p>
-        <p className="text-sm text-gray-500">
-          En breve nos pondremos en contacto contigo al correo suministrado
-          {/* {email} */}
+        <p className="text-sm font-textMedium text-gray-500">
+          En breve nos pondremos en contacto contigo al celular suministrado{" "}
+          <span className="font-bold">{celular}</span>
         </p>
 
         <div className="flex justify-center mt-8">
@@ -55,7 +45,10 @@ export function CustomMessage({ volverInicio }: iCustomMessage) {
       </div>
       <div className="bg-gray-300 px-8 py-4">
         <p className="text-sm text-gray-600 text-center">
-          ¿Tienes preguntas? Llámanos al 972-051-479
+          ¿Tienes preguntas? Llámanos al{" "}
+          <a className="hover:text-blueInka" href="tel:972051479">
+            972-051-479
+          </a>
         </p>
       </div>
       <div className="mt-8 flex space-x-4 p-3 justify-center">

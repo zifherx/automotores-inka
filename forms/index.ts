@@ -175,7 +175,7 @@ export const formReclamoSchema = z.object({
     .max(20, { message: "El campo no debe superar los 20 caracteres" }),
   nombres: z.string().min(3, "El campo debe contener al menos 3 caracteres."),
   apellidos: z.string().min(3, "El campo debe contener al menos 3 caracteres."),
-  email: z.string().email("Debe ingresar un email válido"),
+  email: z.string().email("Debe ingresar un email válido").optional(),
   celular: z.string().length(9, "El campo debe contener 9 dígitos."),
   departamento: z.string(),
   provincia: z.string(),
@@ -315,6 +315,90 @@ export const formContactAccesorios = z.object({
     .max(500, "El mensaje no puede exceder 500 caracteres"),
 });
 
+export const cotizadorPasosSchema = z.object({
+  nombreCompleto: z
+    .string()
+    .min(2, { message: "Nombre debe tener al menos 2 caracteres" }),
+  tipoDocumento: z.enum(["dni", "ruc", "pasaporte", "ce"], {
+    required_error: "Selecciona un tipo de documento",
+  }),
+  numeroDocumento: z
+    .string()
+    .min(1, { message: "Ingresa el número de documento" }),
+  celular: z
+    .string()
+    .length(9, { message: "celular debe tener exactamente 9 dígitos" }),
+  email: z.string().email({ message: "Ingresa un email válido" }),
+  intencionCompra: z.enum(
+    ["esta-semana", "este-mes", "proximo-mes", "mas-adelante"],
+    { required_error: "Selecciona tu intención de compra" }
+  ),
+  aceptaPoliticas: z.boolean().refine((val) => val === true, {
+    message: "Debes aceptar las politicas de Protección de Datos Personales",
+  }),
+  aceptaNewsletter: z.boolean(),
+});
+
+export const formNewReclamoSchema = z
+  .object({
+    // 1. Datos del Consumidor
+    tipoDocumento: z.string({ message: `Debe seleccionar una opción.` }),
+    numeroDocumento: z
+      .string()
+      .min(8, { message: `El campo debe contener al menos 8 caracteres.` })
+      .max(20, { message: `El campo no debe superar los 20 caracteres.` }),
+    nombres: z.string().min(3, `El campo debe contener al menos 3 caracteres.`),
+    apellidos: z
+      .string()
+      .min(3, `El campo debe contener al menos 3 caracteres.`),
+    email: z
+      .string()
+      .email(`Debe ingresar un email válido`)
+      .optional()
+      .or(z.literal("")),
+    celular: z
+      .string()
+      .length(9, { message: "El campo debe contener 9 dígitos" })
+      .optional()
+      .or(z.literal("")),
+    departamento: z.string(),
+    provincia: z.string(),
+    distrito: z.string(),
+    direccion: z.string().optional().or(z.literal("")),
+    // 2. Datos del bien adquirido
+    tipoBien: z.string(),
+    vin: z.string().optional(),
+    placa: z.string().optional(),
+    sedeCompra: z.string(),
+    moneda: z.string(),
+    importeBien: z.number(),
+    descripcionBien: z.string().max(220),
+    // 3. Detalle del reclamo y solicitud del reclamante
+    tipoSolicitud: z.string(),
+    detalleSolicitud: z
+      .string()
+      .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
+    pedidoSolicitud: z
+      .string()
+      .max(500, { message: `No puede ingresar más de 500 caracteres.` }),
+    isConforme: z.boolean().optional(),
+  })
+  .refine(
+    (formulario) => {
+      // Validar al menos uno de los tres campos que este lleno
+      const hasEmail = formulario.email && formulario.email.trim() !== "";
+      const hasCelular = formulario.celular && formulario.celular.trim() !== "";
+      const hasDireccion =
+        formulario.direccion && formulario.direccion.trim() !== "";
+
+      return hasEmail || hasCelular || hasDireccion;
+    },
+    {
+      message: `Debe completar al menos uno de los siguientes campos: Email, Celular o Dirección`,
+      path: ["contactInfo"],
+    }
+  );
+
 export type PortadasFormValues = z.infer<typeof formAddCoverSchema>;
 export type ChasisFormValues = z.infer<typeof formAddChasisSchema>;
 export type BrandFormValues = z.infer<typeof formAddBrandSchema>;
@@ -337,3 +421,5 @@ export type CybermotorFormValues = z.infer<typeof formCybermotorSchema>;
 export type TCambioFormValues = z.infer<typeof formTipoCambio>;
 export type NoticiasFormValues = z.infer<typeof formNoticia>;
 export type ContactFormAccesoriesValues = z.infer<typeof formContactAccesorios>;
+export type CotizadorPasosFormValues = z.infer<typeof cotizadorPasosSchema>;
+export type NewReclamoFormValues = z.infer<typeof formNewReclamoSchema>;

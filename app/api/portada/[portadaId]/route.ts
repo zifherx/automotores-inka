@@ -30,11 +30,14 @@ export async function PATCH(
   try {
     if (!userId) throw new UnauthorizedError("No autorizado");
     const query = await portadaService.updateResource(portadaId, body);
+    console.log("Q: ", query);
     return ResponseFactory.success(
       query,
       APIMessages.getUpdatedMessage(RESOURCE_NAME)
     );
   } catch (err: any) {
+    console.error(err);
+    console.error(err.message);
     return ResponseFactory.error(err);
   }
 }
@@ -73,11 +76,16 @@ export async function GET(
 
     if (!userId) throw new UnauthorizedError("No autorizado");
     const query = await portadaService.getResource(portadaId);
+
+    console.log("Q: ", query);
+
     return ResponseFactory.success(
       query,
       APIMessages.getFetchedMessage(RESOURCE_NAME)
     );
   } catch (err: any) {
+    console.error(err);
+    console.error(err.message);
     return ResponseFactory.error(err);
   }
 }

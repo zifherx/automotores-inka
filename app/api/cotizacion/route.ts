@@ -43,6 +43,9 @@ export async function GET(req: NextRequest) {
             select: "_id name slug ciudad isActive createdAt codexHR",
           },
         ]);
+
+      // console.log("Q: ", query);
+
       return NextResponse.json({ total: query.length, obj: query });
     } else {
       console.log("Con Filtros");
@@ -72,10 +75,14 @@ export async function GET(req: NextRequest) {
             select: "_id name slug ciudad isActive createdAt codexHR",
           },
         ]);
+
+      // console.log("Q: ", query);
+
       return NextResponse.json({ total: query.length, obj: query });
     }
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -86,9 +93,11 @@ export async function POST(req: NextRequest) {
   let newCustomer = null;
 
   try {
-    const customerFound = (await Cliente.findOne({
+    const customerFound: iCustomer | null = await Cliente.findOne({
       numeroDocumento: dataForm.numeroDocumento,
-    })) as iCustomer;
+    });
+
+    // console.log("customerFound", customerFound);
 
     if (!customerFound) {
       const qCustomer = new Cliente({
@@ -102,6 +111,17 @@ export async function POST(req: NextRequest) {
       }) as iCustomer;
 
       newCustomer = await qCustomer.save();
+    } else {
+      const updateCliente = await Cliente.findByIdAndUpdate(
+        customerFound._id,
+        {
+          celular: dataForm.celular,
+          email: dataForm.email,
+          aceptaPromociones: dataForm.checkPromociones,
+        },
+        { new: true }
+      );
+      console.log("updateCliente", updateCliente);
     }
 
     const vehicleFound = (await Modelo.findOne({
@@ -131,14 +151,16 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    console.log("Q: ", query);
+
     return NextResponse.json({
       success: true,
       message: `Cotización ${new Date().getTime()} registrada ✅`,
       obj: query,
     });
   } catch (err: any) {
-    console.error(err.message);
     console.error(err);
+    console.error(err.message);
     if (err.name === "AbortError") {
       return NextResponse.json({ error: "Request Timeout" }, { status: 504 });
     }
