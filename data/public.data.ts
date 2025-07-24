@@ -33,7 +33,14 @@ import {
   tDepartamento,
 } from "@/interfaces/iPublic";
 
-import { iParrafo, iTipoServicio, ProductCategory } from "@/types";
+import {
+  iChasis,
+  iModelo,
+  iParrafo,
+  iTipoServicio,
+  ProductCategory,
+} from "@/types";
+import { iMarca } from "@/models";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
