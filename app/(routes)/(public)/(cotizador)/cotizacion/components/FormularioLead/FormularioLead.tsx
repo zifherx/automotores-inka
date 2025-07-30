@@ -35,6 +35,7 @@ import { iCardModel, iSede } from "@/types";
 import {
   buildCotizacionData,
   createCotizacion,
+  createWebhookFBLead,
   handleCotizacionError,
   onToast,
   sendCotizacionFlashDealer,
@@ -80,6 +81,8 @@ export function FormularioLead({ model }: iCardModel) {
   const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
   const numeroDocumento = form.watch("numeroDocumento");
 
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
   const trackEvent = useCallback((eventData: DataLayerEvent) => {
     sendDataLayer(eventData);
   }, []);
@@ -116,6 +119,17 @@ export function FormularioLead({ model }: iCardModel) {
     if (marcaSelected) {
       getCiudadesByBrand(marcaSelected);
     }
+    
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+    
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+
   }, [marcaSelected]);
 
   const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
@@ -144,11 +158,27 @@ export function FormularioLead({ model }: iCardModel) {
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
       };
+      const form_api = {
+        "document": flashdealerData.numeroDocumento,
+        "full_name": cotizacionData.nombres,
+        "email": flashdealerData.correoElectronico,
+        "phone_number": flashdealerData.numeroCelular,
+        "mark": cotizacionData.marca,
+        "model": cotizacionData.modelo,
+        "city": cotizacionData.departamento,
+        // "vehicle": flashdealerData.numeroDocumento,
+        // "year": newObj.numeroDocumento,
+        "platform": utmParams.utm_source || 'web',
+        "form_name": "NUEVOS",
+      }
+      const URL_APIFB = process.env.NEXT_PUBLIC_URL_APIFB as string;
+      const TOKEN_APIFB = process.env.NEXT_PUBLIC_TOKEN_APIFB as string;
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
         // sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
-        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
+        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`), 
       ]);
 
       // console.log("cotizacionResult", cotizacionResult);
