@@ -40,6 +40,7 @@ export class FlashDealerController {
         response: response.data,
       });
     } catch (err: any) {
+      console.log("handlePost-err", err);
       console.error(err.message);
       return this.handleError(err, req);
     }
@@ -49,8 +50,8 @@ export class FlashDealerController {
     err: unknown,
     req: NextRequest
   ): Promise<NextResponse> {
-    console.error("Flash Dealer API Error: ", err);
-
+    console.log("Flash Dealer API Error: ", err);
+    console.log("req", req);
     try {
       const requestData = await req.json();
       const payload = FlashDealerMapper.toPayload(requestData);
@@ -82,7 +83,7 @@ export class FlashDealerController {
         }
       );
     } catch (parseError) {
-      // console.log("parseError", parseError);
+      console.log("parseError", parseError);
       return NextResponse.json(
         {
           success: false,

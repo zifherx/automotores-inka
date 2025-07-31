@@ -34,8 +34,8 @@ import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
 import { iCardModel, iSede } from "@/types";
 import {
   buildCotizacionData,
+  buildPayloadFlashdealer,
   createCotizacion,
-  createWebhookFBLead,
   handleCotizacionError,
   onToast,
   sendCotizacionFlashDealer,
@@ -119,18 +119,21 @@ export function FormularioLead({ model }: iCardModel) {
     if (marcaSelected) {
       getCiudadesByBrand(marcaSelected);
     }
-    
+
     const params = new URLSearchParams(window.location.search);
     const utms: { [key: string]: string } = {};
 
     params.forEach((value, key) => {
       utms[key] = value;
     });
-    
+
     setUtmParams(utms);
     console.log("UTM:", utms);
-
   }, [marcaSelected]);
+
+  // console.log("utmParams:", utmParams);
+  // console.log("URL_APIFB", URL_APIFB);
+  // console.log("TOKEN_APIFB", TOKEN_APIFB);
 
   const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
@@ -150,43 +153,46 @@ export function FormularioLead({ model }: iCardModel) {
         precioBase: model!.precioBase,
       });
 
-      const flashdealerData = {
+      const flashdealerData = buildPayloadFlashdealer({
         numeroDocumento: values.numeroDocumento,
+        nombreCompleto: values.nombres,
         correoElectronico: values.email,
         numeroCelular: values.celular,
         marcaVehiculo: cotizacionData.marca.toUpperCase(),
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
-      };
+        plataformaOrigen: utmParams.utm_source || "web",
+      });
       const form_api = {
-        "document": flashdealerData.numeroDocumento,
-        "full_name": cotizacionData.nombres,
-        "email": flashdealerData.correoElectronico,
-        "phone_number": flashdealerData.numeroCelular,
-        "mark": cotizacionData.marca,
-        "model": cotizacionData.modelo,
-        "city": cotizacionData.departamento,
+        document: flashdealerData.numeroDocumento,
+        full_name: flashdealerData.nombreCompleto,
+        email: flashdealerData.correoElectronico,
+        phone_number: flashdealerData.numeroCelular,
+        mark: flashdealerData.marcaVehiculo,
+        model: flashdealerData.codigoFlashDealer,
+        city: flashdealerData.ciudadCotizacion,
         // "vehicle": flashdealerData.numeroDocumento,
         // "year": newObj.numeroDocumento,
-        "platform": utmParams.utm_source || 'web',
-        "form_name": "NUEVOS",
-      }
-      const URL_APIFB = process.env.NEXT_PUBLIC_URL_APIFB as string;
-      const TOKEN_APIFB = process.env.NEXT_PUBLIC_TOKEN_APIFB as string;
+        platform: flashdealerData.plataformaOrigen,
+        form_name: "NUEVOS",
+      };
+
+      // console.log("form_api", form_api);
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
-        createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
+        // createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
         // sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
-        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`), 
+        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
       ]);
 
-      // console.log("cotizacionResult", cotizacionResult);
+      // console.log("webhookFBLeadResult", webhookFBLeadResult);
       // console.log("emailResult", emailResult);
+      // console.log("cotizacionResult", cotizacionResult);
       // console.log("flashdealerResult", flashdealerResult);
 
       if (cotizacionResult.status === "rejected") {
-        throw new Error(`Error al crear solicitud`);
+        throw new Error(`Error al crear cotizacionResult`);
       }
 
       if (flashdealerResult.status === "rejected") {

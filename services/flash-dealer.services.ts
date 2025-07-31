@@ -9,6 +9,9 @@ export class FlashDealerService {
     this.apiUrl = process.env.ENDPOINT_FD as string;
     this.apiToken = process.env.TOKEN_FD as string;
 
+    // console.log("apiUrl", this.apiUrl);
+    // console.log("apiToken", this.apiToken);
+
     if (!this.apiUrl || !this.apiToken) {
       throw new Error("Missing Flash Dealer API configuration");
     }
@@ -21,13 +24,14 @@ export class FlashDealerService {
           Authorization: this.apiToken,
           "Content-Type": "application/json",
         },
-        timeout: 30000, // 30 segundos
+        // timeout: 30000, // 30 segundos
       });
 
       console.log(`FlashDealerService | sendLead | ${response}`);
 
       return response;
     } catch (err: any) {
+      console.log("sendLead-err", err);
       console.error(err.message);
       if (axios.isAxiosError(err)) {
         throw err;

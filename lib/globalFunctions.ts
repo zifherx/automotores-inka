@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { iCompany, IRequestFD, iTalleres } from "@/interfaces";
+import {
+  FlashDealerRequest,
+  iCompany,
+  IRequestFD,
+  iTalleres,
+} from "@/interfaces";
 
 import { CotizacionForm, ReclamoDataBuildedType } from "@/types";
 
@@ -128,6 +133,10 @@ export const buildCotizacionData = (values: CotizacionForm) => {
   return { ...values };
 };
 
+export const buildPayloadFlashdealer = (values: FlashDealerRequest) => {
+  return { ...values };
+};
+
 export const buildReclamoData = (values: ReclamoDataBuildedType) => {
   return { ...values };
 };
@@ -138,15 +147,15 @@ export const createCotizacion = async (
 ) => {
   try {
     const response = await axios.post(ruta, values);
-    
-          // console.log('query_api----------------------------------------->', webhook_fbleads);
-          // const URL_APIFB = "https://api-prod-fd.digitaldealersuite.com/api/v1/webhook_fbleads";
-          // const TOKEN_APIFB = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLXByb2QtZmQuZGlnaXRhbGRlYWxlcnN1aXRlLmNvbVwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3NDg4ODE1MDEsImV4cCI6MTc3OTk4NTUwMSwibmJmIjoxNzQ4ODgxNTAxLCJqdGkiOiJ3Y2lrS3FCaTFRbnlNUmVRIiwic3ViIjoxMzIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bwQNQokrUC_6UkO3dlqCfPjPGL4AkW-Sn0SxsgiwlUI";
-          // const query_api = await axios.post(URL_APIFB, webhook_fbleads, {
-          //   headers: {
-          //     Authorization: `Bearer ${TOKEN_APIFB}`,
-          //   },
-          // });
+
+    // console.log('query_api----------------------------------------->', webhook_fbleads);
+    // const URL_APIFB = "https://api-prod-fd.digitaldealersuite.com/api/v1/webhook_fbleads";
+    // const TOKEN_APIFB = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLXByb2QtZmQuZGlnaXRhbGRlYWxlcnN1aXRlLmNvbVwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3NDg4ODE1MDEsImV4cCI6MTc3OTk4NTUwMSwibmJmIjoxNzQ4ODgxNTAxLCJqdGkiOiJ3Y2lrS3FCaTFRbnlNUmVRIiwic3ViIjoxMzIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bwQNQokrUC_6UkO3dlqCfPjPGL4AkW-Sn0SxsgiwlUI";
+    // const query_api = await axios.post(URL_APIFB, webhook_fbleads, {
+    //   headers: {
+    //     Authorization: `Bearer ${TOKEN_APIFB}`,
+    //   },
+    // });
 
     if (response.status !== 200) {
       throw new Error(`Error al crear cotización: ${response.status}`);
@@ -167,14 +176,15 @@ export const createWebhookFBLead = async (
   ruta: string,
   token: string
 ) => {
-  // console.log('createWebhookFBLead', ruta, token, values);
-  if (!ruta || typeof ruta !== 'string' || !ruta.startsWith('http')) {
+  console.log("createWebhookFBLead", ruta, token, values);
+  if (!ruta || typeof ruta !== "string" || !ruta.startsWith("http")) {
     throw new Error(`La URL 'ruta' no es válida: ${ruta}`);
   }
   try {
     const response = await axios.post(ruta, values, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
+        // Authorization: `Bearer ${token}`,
       },
     });
 
@@ -192,7 +202,6 @@ export const createWebhookFBLead = async (
     throw new Error(`Error al procesar cotización`);
   }
 };
-
 
 export const sendCotizacionEmail = async (
   data: CotizacionForm,
