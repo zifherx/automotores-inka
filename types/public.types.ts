@@ -520,4 +520,4 @@ export type ExtendedFieldErrors = {
 export type FlotanteProp = {
   hovered: string | null;
   setHovered: Dispatch<SetStateAction<string | null>>;
-}
+};
