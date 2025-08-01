@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import {
   buildCotizacionData,
   cn,
+  createWebhookFBLead,
   createCotizacion,
   formatPENPrice,
   formatUSDPrice,
@@ -138,12 +139,27 @@ export function CotizadorStep() {
   const tipoDocumentoSeleccionado = formSteps.watch("tipoDocumento");
   const numeroDocumento = formSteps.watch("numeroDocumento");
 
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
   const maxLengthDocumento =
     tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
       ?.maxLength || 0;
 
   useEffect(() => {
     getModelos();
+    
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+
+
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+    
+
   }, []);
 
   useEffect(() => {
@@ -212,6 +228,7 @@ export function CotizadorStep() {
 
     try {
       if (selectedModel !== null) {
+        
         const query = await axios.post("/api/cotizacion", newObj);
 
         if (query.status === 200) {

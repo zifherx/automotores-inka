@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,9 @@ import { ContactFormProp } from "@/types";
 import { CotizadorPasosFormData } from "@/interfaces";
 import {
   buildCotizacionData,
+  buildPayloadFlashdealer,
   createCotizacion,
+  createWebhookFBLead,
   getDocumentMaxLength,
   handleCotizacionError,
   onToast,
@@ -59,6 +61,20 @@ export function ContactForm({
     sendDataLayer(eventData);
   }, []);
 
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+
+    setUtmParams(utms);
+    console.log("UTM:", utms);
+  }, []);
+
   const onSubmit = async (values: CotizadorPasosFormData) => {
     setIsSubmitting(true);
 
@@ -84,16 +100,33 @@ export function ContactForm({
         precioBase: selectedModel!.precioBase,
       });
 
-      const flashdealerData = {
+      const flashdealerData = buildPayloadFlashdealer({
         numeroDocumento: values.numeroDocumento,
+        nombreCompleto: values.nombreCompleto,
         correoElectronico: values.email,
         numeroCelular: values.celular,
         marcaVehiculo: cotizacionData.marca.toUpperCase(),
         codigoFlashDealer: selectedModel!.codigo_flashdealer,
         ciudadCotizacion: selectedLocation!.ciudad,
-      } as const;
+        plataformaOrigen: utmParams.utm_source || "web",
+      });
+
+      const form_api = {
+        document: flashdealerData.numeroDocumento,
+        full_name: cotizacionData.nombres,
+        email: flashdealerData.correoElectronico,
+        phone_number: flashdealerData.numeroCelular,
+        mark: cotizacionData.marca,
+        model: cotizacionData.modelo,
+        city: cotizacionData.departamento,
+        // "vehicle": flashdealerData.numeroDocumento,
+        // "year": newObj.numeroDocumento,
+        platform: utmParams.utm_source || "web",
+        form_name: "NUEVOS",
+      };
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+        // createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
         sendCotizacionFlashDealer(flashdealerData, "/api/flashdealer/new-lead"),
       ]);
