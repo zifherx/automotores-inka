@@ -516,3 +516,8 @@ export type CharacterCounterProp = {
 export type ExtendedFieldErrors = {
   contactInfo?: ContactInfoError;
 } & Record<string, any>;
+
+export type FlotanteProp = {
+  hovered: string | null;
+  setHovered: Dispatch<SetStateAction<string | null>>;
+};
