@@ -23,8 +23,9 @@ export class BitacoraService {
       method: response.config?.method?.toUpperCase() || "",
       url: response.config?.url || "",
     };
-
+    `BitacoraService | logSuccess | STARTED`;
     await this.saveBitacora(bitacoraData);
+    console.log(`BitacoraService | logSuccess | ENDED}`);
   }
 
   async logError(error: AxiosError, requestPayload: any): Promise<void> {
@@ -45,13 +46,19 @@ export class BitacoraService {
       url: error.config?.url || "",
     };
 
+    `BitacoraService | logError | STARTED`;
     await this.saveBitacora(bitacoraData);
+    console.log(`BitacoraService | logError | ENDED`);
   }
 
   private async saveBitacora(data: BitacoraData): Promise<void> {
+    console.log(`BitacoraService | saveBitacora | data: ${data}`);
     try {
       const bitacora = new Bitacora(data);
-      await bitacora.save();
+      const resultBitacora = await bitacora.save();
+      console.log(
+        `BitacoraService | saveBitacora | resultBitacora: ${resultBitacora}`
+      );
     } catch (err) {
       console.error(`Error guardando bitacora`, err);
     }

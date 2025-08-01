@@ -205,29 +205,25 @@ export interface StepFormI {
 
 export interface FlashDealerRequest {
   numeroDocumento: string;
+  nombreCompleto: string;
   correoElectronico: string;
   numeroCelular: string;
   marcaVehiculo: string;
   codigoFlashDealer: string;
   ciudadCotizacion: string;
+  plataformaOrigen: string;
 }
 
 export interface FlashDealerPayload {
   document: string;
+  full_name: string;
   email: string;
   phone_number: string;
   mark: string;
   model: string;
-  year: string;
-  vehicle: string;
-  mileage: string;
-  form_id: string;
-  form_name: string;
-  campaign_id: string;
-  page_id: string;
-  page_name: string;
-  platform: string;
   city: string;
+  platform: string;
+  form_name: string;
 }
 
 export interface BitacoraData {
