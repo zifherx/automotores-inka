@@ -28,7 +28,6 @@ export class FlashDealerService {
       });
 
       console.log(`FlashDealerService | sendLead | ${response}`);
-
       return response;
     } catch (err: any) {
       console.log("sendLead-err", err);

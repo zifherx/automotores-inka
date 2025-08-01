@@ -34,6 +34,8 @@ export class FlashDealerController {
 
       console.log(`FlashDealerController | handlePost | ${response}`);
 
+      console.log(`FlashDealerController | handlePost | ${response}`);
+
       return NextResponse.json({
         success: true,
         message: `${response.data?.message.trim() || "Exito"} en FD`,
