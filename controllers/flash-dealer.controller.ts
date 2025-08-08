@@ -27,12 +27,22 @@ export class FlashDealerController {
         RequestValidator.validateFlashDealerRequest(requestData);
       const payload = FlashDealerMapper.toPayload(validatedData);
 
+      console.time(
+        `FlashDealerController | handlePost | flashDealerService.sendLead`
+      );
       const response = await this.flashDealerService.sendLead(payload);
+      console.timeEnd(
+        `FlashDealerController | handlePost | flashDealerService.sendLead`
+      );
 
       // Respuesta asíncrona
       this.bitacoraService.logSuccess(response, payload).catch(console.error);
 
-      console.log(`FlashDealerController | handlePost | ${response}`);
+      console.log(
+        `FlashDealerController | handlePost | response: ${JSON.stringify(
+          response.data
+        )}`
+      );
 
       console.log(`FlashDealerController | handlePost | ${response}`);
 
@@ -53,7 +63,6 @@ export class FlashDealerController {
     req: NextRequest
   ): Promise<NextResponse> {
     console.log("Flash Dealer API Error: ", err);
-    console.log("req", req);
     try {
       const requestData = await req.json();
       const payload = FlashDealerMapper.toPayload(requestData);
@@ -84,7 +93,7 @@ export class FlashDealerController {
           status: 500,
         }
       );
-    } catch (parseError) {
+    } catch (parseError: any) {
       console.log("parseError", parseError);
       return NextResponse.json(
         {
