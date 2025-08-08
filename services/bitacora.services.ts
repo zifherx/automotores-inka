@@ -23,7 +23,8 @@ export class BitacoraService {
       method: response.config?.method?.toUpperCase() || "",
       url: response.config?.url || "",
     };
-    `BitacoraService | logSuccess | STARTED`;
+
+    console.log(`BitacoraService | logSuccess | STARTED`);
     await this.saveBitacora(bitacoraData);
     console.log(`BitacoraService | logSuccess | ENDED}`);
   }
@@ -46,18 +47,22 @@ export class BitacoraService {
       url: error.config?.url || "",
     };
 
-    `BitacoraService | logError | STARTED`;
+    console.log(`BitacoraService | logError | STARTED`);
     await this.saveBitacora(bitacoraData);
     console.log(`BitacoraService | logError | ENDED`);
   }
 
   private async saveBitacora(data: BitacoraData): Promise<void> {
-    console.log(`BitacoraService | saveBitacora | data: ${data}`);
+    console.log(
+      `BitacoraService | saveBitacora | data: ${JSON.stringify(data.response)}`
+    );
     try {
       const bitacora = new Bitacora(data);
       const resultBitacora = await bitacora.save();
       console.log(
-        `BitacoraService | saveBitacora | resultBitacora: ${resultBitacora}`
+        `BitacoraService | saveBitacora | resultBitacora: ${JSON.stringify(
+          resultBitacora
+        )}`
       );
     } catch (err) {
       console.error(`Error guardando bitacora`, err);
