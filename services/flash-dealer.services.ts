@@ -18,7 +18,11 @@ export class FlashDealerService {
   }
 
   async sendLead(payload: FlashDealerPayload): Promise<AxiosResponse> {
+    console.log(
+      `FlashDealerService | sendLead | payload: ${JSON.stringify(payload)}`
+    );
     try {
+      console.time(`FlashDealerService | sendLead`);
       const response = await axios.post(this.apiUrl, payload, {
         headers: {
           Authorization: this.apiToken,
@@ -26,11 +30,11 @@ export class FlashDealerService {
         },
         // timeout: 30000, // 30 segundos
       });
+      console.timeEnd(`FlashDealerService | sendLead`);
 
-      console.log(`FlashDealerService | sendLead | ${response}`);
       return response;
     } catch (err: any) {
-      console.log("sendLead-err", err);
+      console.log("FlashDealerService | CATCH | sendLead-err", err);
       console.error(err.message);
       if (axios.isAxiosError(err)) {
         throw err;

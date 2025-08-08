@@ -131,10 +131,6 @@ export function FormularioLead({ model }: iCardModel) {
     console.log("UTM:", utms);
   }, [marcaSelected]);
 
-  // console.log("utmParams:", utmParams);
-  // console.log("URL_APIFB", URL_APIFB);
-  // console.log("TOKEN_APIFB", TOKEN_APIFB);
-
   const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
     try {
@@ -158,36 +154,23 @@ export function FormularioLead({ model }: iCardModel) {
         nombreCompleto: values.nombres,
         correoElectronico: values.email,
         numeroCelular: values.celular,
-        marcaVehiculo: cotizacionData.marca.toUpperCase(),
+        marcaVehiculo:
+          cotizacionData.marca === "great-wall"
+            ? "GREAT WALL"
+            : cotizacionData.marca.toUpperCase(),
         codigoFlashDealer: model!.codigo_flashdealer,
         ciudadCotizacion: watchSede,
         plataformaOrigen: utmParams.utm_source || "web",
       });
-      const form_api = {
-        document: flashdealerData.numeroDocumento,
-        full_name: flashdealerData.nombreCompleto,
-        email: flashdealerData.correoElectronico,
-        phone_number: flashdealerData.numeroCelular,
-        mark: flashdealerData.marcaVehiculo,
-        model: flashdealerData.codigoFlashDealer,
-        city: flashdealerData.ciudadCotizacion,
-        // "vehicle": flashdealerData.numeroDocumento,
-        // "year": newObj.numeroDocumento,
-        platform: flashdealerData.plataformaOrigen,
-        form_name: "NUEVOS",
-      };
 
-      // console.log("form_api", form_api);
+      // console.log("cotizacionData", cotizacionData);
+      // console.log("flashdealerData", flashdealerData);
 
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
-        // createWebhookFBLead(form_api, URL_APIFB, TOKEN_APIFB),
         createCotizacion(cotizacionData, "/api/cotizacion"),
-        // sendCotizacionEmail(cotizacionData, "/api/send-email/cotizacion"),
         sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
       ]);
 
-      // console.log("webhookFBLeadResult", webhookFBLeadResult);
-      // console.log("emailResult", emailResult);
       // console.log("cotizacionResult", cotizacionResult);
       // console.log("flashdealerResult", flashdealerResult);
 

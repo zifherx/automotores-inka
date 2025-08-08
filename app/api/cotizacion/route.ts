@@ -115,8 +115,10 @@ export async function POST(req: NextRequest) {
       const updateCliente = await Cliente.findByIdAndUpdate(
         customerFound._id,
         {
+          name: dataForm.nombres,
           celular: dataForm.celular,
           email: dataForm.email,
+          usoDatosPersonales: dataForm.checkDatosPersonales,
           aceptaPromociones: dataForm.checkPromociones,
         },
         { new: true }
@@ -143,7 +145,9 @@ export async function POST(req: NextRequest) {
       intencionCompra: dataForm.intencionCompra,
     }) as iLead;
 
+    console.time(`POST | Cotizacion New`);
     const query = await qCotizacion.save();
+    console.timeEnd(`POST | Cotizacion New`);
 
     if (!query) {
       throw new NextResponse("No se pudo guardar la cotización en BD", {
