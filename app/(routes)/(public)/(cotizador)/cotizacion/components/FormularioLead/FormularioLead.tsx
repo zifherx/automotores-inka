@@ -163,16 +163,13 @@ export function FormularioLead({ model }: iCardModel) {
         plataformaOrigen: utmParams.utm_source || "web",
       });
 
-      // console.log("cotizacionData", cotizacionData);
-      // console.log("flashdealerData", flashdealerData);
-
       const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
         createCotizacion(cotizacionData, "/api/cotizacion"),
         sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
       ]);
 
       // console.log("cotizacionResult", cotizacionResult);
-      // console.log("flashdealerResult", flashdealerResult);
+      // console.log("sendCotizacionFlashDealer", sendCotizacionFlashDealer);
 
       if (cotizacionResult.status === "rejected") {
         throw new Error(`Error al crear cotizacionResult`);
