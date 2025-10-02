@@ -315,3 +315,17 @@ export const createNumeroDeReclamo = (
   const yearLRD = fecha.split("/")[2];
   return `LRD-${nomeclaturaLRD}-${numLRD}-${yearLRD}-${codeSede}`;
 };
+
+export const parseSortQuery = (sortParam?: string): Record<string, 1 | -1> => {
+  if (!sortParam) return {};
+
+  return sortParam.split(",").reduce((acc, sortItem) => {
+    const [field, direction] = sortItem.split(":");
+
+    if (field) {
+      acc[field] = direction?.toLowerCase() === "desc" ? -1 : 1;
+    }
+
+    return acc;
+  }, {} as Record<string, 1 | -1>);
+};
