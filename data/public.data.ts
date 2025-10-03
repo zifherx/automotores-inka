@@ -1445,6 +1445,11 @@ export const listTipoServicio: iTipoServicio[] = [
   },
   {
     id: 4,
+    label: "Planchado y Pintura",
+    value: "planchado-pintura",
+  },
+  {
+    id: 5,
     label: "Otros",
     value: "otros",
   },
