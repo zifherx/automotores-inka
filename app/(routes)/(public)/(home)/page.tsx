@@ -22,7 +22,7 @@ export default async function HomePage() {
     <>
       <BannerPortada />
       <BrandSlider />
-      <ModelosEnLiquidacion />
+      {/* <ModelosEnLiquidacion /> */}
       <VideoCustom
         bgSection={dataNewVideoMazda5.bgSection}
         parrafo={dataNewVideoMazda5.parrafo}

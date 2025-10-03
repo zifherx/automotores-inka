@@ -21,7 +21,7 @@ export class PortadaService {
   }
 
   async getResources(filter?: FilterQuery<iPortada>): Promise<iPortada[]> {
-    return this.repository.findAll(filter);
+    return await this.repository.findAll(filter);
   }
 
   async getResource(id: string): Promise<iPortada> {
