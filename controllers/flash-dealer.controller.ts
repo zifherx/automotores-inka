@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AxiosError } from "axios";
 
-import { BitacoraService } from "@/services/bitacora.services";
-import { FlashDealerService } from "@/services/flash-dealer.services";
+import { BitacoraService } from "@/services/bitacora.service";
+import { FlashDealerService } from "@/services/flash-dealer.service";
 
 import { FlashDealerMapper } from "@/utils/flash-dealer.mapper";
 import { RequestValidator } from "@/utils/request-validatos";
@@ -52,7 +52,6 @@ export class FlashDealerController {
         response: response.data,
       });
     } catch (err: any) {
-      console.log("handlePost-err", err);
       console.error(err.message);
       return this.handleError(err, req);
     }
