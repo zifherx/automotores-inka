@@ -226,6 +226,43 @@ export interface FlashDealerPayload {
   form_name: string;
 }
 
+export interface NovalyRequest {
+  nombreCompleto: string;
+  correoElectronico: string;
+  numeroCelular: string;
+  tipoDocumento: string;
+  numeroDocumento: string;
+  marcaVehiculo: string;
+  modeloVehiculo: string;
+  ciudadCotizacion: string;
+  plataformaOrigen: string;
+  idMarca: number;
+  idTienda: number;
+  utmTrafico: string;
+}
+
+export interface DivisionNombreCompleto {
+  nombres: string;
+  apellidos: string;
+}
+
+export interface NovalyPayload {
+  nombres: string;
+  apellidos: string;
+  celular: string;
+  email: string;
+  tipo_documento: string;
+  numero_documento: string;
+  ciudad_origen: string;
+  marca: string;
+  modelo: string;
+  id_marca: number;
+  id_tienda: number;
+  form_name: string;
+  city: string;
+  utm: string;
+}
+
 export interface BitacoraData {
   request: RequestBitacora;
   response: ResponseBitacora;
