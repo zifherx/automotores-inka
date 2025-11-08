@@ -20,7 +20,7 @@ export class BitacoraService {
         code: response.status,
         statusText: response.statusText,
       },
-      method: response.config?.method?.toUpperCase() || "",
+      method: response.config?.method?.toUpperCase() || "POST",
       url: response.config?.url || "",
     };
 
@@ -41,9 +41,9 @@ export class BitacoraService {
           ? JSON.stringify(error.response.data)
           : JSON.stringify({ error: error.message }),
         code: error.response?.status || 500,
-        statusText: error.code || "UNKNOWN_ERROR",
+        statusText: error.response?.statusText || error.code || "UNKNOWN_ERROR",
       },
-      method: error.config?.method?.toUpperCase() || "",
+      method: error.config?.method?.toUpperCase() || "POST",
       url: error.config?.url || "",
     };
 
@@ -52,9 +52,63 @@ export class BitacoraService {
     console.log(`BitacoraService | logError | ENDED`);
   }
 
+  async logValidationError(
+    requestData: any,
+    errorResponse: any
+  ): Promise<void> {
+    const bitacoraData: BitacoraData = {
+      request: {
+        body: JSON.stringify(requestData),
+        authorization: "",
+        accept: "application/json",
+      },
+      response: {
+        body: JSON.stringify(errorResponse),
+        code: 400,
+        statusText: "Bad Request - Validation Error",
+      },
+      method: "POST",
+      url: process.env.ENDPOINT_NOVALY || "N/A",
+    };
+
+    console.log(`BitacoraService | logValidationError | STARTED`);
+    await this.saveBitacora(bitacoraData);
+    console.log(`BitacoraService | logValidationError | ENDED`);
+  }
+
+  async logGenericError(
+    requestData: any,
+    errorResponse: any,
+    errorMessage: string
+  ) {
+    const bitacoraData: BitacoraData = {
+      request: {
+        body: JSON.stringify(requestData),
+        authorization: "",
+        accept: "application/json",
+      },
+      response: {
+        body: JSON.stringify({
+          ...errorResponse,
+          originalError: errorMessage,
+        }),
+        code: 500,
+        statusText: "Internal Server Error",
+      },
+      method: "POST",
+      url: process.env.ENDPOINT_NOVALY || "N/A",
+    };
+
+    console.log(`BitacoraService | logGenericError | STARTED`);
+    await this.saveBitacora(bitacoraData);
+    console.log(`BitacoraService | logGenericError | ENDED`);
+  }
+
   private async saveBitacora(data: BitacoraData): Promise<void> {
     console.log(
-      `BitacoraService | saveBitacora | data: ${JSON.stringify(data.response)}`
+      `BitacoraService | saveBitacora | code: ${JSON.stringify(
+        data.response.code
+      )}`
     );
     try {
       const bitacora = new Bitacora(data);
