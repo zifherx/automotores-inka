@@ -11,9 +11,7 @@ const nextConfig = {
       },
     ],
   },
-  productionBrowserSourceMaps: false,
   distDir: "dist",
-  cleanDistDir: true,
 };
 
 export default nextConfig;
