@@ -1,3 +1,3 @@
-export default function BlankComponent() {
+export function BlankComponent() {
   return <div className="min-h-screen bg-white"></div>;
 }
