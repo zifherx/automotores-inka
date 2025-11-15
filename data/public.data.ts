@@ -33,14 +33,11 @@ import {
   Shield,
 } from "lucide-react";
 import {
-  iChasis,
-  iModelo,
   iParrafo,
   iTipoServicio,
   ProductCategory,
   tCustomvideo,
 } from "@/types";
-import { iMarca } from "@/models";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
