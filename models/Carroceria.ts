@@ -23,9 +23,8 @@ const chasisSchema: Schema = new Schema<iCarroceria>(
   }
 );
 
-const Carroceria =
+export const Carroceria =
   models.Carroceria || model<iCarroceria>("Carroceria", chasisSchema);
 
 export default Carroceria;
-
 // export default models.Carroceria || model<iCarroceria>("Carroceria", chasisSchema);

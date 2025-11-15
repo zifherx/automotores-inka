@@ -4,7 +4,9 @@ import {
   FlashDealerRequest,
   iCompany,
   IRequestFD,
+  IRequestNovaly,
   iTalleres,
+  NovalyRequest,
 } from "@/interfaces";
 
 import { CotizacionForm, ReclamoDataBuildedType } from "@/types";
@@ -137,6 +139,10 @@ export const buildPayloadFlashdealer = (values: FlashDealerRequest) => {
   return { ...values };
 };
 
+export const buildPayloadNovalyApp = (values: NovalyRequest) => {
+  return { ...values };
+};
+
 export const buildReclamoData = (values: ReclamoDataBuildedType) => {
   return { ...values };
 };
@@ -245,6 +251,28 @@ export const sendCotizacionFlashDealer = async (
       status: err.response?.status,
     });
     throw new Error("Error al enviar la cotización a Flashdealer");
+  }
+};
+
+export const sendLeadNovalyApp = async (
+  valores: IRequestNovaly,
+  ruta: string
+) => {
+  try {
+    const response = await axios.post(ruta, valores);
+
+    if (response.status !== 200) {
+      throw new Error(`Erro al enviar a Novaly App: ${response.status}`);
+    }
+
+    return response;
+  } catch (err: any) {
+    console.error("Error en sendLeadNovalyApp: ", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error("Error al enviar la cotización a Novaly App");
   }
 };
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import Carroceria from "@/models/Carroceria";
+import { Carroceria } from "@/models";
 
 import { dbConnect } from "@/lib/dbConnect";
 
@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
       message: `Carrocería creada ✅`,
     });
   } catch (err: any) {
-    console.log(err);
     console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
@@ -37,7 +36,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ total: query.length, obj: query });
   } catch (err: any) {
-    console.log(err);
     console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }

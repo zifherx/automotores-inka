@@ -23,6 +23,7 @@ export async function PATCH(
       {
         name: dataForm.name,
         slug: dataForm.slug,
+        idTiendaNovaly: dataForm.idTiendaNovaly,
         codexHR: dataForm.codexHR,
         ciudad: dataForm.ciudad,
         address: dataForm.address,

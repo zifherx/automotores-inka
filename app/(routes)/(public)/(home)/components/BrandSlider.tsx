@@ -70,7 +70,8 @@ export function BrandSlider() {
                     <Skeleton className="h-[120px] w-[120px] rounded-md" />
                   </CarouselItem>
                 ))
-              : brands?.map(({ _id, name, imageUrl, slug }) => (
+              : brands &&
+                brands.map(({ _id, name, imageUrl, slug }) => (
                   <CarouselItem key={_id} className="basis-4/12 md:basis-32">
                     <Image
                       className="object-contain cursor-pointer border border-grisInka rounded-lg hover:border-black drop-shadow-sm"

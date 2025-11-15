@@ -109,10 +109,8 @@ export function ReclamoSlugView() {
         onToast(reclamoResult.value?.data.message);
         router.push(`/nosotros/gracias`);
       }
-      // console.log("claimData: ", claimData);
-      // onToast("Reclamo ingresado", JSON.stringify(claimData));
     } catch (err: any) {
-      console.log(err);
+      console.log(err.message);
       onToast("Algo salió mal ❌", err.message, true);
     } finally {
       setIsLoading(false);

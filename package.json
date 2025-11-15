@@ -6,7 +6,10 @@
     "dev": "set APP_ENV=development & next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rimraf .next node_modules package-lock.json",
+    "clean:build": "rimraf .next && next build",
+    "fresh": "npm run clean && npm install && npm run build"
   },
   "dependencies": {
     "@clerk/localizations": "^3.10.0",
@@ -85,6 +88,7 @@
     "eslint": "8",
     "eslint-config-next": "14.2.5",
     "postcss": "8",
+    "rimraf": "^6.1.0",
     "tailwindcss": "3.4.1",
     "typescript": "5"
   }

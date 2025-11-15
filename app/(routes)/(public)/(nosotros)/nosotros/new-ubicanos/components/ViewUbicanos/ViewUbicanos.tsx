@@ -74,10 +74,14 @@ export function ViewUbicanos() {
       <MigajasView />
       <FilterSearchView value={search} onChange={setSearch} />
       <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        {/* {filteredDealers.length === 0 ? (
+          <div>No hay concesionarios disponibles en {search}</div>
+        ) : ( */}
         <SidebarUbicanos
           sedes={filteredDealers}
           onSelectDealer={handleSelectDealer}
         />
+        {/* )} */}
         <LocationMap
           sedes={filteredDealers}
           mapCenter={mapCenter}

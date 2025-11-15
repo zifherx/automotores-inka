@@ -8,7 +8,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { onToast } from "@/lib";
@@ -27,8 +26,6 @@ export const SucursalContext = createContext<SucursalContextType | undefined>(
 export function SucursalProvider({ children }: { children: ReactNode }) {
   const [sucursales, setSucursales] = useState<iSede[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(false);
-
-  const router = useRouter();
 
   const getSucursales = useCallback(async () => {
     setIsLoadingData(true);

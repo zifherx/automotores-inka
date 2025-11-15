@@ -3,11 +3,12 @@
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-
 import { Send } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { MenuDesktop } from "./MenuDesktop";
 import { MenuMobile } from "./MenuMobile";
+
 import { cn } from "@/lib";
 
 export function Navbar() {
@@ -35,19 +36,21 @@ export function Navbar() {
           <MenuMobile />
         </div>
 
-        <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-5">
-          <Link
-            // href="/new-cotizacion"
-            href="/steps-cotizacion"
+        <div className="hidden sm:flex items-center">
+          <Button
+            asChild
+            size="lg"
             className={cn(
-              pathname === "/new-cotizacion"
+              pathname === "/steps-cotizacion"
                 ? "hidden"
-                : "flex items-center gap-3 rounded-md text-lg font-textMedium px-4 py-2 bg-blueInka text-white hover:bg-white hover:text-blueInka hover:border-2 hover:border-blueInka transition-all"
+                : "bg-blueInka font-headMedium text-lg transition-all hover:scale-110 hover:bg-blueDarkInka"
             )}
           >
-            Financia aquí
-            <Send className="w-5 h-5" strokeWidth={2} />
-          </Link>
+            <Link href="/steps-cotizacion">
+              Financia aquí
+              <Send className="ml-2 w-6 h-6" strokeWidth={2} />
+            </Link>
+          </Button>
         </div>
       </div>
     </nav>

@@ -1,5 +1,5 @@
 import { Title } from "@/components/Shared/Title";
-import { CarouselLiquidacion } from "../CarouselLiquidacion";
+import { CarouselLiquidacion } from "./CarouselLiquidacion";
 
 export function ModelosEnLiquidacion() {
   return (
