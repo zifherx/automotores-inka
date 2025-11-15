@@ -99,4 +99,6 @@ const modeloSchema: Schema = new Schema<iModel>(
   }
 );
 
-export default models.Modelo || model<iModel>("Modelo", modeloSchema);
+export const Modelo = models.Modelo || model<iModel>("Modelo", modeloSchema);
+
+export default Modelo;

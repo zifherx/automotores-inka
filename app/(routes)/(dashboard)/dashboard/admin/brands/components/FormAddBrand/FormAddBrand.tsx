@@ -36,6 +36,7 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
       name: "",
       imageUrl: "",
       slug: "",
+      idNovaly: 0,
       isActive: true,
     },
   });
@@ -102,6 +103,31 @@ export function FormAddBrand({ setOpenDialog }: tFormAdding) {
                 <FormLabel className="font-headMedium">Slug de Marca</FormLabel>
                 <FormControl>
                   <Input placeholder="Slug..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* IdNovaly */}
+          <FormField
+            control={form.control}
+            name="idNovaly"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Id Marca</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={30}
+                    placeholder="Id..."
+                    {...field}
+                    onChange={(e) => {
+                      const valor = e.target.value;
+                      field.onChange(valor === "" ? "" : Number(valor));
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

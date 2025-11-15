@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import { MarcaService } from "@/services/marca.services";
+import { MarcaService } from "@/services/marca.service";
 import { MongooseMarcaRepositoryImplement } from "@/repositories/implementations/mongoose/marca.repository";
 import { DIContainer } from "@/config/di-container";
 import { ResponseFactory } from "@/utils/response-factory";

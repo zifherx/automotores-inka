@@ -9,6 +9,7 @@ export interface iCoordenada {
 export interface iSucursal extends Document {
   name: string;
   slug: string;
+  idTiendaNovaly: number;
   codexHR: string;
   imageUrl: string;
   ciudad: string;
@@ -29,6 +30,7 @@ const sucursalSchema: Schema = new Schema<iSucursal>(
   {
     name: { type: String, required: true },
     slug: { type: String, required: true },
+    idTiendaNovaly: { type: Number, default: 0 },
     codexHR: { type: String, required: true, lowercase: true },
     imageUrl: { type: String },
     address: { type: String },

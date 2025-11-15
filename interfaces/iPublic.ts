@@ -186,6 +186,23 @@ export interface IRequestFD {
   ciudadCotizacion: string;
 }
 
+export interface IRequestNovaly {
+  // Cliente
+  nombreCompleto: string;
+  correoElectronico: string;
+  numeroCelular: string;
+  tipoDocumento: string;
+  numeroDocumento: string;
+  ciudadCotizacion: string;
+  // Unidad
+  marcaVehiculo: string;
+  modeloVehiculo: string;
+  idMarca: number;
+  // Lead
+  idTienda: number;
+  utmTrafico: string;
+}
+
 export interface CotizadorPasosFormData {
   nombreCompleto: string;
   tipoDocumento: TipoDocumentoType;
@@ -235,7 +252,6 @@ export interface NovalyRequest {
   marcaVehiculo: string;
   modeloVehiculo: string;
   ciudadCotizacion: string;
-  plataformaOrigen: string;
   idMarca: number;
   idTienda: number;
   utmTrafico: string;

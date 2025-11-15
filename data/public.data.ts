@@ -39,6 +39,7 @@ import {
   iParrafo,
   iTipoServicio,
   ProductCategory,
+  tCustomvideo,
 } from "@/types";
 import { iMarca } from "@/models";
 
@@ -2626,3 +2627,13 @@ export const InputTextData: InputControlI[] = [
     icon: Hash,
   },
 ];
+
+export const dataNewVideoMazda5: tCustomvideo = {
+  bgSection: "bg-[url('/images/fondo-tramado-gris.png')]",
+  title: "Mazda MX-5: El Placer de la Libertad",
+  uriVideoYoutube: "OixCoqezLbI?si=SOHLgbqantwV47LY",
+  parrafo: [
+    "Experimenta la verdadera esencia de conducción en el icónico Mazda MX-5. Cada curva, cada kilómetro, se transforma en una conexión pura entre el camino y tus emociones.",
+    "Con su diseño descapotable y su ligereza inigu alable, el MX-5 está diseñado para que sientas el viento y la potencia de cada viaje.",
+  ],
+};

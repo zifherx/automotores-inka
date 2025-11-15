@@ -30,8 +30,8 @@ export function BannerPortada() {
         setPortadas(portadasActivas);
         setIsLoading(false);
       }
-    } catch (err) {
-      console.log({ err });
+    } catch (err: any) {
+      console.log(err.message);
       setIsLoading(false);
     }
   };
@@ -51,7 +51,8 @@ export function BannerPortada() {
                   <Skeleton className="h-[200px] md:h-[780px] w-full rounded-md" />
                 </CarouselItem>
               ))
-            : portadas?.map(({ _id, imageUrl, name }) => (
+            : portadas &&
+              portadas.map(({ _id, imageUrl, name }) => (
                 <CarouselItem key={_id}>
                   <Image src={imageUrl} alt={name} width={2000} height={780} />
                 </CarouselItem>
