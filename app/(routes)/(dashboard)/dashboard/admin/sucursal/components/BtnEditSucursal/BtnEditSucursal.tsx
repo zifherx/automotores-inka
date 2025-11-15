@@ -22,6 +22,7 @@ import {
 import { FormEditSucursal } from "../FormEditSucursal";
 
 import { iCardSede } from "@/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function BtnEditSucursal({ sede }: iCardSede) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -51,7 +52,9 @@ export function BtnEditSucursal({ sede }: iCardSede) {
             Editar Sede
           </DialogTitle>
           <DialogDescription>
-            <FormEditSucursal setOpenDialog={setOpenDialog} sede={sede} />
+            <ScrollArea className="h-[600px] w-full p-1">
+              <FormEditSucursal setOpenDialog={setOpenDialog} sede={sede} />
+            </ScrollArea>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { RevealElement } from "@/components/Shared/RevealElement";
 
 import { iCardModel } from "@/types";
@@ -13,7 +12,6 @@ export function Banner(props: iCardModel) {
   const { model } = props;
   const { marca, name, imageUrl } = model;
 
-  const router = useRouter();
   const params = useParams();
 
   const rutaTestDrive =
@@ -43,6 +41,7 @@ export function Banner(props: iCardModel) {
                 "hover:bg-redInka hover:text-white hover:underline"
               )}
               href={rutaTestDrive}
+              target="_blank"
             >
               Solicita un test drive
             </Link>

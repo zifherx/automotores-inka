@@ -13,10 +13,8 @@ export async function GET(req: NextRequest) {
       .sort({ createdAt: -1 })
       .limit(1);
 
-    console.log("Q:", query);
     return NextResponse.json(query);
   } catch (err: any) {
-    console.error(err);
     console.error(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }

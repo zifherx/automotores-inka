@@ -49,6 +49,7 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
     defaultValues: {
       name: sede.name,
       slug: sede.slug,
+      idTiendaNovaly: sede.idTiendaNovaly ? sede.idTiendaNovaly : 0,
       codexHR: sede.codexHR,
       address: sede.address,
       ciudad: sede.ciudad,
@@ -169,12 +170,37 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
             control={form.control}
             name="ciudad"
             render={({ field }) => (
-              <FormItem className="md:col-span-2">
+              <FormItem>
                 <FormLabel className="font-headMedium">
                   Ciudad de la Sede
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="Ciudad..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* IdNovaly */}
+          <FormField
+            control={form.control}
+            name="idTiendaNovaly"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">ID Tienda</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Id..."
+                    min={0}
+                    max={10}
+                    {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value === "" ? "" : Number(value));
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
