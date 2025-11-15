@@ -1,9 +1,17 @@
-import { EligeRS } from "./components/EligeRS";
+import { Metadata } from "next";
+import { LibroReclamacionesView } from "./components/LibroReclamacionesView";
 
-export default function LibroReclamacionesPage() {
+export const metadata: Metadata = {
+  title: {
+    default: "Libro de Reclamaciones",
+    template: "",
+  },
+};
+
+export default function LibroReclamosPage() {
   return (
     <>
-      <EligeRS />
+      <LibroReclamacionesView />
     </>
   );
 }

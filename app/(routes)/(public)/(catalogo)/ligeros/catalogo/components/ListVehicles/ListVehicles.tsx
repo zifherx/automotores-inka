@@ -5,6 +5,7 @@ import { CardProductModel } from "@/components/Shared/CardProductModel";
 
 import { iListVehicle, iModelo } from "@/types";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
+import { ArrowRight } from "lucide-react";
 
 export function ListVehicles({ models }: iListVehicle) {
   const [counterVehicles, setCounterVehicles] = useState(9);
@@ -46,10 +47,11 @@ export function ListVehicles({ models }: iListVehicle) {
       <div className="text-center my-8">
         {counterVehicles < models.length && (
           <Button
-            className="p-6 text-white bg-blueInka transition-all duration-150 cursor-pointer rounded-xl hover:bg-blueDarkInka"
+            className="p-6 text-white font-bold bg-blueInka transition-all duration-150 cursor-pointer rounded-xl hover:scale-105 hover:bg-blueDarkInka"
             onClick={loadMoreVehicles}
           >
             Ver más modelos
+            <ArrowRight className="w-5 h-5 mr-2" strokeWidth={2} />
           </Button>
         )}
       </div>

@@ -25,9 +25,13 @@ export async function POST(req: NextRequest) {
   try {
     const { data, error } = await resend.emails.send({
       from: `Automotores Inka 🤖 <bot@ziphonex.com>`,
-      to: [`${dataForm.email}`],
+      to: [`marco.julca@automotoresinka.com`],
       // bcc: [`automotores.inka@ziphonex.com`],
-      bcc: [`automotores.inka@ziphonex.com`, `${systemMail.email}`],
+      bcc: [
+        `automotores.inka@ziphonex.com`,
+        `${systemMail.email}`,
+        `${dataForm.email ? dataForm.email : ""}`,
+      ],
       subject: `Nuevo Reclamo ❗ - ${dataForm.numeroDocumento}`,
       react: TEmailReclamo({
         nombres: dataForm.nombres,
@@ -50,9 +54,12 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ error }, { status: 500 });
 
+    console.log("Q:", data);
+
     return NextResponse.json({ message: "Mensaje enviado", mail: data });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
+    console.log(err.message);
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }

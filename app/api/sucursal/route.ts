@@ -3,18 +3,31 @@ import { auth } from "@clerk/nextjs/server";
 
 import { dbConnect } from "@/lib/dbConnect";
 import Sucursal from "@/models/Sucursal";
+import { Marca } from "@/models/Marca";
+import { iSede } from "@/types";
 
 export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const query = await Sucursal.find({}).sort({ name: 1 }).populate({
-      path: "marcasDisponibles",
-      select: "_id name slug imageUrl",
-    });
+    const query = await Sucursal.find()
+      .sort({ idTiendaNovaly: 1 })
+      .populate([
+        {
+          path: "marcasDisponiblesVentas",
+          model: Marca,
+          select: "_id name slug imageUrl",
+        },
+        {
+          path: "marcasDisponiblesTaller",
+          model: Marca,
+          select: "_id name slug imageUrl",
+        },
+      ])
+      .lean<iSede[]>()
+      .exec();
     return NextResponse.json({ total: query.length, obj: query });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -36,7 +49,7 @@ export async function POST(req: NextRequest) {
       message: `Sede creada ✅`,
     });
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

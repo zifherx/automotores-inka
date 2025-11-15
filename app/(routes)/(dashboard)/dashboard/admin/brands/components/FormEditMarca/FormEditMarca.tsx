@@ -37,6 +37,7 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
       name: brand.name,
       isActive: brand.isActive,
       slug: brand.slug,
+      idNovaly: brand.idNovaly ? brand.idNovaly : 0,
       imageUrl: brand.imageUrl,
     },
   });
@@ -111,20 +112,47 @@ export function FormEditMarca({ brand }: tFormEditMarca) {
           />
         </div>
 
-        {/* Slug */}
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-headMedium">Slug de Marca</FormLabel>
-              <FormControl>
-                <Input placeholder="Slug..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-[70%,1fr] gap-2">
+          {/* Slug */}
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Slug de Marca</FormLabel>
+                <FormControl>
+                  <Input placeholder="Slug..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* IdNovaly */}
+          <FormField
+            control={form.control}
+            name="idNovaly"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-headMedium">Id Marca</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={30}
+                    placeholder="Id..."
+                    {...field}
+                    onChange={(e) => {
+                      const valor = e.target.value;
+                      field.onChange(valor === "" ? "" : Number(valor));
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* ImageUrl */}
         <FormField

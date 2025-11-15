@@ -14,7 +14,8 @@ export async function GET(req: NextRequest) {
       .limit(1);
 
     return NextResponse.json(query);
-  } catch (err) {
+  } catch (err: any) {
+    console.error(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

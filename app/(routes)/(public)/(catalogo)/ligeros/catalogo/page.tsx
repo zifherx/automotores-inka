@@ -2,6 +2,9 @@ import { Metadata } from "next";
 
 import { CatalogoVehicular } from "./components/CatalogoVehicular";
 
+import { BrandsProvider } from "@/context/brands/marcaContext";
+import { ModelosProvider } from "@/context/modelos/modeloContext";
+
 export const metadata: Metadata = {
   title: {
     template: "",
@@ -11,8 +14,10 @@ export const metadata: Metadata = {
 
 export default async function CatalogoPage() {
   return (
-    <>
-      <CatalogoVehicular />
-    </>
+    <BrandsProvider>
+      <ModelosProvider>
+        <CatalogoVehicular />
+      </ModelosProvider>
+    </BrandsProvider>
   );
 }

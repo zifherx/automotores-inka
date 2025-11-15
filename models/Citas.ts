@@ -1,4 +1,4 @@
-import { iCustomer, iModelo, iSede } from "@/types";
+import { iBrand, iCustomer, iModelo, iSede } from "@/types";
 import { Document, model, models, Schema } from "mongoose";
 
 export interface iCita extends Document {
@@ -9,9 +9,12 @@ export interface iCita extends Document {
   marcaFlat: string;
   modeloFlat: string;
   modelo: iModelo;
+  marca: iBrand;
   concesionario: iSede;
   tipoServicio: string;
   comentario: string;
+  whatsappMessage: string;
+  whatsappContact: string;
 }
 
 const citaSchema: Schema = new Schema<iCita>(
@@ -21,11 +24,14 @@ const citaSchema: Schema = new Schema<iCita>(
     kilometraje: { type: String, required: true },
     ciudadSede: { type: String, required: true },
     marcaFlat: { type: String, required: true },
-    modeloFlat: { type: String, required: true },
+    modeloFlat: { type: String },
     modelo: { type: Schema.Types.ObjectId, ref: "Modelo", default: null },
+    marca: { type: Schema.Types.ObjectId, ref: "Marca", default: null },
     concesionario: { type: Schema.Types.ObjectId, ref: "Sucursal" },
     tipoServicio: { type: String, required: true },
     comentario: { type: String },
+    whatsappMessage: { type: String, default: "" },
+    whatsappContact: { type: String, default: "" },
   },
   { versionKey: false, timestamps: true }
 );

@@ -1,3 +1,5 @@
+import { SolicitudServicioFormValues } from "@/forms";
+
 export class APIMessages {
   // Mensajes de éxito
   static readonly CREATED_SUCCESS = "creado con éxito ✅";
@@ -24,5 +26,48 @@ export class APIMessages {
 
   static getListedMessage(resource: string): string {
     return `${resource} ${this.LISTED_SUCCESS}`;
+  }
+
+  static createMessageForCitaTaller(
+    customerTaller: SolicitudServicioFormValues
+  ): string {
+    return `*Hola Automotores Inka*
+      *Cliente:* ${customerTaller.nombres} - ${
+      customerTaller.numeroDocumento
+    }(${customerTaller.tipoDocumento})
+      *Email:* ${customerTaller.correo}
+      ${customerTaller.celular ? `*Teléfono:* ${customerTaller.celular}` : ""}
+
+      *Ubicación:* ${customerTaller.concesionario}
+      *Sede:* ${customerTaller.sede}
+
+      ${
+        customerTaller.marca
+          ? `*Marca del vehículo:* ${customerTaller.marca}`
+          : ""
+      }
+      ${
+        customerTaller.placa
+          ? `*Placa del vehículo:* ${customerTaller.placa}`
+          : ""
+      }
+      ${
+        customerTaller.kilometraje
+          ? `*Km del vehículo:* ${customerTaller.kilometraje}km.`
+          : ""
+      }
+      ${
+        customerTaller.tipoServicio
+          ? `*Tipo de servicio:* ${customerTaller.tipoServicio}`
+          : ""
+      }
+    
+      *Mensaje:*
+      ${customerTaller.comentario ? `${customerTaller.comentario}` : ""}
+
+
+      ---
+      _Enviado desde el formulario web_
+      `.trim();
   }
 }

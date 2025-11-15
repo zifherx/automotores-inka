@@ -1,4 +1,10 @@
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  MutableRefObject,
+  ReactNode,
+  SetStateAction,
+} from "react";
 import { LucideIcon } from "lucide-react";
 import { Map } from "leaflet";
 
@@ -15,17 +21,31 @@ import {
   iSede,
 } from "./admin.types";
 import {
+  ContactInfoError,
   FilterState,
   iIconText,
+  ILegalItem,
   iOracion,
   iPosition,
   iProduct,
+  iReclamosRS,
   iTalleres,
   ModelsByBrand,
+  TableFormat,
 } from "@/interfaces";
-import { HReclamoFormValues } from "@/forms";
+import {
+  CotizacionGeneralFormValues,
+  HReclamoFormValues,
+  NewReclamoFormValues,
+} from "@/forms";
 import { IconType } from "react-icons/lib";
-import { IconType } from "react-icons/lib";
+import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 export type iVideosYoutube = {
   src: string;
@@ -172,7 +192,8 @@ export interface iTEmailReclamo {
 }
 
 export type iCustomMessage = {
-  message: string;
+  customer: string;
+  celular: string;
   volverInicio: () => void;
 };
 
@@ -328,4 +349,175 @@ export type SearchFilterProps = {
   modelsByBrand: ModelsByBrand;
   showFilters: boolean;
   onToggleFilters: () => void;
+};
+
+export type TableConditionalProps = TableFormat;
+
+export type CotizacionForm = CotizacionGeneralFormValues & {
+  slugConcesionario: string;
+  carroceria: string;
+  slugModelo: string;
+  imageUrl: string;
+  precioBase: number;
+};
+
+export type ReclamoDataBuildedType = NewReclamoFormValues & {
+  sedeCodexHR: string;
+  fecha: string;
+  hora: string;
+  numeroReclamo: string;
+  razonSocial: string;
+  rucEmpresa: string;
+  direccionCliente: string;
+  direccionSede: string;
+};
+
+export type UploadStatusType =
+  | "inactivo"
+  | "en proceso"
+  | "completado"
+  | "error";
+
+export type UploadSectionProp = {
+  uploadStatus: UploadStatusType;
+  isProcessing: boolean;
+  handleFile: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  preview: IExcelData;
+  rowsMatched: number;
+  rowsTotal: number;
+  onClearData: () => void;
+};
+
+export type ExcelPreviewProp = IExcelData;
+
+export type ExcelRowStatus = "pending" | "matched" | "not-found" | "updated";
+
+export type CardStatProp = {
+  title: string;
+  value: number;
+  icon: IconProp;
+  tienePorcentaje?: boolean;
+};
+
+export type ResultsTableSectionProp = {
+  importedData: IPriceImportRow[];
+  isProcessing: boolean;
+  matchedCount: number;
+  onSaveUpdates: () => void;
+};
+
+export type StatisticsSectionProp = {
+  totalImportados: number;
+  matchImportados: number;
+};
+
+export type TipoDocumentoType = "dni" | "ruc" | "pasaporte" | "ce";
+export type IntencionCompraType =
+  | "esta-semana"
+  | "este-mes"
+  | "proximo-mes"
+  | "mas-adelante";
+
+export type StepContentProp = {
+  currentStep: number;
+  previous: () => void;
+  next: () => void;
+  selectedBrand: iBrand | null;
+  setSelectedBrand: Dispatch<SetStateAction<iBrand | null>>;
+  selectedModel: iModelo | null;
+  setSelectedModel: Dispatch<SetStateAction<iModelo | null>>;
+  selectedLocation: iSede | null;
+  setSelectedLocation: Dispatch<SetStateAction<iSede | null>>;
+};
+
+export type BrandSelectionProp = {
+  onSelect: (marca: iBrand) => void;
+};
+
+export type ModelSelectionProp = {
+  selectedBrand: iBrand | null;
+  onSelect: (model: iModelo) => void;
+  onBack: () => void;
+};
+
+export type LocationSelectionProp = {
+  selectedBrand: iBrand | null;
+  onSelect: (location: iSede) => void;
+  onBack: () => void;
+};
+
+export type ContactFormProp = {
+  selectedBrand: iBrand | null;
+  selectedModel: iModelo | null;
+  selectedLocation: iSede | null;
+  onBack: () => void;
+};
+
+export type LegalItemProp = {
+  legalProps: ILegalItem;
+};
+
+export type FormHeaderProp = {
+  razonSocial: iReclamosRS;
+  fecha: string;
+  hora: string;
+  codigoReclamo: string;
+  codexReclamo: string;
+  setCodigoReclamo: Dispatch<SetStateAction<string>>;
+};
+
+export type SectionHeaderProp = {
+  icon: IconProp;
+  title: string;
+  BgColor: string;
+  iconBgColor: string;
+  iconColor: string;
+};
+
+export type FormFieldProp = {
+  label: string;
+  required?: boolean;
+  optional?: boolean;
+  error?: string;
+  children: ReactNode;
+};
+
+export type ConsumerSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: ExtendedFieldErrors;
+  numeroDocumentoDisabled: boolean;
+};
+
+export type ProductSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: FieldErrors<NewReclamoFormValues>;
+  sedeSelected: iSede | undefined;
+  setSedeSelected: Dispatch<SetStateAction<iSede | undefined>>;
+};
+
+export type ComplaintSectionProp = {
+  register: UseFormRegister<NewReclamoFormValues>;
+  setValue: UseFormSetValue<NewReclamoFormValues>;
+  watch: UseFormWatch<NewReclamoFormValues>;
+  errors: FieldErrors<NewReclamoFormValues>;
+  isLoading: boolean;
+};
+
+export type CharacterCounterProp = {
+  current: number;
+  max: number;
+  label?: string;
+};
+
+export type ExtendedFieldErrors = {
+  contactInfo?: ContactInfoError;
+} & Record<string, any>;
+
+export type FlotanteProp = {
+  hovered: string | null;
+  setHovered: Dispatch<SetStateAction<string | null>>;
 };

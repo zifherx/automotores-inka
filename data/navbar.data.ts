@@ -4,6 +4,7 @@ import {
   Car,
   CarFront,
   Cog,
+  DollarSign,
   House,
   Images,
   MapPin,
@@ -29,7 +30,7 @@ export const listServiciosPosventa: iServicioPosventa[] = [
   {
     id: 2,
     title: "Separa tu cita",
-    href: "/posventa/mantenimiento",
+    href: "/posventa/separa-tu-cita",
     description:
       "Ofrecemos mantenimientos preventivos y correctivos para tu vehículo.",
   },
@@ -129,12 +130,12 @@ export const listItemMenuADV: iMenuDashboard[] = [
     label: "Gestión de Vehículos",
     href: "/dashboard/admin/models",
   },
-  // {
-  //   id: 3,
-  //   icon: Truck,
-  //   label: "Gestión de Camiones",
-  //   href: "/dashboard/admin/trucks",
-  // },
+  {
+    id: 3,
+    icon: DollarSign,
+    label: "Gestión de Precios",
+    href: "/dashboard/admin/precios",
+  },
 ];
 
 export const listItemMenuComercial: iMenuDashboard[] = [

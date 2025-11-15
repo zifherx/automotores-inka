@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from 'axios'
+import axios from "axios";
 
 import { CybermotorFormValues, formCybermotorSchema } from "@/forms";
-import { TimelineStep } from "@/app/(routes)/(public)/(cotizador)/steps-cotizacion/components/TimelineStep";
+import { TimelineStep } from "@/app/(routes)/(public)/(cotizador)/steps-cotizacion2/components/TimelineStep";
 import { cn, onToast } from "@/lib";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -25,10 +25,10 @@ import { useRouter } from "next/navigation";
 
 export function SectionForm() {
   const [step, setStep] = useState(1);
-  const [resultadoDado, setResultadoDado] = useState<number>(0)
-  const [resultadoPremio, setResultadoPremio] = useState<string>("")
+  const [resultadoDado, setResultadoDado] = useState<number>(0);
+  const [resultadoPremio, setResultadoPremio] = useState<string>("");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const formGeneral = useForm<CybermotorFormValues>({
     resolver: zodResolver(formCybermotorSchema),
@@ -50,19 +50,23 @@ export function SectionForm() {
 
   const onSubmit = async (values: CybermotorFormValues): Promise<void> => {
     // console.log(resultadoDado);
-    const objConcurso = {...values, resultado: resultadoDado, premio: resultadoPremio}
-    console.log('Llamado desde el padre:',objConcurso);
+    const objConcurso = {
+      ...values,
+      resultado: resultadoDado,
+      premio: resultadoPremio,
+    };
+    // console.log('Llamado desde el padre:',objConcurso);
     try {
-      const query = await axios.post('/api/cybermotor', objConcurso)
-      if(query.status === 200){
+      const query = await axios.post("/api/cybermotor", objConcurso);
+      if (query.status === 200) {
         onToast(query.data.message);
         const timer = setTimeout(() => {
-          router.push('/')
-        }, 5000)
+          router.push("/");
+        }, 5000);
       }
     } catch (err) {
       console.log(err);
-      onToast("Algo salió mal ❌","", true)
+      onToast("Algo salió mal ❌", "", true);
     }
   };
 
@@ -187,18 +191,23 @@ export function SectionForm() {
         </CardContent>
         <CardFooter className="flex justify-between">
           {step > 1 && (
-            <Button onClick={handlePrevious} className="bg-blueInka text-white hover:bg-blueInka hover:font-bold transition-transform">
-              <ChevronLeft className="w-4 h-4 mr-2" strokeWidth={2}/>
+            <Button
+              onClick={handlePrevious}
+              className="bg-blueInka text-white hover:bg-blueInka hover:font-bold transition-transform"
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" strokeWidth={2} />
               Anterior
             </Button>
           )}
-          {
-            step === 1 && 
-          <Button onClick={handleNext} className="bg-blueInka text-white hover:bg-blueInka hover:font-bold transition-transform">
-            Siguiente
-            <ChevronRight className="w-4 h-4 ml-2" strokeWidth={2}/>
-          </Button>
-          }
+          {step === 1 && (
+            <Button
+              onClick={handleNext}
+              className="bg-blueInka text-white hover:bg-blueInka hover:font-bold transition-transform"
+            >
+              Siguiente
+              <ChevronRight className="w-4 h-4 ml-2" strokeWidth={2} />
+            </Button>
+          )}
           {/* {
             step === 2 && 
           <Button onClick={formGeneral.handleSubmit(onSubmit)} className="bg-blueInka text-white font-bold hover:bg-blueInka">

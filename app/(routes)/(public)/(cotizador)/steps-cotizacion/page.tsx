@@ -1,21 +1,22 @@
-import { CondicionesFormularios } from "@/components/Shared/CondicionesFormularios";
 import { Metadata } from "next";
-import { CotizadorStep } from "./components/CotizadorStep";
+import { CotizadorPasosView } from "./components/CotizadorPasosView";
+import { BrandsProvider } from "@/context/brands/marcaContext";
 
 export const metadata: Metadata = {
   title: {
+    default: "Cotizador Pasos",
     template: "",
-    default: "Cotiza tu auto",
   },
 };
 
-export default function StepsCotizacionPage() {
+export default function CotizadosPasosPage() {
   return (
-    <div className="bg-white">
-      <div className="max-w-7xl mx-auto">
-        <CotizadorStep />
-      </div>
-      <CondicionesFormularios />
-    </div>
+    <BrandsProvider>
+      {/* <ModelosProvider> */}
+      {/* <SucursalProvider> */}
+      <CotizadorPasosView />
+      {/* </SucursalProvider> */}
+      {/* </ModelosProvider> */}
+    </BrandsProvider>
   );
 }

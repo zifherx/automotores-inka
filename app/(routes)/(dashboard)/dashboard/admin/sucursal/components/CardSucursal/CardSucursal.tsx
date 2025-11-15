@@ -20,7 +20,6 @@ export function CardSucursal({ sede }: iCardSede) {
         onToast(query.data.message);
       }
     } catch (err) {
-      console.log(err);
       onToast("Algo salió mal 😭", "", true);
     } finally {
       router.refresh();
@@ -67,9 +66,24 @@ export function CardSucursal({ sede }: iCardSede) {
         </div>
 
         <div className="mb-4">
-          <h5 className="font-semibold text-xs">Marcas:</h5>
-          <div className="grid grid-cols-4 lg:flex lg:flex-row lg:justify-between p-0">
-            {sede.marcasDisponibles.map(({ _id, name, imageUrl }) => (
+          <h5 className="font-semibold text-xs">Marcas Ventas:</h5>
+          <div className="grid grid-cols-4">
+            {sede.marcasDisponiblesVentas.map(({ _id, name, imageUrl }) => (
+              <Image
+                key={_id}
+                src={imageUrl}
+                alt={name}
+                width={60}
+                height={60}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <h5 className="font-semibold text-xs">Marcas Taller:</h5>
+          <div className="grid grid-cols-4">
+            {sede.marcasDisponiblesTaller.map(({ _id, name, imageUrl }) => (
               <Image
                 key={_id}
                 src={imageUrl}

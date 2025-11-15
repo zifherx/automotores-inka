@@ -16,6 +16,11 @@ import {
 import { SidebarItem } from "../SidebarItem";
 
 import {
+  canAccessADVPanel,
+  canAccessComercialPanel,
+  canAccessConfigurationPanel,
+  canAccessLegalPanel,
+  canAccessPosventaPanel,
   isAdministrator,
   isADV,
   isComercial,
@@ -38,7 +43,7 @@ export function SidebarRoutes() {
           </div>
 
           <Separator />
-          {(isAdministrator(userId) || isADV(userId)) && (
+          {canAccessADVPanel(userId) && (
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">ADV</p>
               {listItemMenuADV.map((items) => (
@@ -49,7 +54,7 @@ export function SidebarRoutes() {
 
           <Separator />
 
-          {(isAdministrator(userId) || isComercial(userId)) && (
+          {canAccessComercialPanel(userId) && (
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">Comercial</p>
               {listItemMenuComercial.map((items) => (
@@ -60,7 +65,7 @@ export function SidebarRoutes() {
 
           <Separator />
 
-          {(isAdministrator(userId) || isPosventa(userId)) && (
+          {canAccessPosventaPanel(userId) && (
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">Posventa</p>
               {listItemMenuPosventa.map((items) => (
@@ -71,7 +76,7 @@ export function SidebarRoutes() {
 
           <Separator />
 
-          {(isAdministrator(userId) || isLegal(userId)) && (
+          {canAccessLegalPanel(userId) && (
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">Legal</p>
               {listItemMenuLegal.map((items) => (
@@ -82,7 +87,7 @@ export function SidebarRoutes() {
 
           <Separator />
 
-          {isAdministrator(userId) && (
+          {canAccessConfigurationPanel(userId) && (
             <div className="p-2 md:p-4">
               <p className="mb-2 text-slate-500">Sistema</p>
               {listItemMenuSistema.map((items) => (

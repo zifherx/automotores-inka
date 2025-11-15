@@ -3,7 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { dbConnect } from "@/lib";
 
-import Modelo from "@/models/Modelo";
+import { iModelo } from "@/types";
+import { Carroceria, Marca, Modelo } from "@/models";
 
 export async function PATCH(
   req: NextRequest,
@@ -78,14 +79,21 @@ export async function GET(
   await dbConnect();
 
   try {
-    const { modeloId } = params;
+    const { modeloId } = await params;
 
     const query = await Modelo.findOne({ slug: modeloId })
-      .populate({ path: "marca", select: "_id name slug imageUrl" })
+      .populate({
+        path: "marca",
+        model: Marca,
+        select: "_id name slug imageUrl idNovaly",
+      })
       .populate({
         path: "carroceria",
+        model: Carroceria,
         select: "_id name slug",
-      });
+      })
+      .lean<iModelo[]>()
+      .exec();
 
     if (!query)
       return NextResponse.json(
@@ -97,7 +105,7 @@ export async function GET(
 
     return NextResponse.json(query);
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

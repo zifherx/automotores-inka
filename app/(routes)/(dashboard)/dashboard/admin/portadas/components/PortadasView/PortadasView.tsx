@@ -4,13 +4,6 @@ import { useEffect, useState } from "react";
 
 import { useCovers } from "@/context/covers/coverContext";
 
-import { DashboardTitulo } from "@/components/Shared/DashboardTitulo";
-import { BotonRefresh } from "@/components/Shared/BotonRefresh";
-import { BotonNuevo } from "@/components/Shared/BotonNuevo";
-import { FormPortada } from "../FormPortada";
-import { TablePortadas } from "../TablePortadas";
-
-import { iPortada } from "@/types";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +11,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
+import { DashboardTitulo } from "@/components/Shared/DashboardTitulo";
+import { BotonRefresh } from "@/components/Shared/BotonRefresh";
+import { BotonNuevo } from "@/components/Shared/BotonNuevo";
+
+import { FormPortada } from "../FormPortada";
+import { TablePortadas } from "../TablePortadas";
+
+import { iPortada } from "@/types";
 
 export function PortadasView() {
   const { refreshCovers, isLoading, covers } = useCovers();

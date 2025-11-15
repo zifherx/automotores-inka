@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { RevealElement } from "@/components/Shared/RevealElement";
 
 import { iCardModel } from "@/types";
@@ -13,7 +12,6 @@ export function Banner(props: iCardModel) {
   const { model } = props;
   const { marca, name, imageUrl } = model;
 
-  const router = useRouter();
   const params = useParams();
 
   const rutaTestDrive =
@@ -31,8 +29,8 @@ export function Banner(props: iCardModel) {
             <Link
               href={`/cotizacion?modelo=${params.modelo}`}
               className={cn(
-                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium ",
-                "hover:bg-white hover:text-redInka hover:border hover:border-redInka hover:underline"
+                "px-4 py-2 text-center bg-redInka text-white text-sm w-full md:text-base rounded-full font-textMedium",
+                "hover:bg-redDarkInka hover:scale-105 transition-all duration-200"
               )}
             >
               Cotízalo ahora
@@ -43,6 +41,7 @@ export function Banner(props: iCardModel) {
                 "hover:bg-redInka hover:text-white hover:underline"
               )}
               href={rutaTestDrive}
+              target="_blank"
             >
               Solicita un test drive
             </Link>

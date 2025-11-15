@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import axios from "axios";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,15 +32,29 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
 import { iCardModel, iSede } from "@/types";
-import { onToast } from "@/lib";
+import {
+  buildCotizacionData,
+  buildPayloadNovalyApp,
+  createCotizacion,
+  handleCotizacionError,
+  onToast,
+  sendLeadNovalyApp,
+} from "@/lib";
+import { DataLayerEvent, sendDataLayer } from "@/utils/analytics";
 
-export function FormularioLead(props: iCardModel) {
-  const { model } = props;
+const tiposDocumento = [
+  { value: "DNI", label: "DNI", maxLength: 8 },
+  { value: "RUC", label: "RUC", maxLength: 11 },
+  { value: "CE", label: "Carnet de Extranjería", maxLength: 15 },
+  { value: "PASAPORTE", label: "Pasaporte", maxLength: 15 },
+] as const;
 
+export function FormularioLead({ model }: iCardModel) {
   const router = useRouter();
 
   const [sedeSinDuplicados, setSedeSinDuplicados] = useState<iSede[]>([]);
   const [concesionarios, setConcesionarios] = useState<iSede[]>([]);
+  const [sedeSeleccionada, setSedeSeleccionada] = useState<iSede | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -62,8 +77,30 @@ export function FormularioLead(props: iCardModel) {
   });
 
   const marcaSelected = model.marca.slug;
+  const idMarcaSelected = model.marca.idNovaly;
   const watchSede = form.watch("departamento");
   const watchConcesionario = form.watch("concesionario");
+  const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
+  const numeroDocumento = form.watch("numeroDocumento");
+
+  const [utmParams, setUtmParams] = useState<{ [key: string]: string }>({}); // Captura de parámetros
+
+  const trackEvent = useCallback((eventData: DataLayerEvent) => {
+    sendDataLayer(eventData);
+  }, []);
+
+  const maxLengthDocumento =
+    tiposDocumento.find((val) => val.value === tipoDocumentoSeleccionado)
+      ?.maxLength || 0;
+
+  const handleNumeroDocumentoChange = (value: string) => {
+    if (tipoDocumentoSeleccionado) {
+      const maxLength = maxLengthDocumento;
+      if (value.length <= maxLength && /^\d*$/.test(value)) {
+        form.setValue("numeroDocumento", value);
+      }
+    }
+  };
 
   const getCiudadesByBrand = async (marca: string) => {
     if (marca !== "" || marca !== undefined) {
@@ -84,49 +121,97 @@ export function FormularioLead(props: iCardModel) {
     if (marcaSelected) {
       getCiudadesByBrand(marcaSelected);
     }
+
+    const params = new URLSearchParams(window.location.search);
+    const utms: { [key: string]: string } = {};
+
+    params.forEach((value, key) => {
+      utms[key] = value;
+    });
+
+    setUtmParams(utms);
+    console.log("UTM:", utms);
   }, [marcaSelected]);
 
-  const onSubmit = async (values: CotizacionModeloFormValue) => {
+  const handleOnSubmit = async (values: CotizacionModeloFormValue) => {
     setIsLoading(true);
     try {
-      //   console.log(values);
-      const query = await axios.post("api/cotizacion", {
+      const cotizacionData = buildCotizacionData({
         ...values,
         departamento: watchSede,
-        concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
+        concesionario: watchConcesionario
+          .toLocaleUpperCase()
+          .replace(/-/g, " "),
         slugConcesionario: watchConcesionario,
-        marca: model.marca.name,
-        carroceria: model.carroceria.name,
-        modelo: model.name,
-        slugModelo: model.slug,
-        imageUrl: model.imageUrl,
-        precioBase: model.precioBase,
+        marca: model!.marca.name,
+        carroceria: model!.carroceria.name,
+        modelo: model!.name,
+        slugModelo: model!.slug,
+        imageUrl: model!.imageUrl,
+        precioBase: model!.precioBase,
       });
 
-      if (query.status === 200) {
-        // const envioCorreo = await axios.post("/api/send-email/cotizacion", {
-        //   ...values,
-        //   departamento: watchSede,
-        //   concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
-        //   slugConcesionario: watchConcesionario,
-        //   marca: model.marca.name,
-        //   carroceria: model.carroceria.name,
-        //   modelo: model.name,
-        //   slugModelo: model.slug,
-        //   imageUrl: model.imageUrl,
-        //   precioBase: model.precioBase,
-        // });
+      const novalyData = buildPayloadNovalyApp({
+        // Cliente
+        nombreCompleto: values.nombres,
+        correoElectronico: values.email,
+        numeroCelular: values.celular,
+        tipoDocumento: tipoDocumentoSeleccionado,
+        numeroDocumento: values.numeroDocumento,
+        ciudadCotizacion: watchSede,
+        // Unidad
+        marcaVehiculo:
+          cotizacionData.marca === "great-wall"
+            ? "GREAT WALL"
+            : cotizacionData.marca.toUpperCase(),
+        modeloVehiculo: model!.name,
+        idMarca: idMarcaSelected,
+        // Lead
+        idTienda: sedeSeleccionada?.idTiendaNovaly || 0,
+        utmTrafico: utmParams.utm_source || "WEB",
+      });
 
-        // if (envioCorreo.status === 200) {
-        setIsLoading(false);
-        onToast(query.data.message);
-        router.push(`/gracias/${query.data.obj._id}`);
-        // }
+      // console.log("novalyData: ", novalyData);
+
+      const [cotizacionResult, novalyResult] = await Promise.allSettled([
+        createCotizacion(cotizacionData, "/api/cotizacion"),
+        sendLeadNovalyApp(novalyData, "/api/novaly/new-lead"),
+      ]);
+
+      // console.log("cotizacionResult", cotizacionResult);
+      // console.log("sendLeadNovalyApp", novalyResult);
+
+      if (cotizacionResult.status === "rejected") {
+        throw new Error(`Error al crear cotizacionResult`);
       }
-    } catch (err) {
-      // console.log(err);
+
+      if (novalyResult.status === "rejected") {
+        console.warn(`El envío a Novaly App falló pero se creo la cotización`);
+        onToast(
+          "Cotización creada. El envío a Novaly podría demorar unos minutos",
+          "",
+          false
+        );
+      } else {
+        onToast(cotizacionResult.value.data.message);
+      }
+
+      const cotizacionNumber = cotizacionResult.value.data.obj._id;
+
+      await trackEvent({
+        event: "lead_form_submitted",
+        lead_interna: cotizacionNumber,
+      });
+
+      // console.log("window-dataLayer", window.dataLayer);
+
+      // router.push(
+      //   `/gracias?nombre=${values.nombres}&celular=${values.celular}`
+      // );
+    } catch (err: any) {
+      handleCotizacionError(err);
+    } finally {
       setIsLoading(false);
-      onToast("Algo salió mal ❌", "", true);
     }
   };
 
@@ -146,7 +231,10 @@ export function FormularioLead(props: iCardModel) {
   return (
     <div className="my-5 md:my-0 p-4 border md:border-0 rounded-2xl md:rounded-none">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <form
+          onSubmit={form.handleSubmit(handleOnSubmit)}
+          className="space-y-2"
+        >
           {/* Nombre y Apellido */}
           <FormField
             control={form.control}
@@ -174,7 +262,10 @@ export function FormularioLead(props: iCardModel) {
                   Tipo de Documento
                 </FormLabel>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.setValue("numeroDocumento", "");
+                  }}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -183,12 +274,11 @@ export function FormularioLead(props: iCardModel) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="dni">DNI</SelectItem>
-                    <SelectItem value="ruc">RUC</SelectItem>
-                    <SelectItem value="carnet de extranjeria">
-                      Carnet de Extranjería
-                    </SelectItem>
-                    <SelectItem value="pasaporte">Pasaporte</SelectItem>
+                    {tiposDocumento.map(({ label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -207,11 +297,25 @@ export function FormularioLead(props: iCardModel) {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Número de Documento"
-                    {...field}
                     type="number"
+                    placeholder={
+                      tipoDocumentoSeleccionado
+                        ? `Ingrese su ${tipoDocumentoSeleccionado.toLocaleLowerCase()}`
+                        : `Seleccione primero el tipo de documento`
+                    }
+                    disabled={!tipoDocumentoSeleccionado}
+                    value={field.value}
+                    onChange={(e) =>
+                      handleNumeroDocumentoChange(e.target.value)
+                    }
                   />
                 </FormControl>
+                {tipoDocumentoSeleccionado && (
+                  <FormDescription>
+                    Máximo {maxLengthDocumento} dígitos (
+                    {numeroDocumento.length}/{maxLengthDocumento})
+                  </FormDescription>
+                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -225,7 +329,12 @@ export function FormularioLead(props: iCardModel) {
               <FormItem>
                 <FormLabel className="font-headMedium">Celular</FormLabel>
                 <FormControl>
-                  <Input placeholder="Celular" {...field} type="number" />
+                  <Input
+                    placeholder="Celular"
+                    type="tel"
+                    maxLength={9}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -240,7 +349,7 @@ export function FormularioLead(props: iCardModel) {
               <FormItem>
                 <FormLabel className="font-headMedium">Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -287,7 +396,15 @@ export function FormularioLead(props: iCardModel) {
                     Concesionario
                   </FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      console.log("Value: ", value);
+                      const sede = concesionarios.find((s) => s.slug === value);
+                      if (sede) {
+                        console.log("SedeSelected: ", sede);
+                        setSedeSeleccionada(sede);
+                      }
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -354,29 +471,31 @@ export function FormularioLead(props: iCardModel) {
             control={form.control}
             name="checkDatosPersonales"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-3 space-y-0 px-0 py-2">
+              <FormItem className="flex items-start space-x-2 space-y-0 py-5">
                 <FormControl>
                   <Checkbox
+                    className="h-5 w-5 border-redInka data-[state=checked]:bg-redInka text-white rounded-full"
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     color="#1B5094"
                   />
                 </FormControl>
-                <div className="text-xs leading-3 text-left">
-                  <FormLabel>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-sm font-normal leading-relaxed">
                     Mediante el envío del formulario declaro que he leído la
                     autorización y acepto la{" "}
                     <a
                       href="/legal/terminos-condiciones"
                       target="_blank"
-                      className="text-redInka hover:font-semibold"
+                      rel="noopener noreferrer"
+                      className="text-redInka underline hover:font-semibold"
                     >
                       Política de Protección de Datos Personales
                     </a>{" "}
                     y el tratamiento de mis datos personales a Automotores Inka
                   </FormLabel>
+                  <FormMessage />
                 </div>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -429,7 +548,7 @@ export function FormularioLead(props: iCardModel) {
             )}
           />
 
-          <p className="leading-tight font-textMedium pt-5">
+          <p className="leading-tight font-textMedium py-5">
             La presente cotización se realiza en función a los{" "}
             <a href="#" target="_blank" className="text-redInka">
               términos y condiciones.

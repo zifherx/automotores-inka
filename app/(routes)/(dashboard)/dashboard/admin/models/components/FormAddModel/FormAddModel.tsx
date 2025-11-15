@@ -134,14 +134,13 @@ export function FormAddModel({ setOpenDialog }: tFormAdding) {
       // console.log(query);
       if (query.status === 200) {
         onToast(`${query.data.message}`);
-        setBtnLoading(false);
         setOpenDialog(false);
       }
     } catch (err) {
       // console.log(err);
-      setBtnLoading(false);
       onToast("Algo salió mal ❌", "", true);
     } finally {
+      setBtnLoading(false);
       router.refresh();
     }
   };
