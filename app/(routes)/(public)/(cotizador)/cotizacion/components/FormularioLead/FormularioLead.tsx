@@ -34,11 +34,11 @@ import { CotizacionModeloFormValue, formCotizacionModeloSchema } from "@/forms";
 import { iCardModel, iSede } from "@/types";
 import {
   buildCotizacionData,
-  buildPayloadFlashdealer,
+  buildPayloadNovalyApp,
   createCotizacion,
   handleCotizacionError,
   onToast,
-  sendCotizacionFlashDealer,
+  sendLeadNovalyApp,
 } from "@/lib";
 import { DataLayerEvent, sendDataLayer } from "@/utils/analytics";
 
@@ -54,6 +54,7 @@ export function FormularioLead({ model }: iCardModel) {
 
   const [sedeSinDuplicados, setSedeSinDuplicados] = useState<iSede[]>([]);
   const [concesionarios, setConcesionarios] = useState<iSede[]>([]);
+  const [sedeSeleccionada, setSedeSeleccionada] = useState<iSede | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnimation, setLoadingAnimation] = useState<
     "default" | "sparkles" | "pulse"
@@ -76,6 +77,7 @@ export function FormularioLead({ model }: iCardModel) {
   });
 
   const marcaSelected = model.marca.slug;
+  const idMarcaSelected = model.marca.idNovaly;
   const watchSede = form.watch("departamento");
   const watchConcesionario = form.watch("concesionario");
   const tipoDocumentoSeleccionado = form.watch("tipoDocumento");
@@ -149,36 +151,44 @@ export function FormularioLead({ model }: iCardModel) {
         precioBase: model!.precioBase,
       });
 
-      const flashdealerData = buildPayloadFlashdealer({
-        numeroDocumento: values.numeroDocumento,
+      const novalyData = buildPayloadNovalyApp({
+        // Cliente
         nombreCompleto: values.nombres,
         correoElectronico: values.email,
         numeroCelular: values.celular,
+        tipoDocumento: tipoDocumentoSeleccionado,
+        numeroDocumento: values.numeroDocumento,
+        ciudadCotizacion: watchSede,
+        // Unidad
         marcaVehiculo:
           cotizacionData.marca === "great-wall"
             ? "GREAT WALL"
             : cotizacionData.marca.toUpperCase(),
-        codigoFlashDealer: model!.codigo_flashdealer,
-        ciudadCotizacion: watchSede,
-        plataformaOrigen: utmParams.utm_source || "web",
+        modeloVehiculo: model!.name,
+        idMarca: idMarcaSelected,
+        // Lead
+        idTienda: sedeSeleccionada?.idTiendaNovaly || 0,
+        utmTrafico: utmParams.utm_source || "WEB",
       });
 
-      const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+      // console.log("novalyData: ", novalyData);
+
+      const [cotizacionResult, novalyResult] = await Promise.allSettled([
         createCotizacion(cotizacionData, "/api/cotizacion"),
-        sendCotizacionFlashDealer(flashdealerData, `/api/flashdealer/new-lead`),
+        sendLeadNovalyApp(novalyData, "/api/novaly/new-lead"),
       ]);
 
       // console.log("cotizacionResult", cotizacionResult);
-      // console.log("sendCotizacionFlashDealer", sendCotizacionFlashDealer);
+      // console.log("sendLeadNovalyApp", novalyResult);
 
       if (cotizacionResult.status === "rejected") {
         throw new Error(`Error al crear cotizacionResult`);
       }
 
-      if (flashdealerResult.status === "rejected") {
-        console.warn(`El envío a flashdealer falló pero se creo la cotización`);
+      if (novalyResult.status === "rejected") {
+        console.warn(`El envío a Novaly App falló pero se creo la cotización`);
         onToast(
-          "Cotización creada. El envío a FD podría demorar unos minutos",
+          "Cotización creada. El envío a Novaly podría demorar unos minutos",
           "",
           false
         );
@@ -193,59 +203,15 @@ export function FormularioLead({ model }: iCardModel) {
         lead_interna: cotizacionNumber,
       });
 
-      console.log("window-dataLayer", window.dataLayer);
+      // console.log("window-dataLayer", window.dataLayer);
 
-      router.push(
-        `/gracias?nombre=${values.nombres}&celular=${values.celular}`
-      );
+      // router.push(
+      //   `/gracias?nombre=${values.nombres}&celular=${values.celular}`
+      // );
     } catch (err: any) {
       handleCotizacionError(err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const onSubmit = async (values: CotizacionModeloFormValue) => {
-    setIsLoading(true);
-    try {
-      //   console.log(values);
-      const query = await axios.post("api/cotizacion", {
-        ...values,
-        departamento: watchSede,
-        concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
-        slugConcesionario: watchConcesionario,
-        marca: model.marca.name,
-        carroceria: model.carroceria.name,
-        modelo: model.name,
-        slugModelo: model.slug,
-        imageUrl: model.imageUrl,
-        precioBase: model.precioBase,
-      });
-
-      if (query.status === 200) {
-        // const envioCorreo = await axios.post("/api/send-email/cotizacion", {
-        //   ...values,
-        //   departamento: watchSede,
-        //   concesionario: watchConcesionario.toUpperCase().replace(/-/g, " "),
-        //   slugConcesionario: watchConcesionario,
-        //   marca: model.marca.name,
-        //   carroceria: model.carroceria.name,
-        //   modelo: model.name,
-        //   slugModelo: model.slug,
-        //   imageUrl: model.imageUrl,
-        //   precioBase: model.precioBase,
-        // });
-
-        // if (envioCorreo.status === 200) {
-        setIsLoading(false);
-        onToast(query.data.message);
-        router.push(`/gracias/${query.data.obj._id}`);
-        // }
-      }
-    } catch (err) {
-      // console.log(err);
-      setIsLoading(false);
-      onToast("Algo salió mal ❌", "", true);
     }
   };
 
@@ -430,7 +396,15 @@ export function FormularioLead({ model }: iCardModel) {
                     Concesionario
                   </FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      console.log("Value: ", value);
+                      const sede = concesionarios.find((s) => s.slug === value);
+                      if (sede) {
+                        console.log("SedeSelected: ", sede);
+                        setSedeSeleccionada(sede);
+                      }
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>

@@ -25,12 +25,12 @@ import { ContactFormProp } from "@/types";
 import { CotizadorPasosFormData } from "@/interfaces";
 import {
   buildCotizacionData,
-  buildPayloadFlashdealer,
+  buildPayloadNovalyApp,
   createCotizacion,
   getDocumentMaxLength,
   handleCotizacionError,
   onToast,
-  sendCotizacionFlashDealer,
+  sendLeadNovalyApp,
 } from "@/lib";
 import { useRouter } from "next/navigation";
 import { DataLayerEvent, sendDataLayer } from "@/utils/analytics";
@@ -99,39 +99,40 @@ export function ContactForm({
         precioBase: selectedModel!.precioBase,
       });
 
-      const flashdealerData = buildPayloadFlashdealer({
-        numeroDocumento: values.numeroDocumento,
+      const novalyData = buildPayloadNovalyApp({
+        // Cliente
         nombreCompleto: values.nombreCompleto,
         correoElectronico: values.email,
         numeroCelular: values.celular,
+        tipoDocumento: values.tipoDocumento,
+        numeroDocumento: values.numeroDocumento,
+        ciudadCotizacion: selectedLocation!.ciudad,
+        // Unidad
         marcaVehiculo:
           cotizacionData.marca === "great-wall"
             ? "GREAT WALL"
             : cotizacionData.marca.toUpperCase(),
-        codigoFlashDealer: selectedModel!.codigo_flashdealer,
-        ciudadCotizacion: selectedLocation!.ciudad,
-        plataformaOrigen: utmParams.utm_source || "web",
+        modeloVehiculo: selectedModel!.name,
+        idMarca: selectedBrand?.idNovaly || 0,
+        // Lead
+        idTienda: selectedLocation?.idTiendaNovaly || 0,
+        utmTrafico: utmParams.utm_source || "WEB",
       });
 
-      console.log("cotizacionData", cotizacionData);
-      console.log("flashdealerData", flashdealerData);
-
-      const [cotizacionResult, flashdealerResult] = await Promise.allSettled([
+      const [cotizacionResult, novalyResult] = await Promise.allSettled([
         createCotizacion(cotizacionData, "/api/cotizacion"),
-        sendCotizacionFlashDealer(flashdealerData, "/api/flashdealer/new-lead"),
+        sendLeadNovalyApp(novalyData, "/api/novaly/new-lead"),
       ]);
-
-      // console.log("cotizacionResult", cotizacionResult);
-      // console.log("sendCotizacionFlashDealer", sendCotizacionFlashDealer);
 
       if (cotizacionResult.status === "rejected") {
         throw new Error(`Error al crear solicitud`);
       }
 
-      if (flashdealerResult.status === "rejected") {
-        console.warn(`El envío a flashdealer falló pero se creo la cotización`);
+      // if (flashdealerResult.status === "rejected") {
+      if (novalyResult.status === "rejected") {
+        console.warn(`El envío a Novaly App falló pero se creo la cotización`);
         onToast(
-          "Cotización creada. El envío a FD podría demorar unos minutos",
+          "Cotización creada. El envío a Novaly podría demorar unos minutos",
           "",
           false
         );
@@ -146,12 +147,12 @@ export function ContactForm({
         lead_interna: cotizacionNumber,
       });
 
-      console.log("window-dataLayer", window.dataLayer);
+      // console.log("window-dataLayer", window.dataLayer);
 
       router.push(
         `/gracias?nombre=${values.nombreCompleto}&celular=${values.celular}`
       );
-    } catch (err: any) {
+    } catch (err) {
       handleCotizacionError(err);
     } finally {
       setIsSubmitting(false);

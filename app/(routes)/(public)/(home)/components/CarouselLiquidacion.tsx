@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import axios from "axios";
 
-import { iModelo } from "@/types";
 import {
   Carousel,
   CarouselContent,
@@ -14,6 +13,8 @@ import {
 } from "@/components/ui/carousel";
 import { CardProductModel } from "@/components/Shared/CardProductModel";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
+
+import { iModelo } from "@/types";
 
 export function CarouselLiquidacion() {
   const [listModelos, setListModelos] = useState<iModelo[]>([]);
@@ -31,7 +32,7 @@ export function CarouselLiquidacion() {
         setListModelos(modelosLiquidacion);
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       setListModelos([]);
       setIsLoading(false);
     }

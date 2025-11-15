@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
 import { MongooseMarcaRepositoryImplement } from "@/repositories/implementations/mongoose/marca.repository";
-import { MarcaService } from "@/services/marca.services";
+import { MarcaService } from "@/services/marca.service";
 import { DIContainer } from "@/config/di-container";
 import { ResponseFactory } from "@/utils/response-factory";
 import { APIMessages } from "@/utils/constants";
@@ -38,11 +38,9 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const { userId } = await auth();
     const { searchParams } = req.nextUrl;
     const params = Object.fromEntries(searchParams);
 
-    // if (!userId) throw new UnauthorizedError("No autorizado");
     const query = await marcaService.getResources(params);
     return ResponseFactory.success(
       query,

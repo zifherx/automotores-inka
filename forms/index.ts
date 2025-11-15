@@ -10,6 +10,7 @@ export const formAddCoverSchema = z.object({
 export const formAddBrandSchema = z.object({
   name: z.string().min(3).max(50),
   imageUrl: z.string().or(z.array(z.string())),
+  idNovaly: z.coerce.number().min(0).max(30),
   slug: z.string(),
   isActive: z.boolean(),
 });
@@ -69,6 +70,7 @@ export const formAddModeloSchema = z.object({
 export const formAddSucursalSchema = z.object({
   name: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
   slug: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  idTiendaNovaly: z.coerce.number().min(0).max(15),
   codexHR: z.string().min(3, "Este campo debe contener al menos 3 caracteres"),
   imageUrl: z.string(),
   ciudad: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
@@ -92,6 +94,7 @@ export const formMarcasDisponiblesSchema = z.string();
 export const formEditSucursalSchema = z.object({
   name: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
   slug: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
+  idTiendaNovaly: z.coerce.number().min(0).max(15),
   codexHR: z.string().min(3, "Este campo debe contener al menos 3 caracteres"),
   ciudad: z.string().min(1, "Este campo debe contener al menos 1 caracter"),
   address: z.string().min(1, "Este campo debe contener al menos 1 caracter"),

@@ -40,11 +40,8 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    // const { userId } = await auth();
     const { searchParams } = req.nextUrl;
     const params = Object.fromEntries(searchParams);
-
-    // if (!userId) throw new UnauthorizedError("No autorizado");
 
     const query = await portadaService.getResources(params);
 
@@ -53,7 +50,6 @@ export async function GET(req: NextRequest) {
       APIMessages.getListedMessage(RESOURCE_NAME)
     );
   } catch (err: any) {
-    console.error(err);
     console.error(err.message);
     return ResponseFactory.error(err);
   }

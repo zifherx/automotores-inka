@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-import { Marca } from "@/models/Marca";
-import Carroceria from "@/models/Carroceria";
-import Modelo from "@/models/Modelo";
+import { Carroceria, Marca, Modelo } from "@/models";
 
 import { dbConnect } from "@/lib";
 import { iModelo } from "@/types";
@@ -12,24 +10,28 @@ export async function GET(req: Request) {
   await dbConnect();
 
   try {
-    const query: iModelo[] = await Modelo.find({})
+    const query = await Modelo.find({})
       .select(
         "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP codigo_flashdealer"
       )
       .populate([
         {
           path: "marca",
+          model: Marca,
           select: "_id name slug imageUrl",
         },
         {
           path: "carroceria",
+          model: Carroceria,
           select: "_id name slug",
         },
-      ]);
+      ])
+      .lean<iModelo[]>()
+      .exec();
 
     return NextResponse.json({ total: query.length, obj: query });
-  } catch (err) {
-    // console.log(err);
+  } catch (err: any) {
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -69,8 +71,8 @@ export async function POST(req: Request) {
       message: `Modelo ${dataForm.name} creado ✅`,
       obj: query,
     });
-  } catch (err) {
-    // console.log(err);
+  } catch (err: any) {
+    console.log(err.message);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

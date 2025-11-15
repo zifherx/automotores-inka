@@ -4,6 +4,7 @@ export interface iMarca extends Document {
   name: string;
   slug: string;
   imageUrl: string;
+  idNovaly: number;
   isActive: boolean;
   createdBy: string;
 }
@@ -16,6 +17,7 @@ const marcaSchema: Schema = new Schema<iMarca>(
     name: { type: String, required: true },
     slug: { type: String, required: true },
     imageUrl: { type: String },
+    idNovaly: { type: Number, default: 0 },
     isActive: { type: Boolean },
     createdBy: { type: String },
   },
