@@ -46,6 +46,8 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { CorporativoFormType } from "@/forms/corporativo.form";
+import { Types } from "mongoose";
 
 export type iVideosYoutube = {
   src: string;
@@ -180,6 +182,16 @@ export interface iTEmailCotizacion {
   tcambio: number;
 }
 
+export interface iEmailLeadCorporativo {
+  nombreCompleto: string;
+  tipoDocumento: string;
+  numeroDocumento: string;
+  correoElectronico: string;
+  celular: string;
+  marcaText: string;
+  intencionCompra: string;
+}
+
 export interface iTEmailReclamo {
   fecha: string;
   hora: string;
@@ -194,6 +206,12 @@ export interface iTEmailReclamo {
 export type iCustomMessage = {
   customer: string;
   celular: string;
+  volverInicio: () => void;
+};
+
+export type CustomGraciasCard = {
+  cliente: string;
+  documento: string;
   volverInicio: () => void;
 };
 
@@ -359,6 +377,18 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
   slugModelo: string;
   imageUrl: string;
   precioBase: number;
+};
+
+export type LeadCorporativoRequest = {
+  nombreCompleto: string;
+  tipoDocumento: string;
+  numeroDocumento: string;
+  correoElectronico: string;
+  celular: string;
+  marcaId: string;
+  marcaSlug: string;
+  marcaText: string;
+  intencionCompra: string;
 };
 
 export type ReclamoDataBuildedType = NewReclamoFormValues & {

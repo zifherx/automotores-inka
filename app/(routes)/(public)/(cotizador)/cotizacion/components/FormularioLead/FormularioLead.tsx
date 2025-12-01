@@ -205,9 +205,9 @@ export function FormularioLead({ model }: iCardModel) {
 
       // console.log("window-dataLayer", window.dataLayer);
 
-      // router.push(
-      //   `/gracias?nombre=${values.nombres}&celular=${values.celular}`
-      // );
+      router.push(
+        `/gracias?nombre=${values.nombres}&celular=${values.celular}`
+      );
     } catch (err: any) {
       handleCotizacionError(err);
     } finally {
@@ -398,10 +398,8 @@ export function FormularioLead({ model }: iCardModel) {
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      console.log("Value: ", value);
                       const sede = concesionarios.find((s) => s.slug === value);
                       if (sede) {
-                        console.log("SedeSelected: ", sede);
                         setSedeSeleccionada(sede);
                       }
                     }}
