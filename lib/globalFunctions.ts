@@ -9,7 +9,11 @@ import {
   NovalyRequest,
 } from "@/interfaces";
 
-import { CotizacionForm, ReclamoDataBuildedType } from "@/types";
+import {
+  CotizacionForm,
+  LeadCorporativoRequest,
+  ReclamoDataBuildedType,
+} from "@/types";
 
 export const switchRS = (rs: string) => {
   switch (rs) {
@@ -147,6 +151,10 @@ export const buildReclamoData = (values: ReclamoDataBuildedType) => {
   return { ...values };
 };
 
+export const buildLeadCorporativoRequest = (values: LeadCorporativoRequest) => {
+  return { ...values };
+};
+
 export const createCotizacion = async (
   values: CotizacionForm,
   ruta: string
@@ -164,7 +172,9 @@ export const createCotizacion = async (
     // });
 
     if (response.status !== 200) {
-      throw new Error(`Error al crear cotización: ${response.status}`);
+      throw new Error(
+        `Error al crear cotización corporativa: ${response.status}`
+      );
     }
     return response;
   } catch (err: any) {
@@ -317,6 +327,47 @@ export const sendReclamoEmail = async (
   }
 };
 
+export const createLeadCorporativo = async (valores: any, ruta: string) => {
+  try {
+    const response = await axios.post(ruta, valores);
+
+    if (response.status !== 200) {
+      throw new Error(`Error al crear lead corporativo: ${response.status}`);
+    }
+
+    return response;
+  } catch (err: any) {
+    console.error(`Error en createLeadCorporativo:`, {
+      message: err.message,
+      response: err.response.data,
+      status: err.response.status,
+    });
+
+    throw new Error(`Error al procesar cotización corporativa`);
+  }
+};
+
+export const enviarCorreoCorporativo = async (valores: any, ruta: string) => {
+  try {
+    const response = await axios.post(ruta, valores);
+
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al enviar correo de lead corporativo: ${response.status}`
+      );
+    }
+
+    return response;
+  } catch (err: any) {
+    console.error("Error en enviarCorreoCorporativo:", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+    });
+    throw new Error("Error al enviar el email de cotización corporativa");
+  }
+};
+
 export const getDocumentMaxLength = (documentType: string): number => {
   switch (documentType) {
     case "dni":
@@ -347,13 +398,16 @@ export const createNumeroDeReclamo = (
 export const parseSortQuery = (sortParam?: string): Record<string, 1 | -1> => {
   if (!sortParam) return {};
 
-  return sortParam.split(",").reduce((acc, sortItem) => {
-    const [field, direction] = sortItem.split(":");
+  return sortParam.split(",").reduce(
+    (acc, sortItem) => {
+      const [field, direction] = sortItem.split(":");
 
-    if (field) {
-      acc[field] = direction?.toLowerCase() === "desc" ? -1 : 1;
-    }
+      if (field) {
+        acc[field] = direction?.toLowerCase() === "desc" ? -1 : 1;
+      }
 
-    return acc;
-  }, {} as Record<string, 1 | -1>);
+      return acc;
+    },
+    {} as Record<string, 1 | -1>
+  );
 };

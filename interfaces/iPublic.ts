@@ -335,3 +335,17 @@ export interface InputControlI {
 export interface ContactInfoError {
   message: string;
 }
+
+export interface EstadisticasLanding {
+  id: number;
+  value: string;
+  description: string;
+}
+
+export interface BeneficiosLanding {
+  id: number;
+  icon: IconProp;
+  titulo: string;
+  description: string;
+  color: string;
+}
