@@ -2,7 +2,8 @@ import { cn } from "@/lib/utils";
 import { iVideosYoutube } from "@/types";
 
 export function VideosYoutube(props: iVideosYoutube) {
-  const { className, src, title } = props;
+  const { className, title, src } = props;
+
   return (
     <iframe
       className={cn("rounded-xl", className)}
@@ -11,8 +12,9 @@ export function VideosYoutube(props: iVideosYoutube) {
       src={src}
       title={title}
       allowFullScreen
-      allow="accelerometer; autoplay;loop; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerPolicy="strict-origin-when-cross-origin"
-    ></iframe>
+      loading="lazy"
+    />
   );
 }
