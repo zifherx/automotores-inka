@@ -48,9 +48,9 @@ import {
 } from "react-hook-form";
 
 export type iVideosYoutube = {
-  src: string;
   title: string;
-  className: string;
+  className?: string;
+  src: string;
 };
 
 export type iTitle = {
