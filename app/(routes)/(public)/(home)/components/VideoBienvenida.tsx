@@ -1,5 +1,11 @@
 import { VideosYoutube } from "@/components/Shared/VideosYoutube";
 
+export interface YoutubeListVideoOptions {
+  controles: boolean;
+  playlist: string;
+  bucle: boolean;
+}
+
 export function VideoBienvenida() {
   return (
     <section className="bg-slate-300 w-full bg-[url('/images/fondo-tramado-gris.png')] bg-cover bg-center bg-no-repeat">
@@ -7,7 +13,7 @@ export function VideoBienvenida() {
         <div className="p-0">
           <VideosYoutube
             className="h-[400px]"
-            src="https://www.youtube.com/embed/vwM9Ik-FpMA?si=axwv30na1a_SdUW3&amp;controls=0&amp;playlist=vwM9Ik-FpMA&amp;loop=1"
+            src="https://www.youtube.com/embed/videoseries?si=chW42IabjNVLUOX5&amp;list=PLDz4V31SNkF6NWiW-HR__RJjWy9plIYsh&amp;controls=0&amp;playlist=vwM9Ik-FpMA&amp;loop=1"
             title="Somos el mejor aliado para tu negocio"
           />
         </div>

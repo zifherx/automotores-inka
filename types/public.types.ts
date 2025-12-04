@@ -46,13 +46,11 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { CorporativoFormType } from "@/forms/corporativo.form";
-import { Types } from "mongoose";
 
 export type iVideosYoutube = {
-  src: string;
   title: string;
-  className: string;
+  className?: string;
+  src: string;
 };
 
 export type iTitle = {
