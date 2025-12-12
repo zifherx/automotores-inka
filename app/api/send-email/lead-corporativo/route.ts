@@ -26,17 +26,18 @@ export async function POST(req: NextRequest) {
       // to: [`${body.correoElectronico}`],
       to: [`${corporativoMail.email}`],
       bcc: [`automotores.inka@ziphonex.com`],
-      subject: `Lead Corporativo ✅ - ${body.numeroDocumento}`,
+      subject: `Lead Corporativo ✅ - ${body.ruc}`,
       react: EmailLeadCorporativo({
         nombreCompleto: body.nombreCompleto,
-        tipoDocumento: body.tipoDocumento,
-        numeroDocumento: body.numeroDocumento,
+        dni: body.dni,
         correoElectronico: body.correoElectronico,
         celular: body.celular,
+        razonSocial: body.razonSocial,
+        ruc: body.ruc,
         marcaText: body.marcaText,
         intencionCompra: body.intencionCompra,
       }),
-      text: `Envío de cotización corporativa a ${body.nombreCompleto}`,
+      text: `Envío de cotización corporativa a ${body.razonSocial}`,
     });
 
     if (error) return NextResponse.json({ error }, { status: 500 });

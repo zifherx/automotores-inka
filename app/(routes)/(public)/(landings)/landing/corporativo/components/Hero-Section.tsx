@@ -6,8 +6,6 @@ import { Briefcase, CheckCircle, Phone } from "lucide-react";
 export function HeroSection() {
   return (
     <section className="relative bg-gradient-to-br from-blue-400 via-blueInka to-blue-900 text-white overflow-hidden">
-      <div>absolute</div>
-
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-32 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -21,13 +19,11 @@ export function HeroSection() {
             transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-white/20"
           >
-            <Briefcase className="w-4 h-4" />
-            <span className="text-sm font-semibold">
-              Soluciones Corporativas
-            </span>
+            <Briefcase className="w-6 h-6 mr-2" />
+            <span className="text-md font-semibold">Ventas Corporativas</span>
           </motion.div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
             Impulsa la movilidad de tu empresa
           </h1>
 
@@ -47,16 +43,11 @@ export function HeroSection() {
               href="#formulario"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-xl shadow-red-600/30 transition-all"
+              className="inline-flex uppercase items-center gap-2 bg-redInka hover:bg-redDarkInka text-white px-8 py-4 rounded-lg font-semibold text-xl shadow-xl shadow-red-600/30 transition-all"
             >
-              Solicitar Asesoría
-              <CheckCircle className="w-5 h-5" />
+              Cotiza aquí
+              <CheckCircle className="w-6 h-6 ml-2" />
             </motion.a>
-
-            <div className="flex items-center gap-2 text-blue-100">
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">Respuesta en 24 horas</span>
-            </div>
           </motion.div>
         </motion.div>
       </div>

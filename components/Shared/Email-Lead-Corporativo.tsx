@@ -21,10 +21,11 @@ const urlSAI = process.env.URL_SAI ? `https://${process.env.URL_SAI}` : "";
 
 export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
   nombreCompleto,
-  tipoDocumento,
-  numeroDocumento,
+  dni,
   correoElectronico,
   celular,
+  razonSocial,
+  ruc,
   marcaText,
   intencionCompra,
 }) => {
@@ -81,18 +82,10 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                     <Row>
                       <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
-                          TIPO
+                          DNI
                         </Text>
                         <Text className="text-sm m-0 p-0 leading-6 uppercase">
-                          {tipoDocumento}
-                        </Text>
-                      </Column>
-                      <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
-                        <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
-                          N° DOCUMENTO
-                        </Text>
-                        <Text className="text-sm m-0 p-0 leading-6">
-                          {numeroDocumento}
+                          {dni}
                         </Text>
                       </Column>
                     </Row>
@@ -111,6 +104,24 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         </Text>
                         <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] underline">
                           {correoElectronico}
+                        </Link>
+                      </Column>
+                    </Row>
+                    <Row>
+                      <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
+                        <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
+                          RAZÓN SOCIAL
+                        </Text>
+                        <Text className="text-sm m-0 p-0 leading-6">
+                          {razonSocial}
+                        </Text>
+                      </Column>
+                      <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
+                        <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
+                          RUC
+                        </Text>
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] underline">
+                          {ruc}
                         </Link>
                       </Column>
                     </Row>

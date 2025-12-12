@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function CorporativoPage() {
   return (
     <BrandsProvider>
-      <CorporativoView />;
+      <CorporativoView />
     </BrandsProvider>
   );
 }
