@@ -182,11 +182,12 @@ export interface iTEmailCotizacion {
 
 export interface iEmailLeadCorporativo {
   nombreCompleto: string;
-  tipoDocumento: string;
-  numeroDocumento: string;
+  dni: string;
   correoElectronico: string;
   celular: string;
   marcaText: string;
+  razonSocial: string;
+  ruc: string;
   intencionCompra: string;
 }
 
@@ -379,10 +380,11 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
 
 export type LeadCorporativoRequest = {
   nombreCompleto: string;
-  tipoDocumento: string;
-  numeroDocumento: string;
+  dni: string;
   correoElectronico: string;
   celular: string;
+  razonSocial: string;
+  ruc: string;
   marcaId: string;
   marcaSlug: string;
   marcaText: string;

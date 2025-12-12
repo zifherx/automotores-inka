@@ -1,10 +1,17 @@
 import { model, models, Schema } from "mongoose";
 
-import { iCliente } from "./Cliente";
 import { iBrand } from "@/types";
 
 export interface iLeadCorporativo extends Document {
-  cliente: iCliente;
+  // 1. Datos de Contacto
+  nombreCompleto: string;
+  dni: string;
+  correoElectronico: string;
+  celular: string;
+  // 2. Datos de Empresa
+  razonSocial: string;
+  ruc: string;
+  // 3. Información Adicional (opcionales)
   marca: iBrand;
   marcaText: string;
   intencionCompra: string;
@@ -13,7 +20,12 @@ export interface iLeadCorporativo extends Document {
 
 const leadCorporativoSchema: Schema = new Schema<iLeadCorporativo>(
   {
-    cliente: { type: Schema.Types.ObjectId, ref: "Cliente" },
+    nombreCompleto: { type: String },
+    dni: { type: String },
+    correoElectronico: { type: String },
+    celular: { type: String },
+    razonSocial: { type: String },
+    ruc: { type: String },
     marca: { type: Schema.Types.ObjectId, ref: "Marca" },
     marcaText: { type: String },
     intencionCompra: { type: String },

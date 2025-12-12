@@ -7,11 +7,15 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Barcode,
+  Briefcase,
   CheckCircle2,
   Loader2,
   Mail,
   Phone,
+  ShoppingCart,
+  Tag,
   User,
+  UserCircle,
 } from "lucide-react";
 
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -42,6 +46,13 @@ import {
   onToast,
 } from "@/lib";
 import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function FormularioSection() {
   const { brands } = useBrands();
@@ -55,14 +66,24 @@ export function FormularioSection() {
     transition: { duration: 0.6 },
   };
 
+  const staggerContainer = {
+    initial: {},
+    animate: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
   const formCorporativo = useForm<CorporativoFormType>({
     resolver: zodResolver(corporativoSchema),
     defaultValues: {
       nombreCompleto: "",
-      tipoDocumento: undefined,
-      numeroDocumento: "",
+      dni: "",
       correoElectronico: "",
       celular: "",
+      razonSocial: "",
+      ruc: "",
       marca: "",
       intencionCompra: "",
     },
@@ -80,10 +101,11 @@ export function FormularioSection() {
     try {
       const leadCorporativoData = buildLeadCorporativoRequest({
         nombreCompleto: values.nombreCompleto,
-        tipoDocumento: values.tipoDocumento,
-        numeroDocumento: values.numeroDocumento,
+        dni: values.dni,
         correoElectronico: values.correoElectronico,
         celular: values.celular,
+        razonSocial: values.razonSocial,
+        ruc: values.ruc,
         marcaId: values.marca!,
         marcaText: marcaSeleccionada?.name!,
         marcaSlug: marcaSeleccionada?.slug!,
@@ -92,10 +114,11 @@ export function FormularioSection() {
 
       const enviarCorreoData = buildLeadCorporativoRequest({
         nombreCompleto: values.nombreCompleto,
-        tipoDocumento: values.tipoDocumento,
-        numeroDocumento: values.numeroDocumento,
+        dni: values.dni,
         correoElectronico: values.correoElectronico,
         celular: values.celular,
+        razonSocial: values.razonSocial,
+        ruc: values.ruc,
         marcaId: values.marca!,
         marcaText: marcaSeleccionada?.name! || "",
         marcaSlug: marcaSeleccionada?.slug! || "",
@@ -129,23 +152,24 @@ export function FormularioSection() {
         );
       }
 
-      // console.group("📋 LEAD CORPORATIVO");
-      // console.log("⏰ Timestamp:", new Date().toLocaleString("es-PE"));
-      // console.table({
-      //   "Nombre Completo": values.nombreCompleto,
-      //   "Tipo Documento": values.tipoDocumento,
-      //   "DNI/RUC": values.numeroDocumento,
-      //   Email: values.correoElectronico,
-      //   Celular: values.celular,
-      //   "Marca ID": values.marca || "No especificada",
-      //   "Marca Nombre": marcaSeleccionada?.name || "No especificada",
-      //   "Intención de Compra": values.intencionCompra || "No especificada",
-      // });
-      // console.groupEnd();
+      console.group("📋 LEAD CORPORATIVO");
+      console.log("⏰ Timestamp:", new Date().toLocaleString("es-PE"));
+      console.table({
+        "Nombre Completo": values.nombreCompleto,
+        DNI: values.dni,
+        Email: values.correoElectronico,
+        Celular: values.celular,
+        "Razon Social": values.razonSocial,
+        RUC: values.ruc,
+        "Marca ID": values.marca || "No especificada",
+        "Marca Nombre": marcaSeleccionada?.name || "No especificada",
+        "Intención de Compra": values.intencionCompra || "No especificada",
+      });
+      console.groupEnd();
 
       limpiarFormulario();
       router.push(
-        `/landing/gracias?cliente=${values.nombreCompleto}&documento=${values.numeroDocumento}`
+        `/landing/gracias?cliente=${values.nombreCompleto}&documento=${values.dni}`
       );
     } catch (err: any) {
       console.error("Error al enviar formulario", err.message);
@@ -157,10 +181,11 @@ export function FormularioSection() {
   const limpiarFormulario = () => {
     formCorporativo.reset({
       nombreCompleto: "",
-      tipoDocumento: undefined,
-      numeroDocumento: "",
+      dni: "",
       correoElectronico: "",
       celular: "",
+      razonSocial: "",
+      ruc: "",
       marca: "",
       intencionCompra: "",
     });
@@ -178,334 +203,454 @@ export function FormularioSection() {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-2xl shadow-2xl p-8 md:p-10 border border-gray-200"
+        <form
+          onSubmit={formCorporativo.handleSubmit(onSubmit)}
+          className="space-y-6"
         >
-          <form
-            onSubmit={formCorporativo.handleSubmit(onSubmit)}
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
             className="space-y-6"
           >
-            {/* Nombre Completo */}
-            <Controller
-              name="nombreCompleto"
-              control={formCorporativo.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel
-                    htmlFor="corporativo-nombreCompleto"
-                    className="font-headRegular font-semibold"
-                  >
-                    Nombre Completo <span className="text-redInka">*</span>
-                  </FieldLabel>
+            {/* CARD 1: DATOS DE CONTACTO */}
+            <motion.div key="datos-contacto" {...fadeInUp}>
+              <Card className="border-2 border-blue-100 shadow-lg hover:shadow-xl transition-shadow">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100/50 border-b border-blue-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-blue-600 rounded-xl shadow-md">
+                      <UserCircle className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">
+                        1. Datos de Contacto
+                      </CardTitle>
+                      <CardDescription className="text-gray-600">
+                        Información personal del solicitante
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Nombre Completo */}
+                    <Controller
+                      name="nombreCompleto"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-nombreCompleto"
+                            className="font-headRegular font-semibold"
+                          >
+                            Nombre Completo{" "}
+                            <span className="text-redInka">*</span>
+                          </FieldLabel>
 
-                  <InputGroup className="h-12">
-                    <InputGroupAddon>
-                      <User className="w-5 h-5" />
-                    </InputGroupAddon>
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <User className="w-5 h-5" />
+                            </InputGroupAddon>
 
-                    <InputGroupInput
-                      {...field}
-                      id="corporativo-nombreCompleto"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Ingrese su nombre completo"
-                      autoComplete="off"
-                      disabled={isSubmitting}
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-nombreCompleto"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ingrese su nombre completo"
+                              autoComplete="off"
+                              disabled={isSubmitting}
+                            />
+                          </InputGroup>
+
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
                     />
-                  </InputGroup>
 
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+                    {/* DNI */}
+                    <Controller
+                      name="dni"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-dni"
+                            className="font-headRegular font-semibold"
+                          >
+                            DNI <span className="text-redInka">*</span>
+                          </FieldLabel>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Tipo Documento */}
-              <Controller
-                name="tipoDocumento"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-tipoDocumento"
-                      className="font-headRegular font-semibold"
-                    >
-                      Tipo Documento <span className="text-redInka">*</span>
-                    </FieldLabel>
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <Barcode className="w-5 h-5" />
+                            </InputGroupAddon>
 
-                    <Select
-                      name={field.name}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      disabled={isSubmitting}
-                    >
-                      <SelectTrigger
-                        id="corporativo-tipoDocumento"
-                        aria-invalid={fieldState.invalid}
-                        className="min-w-[120px] h-12"
-                      >
-                        <SelectValue placeholder="Seleccione un tipo de documento" />
-                      </SelectTrigger>
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-dni"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ingrese su n° de DNI"
+                              autoComplete="off"
+                              maxLength={8}
+                              type="number"
+                              disabled={isSubmitting}
+                              pattern="[0-9]*"
+                            />
+                          </InputGroup>
 
-                      <SelectContent position="item-aligned">
-                        <SelectItem value="DNI">DNI</SelectItem>
-                        <SelectItem value="RUC">RUC</SelectItem>
-                        <SelectItem value="CE">Carnet Extranjeria</SelectItem>
-                        <SelectItem value="Pasaporte">Pasaporte</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </div>
 
-              {/* Número Documento */}
-              <Controller
-                name="numeroDocumento"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-numeroDocumento"
-                      className="font-headRegular font-semibold"
-                    >
-                      Número de Documento{" "}
-                      <span className="text-redInka">*</span>
-                    </FieldLabel>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Email */}
+                    <Controller
+                      name="correoElectronico"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-correoElectronico"
+                            className="font-headRegular font-semibold"
+                          >
+                            Correo Electrónico{" "}
+                            <span className="text-redInka">*</span>
+                          </FieldLabel>
 
-                    <InputGroup className="h-12">
-                      <InputGroupAddon>
-                        <Barcode />
-                      </InputGroupAddon>
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <Mail className="w-5 h-5" />
+                            </InputGroupAddon>
 
-                      <InputGroupInput
-                        {...field}
-                        id="corporativo-numeroDocumento"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Ingrese su número documento"
-                        autoComplete="off"
-                        disabled={isSubmitting}
-                      />
-                    </InputGroup>
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-correoElectronico"
+                              type="email"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ej: jperez@empresa.com"
+                              disabled={isSubmitting}
+                              autoComplete="email"
+                            />
+                          </InputGroup>
 
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Email */}
-              <Controller
-                name="correoElectronico"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-correoElectronico"
-                      className="font-headRegular font-semibold"
-                    >
-                      Correo Electrónico <span className="text-redInka">*</span>
-                    </FieldLabel>
+                    {/* Celular */}
+                    <Controller
+                      name="celular"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-celular"
+                            className="font-headRegular font-semibold"
+                          >
+                            Celular <span className="text-redInka">*</span>
+                          </FieldLabel>
 
-                    <InputGroup className="h-12">
-                      <InputGroupAddon>
-                        <Mail className="w-5 h-5" />
-                      </InputGroupAddon>
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <Phone className="w-5 h-5" />
+                            </InputGroupAddon>
 
-                      <InputGroupInput
-                        {...field}
-                        id="corporativo-correoElectronico"
-                        type="email"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Ej: jperez@empresa.com"
-                        disabled={isSubmitting}
-                        autoComplete="email"
-                      />
-                    </InputGroup>
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-celular"
+                              type="tel"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ej: 999 999 999"
+                              disabled={isSubmitting}
+                            />
+                          </InputGroup>
 
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              {/* Celular */}
-              <Controller
-                name="celular"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-celular"
-                      className="font-headRegular font-semibold"
-                    >
-                      Celular <span className="text-redInka">*</span>
-                    </FieldLabel>
-
-                    <InputGroup className="h-12">
-                      <InputGroupAddon>
-                        <Phone className="w-5 h-5" />
-                      </InputGroupAddon>
-
-                      <InputGroupInput
-                        {...field}
-                        id="corporativo-celular"
-                        type="tel"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Ej: 999 999 999"
-                        disabled={isSubmitting}
-                      />
-                    </InputGroup>
-
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* marca */}
-              <Controller
-                name="marca"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-marca"
-                      className="font-headRegular font-semibold"
-                    >
-                      Marca{" "}
-                      <span className="text-grisInka text-xs">Opcional</span>
-                    </FieldLabel>
-
-                    <Select
-                      name={field.name}
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                      }}
-                      disabled={isSubmitting}
-                    >
-                      <SelectTrigger
-                        id="corporativo-marca"
-                        aria-invalid={fieldState.invalid}
-                        className="min-w-[120px] h-12"
-                      >
-                        <SelectValue placeholder="Seleccione una marca" />
-                      </SelectTrigger>
-
-                      <SelectContent position="item-aligned">
-                        {brands.length > 0 &&
-                          brands
-                            .filter((marca) => marca.isActive)
-                            .map(({ _id, name, imageUrl }) => (
-                              <SelectItem key={_id} value={_id}>
-                                <div className="flex items-center justify-between gap-5">
-                                  <Avatar>
-                                    <AvatarImage src={imageUrl} alt={name} />
-                                    <AvatarFallback>{name}</AvatarFallback>
-                                  </Avatar>
-                                  <span className="font-medium uppercase text-sm">
-                                    {name}
-                                  </span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              {/* Intencion de Compra */}
-              <Controller
-                name="intencionCompra"
-                control={formCorporativo.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="corporativo-intencionCompra"
-                      className="font-headRegular font-semibold"
-                    >
-                      Intención de Compra{" "}
-                      <span className="text-grisInka text-xs">Opcional</span>
-                    </FieldLabel>
-                    <Select
-                      name={field.name}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      disabled={isSubmitting}
-                    >
-                      <SelectTrigger
-                        id="corporativo-intencionCompra"
-                        aria-invalid={fieldState.invalid}
-                        className="min-w-[120px] h-12"
-                      >
-                        <SelectValue placeholder="Seleccione una intención de compra" />
-                      </SelectTrigger>
-
-                      <SelectContent position="item-aligned">
-                        <SelectItem value="0">Inmediata</SelectItem>
-                        <SelectItem value="1">En 1 mes</SelectItem>
-                        <SelectItem value="2">En 2 meses</SelectItem>
-                        <SelectItem value="3">En 3 meses</SelectItem>
-                        <SelectItem value="6">En 6 meses</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
-
-            {/* Submit Button */}
-            <motion.div
-              whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-              whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-            >
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-redInka to-redDarkInka hover:from-redDarkInka hover:to-redInka text-white py-4 rounded-lg font-semibold text-lg shadow-xl shadow-red-600/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    Solicitar Asesoría Ahora
-                    <CheckCircle2 className="w-5 h-5" />
-                  </>
-                )}
-              </Button>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
 
-            <p className="text-xs text-grisDarkInka text-center">
-              Al enviar este formulario, aceptas que Automotores Inka se ponga
-              en contacto contigo para brindarte información sobre nuestras
-              soluciones corporativas.
-            </p>
-          </form>
-        </motion.div>
+            {/* CARD 2: DATOS DE LA EMPRESA */}
+            <motion.div key="datos-empresa" {...fadeInUp}>
+              <Card className="border-2 border-red-100 shadow-lg hover:shadow-xl transition-shadow">
+                <CardHeader className="bg-gradient-to-r from-red-50 to-red-100/50 border-b border-red-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-redInka rounded-xl shadow-md">
+                      <Briefcase className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">
+                        2. Datos de la Empresa
+                      </CardTitle>
+                      <CardDescription className="text-gray-600">
+                        Información corporativa
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="pt-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-[60%,1fr] gap-4">
+                    {/* Razón Social */}
+                    <Controller
+                      name="razonSocial"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-razonSocial"
+                            className="font-headRegular font-semibold"
+                          >
+                            Razón Social <span className="text-redInka">*</span>
+                          </FieldLabel>
+
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <Tag className="w-5 h-5" />
+                            </InputGroupAddon>
+
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-razonSocial"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ingrese la razón social de la empresa"
+                              autoComplete="off"
+                              disabled={isSubmitting}
+                            />
+                          </InputGroup>
+
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+
+                    {/* RUC */}
+                    <Controller
+                      name="ruc"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-ruc"
+                            className="font-headRegular font-semibold"
+                          >
+                            RUC <span className="text-redInka">*</span>
+                          </FieldLabel>
+
+                          <InputGroup className="h-12">
+                            <InputGroupAddon>
+                              <Barcode className="w-5 h-5" />
+                            </InputGroupAddon>
+
+                            <InputGroupInput
+                              {...field}
+                              id="corporativo-ruc"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Ingrese su n° de RUC"
+                              autoComplete="off"
+                              maxLength={11}
+                              type="number"
+                              disabled={isSubmitting}
+                            />
+                          </InputGroup>
+
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* CARD 3: DATOS ADICIONALES */}
+            <motion.div key="datos-opcional" {...fadeInUp}>
+              <Card className="border-2 border-green-100 shadow-lg hover:shadow-xl transition-shadow">
+                <CardHeader className="bg-gradient-to-r from-green-50 to-green-100/50 border-b border-green-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-green-600 rounded-xl shadow-md">
+                      <ShoppingCart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">
+                        3. Información Adicional
+                      </CardTitle>
+                      <CardDescription className="text-gray-600">
+                        Preferencias y detalles de compra (opcional)
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="pt-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* marca */}
+                    <Controller
+                      name="marca"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-marca"
+                            className="font-headRegular font-semibold"
+                          >
+                            Marca{" "}
+                            <span className="text-grisInka text-xs">
+                              Opcional
+                            </span>
+                          </FieldLabel>
+
+                          <Select
+                            name={field.name}
+                            value={field.value}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                            }}
+                            disabled={isSubmitting}
+                          >
+                            <SelectTrigger
+                              id="corporativo-marca"
+                              aria-invalid={fieldState.invalid}
+                              className="min-w-[120px] h-12"
+                            >
+                              <SelectValue placeholder="Seleccione una marca" />
+                            </SelectTrigger>
+
+                            <SelectContent position="item-aligned">
+                              {brands.length > 0 &&
+                                brands
+                                  .filter((marca) => marca.isActive)
+                                  .map(({ _id, name, imageUrl }) => (
+                                    <SelectItem key={_id} value={_id}>
+                                      <div className="flex items-center justify-between gap-5">
+                                        <Avatar>
+                                          <AvatarImage
+                                            src={imageUrl}
+                                            alt={name}
+                                          />
+                                          <AvatarFallback>
+                                            {name}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                        <span className="font-medium uppercase text-sm">
+                                          {name}
+                                        </span>
+                                      </div>
+                                    </SelectItem>
+                                  ))}
+                            </SelectContent>
+                          </Select>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+
+                    {/* Intencion de Compra */}
+                    <Controller
+                      name="intencionCompra"
+                      control={formCorporativo.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel
+                            htmlFor="corporativo-intencionCompra"
+                            className="font-headRegular font-semibold"
+                          >
+                            Intención de Compra{" "}
+                            <span className="text-grisInka text-xs">
+                              Opcional
+                            </span>
+                          </FieldLabel>
+                          <Select
+                            name={field.name}
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            disabled={isSubmitting}
+                          >
+                            <SelectTrigger
+                              id="corporativo-intencionCompra"
+                              aria-invalid={fieldState.invalid}
+                              className="min-w-[120px] h-12"
+                            >
+                              <SelectValue placeholder="Seleccione una intención de compra" />
+                            </SelectTrigger>
+
+                            <SelectContent position="item-aligned">
+                              <SelectItem value="0">Inmediata</SelectItem>
+                              <SelectItem value="1">En 1 mes</SelectItem>
+                              <SelectItem value="2">En 2 meses</SelectItem>
+                              <SelectItem value="3">En 3 meses</SelectItem>
+                              <SelectItem value="6">En 6 meses</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div {...fadeInUp} className="pt-2">
+              <Card className="shadow-none border-none">
+                <CardContent className="pt-6">
+                  <motion.div
+                    whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                    whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                  >
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-redInka to-redDarkInka hover:from-redDarkInka hover:to-redInka text-white h-14 rounded-xl font-bold text-lg shadow-xl shadow-red-600/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Enviando solicitud...
+                        </>
+                      ) : (
+                        <>
+                          Enviar Solicitud
+                          <CheckCircle2 className="w-5 h-5" />
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+
+                  <p className="text-xs text-grisDarkInka text-center mt-3 leading-relaxed">
+                    Al enviar este formulario, aceptas que Automotores Inka se
+                    ponga en contacto contigo para brindarte información sobre
+                    nuestras soluciones corporativas.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </form>
+        {/* </motion.div> */}
       </div>
     </section>
   );
