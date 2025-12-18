@@ -8,7 +8,6 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { ScrollToTop } from "@/components/Shared/ScrollToTop/ScrollToTop";
 import { Analytics } from "@vercel/analytics/react";
-import {esMX} from '@clerk/localizations'
 
 import { cn } from "@/lib/utils";
 
@@ -85,8 +84,8 @@ export const metadata: Metadata = {
   },
 };
 
-const Fb_Pixel_Id = process.env.FACEBOOK_PIXEL_ID;
-const Google_Tag_Id = process.env.GOOGLE_TAG_ID;
+const Fb_Pixel_Id = process.env.FACEBOOK_PIXEL_ID as string;
+const Google_Tag_Id = process.env.GOOGLE_TAG_ID as string;
 
 export default function RootLayout({
   children,
@@ -94,7 +93,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <ClerkProvider localization={esMX}>
+    <ClerkProvider>
       <html lang="es-PE">
         <body
           className={cn(

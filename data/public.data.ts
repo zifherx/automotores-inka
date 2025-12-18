@@ -1,22 +1,6 @@
 import {
-  AlertCircle,
-  Blocks,
-  Calendar,
-  Car,
-  CheckCircle2,
-  Clock,
-  FileText,
-  Handshake,
-  Hash,
-  MapPin,
-  Medal,
-  Scale,
-  Shield,
-  Star,
-  Users,
-} from "lucide-react";
-
-import {
+  BeneficiosLanding,
+  EstadisticasLanding,
   iIconText,
   ILegalItem,
   iListLinkUtiles,
@@ -34,14 +18,29 @@ import {
 } from "@/interfaces/iPublic";
 
 import {
-  iChasis,
-  iModelo,
+  Blocks,
+  Car,
+  Clock,
+  Handshake,
+  MapPin,
+  Medal,
+  Star,
+  Users,
+  AlertCircle,
+  Calendar,
+  CheckCircle2,
+  FileText,
+  Hash,
+  Scale,
+  Shield,
+  TrendingUp,
+} from "lucide-react";
+import {
   iParrafo,
   iTipoServicio,
   ProductCategory,
   tCustomvideo,
 } from "@/types";
-import { iMarca } from "@/models";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
@@ -2637,3 +2636,47 @@ export const dataNewVideoMazda5: tCustomvideo = {
     "Con su diseño descapotable y su ligereza inigu alable, el MX-5 está diseñado para que sientas el viento y la potencia de cada viaje.",
   ],
 };
+
+export const EstadisticaLandingCorporativo: EstadisticasLanding[] = [
+  {
+    id: 1,
+    value: "14+",
+    description: "Años de experiencia",
+  },
+  {
+    id: 2,
+    value: "14",
+    description: "Marcas disponibles",
+  },
+  {
+    id: 3,
+    value: "100%",
+    description: "Atención personalizada",
+  },
+];
+
+export const BeneficiosLandingCorporativo: BeneficiosLanding[] = [
+  {
+    id: 1,
+    titulo: "Atención Especializada",
+    description:
+      "Ejecutivos dedicados que entienden las necesidades de tu empresa",
+    icon: Users,
+    color: "bg-blue-50 text-blue-600",
+  },
+  {
+    id: 2,
+    titulo: "Soluciones Escalables",
+    description:
+      "Desde una unidad hasta flotas completas con condiciones preferenciales",
+    icon: TrendingUp,
+    color: "bg-red-50 text-red-600",
+  },
+  {
+    id: 3,
+    titulo: "Respaldo Confiable",
+    description: "Más de 14 años respaldando la movilidad de empresas peruanas",
+    icon: Shield,
+    color: "bg-blue-50 text-blue-600",
+  },
+];
