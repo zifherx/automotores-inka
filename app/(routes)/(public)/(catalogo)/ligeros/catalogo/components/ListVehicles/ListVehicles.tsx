@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CardProductModel } from "@/components/Shared/CardProductModel";
+import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
 import { iListVehicle, iModelo } from "@/types";
-import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
-import { ArrowRight } from "lucide-react";
 
 export function ListVehicles({ models }: iListVehicle) {
   const [counterVehicles, setCounterVehicles] = useState(9);
@@ -14,10 +14,6 @@ export function ListVehicles({ models }: iListVehicle) {
   const loadMoreVehicles = () => {
     setCounterVehicles(counterVehicles + 3);
   };
-
-  // if (!dataFilteredVehicles || !models) {
-  //   return <AutoLoadingSpinner />;
-  // }
 
   return (
     <section>
@@ -40,9 +36,11 @@ export function ListVehicles({ models }: iListVehicle) {
       )}
 
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {dataFilteredVehicles.map((item: iModelo) => (
-          <CardProductModel key={item._id} model={item} />
-        ))}
+        {dataFilteredVehicles
+          .filter((item) => item.isActive)
+          .map((item: iModelo) => (
+            <CardProductModel key={item._id} model={item} />
+          ))}
       </div>
       <div className="text-center my-8">
         {counterVehicles < models.length && (

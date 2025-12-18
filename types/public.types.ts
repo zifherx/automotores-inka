@@ -180,6 +180,17 @@ export interface iTEmailCotizacion {
   tcambio: number;
 }
 
+export interface iEmailLeadCorporativo {
+  nombreCompleto: string;
+  dni: string;
+  correoElectronico: string;
+  celular: string;
+  marcaText: string;
+  razonSocial: string;
+  ruc: string;
+  intencionCompra: string;
+}
+
 export interface iTEmailReclamo {
   fecha: string;
   hora: string;
@@ -194,6 +205,12 @@ export interface iTEmailReclamo {
 export type iCustomMessage = {
   customer: string;
   celular: string;
+  volverInicio: () => void;
+};
+
+export type CustomGraciasCard = {
+  cliente: string;
+  documento: string;
   volverInicio: () => void;
 };
 
@@ -359,6 +376,19 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
   slugModelo: string;
   imageUrl: string;
   precioBase: number;
+};
+
+export type LeadCorporativoRequest = {
+  nombreCompleto: string;
+  dni: string;
+  correoElectronico: string;
+  celular: string;
+  razonSocial: string;
+  ruc: string;
+  marcaId: string;
+  marcaSlug: string;
+  marcaText: string;
+  intencionCompra: string;
 };
 
 export type ReclamoDataBuildedType = NewReclamoFormValues & {

@@ -282,7 +282,7 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
                                 checked={field.value?.includes(_id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, _id])
+                                    ? field.onChange([...field.value!, _id])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== _id
@@ -331,7 +331,7 @@ export function FormEditSucursal({ sede, setOpenDialog }: tFormEditSucursal) {
                                 checked={field.value?.includes(_id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, _id])
+                                    ? field.onChange([...field.value!, _id])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== _id
