@@ -3,9 +3,11 @@ import axios, { AxiosResponse } from "axios";
 
 export class NovalyService {
   private readonly apiUrl: string;
+  private readonly newApiUrl: string;
 
   constructor() {
     this.apiUrl = process.env.ENDPOINT_NOVALY as string;
+    this.newApiUrl = process.env.NEW_ENDPOINT_NOVALY as string;
 
     if (!this.apiUrl) {
       throw new Error("Falta el API Endpoint de Novaly");
@@ -23,7 +25,7 @@ export class NovalyService {
 
     try {
       console.time(`NovalyService | enviarCotizacionaNovaly`);
-      const response = await axios.post(this.apiUrl, payload, {
+      const response = await axios.post(this.newApiUrl, payload, {
         headers: {
           "Content-Type": "application/json",
         },
