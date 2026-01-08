@@ -25,7 +25,7 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
       <section id="banner">
         <div className="max-w-6xl mx-auto pt-8 pb-5 px-5 md:px-8">
           <div className="flex justify-between items-center gap-1">
-            <h2 className="text-xl md:text-6xl text-blueInka">
+            <h2 className="text-lg md:text-6xl text-blueInka">
               ¡Ahora <strong>ahorrar es más fácil!</strong>
             </h2>
             <button
@@ -42,7 +42,7 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
             src="/images/banner-repsol.png"
             alt="Landing Repsol"
             fill
-            className="w-full h-full object-contain md:object-cover"
+            className="w-full h-full -mt-3 md:mt-0 object-contain md:object-cover"
           />
 
           <div className="relative h-full max-w-6xl mx-auto px-6 flex items-center ">
@@ -71,54 +71,52 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
           </div>
         </div>
 
-        <div className="max-w-5xl mx-auto px-5 -mt-10">
-          <div className="flex flex-col gap-6 mb-10 md:mb-16">
+        <div className="max-w-5xl mx-auto px-3 md:px-5 -mt-6">
+          <div className="flex flex-col gap-2 md:gap-6 mb-6 md:mb-16">
             {/* Descuentos */}
             <div className="bg-white border border-blueInka rounded-lg text-blueInka p-2 md:p-4 shadow-md">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-6 px-1 md:px-10 py-0">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="text-sm md:text-xl font-headMedium md:font-headBold">
+              <div className="grid grid-cols-4 gap-x-4 md:gap-6 px-0 md:px-10 py-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-[8px] md:text-xl font-headMedium md:font-headBold">
                     Descuentos
                   </span>
-                  <BsFuelPumpFill className="fill-redInka w-6 h-6 md:w-14 md:h-14" />
+                  <BsFuelPumpFill className="fill-redInka w-4 h-4 md:w-14 md:h-14" />
                 </div>
-                <div className="flex items-center justify-between gap-1 px-1 border-r-0 md:border-r-2 border-r-blueInka">
-                  <span className="text-xs md:text-md font-textMedium">
+                <div className="flex items-center justify-between pr-1 border-r md:border-r-2 border-r-blueInka">
+                  <p className="text-[8px] md:text-sm font-textMedium">
                     Premium y Regular:
-                  </span>
-                  <div>
-                    <span className="font-headRegular text-lg md:text-2xl mr-1">
+                  </p>
+                  <div className="flex items-center">
+                    <p className="font-headRegular text-xs md:text-2xl mr-1">
                       S/
-                    </span>
-                    <span className="text-xl md:text-4xl font-headMedium md:font-headBold">
+                    </p>
+                    <p className="text-xs md:text-4xl font-headMedium md:font-headBold">
                       2.50
-                    </span>
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-2 px-1 md:px-4 border-r-0 md:border-r-2 border-r-blueInka">
-                  <span className="text-xs md:text-md font-textMedium">
+                <div className="flex items-center justify-between gap-1 px-1 md:px-4 border-r md:border-r-2 border-r-blueInka">
+                  <p className="text-[8px] md:text-sm font-textMedium">
                     Diesel:
-                  </span>
-                  <div>
-                    <span className="font-headRegular text-lg md:text-2xl mr-1">
+                  </p>
+                  <div className="flex items-center">
+                    <p className="font-headRegular text-xs md:text-2xl mr-1">
                       S/
-                    </span>
-                    <span className="text-xl font-headMedium md:text-4xl md:font-headBold">
+                    </p>
+                    <p className="text-xs font-headMedium md:text-4xl md:font-headBold">
                       0.50
-                    </span>
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-1 px-1 md:px-4">
-                  <span className="text-xs md:text-md font-textMedium">
-                    GLP:
-                  </span>
-                  <div>
-                    <span className="font-headRegular text-ls md:text-2xl mr-1">
+                <div className="flex items-center justify-between gap-1 px-0 md:px-4">
+                  <p className="text-[8px] md:text-sm font-textMedium">GLP:</p>
+                  <div className="flex items-center">
+                    <p className="font-headRegular text-xs md:text-2xl mr-1">
                       S/
-                    </span>
-                    <span className="text-xl font-headMedium md:text-4xl md:font-headBold">
+                    </p>
+                    <p className="text-xs font-headMedium md:text-4xl md:font-headBold">
                       0.20
-                    </span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -126,40 +124,40 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
 
             {/* Cobetura */}
             <div className="grid grid-cols-[70%_1fr] md:grid-cols-4 gap-x-1 md:gap-x-4">
-              <div className="md:col-span-3 bg-white border border-blueInka rounded-lg text-blueInka p-3 md:p-4 shadow-md">
-                <div className="grid grid-cols-3 gap-1 md:gap-6 px-0 md:px-8 py-0">
+              <div className="md:col-span-3 bg-white border border-blueInka rounded-lg text-blueInka p-2 md:p-4 shadow-md">
+                <div className="grid grid-cols-3 gap-3 md:gap-6 px-1 md:px-8 py-0">
                   <div className="flex items-center justify-between gap-1 border-r md:border-r-2 border-r-blueInka">
-                    <span className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       Cobertura
-                    </span>
-                    <MapPin className="text-redInka w-6 h-6 md:w-14 md:h-14 mr-1 md:mr-5" />
+                    </p>
+                    <MapPin className="text-redInka w-4 h-4 md:w-14 md:h-14 mr-1 md:mr-5" />
                   </div>
                   <div className="flex flex-col items-start gap-1 pl-1 md:pl-4 border-r md:border-r-2 border-r-blueInka">
-                    <p className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       LIMA
                     </p>
-                    <p className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       CHIMBOTE
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-1 pl-1 md:pl-4">
-                    <p className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       TRUJILLO
                     </p>
-                    <p className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       CHICLAYO
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white border border-blueInka rounded-lg text-blueInka p-4 shadow-md">
+              <div className="bg-white border border-blueInka rounded-lg text-blueInka p-2 shadow-md">
                 <div className="grid grid-cols-1">
                   <div className="flex items-center justify-between gap-1">
-                    <span className="text-xs font-headMedium md:text-xl md:font-headBold">
+                    <p className="text-[9px] font-headMedium md:text-xl md:font-headBold">
                       Benficios adicionales
-                    </span>
-                    <LucideHandHeart className="text-redInka w-6 h-6 md:w-14 md:h-14" />
+                    </p>
+                    <LucideHandHeart className="text-redInka w-4 h-4 md:w-14 md:h-14" />
                   </div>
                 </div>
               </div>
@@ -172,7 +170,7 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
                   <h4 className="text-xl md:text-4xl font-headBold">
                     Ventajas:
                   </h4>
-                  <ul className="list-inside list-disc text-sm md:text-xl font-headRegular">
+                  <ul className="list-inside list-disc text-xs md:text-xl font-headRegular">
                     <li>Ahorro en combustible</li>
                     <li>Variedad de combustibles cubiertos</li>
                     <li>Descuentos exclusivos</li>
@@ -190,11 +188,11 @@ export function RepsolView({ linkRedirection }: RespolViewProp) {
 
       {/* Call To Action */}
       <section id="cta">
-        <div className="w-full bg-redInka text-white px-6 md:px-16 py-8">
+        <div className="w-full bg-redInka text-white px-6 py-4 md:px-16 md:py-8">
           <div className="max-w-3xl mx-auto">
-            <div className="flex gap-2 md:gap-4 items-center justify-center text-xl md:text-4xl font-headBold">
+            <div className="flex gap-2 md:gap-4 items-center justify-center text-lg md:text-4xl font-headBold">
               <button
-                className="bg-white text-redInka py-2 px-7 rounded-lg cursor-pointer"
+                className="bg-white text-redInka py-1 px-3 md:py-2 md:px-7 rounded-sm md:rounded-lg cursor-pointer"
                 onClick={handleClickRepsol}
               >
                 Únete ahora
