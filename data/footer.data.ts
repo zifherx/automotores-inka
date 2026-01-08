@@ -9,6 +9,7 @@ import {
   Car,
   Cookie,
   Copyright,
+  Fuel,
   NotebookText,
   Scale,
   ShoppingBag,
@@ -132,6 +133,18 @@ export const listSubmenuFooter: iMenuFooter[] = [
         href: "/legal/terminos-condiciones",
         label: "Términos y condiciones",
         icon: Scale,
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "Beneficios",
+    submenu: [
+      {
+        id: 1,
+        href: "/landing/repsol",
+        label: "Repsol",
+        icon: Fuel,
       },
     ],
   },
