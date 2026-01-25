@@ -122,14 +122,14 @@ export const validarItem = (uriDB: string, uriPayload: string): boolean => {
 
 export const createWhatsAppLinkForTallerContact = (taller: iTalleres) => {
   const message = encodeURIComponent(
-    `Hola, vengo desde la página web de Sociedad de Automotores Inka. Estoy interesado en sacar una cita en ${taller.nombre} ubicado en ${taller.ciudad}.`
+    `Hola, vengo desde la página web de Sociedad de Automotores Inka. Estoy interesado en sacar una cita en ${taller.nombre} ubicado en ${taller.ciudad}.`,
   );
   return `https://wa.me/51${taller.telefono}?text=${message}`;
 };
 
 export const createConversationWhatsapp = (
   messageTo: string,
-  message: string
+  message: string,
 ): string => {
   const encodeMessage = encodeURIComponent(`${message}`);
   return `https://wa.me/51${messageTo}?text=${encodeMessage}`;
@@ -152,12 +152,26 @@ export const buildReclamoData = (values: ReclamoDataBuildedType) => {
 };
 
 export const buildLeadCorporativoRequest = (values: LeadCorporativoRequest) => {
-  return { ...values };
+  return {
+    nombres: values.nombres,
+    apellidos: values.apellidos,
+    dni: values.dni,
+    razonSocial: values.razonSocial,
+    ruc: values.ruc,
+    marcaId: values.marcaObject?._id!,
+    marcaText: values.marcaObject?.name!,
+    marcaSlug: values.marcaObject?.slug!,
+    correoElectronico: values.correoElectronico,
+    celular: values.celular,
+    ciudad: values.ciudad,
+    sector: values.sector,
+    intencionCompra: values.intencionCompra!,
+  };
 };
 
 export const createCotizacion = async (
   values: CotizacionForm,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, values);
@@ -173,7 +187,7 @@ export const createCotizacion = async (
 
     if (response.status !== 200) {
       throw new Error(
-        `Error al crear cotización corporativa: ${response.status}`
+        `Error al crear cotización corporativa: ${response.status}`,
       );
     }
     return response;
@@ -190,7 +204,7 @@ export const createCotizacion = async (
 export const createWebhookFBLead = async (
   values: any,
   ruta: string,
-  token: string
+  token: string,
 ) => {
   console.log("createWebhookFBLead", ruta, token, values);
   if (!ruta || typeof ruta !== "string" || !ruta.startsWith("http")) {
@@ -221,7 +235,7 @@ export const createWebhookFBLead = async (
 
 export const sendCotizacionEmail = async (
   data: CotizacionForm,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, data);
@@ -244,7 +258,7 @@ export const sendCotizacionEmail = async (
 
 export const sendCotizacionFlashDealer = async (
   values: IRequestFD,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, values);
@@ -266,7 +280,7 @@ export const sendCotizacionFlashDealer = async (
 
 export const sendLeadNovalyApp = async (
   valores: IRequestNovaly,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, valores);
@@ -288,7 +302,7 @@ export const sendLeadNovalyApp = async (
 
 export const createReclamo = async (
   values: ReclamoDataBuildedType,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, values);
@@ -307,7 +321,7 @@ export const createReclamo = async (
 
 export const sendReclamoEmail = async (
   data: ReclamoDataBuildedType,
-  ruta: string
+  ruta: string,
 ) => {
   try {
     const response = await axios.post(ruta, data);
@@ -353,7 +367,7 @@ export const enviarCorreoCorporativo = async (valores: any, ruta: string) => {
 
     if (response.status !== 200) {
       throw new Error(
-        `Error al enviar correo de lead corporativo: ${response.status}`
+        `Error al enviar correo de lead corporativo: ${response.status}`,
       );
     }
 
@@ -387,7 +401,7 @@ export const createNumeroDeReclamo = (
   razonSocial: string,
   fecha: string,
   numeroUltimoReclamo: number,
-  codeSede: string
+  codeSede: string,
 ): string => {
   const nomeclaturaLRD = setNomenclaturaLRD(razonSocial);
   const numLRD = formatNumberToSixDigits(numeroUltimoReclamo + 1);
@@ -408,6 +422,6 @@ export const parseSortQuery = (sortParam?: string): Record<string, 1 | -1> => {
 
       return acc;
     },
-    {} as Record<string, 1 | -1>
+    {} as Record<string, 1 | -1>,
   );
 };

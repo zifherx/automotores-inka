@@ -20,7 +20,8 @@ import { iEmailLeadCorporativo } from "@/types";
 const urlSAI = process.env.URL_SAI ? `https://${process.env.URL_SAI}` : "";
 
 export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
-  nombreCompleto,
+  nombres,
+  apellidos,
   dni,
   correoElectronico,
   celular,
@@ -28,11 +29,15 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
   ruc,
   marcaText,
   intencionCompra,
+  ciudad,
+  sector,
 }) => {
   return (
     <Html>
       <Head />
-      <Preview>Gracias {nombreCompleto} por cotizar con nosotros!</Preview>
+      <Preview>
+        Gracias {nombres} {apellidos} por cotizar con nosotros!
+      </Preview>
       <Tailwind>
         <Body className="bg-[#f6f9fc] font-sans">
           <Container className="bg-white w-[680px] max-w-full mx-0 my-auto p-5 mb-16">
@@ -48,7 +53,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
               <Row>
                 <Column className="p-5">
                   <Heading className="text-white text-2xl font-headBold">
-                    {nombreCompleto},
+                    {razonSocial},
                   </Heading>
                   <Text className="text-white text-base font-textRegular">
                     Gracias por confiar en nosotros <br />
@@ -74,8 +79,8 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           CLIENTE
                         </Text>
-                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] underline">
-                          {nombreCompleto}
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
+                          {nombres} {apellidos}
                         </Link>
                       </Column>
                     </Row>
@@ -84,7 +89,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           DNI
                         </Text>
-                        <Text className="text-sm m-0 p-0 leading-6 uppercase">
+                        <Text className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           {dni}
                         </Text>
                       </Column>
@@ -94,7 +99,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           CELULAR
                         </Text>
-                        <Text className="text-sm m-0 p-0 leading-6">
+                        <Text className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           {celular}
                         </Text>
                       </Column>
@@ -102,7 +107,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           EMAIL
                         </Text>
-                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] underline">
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           {correoElectronico}
                         </Link>
                       </Column>
@@ -112,7 +117,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           RAZÓN SOCIAL
                         </Text>
-                        <Text className="text-sm m-0 p-0 leading-6">
+                        <Text className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           {razonSocial}
                         </Text>
                       </Column>
@@ -120,7 +125,7 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           RUC
                         </Text>
-                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] underline">
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           {ruc}
                         </Link>
                       </Column>
@@ -128,19 +133,35 @@ export const EmailLeadCorporativo: FC<Readonly<iEmailLeadCorporativo>> = ({
                     <Row>
                       <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
-                          Marca
+                          MARCA
                         </Text>
-                        <Text className="text-sm m-0 p-0 leading-6 capitalize">
+                        <Text className="text-sm m-0 p-0 leading-6 text-[#1b5094] capitalize">
                           {marcaText}
+                        </Text>
+                      </Column>
+                      <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
+                        <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
+                          CIUDAD
+                        </Text>
+                        <Text className="text-sm m-0 p-0 leading-6 capitalize text-[#1b5094]">
+                          {ciudad}
                         </Text>
                       </Column>
                     </Row>
                     <Row>
                       <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
                         <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
+                          SECTOR DEL NEGOCIO
+                        </Text>
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094] capitalize">
+                          {sector}
+                        </Link>
+                      </Column>
+                      <Column className="pl-5 border-solid border-white border-b-2 border-r-2 border-l-0 border-t-0 h-11">
+                        <Text className="m-0 p-0 leading-6 text-[#666666] text-xs">
                           INTENCIÓN DE COMPRA
                         </Text>
-                        <Link className="text-sm m-0 p-0 leading-6">
+                        <Link className="text-sm m-0 p-0 leading-6 text-[#1b5094]">
                           En {intencionCompra} meses
                         </Link>
                       </Column>
