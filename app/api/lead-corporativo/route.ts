@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
     }
 
     const nuevoLeadCorporativo = new LeadCorporativo({
-      nombreCompleto: body.nombreCompleto,
+      nombres: body.nombres,
+      apellidos: body.apellidos,
       dni: body.dni,
       correoElectronico: body.correoElectronico,
       celular: body.celular,
@@ -26,7 +27,9 @@ export async function POST(req: NextRequest) {
       ruc: body.ruc,
       marca: marcaEncontrada ? marcaEncontrada._id : null,
       marcaText: body.marcaText,
+      ciudad: body.ciudad,
       intencionCompra: body.intencionCompra,
+      sector: body.sector,
     }) satisfies iLeadCorporativo;
 
     console.time(`POST | Nuevo Lead Corporativo`);
@@ -51,7 +54,7 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json(
       { success: false, message: "Error interno en el servidor" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

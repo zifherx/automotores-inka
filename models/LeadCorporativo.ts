@@ -4,7 +4,8 @@ import { iBrand } from "@/types";
 
 export interface iLeadCorporativo extends Document {
   // 1. Datos de Contacto
-  nombreCompleto: string;
+  nombres: string;
+  apellidos: string;
   dni: string;
   correoElectronico: string;
   celular: string;
@@ -14,13 +15,16 @@ export interface iLeadCorporativo extends Document {
   // 3. Información Adicional (opcionales)
   marca: iBrand;
   marcaText: string;
+  ciudad: string;
   intencionCompra: string;
+  sector: string;
   fechaCreacion: Date;
 }
 
 const leadCorporativoSchema: Schema = new Schema<iLeadCorporativo>(
   {
-    nombreCompleto: { type: String },
+    nombres: { type: String, required: true, trim: true },
+    apellidos: { type: String, required: true, trim: true },
     dni: { type: String },
     correoElectronico: { type: String },
     celular: { type: String },
@@ -28,13 +32,15 @@ const leadCorporativoSchema: Schema = new Schema<iLeadCorporativo>(
     ruc: { type: String },
     marca: { type: Schema.Types.ObjectId, ref: "Marca" },
     marcaText: { type: String },
+    ciudad: { type: String },
     intencionCompra: { type: String },
+    sector: { type: String },
     fechaCreacion: { type: Date, default: Date.now() },
   },
   {
     versionKey: false,
     timestamps: true,
-  }
+  },
 );
 
 const LeadCorporativo =

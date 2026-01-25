@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const query = await marcaService.createResource(body);
     return ResponseFactory.success(
       query,
-      APIMessages.getCreateMessage(RESOURCE_NAME)
+      APIMessages.getCreateMessage(RESOURCE_NAME),
     );
   } catch (err: any) {
     return ResponseFactory.error(err);
@@ -44,9 +44,10 @@ export async function GET(req: NextRequest) {
     const query = await marcaService.getResources(params);
     return ResponseFactory.success(
       query,
-      APIMessages.getListedMessage(RESOURCE_NAME)
+      APIMessages.getListedMessage(RESOURCE_NAME),
     );
   } catch (err: any) {
+    console.log("Error Route GET:", err.message);
     return ResponseFactory.error(err);
   }
 }

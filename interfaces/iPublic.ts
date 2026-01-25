@@ -349,3 +349,10 @@ export interface BeneficiosLanding {
   description: string;
   color: string;
 }
+
+export interface BeneficiosCorporativos {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}

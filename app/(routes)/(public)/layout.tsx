@@ -14,11 +14,11 @@ export default function RoutesLayout({
 }>) {
   const pathName = usePathname();
 
-  const landingRepsol = pathName === "/landing/repsol";
+  const landingCorporativo = pathName === "/soluciones-corporativas";
 
   return (
     <div>
-      {landingRepsol ? (
+      {landingCorporativo ? (
         <>{children}</>
       ) : (
         <>
