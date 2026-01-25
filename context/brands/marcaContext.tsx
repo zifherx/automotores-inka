@@ -25,7 +25,7 @@ interface MarcaContextType {
 }
 
 export const BrandsContext = createContext<MarcaContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function BrandsProvider({ children }: { children: ReactNode }) {

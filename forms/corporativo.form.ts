@@ -2,7 +2,12 @@ import z from "zod";
 
 export const corporativoSchema = z.object({
   // Datos de contacto
-  nombreCompleto: z
+  nombres: z
+    .string()
+    .min(3, "El nombre debe tener al menos 3 caracteres")
+    .max(100, "El nombre es demasiado largo")
+    .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, "Solo se permiten letras y espacios"),
+  apellidos: z
     .string()
     .min(3, "El nombre debe tener al menos 3 caracteres")
     .max(100, "El nombre es demasiado largo")
@@ -38,6 +43,8 @@ export const corporativoSchema = z.object({
   // Información Adicional (opcionales)
   marca: z.string().optional(),
   intencionCompra: z.string().optional(),
+  ciudad: z.string().optional(),
+  sector_negocio: z.string().optional(),
 });
 
 export type CorporativoFormType = z.infer<typeof corporativoSchema>;

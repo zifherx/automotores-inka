@@ -181,14 +181,17 @@ export interface iTEmailCotizacion {
 }
 
 export interface iEmailLeadCorporativo {
-  nombreCompleto: string;
+  nombres: string;
+  apellidos: string;
   dni: string;
   correoElectronico: string;
   celular: string;
-  marcaText: string;
   razonSocial: string;
   ruc: string;
+  marcaText: string;
   intencionCompra: string;
+  sector: string;
+  ciudad: string;
 }
 
 export interface iTEmailReclamo {
@@ -379,7 +382,8 @@ export type CotizacionForm = CotizacionGeneralFormValues & {
 };
 
 export type LeadCorporativoRequest = {
-  nombreCompleto: string;
+  nombres: string;
+  apellidos: string;
   dni: string;
   correoElectronico: string;
   celular: string;
@@ -388,7 +392,10 @@ export type LeadCorporativoRequest = {
   marcaId: string;
   marcaSlug: string;
   marcaText: string;
+  ciudad: string;
+  sector: string;
   intencionCompra: string;
+  marcaObject: iBrand | null;
 };
 
 export type ReclamoDataBuildedType = NewReclamoFormValues & {
