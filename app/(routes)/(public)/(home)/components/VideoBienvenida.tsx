@@ -1,4 +1,10 @@
+"use client";
+
+import Link from "next/link";
+import { Megaphone } from "lucide-react";
+
 import { VideosYoutube } from "@/components/Shared/VideosYoutube";
+import { Button } from "@/components/ui/button";
 
 export interface YoutubeListVideoOptions {
   controles: boolean;
@@ -19,13 +25,31 @@ export function VideoBienvenida() {
         </div>
         <div className="flex flex-col items-start justify-center mt-5 md:ml-8">
           <h2 className="text-xl md:text-2xl font-extrabold md:font-bold mb-3 md:mb-5">
-            CONOCE NUESTRA ATENCIÓN CORPORATIVA
+            AUTOMOTORES INKA | SOLUCIONES CORPORATIVAS
           </h2>
-          <p className="text-sm md:text-base text-justify font-normal">
-            En Automotores Inka, somos el mejor aliado para tu negocio, con mas
-            de 14 años de experiencia en el rubro automotriz, nos hace una
-            empresa de confianza para cumplir tu sueño del auto propio.
-          </p>
+          <div className="flex flex-col items-start gap-3 md:gap-4 text-black">
+            <p className="text-sm md:text-base text-justify">
+              En Automotores IInka brindamos soluciones corporativas de
+              transporte diseñadas para empresas que buscan eficiencia, respaldo
+              y continuidad operativa.
+            </p>
+            <p className="text-sm md:text-base text-justify">
+              Con más de 14 años de experiencia, nuestro equipo especializado
+              acompaña a cada cliente en la elección de la flota ideal,
+              ofreciendo asesoría personalizada y soporte postventa,
+              consolidándonos como un aliado estratégico para el crecimiento de
+              tu negocio.
+            </p>
+            <button className="bg-blueInka font-headMedium px-2 py-3 rounded-lg text-lg text-white transition-all hover:scale-105 hover:bg-blueDarkInka">
+              <Link
+                href="/soluciones-corporativas"
+                className="flex flex-row items-center justify-center gap-2"
+              >
+                Solicita tu asesoría corporativa
+                <Megaphone className="h-6 w-6 ml-2" strokeWidth={2} />
+              </Link>
+            </button>
+          </div>
         </div>
       </div>
     </section>

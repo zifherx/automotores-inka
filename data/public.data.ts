@@ -1,4 +1,5 @@
 import {
+  BeneficiosCorporativos,
   BeneficiosLanding,
   EstadisticasLanding,
   iIconText,
@@ -2678,5 +2679,50 @@ export const BeneficiosLandingCorporativo: BeneficiosLanding[] = [
     description: "Más de 14 años respaldando la movilidad de empresas peruanas",
     icon: Shield,
     color: "bg-blue-50 text-blue-600",
+  },
+];
+
+export const BeneficiosCorporativosData: BeneficiosCorporativos[] = [
+  {
+    id: 1,
+    title: "Equipo profesional",
+    description:
+      "Disponemos de un equipo especializado en gestión de flotas, enfocado en brindar una atención personalizada y preferencial en todos nuestros talleres.",
+    icon: "equipo-profesional.svg",
+  },
+  {
+    id: 2,
+    title: "Generación de reportes",
+    description:
+      "Informe mensual de los vehículos atendidos, análisis de mantenimientos preventivos y correctivos realizados. Además se realiza un seguimiento y revisión de siniestros gestionados durante el periodo.",
+    icon: "generacion-reportes.svg",
+  },
+  {
+    id: 3,
+    title: "Capacitaciones",
+    description:
+      "Capacitación en el uso y manejo de unidades de las marcas que representamos. Formación en gestión de siniestros, incluyendo las aseguradoras con las que trabajamos, tanto preferentes como multimarca.",
+    icon: "capacitaciones.svg",
+  },
+  {
+    id: 4,
+    title: "Convenios",
+    description:
+      "Contratos y convenios basados en planes de mantenimiento estandarizados, diseñados para una gestión eficiente y ordenada de la flota.",
+    icon: "convenios.svg",
+  },
+  {
+    id: 5,
+    title: "Gestión",
+    description:
+      "Gestión de líneas de crédito, facilitando la administración financiera de tu flota. Administración y uso de plataformas de atención al cliente, para un control y seguimiento eficiente de los servicios.",
+    icon: "gestion.svg",
+  },
+  {
+    id: 6,
+    title: "Campañas",
+    description:
+      "Campañas exclusivas en servicios, respuestos y accesorios, diseñadas para optimizar la operación y el mantenimiento de tu flota.",
+    icon: "campanas.svg",
   },
 ];
