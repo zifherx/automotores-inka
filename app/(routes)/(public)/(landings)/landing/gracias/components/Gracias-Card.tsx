@@ -21,9 +21,7 @@ export function GraciasCard({
             animate={{ scale: 1, opacity: 0.2 }}
             transition={{ duration: 1, ease: "easeOut" }}
             className="absolute inset-0 flex items-center justify-center"
-          >
-            <Car className="w-64 h-64 text-white" />
-          </motion.div>
+          ></motion.div>
 
           <motion.div
             initial={{ scale: 0 }}
@@ -34,7 +32,7 @@ export function GraciasCard({
               type: "spring",
               stiffness: 200,
             }}
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center opacity-90"
           >
             <div className="bg-white rounded-full p-4 shadow-lg">
               <CheckCircle2 className="w-16 h-16 text-green-500" />
