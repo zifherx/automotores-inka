@@ -41,10 +41,10 @@ export const corporativoSchema = z.object({
     }),
 
   // Información Adicional (opcionales)
-  marca: z.string().optional(),
-  intencionCompra: z.string().optional(),
-  ciudad: z.string().optional(),
-  sector_negocio: z.string().optional(),
+  marca: z.string().min(1, "La marca es obligatoria"),
+  intencionCompra: z.string().min(1, "La intención de compra es obligatorio"),
+  ciudad: z.string().min(1, "La ciudad es obligatoria"),
+  sector_negocio: z.string().min(1, "El sector es obligatorio"),
 });
 
 export type CorporativoFormType = z.infer<typeof corporativoSchema>;
