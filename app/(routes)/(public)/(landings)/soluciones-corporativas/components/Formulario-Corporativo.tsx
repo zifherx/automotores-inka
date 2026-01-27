@@ -77,24 +77,24 @@ export function FormularioCorporativo() {
     try {
       const leadCorporativoData = buildLeadCorporativoRequest({
         ...values,
-        marcaObject: marcaSeleccionada!,
+        marcaObject: marcaSeleccionada,
         marcaId: marcaSeleccionada?._id!,
         marcaText: marcaSeleccionada?.name!,
         marcaSlug: marcaSeleccionada?.slug!,
-        sector: values.sector_negocio!,
-        ciudad: values.ciudad!,
-        intencionCompra: values.intencionCompra!,
+        sector: values.sector_negocio,
+        ciudad: values.ciudad,
+        intencionCompra: values.intencionCompra,
       });
 
       const envioCorreoData = buildLeadCorporativoRequest({
         ...values,
-        marcaObject: marcaSeleccionada!,
+        marcaObject: marcaSeleccionada,
         marcaId: marcaSeleccionada?._id!,
         marcaText: marcaSeleccionada?.name!,
         marcaSlug: marcaSeleccionada?.slug!,
-        sector: values.sector_negocio!,
-        ciudad: values.ciudad!,
-        intencionCompra: values.intencionCompra!,
+        sector: values.sector_negocio,
+        ciudad: values.ciudad,
+        intencionCompra: values.intencionCompra,
       });
 
       const [leadResult, mailResult] = await Promise.allSettled([
@@ -156,8 +156,8 @@ export function FormularioCorporativo() {
       id="formulario"
       className="bg-white w-full bg-[url('/images/fondo-tramado-gris.png')] bg-cover bg-center bg-no-repeat"
     >
-      <div className="max-w-6xl mx-auto py-10 px-4 md:py-14 md:px-8">
-        <h1 className="text-xl md:text-5xl font-headRegular font-bold text-center text-[#05224C]">
+      <div className="max-w-6xl mx-auto py-8 px-4 md:py-14 md:px-8">
+        <h1 className="text-base sm:text-xl md:text-5xl font-headRegular font-bold text-center text-[#05224C]">
           <span className="bg-[#05224C] px-8 py-2 rounded-md text-white">
             Cotiza ahora
           </span>{" "}
@@ -190,7 +190,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-nombres"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar nombres"
                     autoComplete="off"
@@ -225,7 +225,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-apellidos"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar apellidos"
                     autoComplete="off"
@@ -263,7 +263,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-dni"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar DNI"
                     autoComplete="off"
@@ -305,7 +305,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-razon-social"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar razón social"
                     autoComplete="off"
@@ -343,7 +343,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-ruc"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar RUC"
                     maxLength={11}
@@ -440,7 +440,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-celular"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar N° celular"
                     maxLength={9}
@@ -476,7 +476,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-email"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     type="email"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar E-mail"
@@ -515,7 +515,7 @@ export function FormularioCorporativo() {
                   <InputGroupInput
                     {...field}
                     id="corp-ciudad"
-                    className="text-[#05224C] text-xl font-bold focus-visible:border-none"
+                    className="text-[#05224C] md:text-xl font-bold focus-visible:border-none"
                     aria-invalid={fieldState.invalid}
                     placeholder="Ingresar Ciudad"
                     autoComplete="off"
@@ -569,7 +569,7 @@ export function FormularioCorporativo() {
                       Alimentos y bebidas
                     </SelectItem>
                     <SelectItem value="arrendamiento">
-                      Renting Vehicular
+                      Arrendamiento / Renting Vehicular
                     </SelectItem>
                     <SelectItem value="inmobiliaria">
                       Construcción e inmobiliaria
@@ -600,7 +600,10 @@ export function FormularioCorporativo() {
                       Manufactura e industria
                     </SelectItem>
                     <SelectItem value="mineria">Minería</SelectItem>
-                    <SelectItem value="pesca">Industria Pesquera</SelectItem>
+                    <SelectItem value="otros">Otros</SelectItem>
+                    <SelectItem value="pesca">
+                      Pesca / Industria Pesquera
+                    </SelectItem>
                     <SelectItem value="restaurantes">
                       Restaurantes y food service
                     </SelectItem>
@@ -675,7 +678,7 @@ export function FormularioCorporativo() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full text-2xl bg-redInka hover:bg-redDarkInka text-white h-14 rounded-xl font-headBold shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4"
+              className="w-full text-lg md:text-2xl bg-redInka hover:bg-redDarkInka text-white h-14 rounded-xl font-headBold shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4"
             >
               {isSubmitting ? (
                 <>
@@ -691,7 +694,7 @@ export function FormularioCorporativo() {
             </button>
           </motion.div>
 
-          <p className="text-sm font-textRegular text-grisDarkInka text-center mt-4 leading-relaxed ">
+          <p className="text-sm font-textRegular text-grisDarkInka text-center mt-4 leading-tight md:leading-relaxed ">
             Al enviar este formulario, aceptas que Automotores Inka se ponga en
             contacto contigo para brindarte información sobre nuestras
             soluciones corporativas.
