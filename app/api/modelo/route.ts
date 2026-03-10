@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   try {
     const query = await Modelo.find({})
       .select(
-        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP codigo_flashdealer"
+        "_id name slug imageUrl precioBase marca carroceria isActive features colores galeria isLiquidacion isNuevo isEntrega48H isGLP codigo_flashdealer",
       )
       .populate([
         {
@@ -46,14 +46,14 @@ export async function POST(req: Request) {
     if (!brandFound)
       return NextResponse.json(
         { message: `Marca ${dataForm.marca} no encontrada` },
-        { status: 404 }
+        { status: 404 },
       );
 
     const chasisFound = await Carroceria.findOne({ slug: dataForm.carroceria });
     if (!chasisFound)
       return NextResponse.json(
         { message: `Chasis ${dataForm.carroceria} no encontrado` },
-        { status: 404 }
+        { status: 404 },
       );
 
     if (!userId) return new NextResponse("No Autorizado", { status: 401 });
