@@ -17,7 +17,7 @@ export default function RoutesLayout({
   const landingCorporativo = pathName === "/soluciones-corporativas";
 
   return (
-    <div>
+    <>
       {landingCorporativo ? (
         <>{children}</>
       ) : (
@@ -28,6 +28,6 @@ export default function RoutesLayout({
           <Footer />
         </>
       )}
-    </div>
+    </>
   );
 }
