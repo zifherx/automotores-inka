@@ -29,7 +29,7 @@ export function ModelFilterList({ models }: iListModels) {
           modelo.precioBase <= priceRange[1] &&
           (selectedBrand === "all" || modelo.marca.name === selectedBrand) &&
           (selectedChasis.length === 0 ||
-            selectedChasis.includes(modelo.carroceria.name))
+            selectedChasis.includes(modelo.carroceria.name)),
       )
       .sort((a, b) => {
         if (a.marca.name !== b.marca.name) {
@@ -41,12 +41,12 @@ export function ModelFilterList({ models }: iListModels) {
 
   const brands = useMemo(
     () => [...new Set(models.map((item) => item.marca.name))],
-    [models]
+    [models],
   );
 
   const chasisTypes = useMemo(
     () => [...new Set(models.map((item) => item.carroceria.name))],
-    [models]
+    [models],
   );
   return (
     <div>
