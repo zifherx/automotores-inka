@@ -17,8 +17,8 @@ export default function RoutesLayout({
   const landingCorporativo = pathName === "/soluciones-corporativas";
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* {landingCorporativo ? (
+    <>
+      {landingCorporativo ? (
         <>{children}</>
       ) : (
         <>
@@ -27,7 +27,7 @@ export default function RoutesLayout({
           <BarraFlotante />
           <Footer />
         </>
-      )} */}
-    </div>
+      )}
+    </>
   );
 }
