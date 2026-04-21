@@ -4,25 +4,29 @@ import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { SectionHeader } from "@/components/Shared/SectionHeader";
 import { CustomFormField } from "@/components/Shared/CustomFormField";
+import { SectionHeader } from "@/components/Shared/SectionHeader";
 
 import { useSucursales } from "@/context/sucursal/sucursalContext";
 
-import { CharacterCounter } from "./CharacterCounter";
 import { ProductSectionProp } from "@/types";
+import { useMemo } from "react";
+import { CharacterCounter } from "./CharacterCounter";
 
 export function ProductSection({
   errors,
@@ -33,6 +37,22 @@ export function ProductSection({
 }: ProductSectionProp) {
   const { sucursales } = useSucursales();
   const descripcionBienWatch = watch("descripcionBien") || "";
+
+  const activeSucursales = sucursales.filter((s) => s.isActive);
+
+  const grouped = useMemo(
+    () =>
+      activeSucursales.reduce<Record<string, typeof sucursales>>(
+        (acc, sucursal) => {
+          const ciudad = sucursal.ciudad;
+          if (!acc[ciudad]) acc[ciudad] = [];
+          acc[ciudad].push(sucursal);
+          return acc;
+        },
+        {},
+      ),
+    [activeSucursales],
+  );
 
   return (
     <motion.section
@@ -102,7 +122,7 @@ export function ProductSection({
                   setValue("sedeCompra", value);
                   if (value)
                     setSedeSelected(
-                      sucursales.find((sede) => sede.codexHR === value)
+                      sucursales.find((sede) => sede.codexHR === value),
                     );
                 }}
               >
@@ -111,18 +131,26 @@ export function ProductSection({
                 </SelectTrigger>
                 <SelectContent>
                   {sucursales.length > 0 &&
-                    sucursales
-                      .filter((sede) => sede.isActive)
-                      .map(({ name, slug, address, codexHR }) => (
-                        <SelectItem key={slug} value={codexHR}>
-                          <div className="flex flex-col items-start">
-                            <span className="text-sm font-semibold">
-                              {name}
-                            </span>
-                            <span className="text-xs">{address}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
+                    Object.entries(grouped).map(([ciudad, items]) => (
+                      <SelectGroup key={ciudad}>
+                        <SelectLabel className="font-bold font-headMedium text-blueDarkInka">
+                          {ciudad}
+                        </SelectLabel>
+                        {items.map((sede) => (
+                          <SelectItem key={sede._id} value={sede.codexHR}>
+                            <div className="flex flex-col items-start">
+                              <span className="text-sm font-headLight font-semibold">
+                                {sede.name}
+                              </span>
+                              <span className="text-xs font-textRegular">
+                                {sede.address}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                        <SelectSeparator />
+                      </SelectGroup>
+                    ))}
                 </SelectContent>
               </Select>
             </CustomFormField>
