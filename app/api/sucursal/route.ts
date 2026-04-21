@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { dbConnect } from "@/lib/dbConnect";
-import Sucursal from "@/models/Sucursal";
 import { Marca } from "@/models/Marca";
+import Sucursal from "@/models/Sucursal";
 import { iSede } from "@/types";
 
 export async function GET(req: NextRequest) {
