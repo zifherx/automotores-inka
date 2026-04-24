@@ -1804,7 +1804,7 @@ export const IconTextTalleresData: iIconText[] = [
   {
     id: 3,
     icon: MapPin,
-    text: "4 Ubicaciones",
+    text: "6 Ubicaciones",
   },
 ];
 
@@ -1814,6 +1814,7 @@ export const CiudadesTalleresData = [
   "Todas",
   "Chiclayo",
   "Chimbote",
+  "Huancayo",
   "Trujillo",
 ];
 
@@ -2028,6 +2029,54 @@ export const TalleresData: iTalleres[] = [
     },
     imageSource:
       "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtdw6CV2kcOqxX2R1Wm6ukViLC8zKaje7GyES",
+  },
+  {
+    id: 5,
+    nombre: "Hyundai AGP",
+    ciudad: "Huancayo",
+    direccion: "Av. Mariscal Castilla 2699, El Tambo Junin, Huancayo",
+    telefono: "994152130",
+    marcas: [
+      {
+        id: 1,
+        title: "Geely",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOS8CjNWeofij75n2UTAxSLhBMb0aDo4HsvJdr",
+      },
+      {
+        id: 2,
+        title: "JMC",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOxcUoVR4uScOlVJi5KCg138pyo6xjtsrWdweE",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 9:00 am a 6:30 pm",
+      sabado: "Sábado de 9:00 am a 1:00 pm",
+    },
+    imageSource:
+      "https://utfs.io/a/ccio0a34q5/DvD6I6Zej8uOY5PvEUIe3gWhtraLwbdSHvyAlekizfxo81Kn",
+  },
+  {
+    id: 6,
+    nombre: "Hyundai MMDO",
+    ciudad: "Huancayo",
+    direccion: "Av. Mariscal Castilla 3824, El Tambo Junin, Huancayo",
+    telefono: "994152130",
+    marcas: [
+      {
+        id: 1,
+        title: "Hyundai",
+        imageSource:
+          "https://ccio0a34q5.ufs.sh/f/DvD6I6Zej8uOtlliS4kcOqxX2R1Wm6ukViLC8zKaje7GyESh",
+      },
+    ],
+    horarios: {
+      semana: "Lunes a Viernes de 9:00 am a 6:30 pm",
+      sabado: "Sábado de 9:00 am a 1:00 pm",
+    },
+    imageSource:
+      "https://utfs.io/a/ccio0a34q5/DvD6I6Zej8uOY5PvEUIe3gWhtraLwbdSHvyAlekizfxo81Kn",
   },
 ];
 
