@@ -1,3 +1,5 @@
+import { Map } from "leaflet";
+import { LucideIcon } from "lucide-react";
 import {
   ChangeEvent,
   Dispatch,
@@ -5,21 +7,12 @@ import {
   ReactNode,
   SetStateAction,
 } from "react";
-import { LucideIcon } from "lucide-react";
-import { Map } from "leaflet";
 
-import { iColor, iGallery } from "@/models";
 import {
-  iBrand,
-  iCardModel,
-  iCardSede,
-  iChasis,
-  iListBrand,
-  iListModels,
-  iListSede,
-  iModelo,
-  iSede,
-} from "./admin.types";
+  CotizacionGeneralFormValues,
+  HReclamoFormValues,
+  NewReclamoFormValues,
+} from "@/forms";
 import {
   ContactInfoError,
   FilterState,
@@ -33,19 +26,26 @@ import {
   ModelsByBrand,
   TableFormat,
 } from "@/interfaces";
-import {
-  CotizacionGeneralFormValues,
-  HReclamoFormValues,
-  NewReclamoFormValues,
-} from "@/forms";
-import { IconType } from "react-icons/lib";
 import { IExcelData, IPriceImportRow } from "@/interfaces/iAdmin";
+import { iColor, iGallery } from "@/models";
 import {
   FieldErrors,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { IconType } from "react-icons/lib";
+import {
+  iBrand,
+  iCardModel,
+  iCardSede,
+  iChasis,
+  iListBrand,
+  iListModels,
+  iListSede,
+  iModelo,
+  iSede,
+} from "./admin.types";
 
 export type iVideosYoutube = {
   title: string;
@@ -104,6 +104,8 @@ export type tFilterUbicanos = {
 
 export type iListVehicle = {
   models: iModelo[];
+  sortOrder: SortOrder;
+  onSortChange: (value: SortOrder) => void;
 };
 
 export type iCardProductModel = {
@@ -558,3 +560,10 @@ export type FlotanteProp = {
   hovered: string | null;
   setHovered: Dispatch<SetStateAction<string | null>>;
 };
+
+export type SortOrder =
+  | "default"
+  | "price_asc"
+  | "price_desc"
+  | "alpha_asc"
+  | "alpha_desc";
