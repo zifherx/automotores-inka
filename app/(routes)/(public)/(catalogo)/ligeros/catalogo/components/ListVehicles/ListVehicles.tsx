@@ -1,13 +1,25 @@
+import { ArrowRight, ArrowUpDown } from "lucide-react";
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { CardProductModel } from "@/components/Shared/CardProductModel";
 import { CardSkeletonModel } from "@/components/Shared/CardSkeletonModel";
 
-import { iListVehicle, iModelo } from "@/types";
+import { iListVehicle, iModelo, SortOrder } from "@/types";
 
-export function ListVehicles({ models }: iListVehicle) {
+export function ListVehicles({
+  models,
+  onSortChange,
+  sortOrder,
+}: iListVehicle) {
   const [counterVehicles, setCounterVehicles] = useState(9);
   const dataFilteredVehicles = models?.slice(0, counterVehicles);
 
@@ -26,6 +38,25 @@ export function ListVehicles({ models }: iListVehicle) {
         para ti. Podrás evaluar tu financiamiento y simular tu crédito online.
         Comienza el sueño de tu nuevo auto con nosotros.
       </p>
+
+      <div className="flex items-center justify-end gap-2 max-w-56 my-5 ml-auto">
+        <ArrowUpDown className="w-4 h-4 text-grisInka shrink-0" />
+        <Select
+          value={sortOrder}
+          onValueChange={(val) => onSortChange(val as SortOrder)}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Ordernar por ..." />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Relevancia</SelectItem>
+            <SelectItem value="price_asc">Precio: menor a mayor</SelectItem>
+            <SelectItem value="price_desc">Precio: mayor a menor</SelectItem>
+            <SelectItem value="alpha_asc">A - Z</SelectItem>
+            <SelectItem value="alpha_desc">Z - A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {models.length === 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5">
