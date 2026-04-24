@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Breadcrumbs } from "@/components/Shared/Breadcrumbs";
 
@@ -10,8 +10,8 @@ import { Filtros } from "../Filtros";
 import { ListVehicles } from "../ListVehicles";
 
 import { useBrands } from "@/context/brands/marcaContext";
-import { iChasis, iModelo } from "@/types";
 import { useModelos } from "@/context/modelos/modeloContext";
+import { iChasis, iModelo, SortOrder } from "@/types";
 
 export function CatalogoVehicular() {
   const { brands } = useBrands();
@@ -23,6 +23,7 @@ export function CatalogoVehicular() {
 
   const [chasises, setChasises] = useState<iChasis[]>([]);
   const [vehiculosFiltrados, setVehiculosFiltrados] = useState<iModelo[]>([]);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("price_asc");
   const [filtros, setFiltros] = useState({
     marca: marcaFound ? marcaFound : "",
     carroceria: "",
@@ -58,8 +59,26 @@ export function CatalogoVehicular() {
       });
     }
 
-    setVehiculosFiltrados(filtered);
-  }, [filtros, modelos]);
+    const sorted = [...filtered];
+    switch (sortOrder) {
+      case "price_asc":
+        sorted.sort((a, b) => (a.precioBase ?? 0) - (b.precioBase ?? 0));
+        break;
+      case "price_desc":
+        sorted.sort((a, b) => (b.precioBase ?? 0) - (a.precioBase ?? 0));
+        break;
+      case "alpha_asc":
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "alpha_desc":
+        sorted.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case "default":
+        break;
+    }
+
+    setVehiculosFiltrados(sorted);
+  }, [filtros, modelos, sortOrder]);
 
   const handleFilterChange = (filterName: string, filterValue: string) => {
     setFiltros((prevFilters) => ({
@@ -73,6 +92,7 @@ export function CatalogoVehicular() {
       marca: "",
       carroceria: "",
     });
+    setSortOrder("default");
     router.replace("/ligeros/catalogo");
     router.refresh();
   };
@@ -89,7 +109,11 @@ export function CatalogoVehicular() {
             filters={filtros}
             setFilter={handleFilterChange}
           />
-          <ListVehicles models={vehiculosFiltrados} />
+          <ListVehicles
+            models={vehiculosFiltrados}
+            sortOrder={sortOrder}
+            onSortChange={setSortOrder}
+          />
         </div>
       </div>
     </div>

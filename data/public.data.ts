@@ -19,29 +19,29 @@ import {
 } from "@/interfaces/iPublic";
 
 import {
-  Blocks,
-  Car,
-  Clock,
-  Handshake,
-  MapPin,
-  Medal,
-  Star,
-  Users,
-  AlertCircle,
-  Calendar,
-  CheckCircle2,
-  FileText,
-  Hash,
-  Scale,
-  Shield,
-  TrendingUp,
-} from "lucide-react";
-import {
   iParrafo,
   iTipoServicio,
   ProductCategory,
   tCustomvideo,
 } from "@/types";
+import {
+  AlertCircle,
+  Blocks,
+  Calendar,
+  Car,
+  CheckCircle2,
+  Clock,
+  FileText,
+  Handshake,
+  Hash,
+  MapPin,
+  Medal,
+  Scale,
+  Shield,
+  Star,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 export const listServiciosSVG: iServicioSVG[] = [
   {
@@ -1410,19 +1410,311 @@ export const listTerminosCondiciones: iParrafo[] = [
     parrafos: [
       {
         oracion:
-          "La presente página web tiene por objeto facilitar al público en general el conocimiento de las actividades que realiza y de los servicios que prestará SOCIEDAD DE AUTOMOTORES INKA S.A.C. (en adelante la “EMPRESA”) a través de las marcas que representan importa y comercializa, transmitiendo publicidad relativa a nuestras actividades y oferta comercial a las personas que se registren mediante esta página web u otro canal autorizado.",
+          "Bienvenido al sitio web de SOCIEDAD DE AUTOMOTORES INKA S.A.C. (en adelante, AUTOMOTORES INKA). Este portal ha sido diseñado para ofrecerle una experiencia informativa y comercial de alta calidad en la venta de vehículos, repuestos y servicios automotrices.",
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "1. Aspectos Generales y Aceptación",
+    parrafos: [
+      {
+        oracion:
+          "El acceso y navegación en este sitio web atribuye la condición de Usuario e implica la aceptación plena de estos términos. El contenido aquí expuesto tiene fines informativos y publicitarios. El acceso al sitio no constituye, por sí mismo, una relación contractual ni una oferta de venta vinculante; cualquier transacción comercial requerirá la confirmación formal por escrito de AUTOMOTORES INKA S.A.C., conforme a la Ley de Protección de Datos Personales (Ley N° 29733) y el Código de Protección al Consumidor.",
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "2. Modificación de Condiciones",
+    parrafos: [
+      {
+        oracion:
+          "AUTOMOTORES INKA se reserva el derecho de actualizar, modificar o eliminar la información, configuración o condiciones de uso de este sitio en cualquier momento y sin previo aviso. Esto incluye variaciones en disponibilidad de modelos, especificaciones técnicas, precios, promociones y servicios de postventa. Las modificaciones surtirán efecto inmediato tras su publicación.",
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "3. Precisión de Contenidos y Fichas Técnicas",
+    parrafos: [
+      {
+        oracion:
+          "La industria automotriz está en constante evolución. Por ello:",
       },
       {
         oracion:
-          "El acceso a la web de la EMPRESA, atribuye a quien lo efectúa la condición de visitante e implica la aceptación plena y sin reservas de todos los términos y condiciones incluidos en este documento según se encuentren vigentes en el momento mismo en que el visitante acceda a la web de DERCO. En consecuencia, el visitante debe leer atentamente el presente documento en cada una de las ocasiones en que se proponga utilizar esta página web, ya que aquél puede sufrir modificaciones.",
+          "\t- Equipamiento: Las fichas técnicas, accesorios y datos de rendimiento son referenciales. No constituyen una guía exacta de las unidades disponibles en stock.",
       },
       {
         oracion:
-          "En caso el visitante registre sus datos en nuestra página web y brinde su respectivo consentimiento según corresponda, adquirirá la condición de usuario, aceptando plena y sin reservas no solo los términos y condiciones incluidos en este documento, sino también nuestra Política de Privacidad.",
+          "\t- Imágenes y Color: Las fotografías y videos son ilustrativos. Los colores pueden variar según la calibración de su pantalla y la disponibilidad real en nuestros almacenes al momento de la compra.",
       },
       {
         oracion:
-          "Recomendamos a cada visitante y usuario leer detenidamente cada nota, información legal y advertencia antes de acceder, adquirir y utilizar los productos y servicios prestados por DERCO.",
+          "\t- Stock: AUTOMOTORES INKA se reserva el derecho de modificar especificaciones según la disponibilidad de la fábrica y el inventario local.",
+      },
+      {
+        oracion:
+          "\t- Para obtener detalles vinculantes, el usuario deberá contactar directamente con nuestra Red de Ventas Autorizada.",
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "4. Garantías de Vehículos, Repuestos y Servicios Técnicos",
+    parrafos: [
+      {
+        oracion:
+          "AUTOMOTORES INKA garantiza que todos sus productos y servicios cumplen con los estándares de calidad y seguridad correspondientes a su naturaleza:",
+      },
+      {
+        oracion:
+          "\t- Vehículos Nuevos: La garantía está sujeta a los términos, plazos y condiciones específicas otorgadas por el fabricante, los cuales son entregados al cliente al momento de la compra. El cumplimiento del plan de mantenimiento preventivo en nuestros talleres autorizados es indispensable para la vigencia de esta garantía.",
+      },
+      {
+        oracion:
+          "\t- Repuestos y Accesorios: Todo repuesto adquirido cuenta con la garantía legal contra defectos de fabricación. Esta garantía no cubre fallas derivadas de una instalación externa ajena a nuestro servicio técnico, manipulación negligente o uso de piezas no compatibles.",
+      },
+      {
+        oracion:
+          "\t- Servicio Técnico: Las reparaciones y servicios de mantenimiento cuentan con una garantía sobre la mano de obra por un periodo de [Indicar tiempo, ej. 30 o 90 días] o [Indicar kilometraje, ej. 2,000 km], lo que ocurra primero, contados desde la entrega del vehículo.",
+      },
+      {
+        oracion:
+          "\t- Exclusiones: La garantía no cubre el desgaste natural de piezas (frenos, neumáticos, filtros, luces, etc.), daños causados por accidentes, factores ambientales externos o el uso del vehículo en condiciones no recomendadas por el fabricante.",
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: "5. Errores Tipográficos y de Sistema",
+    parrafos: [
+      {
+        oracion:
+          "AUTOMOTORES INKA realiza esfuerzos máximos para mantener la exactitud de los datos. No obstante, cualquier información (precios, bonos, tasas de financiamiento) que presente un error tipográfico evidente o sea producto de una manipulación técnica externa carecerá de valor legal. En caso de discrepancia entre la información digital y los catálogos impresos oficiales, prevalecerá la versión física y el contrato de compraventa final.",
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: "6. Servicios y Funcionalidades Online",
+    parrafos: [
+      {
+        oracion:
+          "Las herramientas de cotización, reserva de citas de servicio técnico y solicitud de repuestos tienen un fin facilitador. AUTOMOTORES INKA no garantiza la disponibilidad ininterrumpida del sitio, aunque procuramos mantener la operatividad óptima para evitar perjuicios al usuario.",
+      },
+    ],
+  },
+  {
+    id: 8,
+    title: "7. Precios y Condiciones de Venta",
+    parrafos: [
+      {
+        oracion:
+          "Los precios mostrados son Sugeridos al Público (PVP) e incluyen impuestos de ley, salvo indicación contraria. El precio final podrá variar en los puntos de venta según promociones locales o costos registrales. La propiedad del vehículo o repuesto se perfecciona mediante la firma del Contrato de Compraventa y la emisión de los documentos mercantiles correspondientes (Factura, Guía de Despacho y Póliza de Garantía).",
+      },
+    ],
+  },
+  {
+    id: 9,
+    title: "8. Enlaces de Terceros (Links)",
+    parrafos: [
+      {
+        oracion:
+          "AUTOMOTORES INKA no asume responsabilidad alguna por los contenidos, actividades comerciales, productos o servicios que el Usuario pueda visualizar mediante enlaces electrónicos (links), directos o indirectos, alojados en este sitio web.",
+      },
+      {
+        oracion:
+          "La inclusión de dichos enlaces tiene una finalidad estrictamente informativa y no constituye una sugerencia, invitación o recomendación. Estos sitios operan bajo sus propias políticas, por lo que no existe relación societaria ni responsabilidad solidaria entre AUTOMOTORES INKA y los titulares de dichos sitios. Nos reservamos el derecho de retirar cualquier enlace de manera unilateral y en cualquier momento.",
+      },
+    ],
+  },
+  {
+    id: 10,
+    title: "9. Navegación, Disponibilidad y Seguridad",
+    parrafos: [
+      {
+        oracion:
+          "El acceso y navegación en este sitio web implica la aceptación plena de las presentes advertencias legales y términos de uso.  AUTOMOTORES INKA emplea sus mejores esfuerzos tecnológicos para garantizar una navegación óptima; no obstante:",
+      },
+      {
+        oracion:
+          "No garantiza la continuidad ininterrumpida del servicio ni la ausencia de errores técnicos, omisiones o fallas en las líneas de conexión.",
+      },
+      {
+        oracion:
+          "No se responsabiliza por daños derivados de software malicioso (virus o malware) o cualquier otra intrusión informática que pudiera afectar el sistema del usuario, a pesar de contar con protocolos de seguridad activa.",
+      },
+      {
+        oracion:
+          "El uso inadecuado de este sitio web es responsabilidad exclusiva del Usuario.",
+      },
+    ],
+  },
+  {
+    id: 11,
+    title: "10. Propiedad Intelectual e Industrial",
+    parrafos: [
+      {
+        oracion:
+          "Este sitio web, su diseño, código fuente, logotipos, imágenes de vehículos, repuestos y textos están protegidos por la Ley sobre el Derecho de Autor (D.L. 822) y el Régimen Común sobre Propiedad Industrial (Decisión 486 de la CAN).",
+      },
+      {
+        oracion:
+          "Prohibiciones: Queda prohibida la reproducción, distribución, modificación o comunicación pública del contenido sin autorización expresa.",
+      },
+      {
+        oracion:
+          "Uso permitido: Se autoriza la descarga de contenido únicamente para uso personal, privado y no comercial.",
+      },
+      {
+        oracion:
+          "Software: AUTOMOTORES INKA conserva todos los derechos sobre el software del sitio. El Usuario se compromete a no realizar ingeniería inversa, descompilación o traducción del código objeto.",
+      },
+    ],
+  },
+  {
+    id: 12,
+    title: "11. Marcas Registradas",
+    parrafos: [
+      {
+        oracion:
+          "Todas las marcas, logotipos y emblemas de fabricantes de vehículos o repuestos exhibidos son propiedad de AUTOMOTORES INKA S.A.C. o de terceros bajo licencia. Su uso o distribución sin permiso escrito previo está estrictamente prohibido y será objeto de acciones legales.",
+      },
+    ],
+  },
+  {
+    id: 13,
+    title: "12. Política de Privacidad y Protección de Datos Personales",
+    parrafos: [
+      {
+        oracion:
+          "De conformidad con la Ley N.º 29733 (Ley de Protección de Datos Personales) y su Reglamento:",
+      },
+      {
+        oracion:
+          "\t-	Finalidad: Los datos facilitados mediante formularios se utilizarán para la gestión de ventas, servicios técnicos, envío de ofertas comerciales, novedades del sector automotriz y mejora de la experiencia del cliente.",
+      },
+      {
+        oracion:
+          "\t-	Consentimiento: Al completar nuestros formularios, el Usuario otorga su consentimiento previo, informado, expreso e inequívoco para el tratamiento de sus datos en nuestros bancos de datos.",
+      },
+      {
+        oracion:
+          "\t-	Seguridad: Hemos implementado medidas técnicas y organizativas para evitar la alteración, pérdida o acceso no autorizado a su información, conforme a los estándares de seguridad legalmente exigidos.",
+      },
+      {
+        oracion:
+          "\t-	Derechos ARCO: El Usuario puede ejercer gratuitamente sus derechos de Acceso, Rectificación, Cancelación y Oposición enviando una solicitud a hola@automotoresinka.com",
+      },
+      {
+        oracion:
+          "Conforme a la Ley N° 29733, usted puede solicitar en cualquier momento el ejercicio de sus derechos ARCO sin costo alguno link de solicitud:",
+      },
+      {
+        oracion:
+          "\ta)	Acceso: Derecho a obtener información sobre qué datos suyos tenemos en nuestras bases de datos.",
+      },
+      {
+        oracion:
+          "\tb)	Rectificación: Derecho a actualizar o corregir sus datos si son erróneos o han cambiado (ej. cambio de teléfono o correo).",
+      },
+      {
+        oracion:
+          "\tc)	Cancelación: Derecho a solicitar la supresión de sus datos cuando ya no sean necesarios para la finalidad que fueron recopilados.",
+      },
+      {
+        oracion:
+          "\td)	Oposición: Derecho a negarse a que sus datos sean utilizados para fines específicos (ej. envío de publicidad).",
+      },
+      {
+        oracion:
+          "Para hacer efectiva su solicitud, el titular de los datos o su representante legal deberá seguir estos pasos:",
+      },
+      {
+        oracion: `\t- Vía Electrónica: Enviar un correo a hola@automotoresinka.com  con el asunto: "Ejercicio de Derechos ARCO - [Su Nombre Completo]".`,
+      },
+      {
+        oracion: `\t- Vía Presencial: Acudir a cualquiera de nuestras salas de ventas o talleres autorizados y solicitar el "Formulario de Solicitud ARCO".`,
+      },
+      {
+        oracion: "Requisitos obligatorios:",
+      },
+      {
+        oracion:
+          "\t- Copia digital o física de su DNI, CE o Pasaporte (para validar la identidad del titular).",
+      },
+      {
+        oracion:
+          "\t- Descripción clara de los datos sobre los que desea ejercer el derecho y qué acción específica solicita.",
+      },
+      {
+        oracion:
+          "\t- En caso de actuar mediante un representante, se deberá adjuntar la carta poder con firma legalizada que lo faculte para este trámite.",
+      },
+    ],
+  },
+  {
+    id: 14,
+    title: "13. Política de Cookies",
+    parrafos: [
+      {
+        oracion:
+          "Este sitio utiliza cookies para optimizar la navegación y recordar preferencias de usuario. Las cookies no extraen información del disco duro ni acceden a datos personales a menos que el Usuario los proporcione voluntariamente. El Usuario puede deshabilitar el uso de cookies desde la configuración de su navegador, aunque esto podría limitar ciertas funciones del sitio.",
+      },
+    ],
+  },
+  {
+    id: 15,
+    title: "14. Libro de Reclamaciones Virtual",
+    parrafos: [
+      {
+        oracion:
+          "En cumplimiento de la Ley N.º 29571 y el Reglamento del Libro de Reclamaciones, AUTOMOTORES INKA pone a disposición de sus clientes el Libro de Reclamaciones Virtual, el cual podrá ser utilizado para registrar quejas o reclamos sobre los productos (vehículos y repuestos) o servicios técnicos ofrecidos.",
+      },
+      {
+        oracion:
+          "El Usuario podrá acceder al mismo a través del enlace claramente identificado en la página de inicio. Conforme a ley, el plazo de respuesta es de hasta quince (15) días hábiles.",
+      },
+    ],
+  },
+  {
+    id: 16,
+    title: "15. Autorización para Fines Comerciales y Publicitarios",
+    parrafos: [
+      {
+        oracion:
+          "De manera adicional a la gestión de su solicitud, el Usuario otorga su consentimiento libre, previo, expreso e inequívoco para que Automotores Inka trate sus datos personales con fines publicitarios y de prospección comercial.",
+      },
+      {
+        oracion: "Esta autorización faculta a la empresa a:",
+      },
+      {
+        oracion:
+          "\t- Enviar ofertas personalizadas sobre vehículos nuevos, promociones en repuestos y descuentos en servicios técnicos",
+      },
+      {
+        oracion:
+          "\t- Remitir recordatorios de mantenimiento preventivo, campañas de seguridad (recalls) y noticias del sector automotriz.",
+      },
+      {
+        oracion:
+          "\t- Contactar al Usuario a través de correo electrónico, llamadas telefónicas, SMS o mensajería instantánea (WhatsApp).",
+      },
+      {
+        oracion:
+          "El Usuario podrá revocar este consentimiento en cualquier momento o ejercer sus derechos ARCO enviando una comunicación a hola@automotoresinka.com , sin que ello condicione la prestación de los servicios o productos adquiridos.",
+      },
+    ],
+  },
+  {
+    id: 17,
+    title: "16. Jurisdicción y Legislación Aplicable",
+    parrafos: [
+      {
+        oracion:
+          "Cualquier controversia derivada del uso de este sitio web o de la interpretación de estos términos se regirá por las leyes de la República del Perú. Ambas partes se someten a la competencia de los jueces y tribunales del Distrito Judicial de Chiclayo, renunciando a cualquier otro fuero.",
       },
     ],
   },
